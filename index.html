@@ -60,6 +60,8 @@
 	        
 				<li><a href="/tags/杂感/">杂感</a></li>
 	        
+				<li><a href="/tags/搭建与部署操作记录/">搭建与部署操作记录</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -108,6 +110,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -120,11 +124,13 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 33.333333333333336%"><a href="/">主页</a></li>
+					<li style="width: 25%"><a href="/">主页</a></li>
 		        
-					<li style="width: 33.333333333333336%"><a href="/tags/随笔/">随笔</a></li>
+					<li style="width: 25%"><a href="/tags/随笔/">随笔</a></li>
 		        
-					<li style="width: 33.333333333333336%"><a href="/tags/杂感/">杂感</a></li>
+					<li style="width: 25%"><a href="/tags/杂感/">杂感</a></li>
+		        
+					<li style="width: 25%"><a href="/tags/搭建与部署操作记录/">搭建与部署操作记录</a></li>
 		        
 				</ul>
 			</nav>
@@ -161,7 +167,18 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <hr>
+<p>吃水不忘挖井人，今天把hexo在mac下的搭建和部署说一下。hexo是个挺有意思的东西，但是，因为版本和配置细节等问题，这两天遇坑无数。重装了四五遍。到今晚终于给整差不多了。着重把遇到的问题给说一下。</p>
+<blockquote>
+<p>No1:nvm问题<br>刚开始要注意使用nvm来控制node版本并且注意node版本最好是6.2以上（我因为版本低重装了一遍）</p>
+<p>No.2:部署成功github访问报404<br>解决：github有缓存，等一会儿或者一晚上，就好了</p>
+<p>No.3:注意<br>_config.yml的配置一定要在冒号之后留出空格，否则会报出各种奇葩问题。<br>_config.yml中都要用半角来输入，要注意比较常见的“／”，因为此符半角全角分不太出来。</p>
+<p>No.4markdown编辑器我采用马克飞象。<br>先命令行新建md文件，然后利用xcode打开，在马克飞象中编辑后copy到其中，或terminal中利用vim打开，编辑后copy到其中。</p>
+<p>No.5我所采用的主题：<br><a href="https://github.com/litten/hexo-theme-yilia" target="_blank" rel="external">https://github.com/litten/hexo-theme-yilia</a></p>
+<p>No.6实在解决不了，换个目录重装，也比在那里纠结快，每重装一次都会比之前快</p>
+</blockquote>
+<p>过程中遇坑无数，我着急解决没有记录下来现在也想不太起来了。善用谷歌和百度，会有意想不到的收获。最初我以为hexo冷门在网络上不会有什么记录没想到一大堆。</p>
+
       
 
       
@@ -169,6 +186,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">搭建与部署操作记录</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -322,6 +350,10 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">搭建与部署操作记录</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>
