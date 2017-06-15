@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="吃水不忘挖井人，今天把hexo在mac下的搭建和部署说一下。hexo是个挺有意思的东西，但是，因为版本和配置细节等问题，这两天遇坑无数。重装了四五遍。到今晚终于给整差不多了。着重把遇到的问题给说一下。">
 <meta property="og:image" content="htt://example.com/sample.png">
-<meta property="og:updated_time" content="2017-06-15T10:26:55.000Z">
+<meta property="og:updated_time" content="2017-06-15T11:43:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mac下hexo搭建相关记录">
 <meta name="twitter:description" content="吃水不忘挖井人，今天把hexo在mac下的搭建和部署说一下。hexo是个挺有意思的东西，但是，因为版本和配置细节等问题，这两天遇坑无数。重装了四五遍。到今晚终于给整差不多了。着重把遇到的问题给说一下。">
@@ -110,12 +110,13 @@
 <p><strong>DNS解析</strong><br>利用DNSPOD进行解析，<br>1.在yourname.github.io的根目录下添加CNAME<br>具体就是在Hexo目录里的source文件下添加一个名为CNAME的文件，注意这个文件是没有后缀的，千万不要设置成.txt文本文件，文件的内容就是域名，格式如：</p>
 <pre><code>niujiajun.com
 </code></pre><p>2.在DNSPOD管理页面点击添加解析，记录类型选A或CNAME，A记录的记录值就是ip地址，github(官方文档)提供了两个IP地址，192.30.252.153和192.30.252.154，这两个IP地址为github的服务器地址，两个都要填上，解析记录设置两个www和@，线路就默认就行了，CNAME记录值填你的github博客网址。如我的是whitescholars.github.io。</p>
+<p><strong>评论系统</strong><br>采用网易云跟帖，发现各家评论都很恶心，都需要用户登陆才能评论，完全不考虑用户需求和体验。发现即使是程序员DD的一片最新文章用的畅言评论系统也只有两个评论，这样的话如何起到和大家沟通的作用呢？</p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/05/31/mac下hexo搭建/" data-id="cj3ycq4yn0003nl73lbirk931" class="article-share-link" data-share="baidu" data-title="mac下hexo搭建相关记录">分享到</a>
+        <a data-url="http://yoursite.com/2017/05/31/mac下hexo搭建/" data-id="cj3ygmk800000t473pvxk07l4" class="article-share-link" data-share="baidu" data-title="mac下hexo搭建相关记录">分享到</a>
       
 
       
@@ -147,8 +148,6 @@
 </nav>
 
   
-</article>
-
 
 <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
 <script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
@@ -162,6 +161,10 @@ target: "cloud-tie-wrapper"
 var yunManualLoad = true;
 Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
 </script>
+</article>
+
+
+
 </section>
       
       <aside id="sidebar">
