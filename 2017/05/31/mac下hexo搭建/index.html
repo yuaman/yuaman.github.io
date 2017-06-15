@@ -14,13 +14,11 @@
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="吃水不忘挖井人，今天把hexo在mac下的搭建和部署说一下。hexo是个挺有意思的东西，但是，因为版本和配置细节等问题，这两天遇坑无数。重装了四五遍。到今晚终于给整差不多了。着重把遇到的问题给说一下。">
 <meta property="og:image" content="htt://example.com/sample.png">
-<meta property="og:updated_time" content="2017-06-12T09:57:14.000Z">
+<meta property="og:updated_time" content="2017-06-15T10:26:55.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mac下hexo搭建相关记录">
 <meta name="twitter:description" content="吃水不忘挖井人，今天把hexo在mac下的搭建和部署说一下。hexo是个挺有意思的东西，但是，因为版本和配置细节等问题，这两天遇坑无数。重装了四五遍。到今晚终于给整差不多了。着重把遇到的问题给说一下。">
 <meta name="twitter:image" content="htt://example.com/sample.png">
-  
-    <link rel="alternative" href="/atom.xml" title="无题" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -58,8 +56,6 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
@@ -76,87 +72,7 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main"><article id="post-mac下hexo搭建" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/05/31/mac下hexo搭建/" class="article-date">
-  <time datetime="2017-05-31T13:08:57.000Z" itemprop="datePublished">2017-05-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      mac下hexo搭建相关记录
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>吃水不忘挖井人，今天把hexo在mac下的搭建和部署说一下。hexo是个挺有意思的东西，但是，因为版本和配置细节等问题，这两天遇坑无数。重装了四五遍。到今晚终于给整差不多了。着重把遇到的问题给说一下。</p>
-<a id="more"></a>
-<p><strong>No1:nvm问题</strong><br>刚开始要注意使用nvm来控制node版本并且注意node版本最好是6.2以上（我因为版本低重装了一遍）</p>
-<p><strong>No.2:部署成功github访问报404</strong><br>解决：github有缓存，等一会儿或者一晚上，就好了</p>
-<p><strong>No.3:注意</strong><br>_config.yml的配置一定要在冒号之后留出空格，否则会报出各种奇葩问题。</p>
-<p>_config.yml中都要用半角来输入，要注意比较常见的“／”，因为此符半角全角分不太出来。</p>
-<p><strong>No.4markdown编辑器我采用马克飞象</strong><br>先命令行新建md文件，然后利用xcode打开，在马克飞象中编辑后copy到其中，或terminal中利用vim打开，编辑后copy到其中。</p>
-<p><strong>No.5我所采用的主题：</strong><br><a href="https://github.com/litten/hexo-theme-yilia" target="_blank" rel="external">https://github.com/litten/hexo-theme-yilia</a></p>
-<p><strong>No.6使用yilia主题遇到的一些问题解决办法</strong><br>1 我们发布的文章是在主页显示的时候全部显示，那样很长很难看，想要部分展示的效果。</p>
-<p>使用”&lt;! – more – &gt;”标签来隐藏其下面的内容~</p>
-<p>实在有坑填不了，换个目录重装，也比在那里纠结快，每重装一次都会比之前快</p>
-<p>过程中遇坑无数，我着急解决没有记录下来现在也想不太起来了。善用谷歌和百度，会有意想不到的收获。最初我以为hexo冷门在网络上不会有什么记录没想到一大堆。 </p>
-<p><strong>图片引用</strong><br>用markdown语法不好用，“<img src="" alt="">”;<br>最终只是用了html标签<br><img src="htt://example.com/sample.png" width="400" height="100"></p>
-<p><strong>域名问题</strong><br>在godaddy上买到了符合我名字的yutinglin.cn,也不知道会不会被封</p>
-<p><strong>Markdown编辑器</strong><br>用了十几天马克飞象之后还是赚到macdown了，马克飞象需要付费但是因为小众没有破解。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2017/05/31/mac下hexo搭建/" data-id="cj3y8zi7z0003zh73at4dmamq" class="article-share-link" data-share="baidu" data-title="mac下hexo搭建相关记录">分享到</a>
-      
-
-      
-        <a href="http://yoursite.com/2017/05/31/mac下hexo搭建/#disqus_thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作记录/">操作记录</a></li></ul>
-
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2017/06/04/读罗马人物语-恺撒时代/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">
-        
-          读罗马人物语-恺撒时代
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2017/05/30/缘起/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">缘起</div>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-
-
-</section>
+      <section id="main"></section>
       
       <aside id="sidebar">
   
@@ -225,6 +141,10 @@
     <h3 class="widget-title">友情链接</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="https://github.com/yuaman" target="_blank">我的git同性交友主页</a>
+          </li>
         
       </ul>
     </div>
@@ -311,6 +231,20 @@
 
 
 <script src="/js/script.js"></script>
+
+
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+<script>
+var cloudTieConfig = {
+url: document.location.href,
+sourceId: "",
+productKey: 'b938cdd1cb0f4bc9bbbc4ef32db418dc',
+target: "cloud-tie-wrapper"
+};
+var yunManualLoad = true;
+Tie.loader('aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vbW9iaWxlL2xpdmVzY3JpcHQuaHRtbA==', true);
+</script>
+
 
 </div>
 </body>

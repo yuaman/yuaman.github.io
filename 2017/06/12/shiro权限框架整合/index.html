@@ -18,8 +18,6 @@
 <meta name="twitter:title" content="Shiro权限框架整合">
 <meta name="twitter:description" content="2017年年初在供应链项目正式应用shiro权限框架，当时对一些问题做了一些记录。此次做全面总结。">
   
-    <link rel="alternative" href="/atom.xml" title="无题" type="application/atom+xml">
-  
   
     <link rel="icon" href="/favicon.png">
   
@@ -56,8 +54,6 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
@@ -74,86 +70,7 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main"><article id="post-shiro权限框架整合" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/06/12/shiro权限框架整合/" class="article-date">
-  <time datetime="2017-06-12T09:52:54.000Z" itemprop="datePublished">2017-06-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      Shiro权限框架整合
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>2017年年初在供应链项目正式应用shiro权限框架，当时对一些问题做了一些记录。此次做全面总结。<br><a id="more"></a><br>shiro框架已经整合成单独一个服务，github地址：<br><a href="https://github.com/yuaman/shiro-service" target="_blank" rel="external">https://github.com/yuaman/shiro-service</a></p>
-<p>##添加favicon重定向问题（转）<br>文件放在 static/common/images 路径下，页面 head 里加上</p>
-<p><link rel="shortcut icon" href="static/common/images/favicon.ico" type="image/x-icon"><br>浏览器可以成功显示 favicon.ico，但是在第一次登陆成功后会自动重定向到 /favicon.ico 文件的路径。</p>
-<p>网上的解决办法：<br>基本大多数浏览器都会请求 favicon.ico 这个图标文件用来展示在浏览器的URL地址前面，而这个文件被shiro保护了。<br>解决方法：</p>
-<p>在 filterChainDefinitions 下配置 /favicon.ico 以匿名访问</p>
-<p> /favicon.ico = anon<br>可是我配置好 /static/common/images/favicon.ico = anon 后，还是会重定向。</p>
-<p>多次测试之后发现anon配置的顺序会有影响。</p>
-<p>Shiro验证URL时，URL匹配成功便不再继续匹配查找，所以要注意配置文件中的URL顺序，尤其在使用通配符时。<br>故filterChainDefinitions的配置顺序为自上而下，以最上面的为准。</p>
-<pre><code>1. &lt;property name=&quot;filterChainDefinitions&quot;&gt;  
-2.     &lt;value&gt;  
-3.         /static/common/images/favicon.ico = anon  
-4.         /resources/**=anon  
-5.         /systemManage/resources/**=anon  
-6.         /unauthorized = authc  
-7.         /login = authc  
-8.         /logout = logout  
-9.         &lt;!--/authenticated = authc--&gt;  
-10.         /** = user,sysUser  
-11.     &lt;/value&gt;  
-12. &lt;/property&gt; 
-
-只是调整了  /static/common/images/favicon.ico = anon 的顺序。
-</code></pre><p>过滤器 anon  表示可匿名使用，可以理解为匿名用户或游客，无需认证便可以访问的的文件。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2017/06/12/shiro权限框架整合/" data-id="cj3y8zi800004zh737psxq2s0" class="article-share-link" data-share="baidu" data-title="Shiro权限框架整合">分享到</a>
-      
-
-      
-        <a href="http://yoursite.com/2017/06/12/shiro权限框架整合/#disqus_thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作记录/">操作记录</a></li></ul>
-
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-  
-    <a href="/2017/06/11/电商项目物流接口集成总结/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">电商项目物流接口集成总结</div>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-
-
-</section>
+      <section id="main"></section>
       
       <aside id="sidebar">
   
@@ -222,6 +139,10 @@
     <h3 class="widget-title">友情链接</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="https://github.com/yuaman" target="_blank">我的git同性交友主页</a>
+          </li>
         
       </ul>
     </div>
@@ -308,6 +229,20 @@
 
 
 <script src="/js/script.js"></script>
+
+
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+<script>
+var cloudTieConfig = {
+url: document.location.href,
+sourceId: "",
+productKey: 'b938cdd1cb0f4bc9bbbc4ef32db418dc',
+target: "cloud-tie-wrapper"
+};
+var yunManualLoad = true;
+Tie.loader('aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vbW9iaWxlL2xpdmVzY3JpcHQuaHRtbA==', true);
+</script>
+
 
 </div>
 </body>

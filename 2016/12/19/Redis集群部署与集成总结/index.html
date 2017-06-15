@@ -18,8 +18,6 @@
 <meta name="twitter:title" content="Redis集群部署与集成总结">
 <meta name="twitter:description" content="16年末开始了解redis并加入当时所做电商项目中。遇到过一些问题，于当时做了记录。">
   
-    <link rel="alternative" href="/atom.xml" title="无题" type="application/atom+xml">
-  
   
     <link rel="icon" href="/favicon.png">
   
@@ -56,8 +54,6 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
@@ -74,75 +70,7 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main"><article id="post-Redis集群部署与集成总结" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/12/19/Redis集群部署与集成总结/" class="article-date">
-  <time datetime="2016-12-19T02:05:54.000Z" itemprop="datePublished">2016-12-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      Redis集群部署与集成总结
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>16年末开始了解redis并加入当时所做电商项目中。遇到过一些问题，于当时做了记录。</p>
-<a id="more"></a>
-<p><strong>jedis客户端调用redis集群异常总结</strong><br>在虚拟机以及远程服务器同时测试<br>节点全部开启，集群check命令显示主从均正常</p>
-<p>于控制台开启某一节点的cli，set测试，正常。</p>
-<p>在类文件中连接集群某一结点，调用，报错如下<br>no reachable node in cluster</p>
-<p>于application.xml中配置<br>启动tomcat抱如下错：<br>org.springframework.beans.factory.BeanCreationException: Error creating bean with name ‘JedisCluster’ defined in class path resource [conf/applicationContext.xml]: Could not resolve matching constructor (hint: specify index/type/name arguments for simple parameters to avoid type ambiguities)</p>
-<p>最终解决：<br>发现三个错误：<br>连接池配置错误，集群不能使用jedispool<br>jar包冲突，spring session与jedis2.7冲突，但集群又必须使用2.7，以前使用单机版redis<br>redis集群服务器防火墙设置问题，导致no rechable nodes异常</p>
-<p>后来又报了一个异常：<br>too many nodes<br>重启redis服务器还有增大连接数</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2016/12/19/Redis集群部署与集成总结/" data-id="cj3y8zi7q0000zh7376uk4krt" class="article-share-link" data-share="baidu" data-title="Redis集群部署与集成总结">分享到</a>
-      
-
-      
-        <a href="http://yoursite.com/2016/12/19/Redis集群部署与集成总结/#disqus_thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作记录/">操作记录</a></li></ul>
-
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2017/05/30/缘起/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">
-        
-          缘起
-        
-      </div>
-    </a>
-  
-  
-</nav>
-
-  
-</article>
-
-
-
-</section>
+      <section id="main"></section>
       
       <aside id="sidebar">
   
@@ -211,6 +139,10 @@
     <h3 class="widget-title">友情链接</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="https://github.com/yuaman" target="_blank">我的git同性交友主页</a>
+          </li>
         
       </ul>
     </div>
@@ -297,6 +229,20 @@
 
 
 <script src="/js/script.js"></script>
+
+
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+<script>
+var cloudTieConfig = {
+url: document.location.href,
+sourceId: "",
+productKey: 'b938cdd1cb0f4bc9bbbc4ef32db418dc',
+target: "cloud-tie-wrapper"
+};
+var yunManualLoad = true;
+Tie.loader('aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vbW9iaWxlL2xpdmVzY3JpcHQuaHRtbA==', true);
+</script>
+
 
 </div>
 </body>
