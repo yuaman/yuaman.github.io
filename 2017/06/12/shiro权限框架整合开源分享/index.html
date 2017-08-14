@@ -6,14 +6,19 @@
 <meta name="baidu-site-verification" content="LHYPl19xg9" />
 <meta name="google-site-verification" content="s5HGo7JQp9QFcl2HIOHaNDUdwj3_kdgi5nPkB5bfMHs" />
   
-  <title>Tag: 操作记录 | 无题</title>
+  <title>Shiro权限框架整合总结与开源分享 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="无题">
-<meta property="og:url" content="http://yoursite.com/tags/操作记录/index.html">
+  <meta name="description" content="2017年年初在供应链项目正式应用shiro权限框架，当时对一些问题做了一些记录。此次做全面总结。">
+<meta name="keywords" content="个人开源项目">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Shiro权限框架整合总结与开源分享">
+<meta property="og:url" content="http://yoursite.com/2017/06/12/shiro权限框架整合开源分享/index.html">
 <meta property="og:site_name" content="无题">
+<meta property="og:description" content="2017年年初在供应链项目正式应用shiro权限框架，当时对一些问题做了一些记录。此次做全面总结。">
+<meta property="og:updated_time" content="2017-08-14T05:05:26.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="无题">
+<meta name="twitter:title" content="Shiro权限框架整合总结与开源分享">
+<meta name="twitter:description" content="2017年年初在供应链项目正式应用shiro权限框架，当时对一些问题做了一些记录。此次做全面总结。">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -66,87 +71,94 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/06/07/mac下IntelliJ使用记录/" class="archive-article-date">
-  <time datetime="2017-06-07T03:17:54.000Z" itemprop="datePublished">6月 7</time>
+      <section id="main"><article id="post-shiro权限框架整合开源分享" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/06/12/shiro权限框架整合开源分享/" class="article-date">
+  <time datetime="2017-06-12T09:52:54.000Z" itemprop="datePublished">2017-06-12</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/06/07/mac下IntelliJ使用记录/">mac下IntelliJ使用记录</a>
+    <h1 class="article-title" itemprop="name">
+      Shiro权限框架整合总结与开源分享
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/05/31/mac下hexo搭建操作记录/" class="archive-article-date">
-  <time datetime="2017-05-31T13:08:57.000Z" itemprop="datePublished">5月 31</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
+        <p>2017年年初在供应链项目正式应用shiro权限框架，当时对一些问题做了一些记录。此次做全面总结。<br><a id="more"></a><br>shiro框架已经整合成单独一个服务，github地址：<br><a href="https://github.com/yuaman/shiro-service" target="_blank" rel="external">https://github.com/yuaman/shiro-service</a></p>
+<h2 id="添加favicon重定向问题（转）"><a href="#添加favicon重定向问题（转）" class="headerlink" title="添加favicon重定向问题（转）"></a>添加favicon重定向问题（转）</h2><p>文件放在 static/common/images 路径下，页面 head 里加上</p>
+<p><link rel="shortcut icon" href="static/common/images/favicon.ico" type="image/x-icon"><br>浏览器可以成功显示 favicon.ico，但是在第一次登陆成功后会自动重定向到 /favicon.ico 文件的路径。</p>
+<p>网上的解决办法：<br>基本大多数浏览器都会请求 favicon.ico 这个图标文件用来展示在浏览器的URL地址前面，而这个文件被shiro保护了。<br>解决方法：</p>
+<p>在 filterChainDefinitions 下配置 /favicon.ico 以匿名访问</p>
+<p> /favicon.ico = anon<br>可是我配置好 /static/common/images/favicon.ico = anon 后，还是会重定向。</p>
+<p>多次测试之后发现anon配置的顺序会有影响。</p>
+<p>Shiro验证URL时，URL匹配成功便不再继续匹配查找，所以要注意配置文件中的URL顺序，尤其在使用通配符时。<br>故filterChainDefinitions的配置顺序为自上而下，以最上面的为准。</p>
+<pre><code>1. &lt;property name=&quot;filterChainDefinitions&quot;&gt;  
+2.     &lt;value&gt;  
+3.         /static/common/images/favicon.ico = anon  
+4.         /resources/**=anon  
+5.         /systemManage/resources/**=anon  
+6.         /unauthorized = authc  
+7.         /login = authc  
+8.         /logout = logout  
+9.         &lt;!--/authenticated = authc--&gt;  
+10.         /** = user,sysUser  
+11.     &lt;/value&gt;  
+12. &lt;/property&gt; 
+
+只是调整了  /static/common/images/favicon.ico = anon 的顺序。
+</code></pre><p>过滤器 anon  表示可匿名使用，可以理解为匿名用户或游客，无需认证便可以访问的的文件。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2017/06/12/shiro权限框架整合开源分享/" data-id="cj6bsl1b100099f73uqdadh6u" class="article-share-link" data-share="baidu" data-title="Shiro权限框架整合总结与开源分享">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/个人开源项目/">个人开源项目</a></li></ul>
+
+    </footer>
+  </div>
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/05/31/mac下hexo搭建操作记录/">mac下hexo搭建相关记录</a>
-    </h1>
+    
+<nav id="article-nav">
+  
+    <a href="/2017/06/17/深入理解JVM阅读笔记/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          《深入理解JVM》阅读笔记
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/06/11/电商项目物流接口集成总结与开源分享/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">电商项目物流接口集成总结与开源分享</div>
+    </a>
+  
+</nav>
+
   
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-      
-        </div></section>
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/12/19/Redis集群部署与集成总结/" class="archive-article-date">
-  <time datetime="2016-12-19T02:05:54.000Z" itemprop="datePublished">12月 19</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/12/19/Redis集群部署与集成总结/">Redis集群部署与集成总结</a>
-    </h1>
-  
 
-    </header>
-  </div>
+
 </article>
-  
-  
-    </div></section>
-  
+
+
 
 </section>
       
