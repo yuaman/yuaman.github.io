@@ -15,7 +15,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/08/14/Java中equals与==的区别与使用场景分析/index.html">
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="讨论一下Java中equals和==的区别，这个问题看似浅显，还是有不少情况需要注意。阅览了网上一些文章，都比较片面。在此做一下详细的整理。">
-<meta property="og:updated_time" content="2017-08-14T04:44:55.000Z">
+<meta property="og:updated_time" content="2017-08-14T04:46:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="谈谈Java中equals和==的区别和使用场景">
 <meta name="twitter:description" content="讨论一下Java中equals和==的区别，这个问题看似浅显，还是有不少情况需要注意。阅览了网上一些文章，都比较片面。在此做一下详细的整理。">
@@ -94,7 +94,6 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>讨论一下Java中equals和==的区别，这个问题看似浅显，还是有不少情况需要注意。阅览了网上一些文章，都比较片面。在此做一下详细的整理。<br><a id="more"></a></p>
-<p>讨论一下Java中equals和==的区别，这个问题看似浅显，还是有不少情况需要注意。阅览了网上一些文章，都比较片面。在此做一下详细的整理。</p>
 <p>##先直接上结论：：<br>1.当比较对象为基本数据类型的时候，”==“比较的是二者在栈内存中的值。</p>
 <p>2.当比较对象为复杂数据类型的时候，当且仅当该equals方法参数不是 null，两个变量的类型、内容都相同，比较结果为true。但string类有常量池的缘故较为特殊。</p>
 <p>3.当比较对象为实体类的时候，不重写equals方法，比较的是二者在堆内存中的引用地址，无意义，一般在实体类中进行重写equals方法，自定义比较规则。</p>
@@ -237,7 +236,7 @@ System.out.println(b1.getName());
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/14/Java中equals与==的区别与使用场景分析/" data-id="cj6bodztj0000ps73tmf6amg1" class="article-share-link" data-share="baidu" data-title="谈谈Java中equals和==的区别和使用场景">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/14/Java中equals与==的区别与使用场景分析/" data-id="cj6bohpb80000wo73fpp5vspu" class="article-share-link" data-share="baidu" data-title="谈谈Java中equals和==的区别和使用场景">分享到</a>
       
 
 
