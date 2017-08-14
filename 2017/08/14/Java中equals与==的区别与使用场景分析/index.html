@@ -6,18 +6,19 @@
 <meta name="baidu-site-verification" content="LHYPl19xg9" />
 <meta name="google-site-verification" content="s5HGo7JQp9QFcl2HIOHaNDUdwj3_kdgi5nPkB5bfMHs" />
   
-  <title>无题</title>
+  <title>谈谈Java中equals和==的区别和使用场景 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="#谈谈Java中equals和==的区别和使用场景 讨论一下Java中equals和==的区别，这个问题看似浅显，还是有不少情况需要注意。阅览了网上一些文章，都比较片面。在此做一下详细的整理。 ##先直接上结论：：1.当比较对象为基本数据类型的时候，”==“比较的是二者在栈内存中的值。 2.当比较对象为复杂数据类型的时候，当且仅当该equals方法参数不是 null，两个变量的类型、内容都相同，比">
+  <meta name="description" content="讨论一下Java中equals和==的区别，这个问题看似浅显，还是有不少情况需要注意。阅览了网上一些文章，都比较片面。在此做一下详细的整理。">
+<meta name="keywords" content="Java基础">
 <meta property="og:type" content="article">
-<meta property="og:title" content="无题">
+<meta property="og:title" content="谈谈Java中equals和==的区别和使用场景">
 <meta property="og:url" content="http://yoursite.com/2017/08/14/Java中equals与==的区别与使用场景分析/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="#谈谈Java中equals和==的区别和使用场景 讨论一下Java中equals和==的区别，这个问题看似浅显，还是有不少情况需要注意。阅览了网上一些文章，都比较片面。在此做一下详细的整理。 ##先直接上结论：：1.当比较对象为基本数据类型的时候，”==“比较的是二者在栈内存中的值。 2.当比较对象为复杂数据类型的时候，当且仅当该equals方法参数不是 null，两个变量的类型、内容都相同，比">
-<meta property="og:updated_time" content="2017-08-14T04:39:56.000Z">
+<meta property="og:description" content="讨论一下Java中equals和==的区别，这个问题看似浅显，还是有不少情况需要注意。阅览了网上一些文章，都比较片面。在此做一下详细的整理。">
+<meta property="og:updated_time" content="2017-08-14T04:44:55.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="无题">
-<meta name="twitter:description" content="#谈谈Java中equals和==的区别和使用场景 讨论一下Java中equals和==的区别，这个问题看似浅显，还是有不少情况需要注意。阅览了网上一些文章，都比较片面。在此做一下详细的整理。 ##先直接上结论：：1.当比较对象为基本数据类型的时候，”==“比较的是二者在栈内存中的值。 2.当比较对象为复杂数据类型的时候，当且仅当该equals方法参数不是 null，两个变量的类型、内容都相同，比">
+<meta name="twitter:title" content="谈谈Java中equals和==的区别和使用场景">
+<meta name="twitter:description" content="讨论一下Java中equals和==的区别，这个问题看似浅显，还是有不少情况需要注意。阅览了网上一些文章，都比较片面。在此做一下详细的整理。">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -73,16 +74,26 @@
       <section id="main"><article id="post-Java中equals与==的区别与使用场景分析" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/08/14/Java中equals与==的区别与使用场景分析/" class="article-date">
-  <time datetime="2017-08-14T04:06:05.000Z" itemprop="datePublished">2017-08-14</time>
+  <time datetime="2017-08-14T04:44:54.000Z" itemprop="datePublished">2017-08-14</time>
 </a>
     
   </div>
   <div class="article-inner">
     
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      谈谈Java中equals和==的区别和使用场景
+    </h1>
+  
+
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
-        <p>#谈谈Java中equals和==的区别和使用场景</p>
+        <p>讨论一下Java中equals和==的区别，这个问题看似浅显，还是有不少情况需要注意。阅览了网上一些文章，都比较片面。在此做一下详细的整理。<br><a id="more"></a></p>
 <p>讨论一下Java中equals和==的区别，这个问题看似浅显，还是有不少情况需要注意。阅览了网上一些文章，都比较片面。在此做一下详细的整理。</p>
 <p>##先直接上结论：：<br>1.当比较对象为基本数据类型的时候，”==“比较的是二者在栈内存中的值。</p>
 <p>2.当比较对象为复杂数据类型的时候，当且仅当该equals方法参数不是 null，两个变量的类型、内容都相同，比较结果为true。但string类有常量池的缘故较为特殊。</p>
@@ -226,12 +237,14 @@ System.out.println(b1.getName());
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/14/Java中equals与==的区别与使用场景分析/" data-id="cj6bo84570000gw73sarjekc5" class="article-share-link" data-share="baidu" data-title="">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/14/Java中equals与==的区别与使用场景分析/" data-id="cj6bodztj0000ps73tmf6amg1" class="article-share-link" data-share="baidu" data-title="谈谈Java中equals和==的区别和使用场景">分享到</a>
       
 
 
 
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java基础/">Java基础</a></li></ul>
+
     </footer>
   </div>
   
@@ -264,7 +277,7 @@ System.out.println(b1.getName());
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂感/">杂感</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂感/">杂感</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -273,7 +286,7 @@ System.out.println(b1.getName());
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/操作记录/" style="font-size: 20px;">操作记录</a> <a href="/tags/杂感/" style="font-size: 15px;">杂感</a>
+      <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/Java基础/" style="font-size: 10px;">Java基础</a> <a href="/tags/操作记录/" style="font-size: 20px;">操作记录</a> <a href="/tags/杂感/" style="font-size: 15px;">杂感</a>
     </div>
   </div>
 
@@ -294,7 +307,7 @@ System.out.println(b1.getName());
       <ul>
         
           <li>
-            <a href="/2017/08/14/Java中equals与==的区别与使用场景分析/">(no title)</a>
+            <a href="/2017/08/14/Java中equals与==的区别与使用场景分析/">谈谈Java中equals和==的区别和使用场景</a>
           </li>
         
           <li>

@@ -71,165 +71,43 @@
     <article id="post-Java中equals与==的区别与使用场景分析" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/08/14/Java中equals与==的区别与使用场景分析/" class="article-date">
-  <time datetime="2017-08-14T04:06:05.000Z" itemprop="datePublished">2017-08-14</time>
+  <time datetime="2017-08-14T04:44:54.000Z" itemprop="datePublished">2017-08-14</time>
 </a>
     
   </div>
   <div class="article-inner">
     
     
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/14/Java中equals与==的区别与使用场景分析/">谈谈Java中equals和==的区别和使用场景</a>
+    </h1>
+  
+
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
-        <p>#谈谈Java中equals和==的区别和使用场景</p>
-<p>讨论一下Java中equals和==的区别，这个问题看似浅显，还是有不少情况需要注意。阅览了网上一些文章，都比较片面。在此做一下详细的整理。</p>
-<p>##先直接上结论：：<br>1.当比较对象为基本数据类型的时候，”==“比较的是二者在栈内存中的值。</p>
-<p>2.当比较对象为复杂数据类型的时候，当且仅当该equals方法参数不是 null，两个变量的类型、内容都相同，比较结果为true。但string类有常量池的缘故较为特殊。</p>
-<p>3.当比较对象为实体类的时候，不重写equals方法，比较的是二者在堆内存中的引用地址，无意义，一般在实体类中进行重写equals方法，自定义比较规则。</p>
-<p>##java中的数据类型，可分为两类： </p>
-<p>###1.基本数据类型，也称原始数据类型的比较。<br>byte,short,char,int,long,float,double,boolean<br>  他们之间的比较，应用双等号（==）,比较的是他们的值。 </p>
-<p>示例：</p>
-<pre><code>public class Test {
-
-public static void main(String[] args) {  
-
-  int i=5;  
-  int j=5;  
-
-  if(i==j) System.out.println(&quot;i和j相等！&quot;);  
-  else System.out.println(&quot;不相等！&quot;);  
-  }
-</code></pre><blockquote>
-<p>运行结果：<br>   “i和j相等！” </p>
-</blockquote>
-<p>因为此时比较对象为基本数据类型，所以“==”比较的是它们存放于虚拟机栈内存中的值。 </p>
-<p>##2.复杂数据类型的比较<br>在Java API中，有些类重写了equals()方法，它们的比较规则是：当且仅当该equals方法参数不是 null，两个变量的类型、内容都相同，则比较结果为true。这些类包括：String、Double、Float、Long、Integer、Short、Byte、、Boolean、BigDecimal、BigInteger等等，太多太多了，但是常见的就这些了，具体可以查看API中类的equals()方法，就知道了。</p>
-<p>深入到内存中。==就是比较堆内存的值是否相等（对象地址存放在堆内存），equals（）就是比较栈内存的值（对象的值存在于栈内存）。String有个常量池。String a=”abc”;String b=”abc”;a==b是返回true的，就是因为常量池的原因，实际上a和b是同一个对象。但是String a=”abc”;String a=new String(“abc”);这样a==b就是返回flase了，a和b就不是同一个对象（他们的地址不等。）</p>
-<p>原来，程序在运行的时候会创建一个字符串缓冲池当使用 s2 = “Monday” 这样的表达是创建字符串的时候，程序首先会在这个String缓冲池中寻找相同值的对象，在第一个程序中，s1先被放到了池中，所以在s2被创建的时候，程序找到了具有相同值的 s1<br>将s2引用s1所引用的对象”Monday”<br>第二段程序中，使用了 new 操作符，他明白的告诉程序：”我要一个新的！不要旧的！”于是一个新的”Monday”Sting对象被创建在内存中。他们的值相同，但是位置不同，一个在池中游泳一个在岸边休息。哎呀，真是资源浪费，明明是一样的非要分开做什么呢？</p>
-<p>###3.实体类的比较<br>  当他们用（==）进行比较的时候，比较的是他们在内存中的存放地址，所以，除非是同一个new出来的对象，他们的比较后的结果为true，否则比较后结果为false。 </p>
-<p>JAVA当中所有的类都是继承于Object这个基类的，在Object中的基类中定义了一个equals的方法，这个方法的初始行为是比较对象的内存地 址。</p>
-<p>对于复合数据类型之间进行equals比较，在没有覆写equals方法的情况下，他们之间的比较还是基于他们在内存中的存放位置的地址值的，因为Object的equals方法也是用双等号（==）进行比较的，所以比较后的结果跟双等号（==）的结果相同。</p>
-<p>示例：</p>
-<pre><code>public class Student {  
-
-    String name;  
-
-        public Student(){  
-
-    }  
-
-    public Student(String name){  
-
-    this.name=name;  
-
-}                                                            
-
-public class Test {  
-
-    public static void main(String[] args) {  
-
-      Student s = new Student(&quot;BlueSky&quot;);  
-      Student s1=new Student(&quot;BlueSky&quot;);  
-
-      if(s==s1)  System.out.println(&quot;s和是s1相等！&quot;);  
-      else System.out.println(&quot;s和是s1不相等！&quot;);  
-
-      if(s.equals(s1)) System.out.println(&quot;s和是s1相等！&quot;);  
-      else System.out.println(&quot;s和是s1不相等！&quot;);  
-}  
-</code></pre><p>}  </p>
-<blockquote>
-<p>运行结果：<br>s和是s1不相等！<br>s和是s1不相等！</p>
-</blockquote>
-<p>结果验证了Object类的equals()方法用来比较是否一个对象是利用内存地址比较，所以在定义一个类的时候，如果涉及到对象的比较（通过我们要比较内容），应该重写equals()方法。重写的一般规则是：</p>
-<p>1、先用“==”判断是否相等。</p>
-<p>2、判断equals()方法的参数是否为null，如果为null，则返回false；因为当前对象不可能为null，如果为null，则不能调用其equals()方法，否则抛java.lang.NullPointerException异常。</p>
-<p>3、当参数不为null，则如果两个对象的运行时类（通过getClass()获取）不相等，返回false，否则继续判断。</p>
-<p>4、判断类的成员是否对应相等。往下就随意发挥了。呵呵！</p>
-<p>我们对实体进行比较的时候往往要比较的是里面的值，所以我们为了达到这个目的，要在实体类里面重写equals()方法，进行对象里面的内容比较。如上面，我们在Student类中重写equals()方法。   </p>
-<p>重写equals()方法后再次进行比较：<br> Student类：</p>
-<pre><code>public class Student {  
-
-String name;  
-
-public Student(){  
-
-}  
-
-public Student(String name){  
-
-    this.name=name;  
-
-}  
-
-
-public boolean equals(Object obj) {  
-    if (this == obj)      //传入的对象就是它自己，如s.equals(s)；肯定是相等的；  
-        return true;   
-    if (obj == null)     //如果传入的对象是空，肯定不相等  
-        return false;  
-    if (getClass() != obj.getClass())  //如果不是同一个类型的，如Studnet类和Animal类，  
-                                       //也不用比较了，肯定是不相等的  
-        return false;  
-    Student other = (Student) obj;       
-    if (name == null) {  
-        if (other.name != null)  
-            return false;  
-    } else if (!name.equals(other.name))   //如果name属性相等，则相等  
-        return false;  
-    return true;  
-}  
-</code></pre><p>}  </p>
-<p>测试类Test：</p>
-<pre><code>public class Test {  
-
-public static void main(String[] args) {  
-
-  Student s = new Student(&quot;BlueSky&quot;);  
-  Student s1=new Student(&quot;BlueSky&quot;);  
-
-  if(s.equals(s1)) System.out.println(&quot;s和是s1相等！&quot;);  
-  else System.out.println(&quot;s和是s1不相等！&quot;);  
-}  
-</code></pre><p>}  </p>
-<blockquote>
-<p>运行结果：<br>“s和是s1相等！”</p>
-</blockquote>
-<p>##结论：<br>1.当比较对象为基本数据类型的时候，”==“比较的是二者在栈内存中的值。</p>
-<p>2.当比较对象为复杂数据类型的时候，当且仅当该equals方法参数不是 null，两个变量的类型、内容都相同，则比较结果为true。但string类有常量池的缘故较为特殊。</p>
-<p>3.当比较对象为实体类的时候，不重写equals方法，比较的是二者在堆内存中的引用地址，无意义，一般在实体类中进行重写equals方法，自定义比较规则.</p>
-<p>##附：Object的getClass方法与getName方法</p>
-<p>###getClass方法：<br>类型：public final Class&lt;? extends Object&gt; getClass()<br>功能：返回该对象的运行时类的Java.lang.Class对象（API上的解释）<br>有方法类型可以知道，该方法只能由类的实例变量调用<br>例子：</p>
-<pre><code>[java] view plain copy
-JButton b1 = new JButton(&quot;button1&quot;);  
-System.out.println(b1.getClass());  
-</code></pre><blockquote>
-<p>输出：<br>    class javax.swing.JButton</p>
-</blockquote>
-<p>class属性<br>当你要获得一个类的Class对象时（作函数参数的时候），你不能调用getClass方法，那你只能用类名.class来达到效果<br>例子：</p>
-<pre><code>[java] view plain copy
-System.out.println(JButton.class);  
-</code></pre><blockquote>
-<p>输出：<br>class javax.swing.JButton</p>
-</blockquote>
-<p>###getName方法：<br>类型：public String getName()<br>功能：以String形式返回次Class对象所表示的实体名称<br>例子：</p>
-<pre><code>[java] view plain copy
-JButton b1 = new JButton(&quot;button1&quot;);  
-System.out.println(b1.getName());  
-</code></pre><blockquote>
-<p>输出：<br>javax.swing.JButton</p>
-</blockquote>
-<p>可以发现用class属性和getClass返回的输出是一样的，用getName返回的比前面两种少了class和一个空格。</p>
-
+        <p>讨论一下Java中equals和==的区别，这个问题看似浅显，还是有不少情况需要注意。阅览了网上一些文章，都比较片面。在此做一下详细的整理。<br>
+        
+          <p class="article-more-link">
+            <a href="/2017/08/14/Java中equals与==的区别与使用场景分析/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/14/Java中equals与==的区别与使用场景分析/" data-id="cj6bo84570000gw73sarjekc5" class="article-share-link" data-share="baidu" data-title="">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/14/Java中equals与==的区别与使用场景分析/" data-id="cj6bodztj0000ps73tmf6amg1" class="article-share-link" data-share="baidu" data-title="谈谈Java中equals和==的区别和使用场景">分享到</a>
       
 
 
 
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java基础/">Java基础</a></li></ul>
+
     </footer>
   </div>
   
@@ -273,7 +151,7 @@ System.out.println(b1.getName());
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/06/17/深入理解JVM阅读笔记/" data-id="cj6bo845f0001gw73hrah12bs" class="article-share-link" data-share="baidu" data-title="《深入理解JVM》阅读笔记">分享到</a>
+        <a data-url="http://yoursite.com/2017/06/17/深入理解JVM阅读笔记/" data-id="cj6bodztn0001ps73xwv2f7ia" class="article-share-link" data-share="baidu" data-title="《深入理解JVM》阅读笔记">分享到</a>
       
 
 
@@ -325,7 +203,7 @@ System.out.println(b1.getName());
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/06/12/shiro权限框架整合/" data-id="cj3z62cou0004r3731owocsyy" class="article-share-link" data-share="baidu" data-title="Shiro权限框架整合">分享到</a>
+        <a data-url="http://yoursite.com/2017/06/12/shiro权限框架整合/" data-id="cj6bodzua000bps73kzds5wtp" class="article-share-link" data-share="baidu" data-title="Shiro权限框架整合">分享到</a>
       
 
 
@@ -377,7 +255,7 @@ System.out.println(b1.getName());
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/06/11/电商项目物流接口集成总结/" data-id="cj3z62cox0005r373ys372cm2" class="article-share-link" data-share="baidu" data-title="电商项目物流接口集成总结">分享到</a>
+        <a data-url="http://yoursite.com/2017/06/11/电商项目物流接口集成总结/" data-id="cj6bodzu70009ps737m87cc2m" class="article-share-link" data-share="baidu" data-title="电商项目物流接口集成总结">分享到</a>
       
 
 
@@ -429,7 +307,7 @@ System.out.println(b1.getName());
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/06/07/mac下IntelliJ使用注意事项/" data-id="cj3z62coo0001r373bpdog05u" class="article-share-link" data-share="baidu" data-title="mac下IntelliJ使用注意事项">分享到</a>
+        <a data-url="http://yoursite.com/2017/06/07/mac下IntelliJ使用注意事项/" data-id="cj6bodztu0004ps73v7yvj7zf" class="article-share-link" data-share="baidu" data-title="mac下IntelliJ使用注意事项">分享到</a>
       
 
 
@@ -481,7 +359,7 @@ System.out.println(b1.getName());
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/06/04/读罗马人物语-恺撒时代/" data-id="cj3z62cp1000ar373uha6ejcb" class="article-share-link" data-share="baidu" data-title="读罗马人物语-恺撒时代">分享到</a>
+        <a data-url="http://yoursite.com/2017/06/04/读罗马人物语-恺撒时代/" data-id="cj6bodzua000dps73h9q4f2h5" class="article-share-link" data-share="baidu" data-title="读罗马人物语-恺撒时代">分享到</a>
       
 
 
@@ -533,7 +411,7 @@ System.out.println(b1.getName());
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/05/31/mac下hexo搭建/" data-id="cj3z62cos0003r373ygsuzsy3" class="article-share-link" data-share="baidu" data-title="mac下hexo搭建相关记录">分享到</a>
+        <a data-url="http://yoursite.com/2017/05/31/mac下hexo搭建/" data-id="cj6bodzu50008ps735xdo0n01" class="article-share-link" data-share="baidu" data-title="mac下hexo搭建相关记录">分享到</a>
       
 
 
@@ -585,7 +463,7 @@ System.out.println(b1.getName());
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/05/30/缘起/" data-id="cj3z62coz0008r373jhqtpyb8" class="article-share-link" data-share="baidu" data-title="缘起">分享到</a>
+        <a data-url="http://yoursite.com/2017/05/30/缘起/" data-id="cj6bodzu30005ps7347ne6d2e" class="article-share-link" data-share="baidu" data-title="缘起">分享到</a>
       
 
 
@@ -637,7 +515,7 @@ System.out.println(b1.getName());
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/12/19/Redis集群部署与集成总结/" data-id="cj3z62coj0000r373slefzsm0" class="article-share-link" data-share="baidu" data-title="Redis集群部署与集成总结">分享到</a>
+        <a data-url="http://yoursite.com/2016/12/19/Redis集群部署与集成总结/" data-id="cj6bodzts0003ps73ffyhwm6j" class="article-share-link" data-share="baidu" data-title="Redis集群部署与集成总结">分享到</a>
       
 
 
@@ -668,7 +546,7 @@ System.out.println(b1.getName());
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂感/">杂感</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂感/">杂感</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -677,7 +555,7 @@ System.out.println(b1.getName());
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/操作记录/" style="font-size: 20px;">操作记录</a> <a href="/tags/杂感/" style="font-size: 15px;">杂感</a>
+      <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/Java基础/" style="font-size: 10px;">Java基础</a> <a href="/tags/操作记录/" style="font-size: 20px;">操作记录</a> <a href="/tags/杂感/" style="font-size: 15px;">杂感</a>
     </div>
   </div>
 
@@ -698,7 +576,7 @@ System.out.println(b1.getName());
       <ul>
         
           <li>
-            <a href="/2017/08/14/Java中equals与==的区别与使用场景分析/">(no title)</a>
+            <a href="/2017/08/14/Java中equals与==的区别与使用场景分析/">谈谈Java中equals和==的区别和使用场景</a>
           </li>
         
           <li>
