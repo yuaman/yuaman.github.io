@@ -6,19 +6,19 @@
 <meta name="baidu-site-verification" content="LHYPl19xg9" />
 <meta name="google-site-verification" content="s5HGo7JQp9QFcl2HIOHaNDUdwj3_kdgi5nPkB5bfMHs" />
   
-  <title>Redis集群部署与集成总结 | 无题</title>
+  <title>《深入理解JVM》阅读笔记 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="16年末开始了解redis并加入当时所做电商项目中。遇到过一些问题，于当时做了记录。">
-<meta name="keywords" content="操作记录">
+  <meta name="description" content="将阅读周志明先生的《深入理解JVM》疑问与感悟再次做总结。什么是Native方法本地方法栈是存放native函数的，可是什么是native函数呢？百度之： 参考：http://blog.csdn.net/funneies/article/details/8949660 native关键字说明其修饰的方法是一个原生态方法，方法对应的实现不是在当前文件，而是在用其他语言（如C和C++）实现的文件中。J">
+<meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Redis集群部署与集成总结">
-<meta property="og:url" content="http://yoursite.com/2016/12/19/Redis集群部署与集成总结/index.html">
+<meta property="og:title" content="《深入理解JVM》阅读笔记">
+<meta property="og:url" content="http://yoursite.com/2017/06/17/深入理解JVM阅读笔记/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="16年末开始了解redis并加入当时所做电商项目中。遇到过一些问题，于当时做了记录。">
-<meta property="og:updated_time" content="2017-06-11T12:45:13.000Z">
+<meta property="og:description" content="将阅读周志明先生的《深入理解JVM》疑问与感悟再次做总结。什么是Native方法本地方法栈是存放native函数的，可是什么是native函数呢？百度之： 参考：http://blog.csdn.net/funneies/article/details/8949660 native关键字说明其修饰的方法是一个原生态方法，方法对应的实现不是在当前文件，而是在用其他语言（如C和C++）实现的文件中。J">
+<meta property="og:updated_time" content="2017-06-19T03:48:16.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Redis集群部署与集成总结">
-<meta name="twitter:description" content="16年末开始了解redis并加入当时所做电商项目中。遇到过一些问题，于当时做了记录。">
+<meta name="twitter:title" content="《深入理解JVM》阅读笔记">
+<meta name="twitter:description" content="将阅读周志明先生的《深入理解JVM》疑问与感悟再次做总结。什么是Native方法本地方法栈是存放native函数的，可是什么是native函数呢？百度之： 参考：http://blog.csdn.net/funneies/article/details/8949660 native关键字说明其修饰的方法是一个原生态方法，方法对应的实现不是在当前文件，而是在用其他语言（如C和C++）实现的文件中。J">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -71,10 +71,10 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main"><article id="post-Redis集群部署与集成总结" class="article article-type-post" itemscope itemprop="blogPost">
+      <section id="main"><article id="post-深入理解JVM阅读笔记" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/12/19/Redis集群部署与集成总结/" class="article-date">
-  <time datetime="2016-12-19T02:05:54.000Z" itemprop="datePublished">2016-12-19</time>
+    <a href="/2017/06/17/深入理解JVM阅读笔记/" class="article-date">
+  <time datetime="2017-06-17T02:05:54.000Z" itemprop="datePublished">2017-06-17</time>
 </a>
     
   </div>
@@ -85,7 +85,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Redis集群部署与集成总结
+      《深入理解JVM》阅读笔记
     </h1>
   
 
@@ -93,26 +93,22 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>16年末开始了解redis并加入当时所做电商项目中。遇到过一些问题，于当时做了记录。</p>
-<a id="more"></a>
-<p><strong>jedis客户端调用redis集群异常总结</strong><br>在虚拟机以及远程服务器同时测试<br>节点全部开启，集群check命令显示主从均正常</p>
-<p>于控制台开启某一节点的cli，set测试，正常。</p>
-<p>在类文件中连接集群某一结点，调用，报错如下<br>no reachable node in cluster</p>
-<p>于application.xml中配置<br>启动tomcat抱如下错：<br>org.springframework.beans.factory.BeanCreationException: Error creating bean with name ‘JedisCluster’ defined in class path resource [conf/applicationContext.xml]: Could not resolve matching constructor (hint: specify index/type/name arguments for simple parameters to avoid type ambiguities)</p>
-<p>最终解决：<br>发现三个错误：<br>连接池配置错误，集群不能使用jedispool<br>jar包冲突，spring session与jedis2.7冲突，但集群又必须使用2.7，以前使用单机版redis<br>redis集群服务器防火墙设置问题，导致no rechable nodes异常</p>
-<p>后来又报了一个异常：<br>too many nodes<br>重启redis服务器还有增大连接数</p>
+        <p>将阅读周志明先生的《深入理解JVM》疑问与感悟再次做总结。<br><strong>什么是Native方法</strong><br>本地方法栈是存放native函数的，可是什么是native函数呢？百度之：</p>
+<p>参考：<br><a href="http://blog.csdn.net/funneies/article/details/8949660" target="_blank" rel="external">http://blog.csdn.net/funneies/article/details/8949660</a></p>
+<p>native关键字说明其修饰的方法是一个原生态方法，方法对应的实现不是在当前文件，而是在用其他语言（如C和C++）实现的文件中。Java语言本身不能对操作系统底层进行访问和操作，但是可以通过JNI接口调用其他语言来实现对底层的访问。</p>
+<p>JNI是Java本机接口（Java Native Interface），是一个本机编程接口，它是Java软件开发工具箱（java Software Development Kit，SDK）的一部分。JNI允许Java代码使用以其他语言编写的代码和代码库。Invocation API（JNI的一部分）可以用来将Java虚拟机（JVM）嵌入到本机应用程序中，从而允许程序员从本机代码内部调用Java代码。</p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/12/19/Redis集群部署与集成总结/" data-id="cj3z62coj0000r373slefzsm0" class="article-share-link" data-share="baidu" data-title="Redis集群部署与集成总结">分享到</a>
+        <a data-url="http://yoursite.com/2017/06/17/深入理解JVM阅读笔记/" data-id="cj6bo845f0001gw73hrah12bs" class="article-share-link" data-share="baidu" data-title="《深入理解JVM》阅读笔记">分享到</a>
       
 
 
 
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作记录/">操作记录</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/">JVM</a></li></ul>
 
     </footer>
   </div>
@@ -120,15 +116,20 @@
     
 <nav id="article-nav">
   
-    <a href="/2017/05/30/缘起/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/08/14/Java中equals与==的区别与使用场景分析/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
       <div class="article-nav-title">
         
-          缘起
+          (no title)
         
       </div>
     </a>
   
+  
+    <a href="/2017/06/12/shiro权限框架整合/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">Shiro权限框架整合</div>
+    </a>
   
 </nav>
 
