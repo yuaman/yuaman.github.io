@@ -90,9 +90,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>#####这篇文章是我偶然看到的一篇对JVM GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。</p>
-<p>#####这是原文的地址：<a href="http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk" target="_blank" rel="external">http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk</a></p>
-<p>#####请大家支持原作者，感谢原作者的认真和辛勤整理。<br>
+        <h5 id="这篇文章是我偶然看到的一篇对JVM-GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。"><a href="#这篇文章是我偶然看到的一篇对JVM-GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。" class="headerlink" title="这篇文章是我偶然看到的一篇对JVM GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。"></a>这篇文章是我偶然看到的一篇对JVM GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。</h5><h5 id="这是原文的地址：http-blog-leanote-com-post-shiwei-Java-GC-spm-5176-100239-blogcont91017-9-3Qo1pk"><a href="#这是原文的地址：http-blog-leanote-com-post-shiwei-Java-GC-spm-5176-100239-blogcont91017-9-3Qo1pk" class="headerlink" title="这是原文的地址：http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk"></a>这是原文的地址：<a href="http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk" target="_blank" rel="external">http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk</a></h5><h5 id="请大家支持原作者，感谢原作者的认真和辛勤整理。"><a href="#请大家支持原作者，感谢原作者的认真和辛勤整理。" class="headerlink" title="请大家支持原作者，感谢原作者的认真和辛勤整理。"></a>请大家支持原作者，感谢原作者的认真和辛勤整理。</h5>
         
           <p class="article-more-link">
             <a href="/2017/08/15/JVM GC要点整理与总结（转载）/#more">Read More</a>
@@ -102,7 +100,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/15/JVM GC要点整理与总结（转载）/" data-id="cj6d1qodm00009973nxrynsrk" class="article-share-link" data-share="baidu" data-title="JVM GC要点整理与总结（转载）">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/15/JVM GC要点整理与总结（转载）/" data-id="cj6d2axx40000yu735aozwr8i" class="article-share-link" data-share="baidu" data-title="JVM GC要点整理与总结（转载）">分享到</a>
       
 
 
@@ -144,7 +142,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h5 id="最近阅读技术书籍有一个体会，就是接触到一些新的领域的时候可能需要先大致读一遍有一个雏形，然后再读抓住关键字，一定要体会到每一个关键的名字的意义才可能理解整句话的意思，最终我认为还是要就该领域的内容到网上看看广大同行们的看法和观点。这也是很重要的。"><a href="#最近阅读技术书籍有一个体会，就是接触到一些新的领域的时候可能需要先大致读一遍有一个雏形，然后再读抓住关键字，一定要体会到每一个关键的名字的意义才可能理解整句话的意思，最终我认为还是要就该领域的内容到网上看看广大同行们的看法和观点。这也是很重要的。" class="headerlink" title="最近阅读技术书籍有一个体会，就是接触到一些新的领域的时候可能需要先大致读一遍有一个雏形，然后再读抓住关键字，一定要体会到每一个关键的名字的意义才可能理解整句话的意思，最终我认为还是要就该领域的内容到网上看看广大同行们的看法和观点。这也是很重要的。"></a>最近阅读技术书籍有一个体会，就是接触到一些新的领域的时候可能需要先大致读一遍有一个雏形，然后再读抓住关键字，一定要体会到每一个关键的名字的意义才可能理解整句话的意思，最终我认为还是要就该领域的内容到网上看看广大同行们的看法和观点。这也是很重要的。</h5><h5 id="曾经有一位阿里客户体验部的面试官问我一个问题，“volatile能否解决i-的并发问题”，问得我一脸茫然。最近对volatile关键字以及Java并发做了一次细致的了解，主要还是利用的周智明先生的《深入了解JVM》。这篇文章是我转载过来的，对该部分内容整理的比较细致，最重要的是通俗易懂，在读完周先生的书后在阅读一边此文真是感觉一切都通了。周先生写书还是有些天马行空的，哈哈。"><a href="#曾经有一位阿里客户体验部的面试官问我一个问题，“volatile能否解决i-的并发问题”，问得我一脸茫然。最近对volatile关键字以及Java并发做了一次细致的了解，主要还是利用的周智明先生的《深入了解JVM》。这篇文章是我转载过来的，对该部分内容整理的比较细致，最重要的是通俗易懂，在读完周先生的书后在阅读一边此文真是感觉一切都通了。周先生写书还是有些天马行空的，哈哈。" class="headerlink" title="曾经有一位阿里客户体验部的面试官问我一个问题，“volatile能否解决i++的并发问题”，问得我一脸茫然。最近对volatile关键字以及Java并发做了一次细致的了解，主要还是利用的周智明先生的《深入了解JVM》。这篇文章是我转载过来的，对该部分内容整理的比较细致，最重要的是通俗易懂，在读完周先生的书后在阅读一边此文真是感觉一切都通了。周先生写书还是有些天马行空的，哈哈。"></a>曾经有一位阿里客户体验部的面试官问我一个问题，“volatile能否解决i++的并发问题”，问得我一脸茫然。最近对volatile关键字以及Java并发做了一次细致的了解，主要还是利用的周智明先生的《深入了解JVM》。这篇文章是我转载过来的，对该部分内容整理的比较细致，最重要的是通俗易懂，在读完周先生的书后在阅读一边此文真是感觉一切都通了。周先生写书还是有些天马行空的，哈哈。</h5><h5 id="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。"><a href="#我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。" class="headerlink" title="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。"></a>我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。</h5><h5 id="这是原文的地址：http-www-cnblogs-com-dolphin0520-p-3920373-html"><a href="#这是原文的地址：http-www-cnblogs-com-dolphin0520-p-3920373-html" class="headerlink" title="这是原文的地址：http://www.cnblogs.com/dolphin0520/p/3920373.html"></a>这是原文的地址：<a href="http://www.cnblogs.com/dolphin0520/p/3920373.html" target="_blank" rel="external">http://www.cnblogs.com/dolphin0520/p/3920373.html</a></h5><p>#####请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。<br>
+        <h5 id="最近阅读技术书籍有一个体会，就是接触到一些新的领域的时候可能需要先大致读一遍有一个雏形，然后再读抓住关键字，一定要体会到每一个关键的名字的意义才可能理解整句话的意思，最终我认为还是要就该领域的内容到网上看看广大同行们的看法和观点。这也是很重要的。"><a href="#最近阅读技术书籍有一个体会，就是接触到一些新的领域的时候可能需要先大致读一遍有一个雏形，然后再读抓住关键字，一定要体会到每一个关键的名字的意义才可能理解整句话的意思，最终我认为还是要就该领域的内容到网上看看广大同行们的看法和观点。这也是很重要的。" class="headerlink" title="最近阅读技术书籍有一个体会，就是接触到一些新的领域的时候可能需要先大致读一遍有一个雏形，然后再读抓住关键字，一定要体会到每一个关键的名字的意义才可能理解整句话的意思，最终我认为还是要就该领域的内容到网上看看广大同行们的看法和观点。这也是很重要的。"></a>最近阅读技术书籍有一个体会，就是接触到一些新的领域的时候可能需要先大致读一遍有一个雏形，然后再读抓住关键字，一定要体会到每一个关键的名字的意义才可能理解整句话的意思，最终我认为还是要就该领域的内容到网上看看广大同行们的看法和观点。这也是很重要的。</h5><h5 id="曾经有一位阿里客户体验部的面试官问我一个问题，“volatile能否解决i-的并发问题”，问得我一脸茫然。最近对volatile关键字以及Java并发做了一次细致的了解，主要还是利用的周智明先生的《深入了解JVM》。这篇文章是我转载过来的，对该部分内容整理的比较细致，最重要的是通俗易懂，在读完周先生的书后在阅读一边此文真是感觉一切都通了。周先生写书还是有些天马行空的，哈哈。"><a href="#曾经有一位阿里客户体验部的面试官问我一个问题，“volatile能否解决i-的并发问题”，问得我一脸茫然。最近对volatile关键字以及Java并发做了一次细致的了解，主要还是利用的周智明先生的《深入了解JVM》。这篇文章是我转载过来的，对该部分内容整理的比较细致，最重要的是通俗易懂，在读完周先生的书后在阅读一边此文真是感觉一切都通了。周先生写书还是有些天马行空的，哈哈。" class="headerlink" title="曾经有一位阿里客户体验部的面试官问我一个问题，“volatile能否解决i++的并发问题”，问得我一脸茫然。最近对volatile关键字以及Java并发做了一次细致的了解，主要还是利用的周智明先生的《深入了解JVM》。这篇文章是我转载过来的，对该部分内容整理的比较细致，最重要的是通俗易懂，在读完周先生的书后在阅读一边此文真是感觉一切都通了。周先生写书还是有些天马行空的，哈哈。"></a>曾经有一位阿里客户体验部的面试官问我一个问题，“volatile能否解决i++的并发问题”，问得我一脸茫然。最近对volatile关键字以及Java并发做了一次细致的了解，主要还是利用的周智明先生的《深入了解JVM》。这篇文章是我转载过来的，对该部分内容整理的比较细致，最重要的是通俗易懂，在读完周先生的书后在阅读一边此文真是感觉一切都通了。周先生写书还是有些天马行空的，哈哈。</h5><h5 id="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。"><a href="#我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。" class="headerlink" title="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。"></a>我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。</h5><h5 id="这是原文的地址：http-www-cnblogs-com-dolphin0520-p-3920373-html"><a href="#这是原文的地址：http-www-cnblogs-com-dolphin0520-p-3920373-html" class="headerlink" title="这是原文的地址：http://www.cnblogs.com/dolphin0520/p/3920373.html"></a>这是原文的地址：<a href="http://www.cnblogs.com/dolphin0520/p/3920373.html" target="_blank" rel="external">http://www.cnblogs.com/dolphin0520/p/3920373.html</a></h5><h5 id="请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。"><a href="#请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。" class="headerlink" title="请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。"></a>请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。</h5>
         
           <p class="article-more-link">
             <a href="/2017/08/15/Java并发编程：volatile关键字解析/#more">Read More</a>
@@ -154,7 +152,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/15/Java并发编程：volatile关键字解析/" data-id="cj6d1qoeh000l99735miu80ia" class="article-share-link" data-share="baidu" data-title="Java并发编程：volatile关键字解析">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/15/Java并发编程：volatile关键字解析/" data-id="cj6d2axxr0008yu73lzq4vj1w" class="article-share-link" data-share="baidu" data-title="Java并发编程：volatile关键字解析">分享到</a>
       
 
 
@@ -206,7 +204,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/14/Java中equals与==的区别与使用场景分析/" data-id="cj6d1qody00049973tm11iz6c" class="article-share-link" data-share="baidu" data-title="谈谈Java中equals和==的区别和使用场景">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/14/Java中equals与==的区别与使用场景分析/" data-id="cj6d2axx90001yu73sgehn3z9" class="article-share-link" data-share="baidu" data-title="谈谈Java中equals和==的区别和使用场景">分享到</a>
       
 
 
@@ -248,21 +246,18 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>我的故事说来话长，但是我尽量长话短说。</p>
-<p>毛泽东选集里面有这么一段话：</p>
-<blockquote>
-<p>如果要直接地认识某种或某些事物，便只有亲身参加于变革现实、变革某种或某些事物的实践的斗争中，才能触到那种或那些事物的现象，也只有在亲身参加变革现实的实践的斗争中，才能暴露那种或那些事物的本质而理解他们。</p>
-</blockquote>
-<p>我是十六岁那一年离开学校的，当时是高一，刚上高中。说到具体的感受就是两点，一个是失望，再一个就是没意思。原本我对高中生活有很多期待，以为会认识很多新的人，但是发现他们都一样，和以前的同学没有什么区别。我当时是感觉学也学够了，玩也玩够了，所以觉得没意思，就想出去看看外面的世界，见识见识外面的社会。</p>
-<p>为什么说学也学够了玩也玩够了呢？可能以往很多不了解我的人以为我当时离开学校是因为学习太差在学校混不下去了，其实还真不是这样。我初中的时候学习上就一直挺拔尖的，我记得我当时中考是有六百多分。当然这些都不值一提，太微不足道了。基本上在我整个青春期的阶段我是学习和玩两不耽误，学习上也拼搏过了，也出过风头了，觉得成绩靠前被人认同就是那么回事儿。学生时代那些小打小闹的玩也完全提不起我的兴趣。因为成绩的原因当时我决定退学也是在学校的圈子里造成很大的震撼，我个人也是拿出了相当大的勇气，毕竟是物质基础塑造了一个人，而对于十六岁的我来说要完全脱离一直塑造我的学校环境和家庭环境，是需要真正独自承担一些东西的。而且在之后的几年里，才是独自承担的真正开始。就这样我先是离开了学校，就在同时离开了家。</p>
-<p>当时具体的计划是去西藏看一看，我买了好几本骑行西藏的书，计划在社会上打工攒下一些钱。后来慢慢做市场工作全国到处跑，虽然没有去到过西藏，但是也非常有意义。举个例子来说，曾经有一个月我连续出差，当时是十一月份，从大连出发的时候天上已经开始飘雪，我先是去了南昌，当时南昌在下雨；然后坐高铁去南宁，南宁当时还特别热，满城绿色；然后再往南去了海口，海口更热，植被也更多。最后我去了武汉，在天河机场一下飞机我就蒙圈了，特别冷，干冷干冷。我当时身上就是单衣单裤。在武汉那些天也去了武汉的周边城市，襄阳等。我主要的工作是帮助省级代理商开大型招商会并以厂家身份帮助代理商与其客户进行沟通。</p>
-<p>再到后来，我下定决心脱离舒适区，加入互联网行业，想抓住潮流的尾巴，做一回弄潮儿。于是走到今天。先后加入几家互联网公司，到今年创业。我从事互联网这段经历包括之前的那段市场经历包括再往前的社会经历有时间再说吧。</p>
-
+        <p>最近有人问我的经历，问为什么，我才想起好像好多人都问我，我却都没有好好回答。我不愿意谈论我自己，因为许多普通的群众并不值得听我说话，他们听不懂。懒得引用道德经的原话了。以前一无所有的时候谈论 自己显得 很可笑，现在多少有点进步了，想给多少听得懂的人们一个大致的答案，不至于让他们太过疑惑。</p>
+<p>我的故事说来话长，但是我尽量长话短说。</p>
+        
+          <p class="article-more-link">
+            <a href="/2017/08/12/我为什么离开学校——十六岁那一年/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/12/我为什么离开学校——十六岁那一年/" data-id="cj6d1qoe100089973bd8oo76t" class="article-share-link" data-share="baidu" data-title="我为什么离开学校——十六岁那一年">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/12/我为什么离开学校——十六岁那一年/" data-id="cj6d2axxt000cyu73sqe62rw0" class="article-share-link" data-share="baidu" data-title="我为什么离开学校——十六岁那一年">分享到</a>
       
 
 
@@ -314,7 +309,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/06/17/深入理解JVM阅读笔记以及问题整理/" data-id="cj6d1qodz00059973j862gu8a" class="article-share-link" data-share="baidu" data-title="《深入理解JVM》阅读笔记以及问题整理">分享到</a>
+        <a data-url="http://yoursite.com/2017/06/17/深入理解JVM阅读笔记以及问题整理/" data-id="cj6d2axxt000eyu73h6xsudss" class="article-share-link" data-share="baidu" data-title="《深入理解JVM》阅读笔记以及问题整理">分享到</a>
       
 
 
@@ -366,7 +361,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/06/12/shiro权限框架整合开源分享/" data-id="cj6d1qoe9000h9973fkv1vohu" class="article-share-link" data-share="baidu" data-title="Shiro权限框架整合总结与开源分享">分享到</a>
+        <a data-url="http://yoursite.com/2017/06/12/shiro权限框架整合开源分享/" data-id="cj6d2axxp0005yu7353v2ipat" class="article-share-link" data-share="baidu" data-title="Shiro权限框架整合总结与开源分享">分享到</a>
       
 
 
@@ -419,7 +414,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/06/11/电商项目物流接口集成总结与开源分享/" data-id="cj6d1qoe3000a9973dmlr88lz" class="article-share-link" data-share="baidu" data-title="电商项目物流接口集成总结与开源分享">分享到</a>
+        <a data-url="http://yoursite.com/2017/06/11/电商项目物流接口集成总结与开源分享/" data-id="cj6d2axxv000gyu731kcl0acy" class="article-share-link" data-share="baidu" data-title="电商项目物流接口集成总结与开源分享">分享到</a>
       
 
 
@@ -471,7 +466,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/06/07/mac下IntelliJ使用记录/" data-id="cj6d1qods00019973bq8t35bi" class="article-share-link" data-share="baidu" data-title="mac下IntelliJ使用记录">分享到</a>
+        <a data-url="http://yoursite.com/2017/06/07/mac下IntelliJ使用记录/" data-id="cj6d2axxn0004yu73soqaa7mt" class="article-share-link" data-share="baidu" data-title="mac下IntelliJ使用记录">分享到</a>
       
 
 
@@ -523,7 +518,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/06/04/读《罗马人物语-恺撒时代》/" data-id="cj6d1qoec000j9973spqp7ufg" class="article-share-link" data-share="baidu" data-title="读《罗马人物语-恺撒时代》">分享到</a>
+        <a data-url="http://yoursite.com/2017/06/04/读《罗马人物语-恺撒时代》/" data-id="cj6d2axy5000lyu73ndtvj10c" class="article-share-link" data-share="baidu" data-title="读《罗马人物语-恺撒时代》">分享到</a>
       
 
 
@@ -575,7 +570,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/05/31/mac下hexo搭建操作记录/" data-id="cj6d1qoe7000c9973fx678qze" class="article-share-link" data-share="baidu" data-title="mac下hexo搭建相关记录">分享到</a>
+        <a data-url="http://yoursite.com/2017/05/31/mac下hexo搭建操作记录/" data-id="cj6d2axxs0009yu732x6pdhk8" class="article-share-link" data-share="baidu" data-title="mac下hexo搭建相关记录">分享到</a>
       
 
 
