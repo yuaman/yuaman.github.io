@@ -8,17 +8,19 @@
   
   <title>JVM GC要点整理与总结（转载） | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="这边文章是我偶然看到的一篇对JVM GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。这是原文的地址：http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk请大家支持原作者，感谢原作者的认真和辛勤整理。">
+  <meta name="description" content="#####这篇文章是我偶然看到的一篇对JVM GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。 #####这是原文的地址：http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk #####请大家支持原作者">
 <meta name="keywords" content="JVM相关">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JVM GC要点整理与总结（转载）">
 <meta property="og:url" content="http://yoursite.com/2017/08/15/JVM GC要点整理与总结（转载）/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="这边文章是我偶然看到的一篇对JVM GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。这是原文的地址：http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk请大家支持原作者，感谢原作者的认真和辛勤整理。">
-<meta property="og:updated_time" content="2017-08-14T06:42:11.000Z">
+<meta property="og:description" content="#####这篇文章是我偶然看到的一篇对JVM GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。 #####这是原文的地址：http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk #####请大家支持原作者">
+<meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/591d52e2ab64412be90016a5">
+<meta property="og:updated_time" content="2017-08-14T06:51:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM GC要点整理与总结（转载）">
-<meta name="twitter:description" content="这边文章是我偶然看到的一篇对JVM GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。这是原文的地址：http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk请大家支持原作者，感谢原作者的认真和辛勤整理。">
+<meta name="twitter:description" content="#####这篇文章是我偶然看到的一篇对JVM GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。 #####这是原文的地址：http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk #####请大家支持原作者">
+<meta name="twitter:image" content="http://og287lnu0.bkt.clouddn.com/591d52e2ab64412be90016a5">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -93,7 +95,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>这边文章是我偶然看到的一篇对JVM GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。<br>这是原文的地址：<a href="http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk" target="_blank" rel="external">http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk</a><br>请大家支持原作者，感谢原作者的认真和辛勤整理。<br><a id="more"></a></p>
+        <p>#####这篇文章是我偶然看到的一篇对JVM GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。</p>
+<p>#####这是原文的地址：<a href="http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk" target="_blank" rel="external">http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk</a></p>
+<p>#####请大家支持原作者，感谢原作者的认真和辛勤整理。<br><a id="more"></a></p>
 <h3 id="范围：要回收哪些区域"><a href="#范围：要回收哪些区域" class="headerlink" title="范围：要回收哪些区域"></a>范围：要回收哪些区域</h3><p>在JVM五种内存模型中，有三个是不需要进行垃圾回收的：程序计数器、JVM栈、本地方法栈。因为它们的生命周期是和线程同步的，随着线程的销毁，它们占用的内存会自动释放，所以只有方法区和堆需要进行GC。</p>
 <h3 id="前提：如何判断对象已死"><a href="#前提：如何判断对象已死" class="headerlink" title="前提：如何判断对象已死"></a>前提：如何判断对象已死</h3><p>所有的垃圾收集算法都面临同一个问题，那就是找出应用程序不可到达的内存块，将其释放，这里面讲的不可达主要是指应用程序已经没有内存块的引用了， 在Java中，某个对象对应用程序是可到达的是指：这个对象被根（根主要是指类的静态变量，或者活跃在所有线程栈的对象的引用）引用或者对象被另一个可到达的对象引用。</p>
 <h3 id="引用计数算法"><a href="#引用计数算法" class="headerlink" title="引用计数算法"></a>引用计数算法</h3><p>引用计数是最简单直接的一种方式，这种方式在每一个对象中增加一个引用的计数，这个计数代表当前程序有多少个引用引用了此对象，如果此对象的引用计数变为0，那么此对象就可以作为垃圾收集器的目标对象来收集。<br>优点：简单，直接，不需要暂停整个应用<br>缺点：1.需要编译器的配合，编译器要生成特殊的指令来进行引用计数的操作；2.不能处理循环引用的问题<br>因此这种方法是垃圾收集的早期策略，现在很少使用。Sun的JVM并没有采用引用计数算法来进行垃圾回收，而是基于根搜索算法的。</p>
@@ -133,7 +137,10 @@
 <p>优点：</p>
 <ol>
 <li>存在并发与并行操作，最大化利用硬件资源，提升收集效率</li>
-<li>分代收集，虽然 G1可以独立管理整个 Heap，但是它还是保留了分代的概念，实际上,在分区时，这些区域(regions)被映射为逻辑上的 Eden, Survivor, 和 old generation(老年代)空间，使其有目的的收集特定区域的内存。<br>title<br><a href="http://og287lnu0.bkt.clouddn.com/591d52e2ab64412be90016a5" target="_blank" rel="external">http://og287lnu0.bkt.clouddn.com/591d52e2ab64412be90016a5</a></li>
+<li>分代收集，虽然 G1可以独立管理整个 Heap，但是它还是保留了分代的概念，实际上,在分区时，这些区域(regions)被映射为逻辑上的 Eden, Survivor, 和 old generation(老年代)空间，使其有目的的收集特定区域的内存。</li>
+</ol>
+<p><img src="http://og287lnu0.bkt.clouddn.com/591d52e2ab64412be90016a5"></p>
+<ol>
 <li>空间整合，G1回收内存时，是将某个或多个区域的存活对象拷贝至其他空区域，同时释放被拷贝的内存区域，这种方式在整体上看是标记-整理，在局部看（两个 Region 之间）是复制算法，所以不会产生内存碎片</li>
 <li>可预测的停顿时间</li>
 </ol>
@@ -143,7 +150,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/15/JVM GC要点整理与总结（转载）/" data-id="cj6bsl1al00009f73t1o0urag" class="article-share-link" data-share="baidu" data-title="JVM GC要点整理与总结（转载）">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/15/JVM GC要点整理与总结（转载）/" data-id="cj6d1qodm00009973nxrynsrk" class="article-share-link" data-share="baidu" data-title="JVM GC要点整理与总结（转载）">分享到</a>
       
 
 
@@ -158,9 +165,9 @@
 <nav id="article-nav">
   
   
-    <a href="/2017/08/14/Java中equals与==的区别与使用场景分析/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2017/08/15/Java并发编程：volatile关键字解析/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">谈谈Java中equals和==的区别和使用场景</div>
+      <div class="article-nav-title">Java并发编程：volatile关键字解析</div>
     </a>
   
 </nav>
@@ -183,7 +190,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂感/">杂感</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人经历/">个人经历</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂感/">杂感</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -192,7 +199,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/JVM相关/" style="font-size: 10px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 10px;">Java基础</a> <a href="/tags/个人开源项目/" style="font-size: 15px;">个人开源项目</a> <a href="/tags/操作记录/" style="font-size: 20px;">操作记录</a> <a href="/tags/杂感/" style="font-size: 10px;">杂感</a> <a href="/tags/读书笔记/" style="font-size: 10px;">读书笔记</a>
+      <a href="/tags/JVM相关/" style="font-size: 20px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 10px;">Java基础</a> <a href="/tags/个人开源项目/" style="font-size: 15px;">个人开源项目</a> <a href="/tags/个人经历/" style="font-size: 10px;">个人经历</a> <a href="/tags/操作记录/" style="font-size: 20px;">操作记录</a> <a href="/tags/杂感/" style="font-size: 10px;">杂感</a> <a href="/tags/读书笔记/" style="font-size: 10px;">读书笔记</a>
     </div>
   </div>
 
@@ -201,7 +208,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -217,19 +224,19 @@
           </li>
         
           <li>
+            <a href="/2017/08/15/Java并发编程：volatile关键字解析/">Java并发编程：volatile关键字解析</a>
+          </li>
+        
+          <li>
             <a href="/2017/08/14/Java中equals与==的区别与使用场景分析/">谈谈Java中equals和==的区别和使用场景</a>
           </li>
         
           <li>
-            <a href="/2017/06/17/深入理解JVM阅读笔记/">《深入理解JVM》阅读笔记</a>
+            <a href="/2017/08/12/我为什么离开学校——十六岁那一年/">我为什么离开学校——十六岁那一年</a>
           </li>
         
           <li>
-            <a href="/2017/06/12/shiro权限框架整合开源分享/">Shiro权限框架整合总结与开源分享</a>
-          </li>
-        
-          <li>
-            <a href="/2017/06/11/电商项目物流接口集成总结与开源分享/">电商项目物流接口集成总结与开源分享</a>
+            <a href="/2017/06/17/深入理解JVM阅读笔记以及问题整理/">《深入理解JVM》阅读笔记以及问题整理</a>
           </li>
         
       </ul>

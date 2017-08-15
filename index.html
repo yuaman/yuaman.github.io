@@ -90,7 +90,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>这边文章是我偶然看到的一篇对JVM GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。<br>这是原文的地址：<a href="http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk" target="_blank" rel="external">http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk</a><br>请大家支持原作者，感谢原作者的认真和辛勤整理。<br>
+        <p>#####这篇文章是我偶然看到的一篇对JVM GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。</p>
+<p>#####这是原文的地址：<a href="http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk" target="_blank" rel="external">http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk</a></p>
+<p>#####请大家支持原作者，感谢原作者的认真和辛勤整理。<br>
         
           <p class="article-more-link">
             <a href="/2017/08/15/JVM GC要点整理与总结（转载）/#more">Read More</a>
@@ -100,7 +102,59 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/15/JVM GC要点整理与总结（转载）/" data-id="cj6bsl1al00009f73t1o0urag" class="article-share-link" data-share="baidu" data-title="JVM GC要点整理与总结（转载）">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/15/JVM GC要点整理与总结（转载）/" data-id="cj6d1qodm00009973nxrynsrk" class="article-share-link" data-share="baidu" data-title="JVM GC要点整理与总结（转载）">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM相关/">JVM相关</a></li></ul>
+
+    </footer>
+  </div>
+  
+
+
+
+</article>
+
+
+
+
+  
+    <article id="post-Java并发编程：volatile关键字解析" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/08/15/Java并发编程：volatile关键字解析/" class="article-date">
+  <time datetime="2017-08-15T02:56:31.000Z" itemprop="datePublished">2017-08-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/15/Java并发编程：volatile关键字解析/">Java并发编程：volatile关键字解析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="最近阅读技术书籍有一个体会，就是接触到一些新的领域的时候可能需要先大致读一遍有一个雏形，然后再读抓住关键字，一定要体会到每一个关键的名字的意义才可能理解整句话的意思，最终我认为还是要就该领域的内容到网上看看广大同行们的看法和观点。这也是很重要的。"><a href="#最近阅读技术书籍有一个体会，就是接触到一些新的领域的时候可能需要先大致读一遍有一个雏形，然后再读抓住关键字，一定要体会到每一个关键的名字的意义才可能理解整句话的意思，最终我认为还是要就该领域的内容到网上看看广大同行们的看法和观点。这也是很重要的。" class="headerlink" title="最近阅读技术书籍有一个体会，就是接触到一些新的领域的时候可能需要先大致读一遍有一个雏形，然后再读抓住关键字，一定要体会到每一个关键的名字的意义才可能理解整句话的意思，最终我认为还是要就该领域的内容到网上看看广大同行们的看法和观点。这也是很重要的。"></a>最近阅读技术书籍有一个体会，就是接触到一些新的领域的时候可能需要先大致读一遍有一个雏形，然后再读抓住关键字，一定要体会到每一个关键的名字的意义才可能理解整句话的意思，最终我认为还是要就该领域的内容到网上看看广大同行们的看法和观点。这也是很重要的。</h5><h5 id="曾经有一位阿里客户体验部的面试官问我一个问题，“volatile能否解决i-的并发问题”，问得我一脸茫然。最近对volatile关键字以及Java并发做了一次细致的了解，主要还是利用的周智明先生的《深入了解JVM》。这篇文章是我转载过来的，对该部分内容整理的比较细致，最重要的是通俗易懂，在读完周先生的书后在阅读一边此文真是感觉一切都通了。周先生写书还是有些天马行空的，哈哈。"><a href="#曾经有一位阿里客户体验部的面试官问我一个问题，“volatile能否解决i-的并发问题”，问得我一脸茫然。最近对volatile关键字以及Java并发做了一次细致的了解，主要还是利用的周智明先生的《深入了解JVM》。这篇文章是我转载过来的，对该部分内容整理的比较细致，最重要的是通俗易懂，在读完周先生的书后在阅读一边此文真是感觉一切都通了。周先生写书还是有些天马行空的，哈哈。" class="headerlink" title="曾经有一位阿里客户体验部的面试官问我一个问题，“volatile能否解决i++的并发问题”，问得我一脸茫然。最近对volatile关键字以及Java并发做了一次细致的了解，主要还是利用的周智明先生的《深入了解JVM》。这篇文章是我转载过来的，对该部分内容整理的比较细致，最重要的是通俗易懂，在读完周先生的书后在阅读一边此文真是感觉一切都通了。周先生写书还是有些天马行空的，哈哈。"></a>曾经有一位阿里客户体验部的面试官问我一个问题，“volatile能否解决i++的并发问题”，问得我一脸茫然。最近对volatile关键字以及Java并发做了一次细致的了解，主要还是利用的周智明先生的《深入了解JVM》。这篇文章是我转载过来的，对该部分内容整理的比较细致，最重要的是通俗易懂，在读完周先生的书后在阅读一边此文真是感觉一切都通了。周先生写书还是有些天马行空的，哈哈。</h5><h5 id="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。"><a href="#我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。" class="headerlink" title="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。"></a>我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。</h5><h5 id="这是原文的地址：http-www-cnblogs-com-dolphin0520-p-3920373-html"><a href="#这是原文的地址：http-www-cnblogs-com-dolphin0520-p-3920373-html" class="headerlink" title="这是原文的地址：http://www.cnblogs.com/dolphin0520/p/3920373.html"></a>这是原文的地址：<a href="http://www.cnblogs.com/dolphin0520/p/3920373.html" target="_blank" rel="external">http://www.cnblogs.com/dolphin0520/p/3920373.html</a></h5><p>#####请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。<br>
+        
+          <p class="article-more-link">
+            <a href="/2017/08/15/Java并发编程：volatile关键字解析/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2017/08/15/Java并发编程：volatile关键字解析/" data-id="cj6d1qoeh000l99735miu80ia" class="article-share-link" data-share="baidu" data-title="Java并发编程：volatile关键字解析">分享到</a>
       
 
 
@@ -152,7 +206,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/14/Java中equals与==的区别与使用场景分析/" data-id="cj6bsl1av00039f73xiznza1l" class="article-share-link" data-share="baidu" data-title="谈谈Java中equals和==的区别和使用场景">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/14/Java中equals与==的区别与使用场景分析/" data-id="cj6d1qody00049973tm11iz6c" class="article-share-link" data-share="baidu" data-title="谈谈Java中equals和==的区别和使用场景">分享到</a>
       
 
 
@@ -172,9 +226,65 @@
 
 
   
-    <article id="post-深入理解JVM阅读笔记" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-我为什么离开学校——十六岁那一年" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/06/17/深入理解JVM阅读笔记/" class="article-date">
+    <a href="/2017/08/12/我为什么离开学校——十六岁那一年/" class="article-date">
+  <time datetime="2017-08-12T03:45:54.000Z" itemprop="datePublished">2017-08-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/12/我为什么离开学校——十六岁那一年/">我为什么离开学校——十六岁那一年</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我的故事说来话长，但是我尽量长话短说。</p>
+<p>毛泽东选集里面有这么一段话：</p>
+<blockquote>
+<p>如果要直接地认识某种或某些事物，便只有亲身参加于变革现实、变革某种或某些事物的实践的斗争中，才能触到那种或那些事物的现象，也只有在亲身参加变革现实的实践的斗争中，才能暴露那种或那些事物的本质而理解他们。</p>
+</blockquote>
+<p>我是十六岁那一年离开学校的，当时是高一，刚上高中。说到具体的感受就是两点，一个是失望，再一个就是没意思。原本我对高中生活有很多期待，以为会认识很多新的人，但是发现他们都一样，和以前的同学没有什么区别。我当时是感觉学也学够了，玩也玩够了，所以觉得没意思，就想出去看看外面的世界，见识见识外面的社会。</p>
+<p>为什么说学也学够了玩也玩够了呢？可能以往很多不了解我的人以为我当时离开学校是因为学习太差在学校混不下去了，其实还真不是这样。我初中的时候学习上就一直挺拔尖的，我记得我当时中考是有六百多分。当然这些都不值一提，太微不足道了。基本上在我整个青春期的阶段我是学习和玩两不耽误，学习上也拼搏过了，也出过风头了，觉得成绩靠前被人认同就是那么回事儿。学生时代那些小打小闹的玩也完全提不起我的兴趣。因为成绩的原因当时我决定退学也是在学校的圈子里造成很大的震撼，我个人也是拿出了相当大的勇气，毕竟是物质基础塑造了一个人，而对于十六岁的我来说要完全脱离一直塑造我的学校环境和家庭环境，是需要真正独自承担一些东西的。而且在之后的几年里，才是独自承担的真正开始。就这样我先是离开了学校，就在同时离开了家。</p>
+<p>当时具体的计划是去西藏看一看，我买了好几本骑行西藏的书，计划在社会上打工攒下一些钱。后来慢慢做市场工作全国到处跑，虽然没有去到过西藏，但是也非常有意义。举个例子来说，曾经有一个月我连续出差，当时是十一月份，从大连出发的时候天上已经开始飘雪，我先是去了南昌，当时南昌在下雨；然后坐高铁去南宁，南宁当时还特别热，满城绿色；然后再往南去了海口，海口更热，植被也更多。最后我去了武汉，在天河机场一下飞机我就蒙圈了，特别冷，干冷干冷。我当时身上就是单衣单裤。在武汉那些天也去了武汉的周边城市，襄阳等。我主要的工作是帮助省级代理商开大型招商会并以厂家身份帮助代理商与其客户进行沟通。</p>
+<p>再到后来，我下定决心脱离舒适区，加入互联网行业，想抓住潮流的尾巴，做一回弄潮儿。于是走到今天。先后加入几家互联网公司，到今年创业。我从事互联网这段经历包括之前的那段市场经历包括再往前的社会经历有时间再说吧。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2017/08/12/我为什么离开学校——十六岁那一年/" data-id="cj6d1qoe100089973bd8oo76t" class="article-share-link" data-share="baidu" data-title="我为什么离开学校——十六岁那一年">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/个人经历/">个人经历</a></li></ul>
+
+    </footer>
+  </div>
+  
+
+
+
+</article>
+
+
+
+
+  
+    <article id="post-深入理解JVM阅读笔记以及问题整理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/06/17/深入理解JVM阅读笔记以及问题整理/" class="article-date">
   <time datetime="2017-06-17T02:05:54.000Z" itemprop="datePublished">2017-06-17</time>
 </a>
     
@@ -186,7 +296,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/17/深入理解JVM阅读笔记/">《深入理解JVM》阅读笔记</a>
+      <a class="article-title" href="/2017/06/17/深入理解JVM阅读笔记以及问题整理/">《深入理解JVM》阅读笔记以及问题整理</a>
     </h1>
   
 
@@ -194,22 +304,23 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>将阅读周志明先生的《深入理解JVM》疑问与感悟再次做总结。<br><strong>什么是Native方法</strong><br>本地方法栈是存放native函数的，可是什么是native函数呢？百度之：</p>
-<p>参考：<br><a href="http://blog.csdn.net/funneies/article/details/8949660" target="_blank" rel="external">http://blog.csdn.net/funneies/article/details/8949660</a></p>
-<p>native关键字说明其修饰的方法是一个原生态方法，方法对应的实现不是在当前文件，而是在用其他语言（如C和C++）实现的文件中。Java语言本身不能对操作系统底层进行访问和操作，但是可以通过JNI接口调用其他语言来实现对底层的访问。</p>
-<p>JNI是Java本机接口（Java Native Interface），是一个本机编程接口，它是Java软件开发工具箱（java Software Development Kit，SDK）的一部分。JNI允许Java代码使用以其他语言编写的代码和代码库。Invocation API（JNI的一部分）可以用来将Java虚拟机（JVM）嵌入到本机应用程序中，从而允许程序员从本机代码内部调用Java代码。</p>
-
+        <p>对阅读周志明先生的《深入理解JVM》产生的疑问与感悟以及要点进行总结。<br>想这种技术书应该反复读，最近又阅览了一次，才对GC部分有了一个大概的框架，可是细节部分依然记不清楚。还是需要再读，并对类加载以及并发从头进行学习。<br>
+        
+          <p class="article-more-link">
+            <a href="/2017/06/17/深入理解JVM阅读笔记以及问题整理/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/06/17/深入理解JVM阅读笔记/" data-id="cj6bsl1b000089f73z8pd137o" class="article-share-link" data-share="baidu" data-title="《深入理解JVM》阅读笔记">分享到</a>
+        <a data-url="http://yoursite.com/2017/06/17/深入理解JVM阅读笔记以及问题整理/" data-id="cj6d1qodz00059973j862gu8a" class="article-share-link" data-share="baidu" data-title="《深入理解JVM》阅读笔记以及问题整理">分享到</a>
       
 
 
 
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/">JVM</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM相关/">JVM相关</a></li></ul>
 
     </footer>
   </div>
@@ -255,7 +366,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/06/12/shiro权限框架整合开源分享/" data-id="cj6bsl1b100099f73uqdadh6u" class="article-share-link" data-share="baidu" data-title="Shiro权限框架整合总结与开源分享">分享到</a>
+        <a data-url="http://yoursite.com/2017/06/12/shiro权限框架整合开源分享/" data-id="cj6d1qoe9000h9973fkv1vohu" class="article-share-link" data-share="baidu" data-title="Shiro权限框架整合总结与开源分享">分享到</a>
       
 
 
@@ -308,7 +419,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/06/11/电商项目物流接口集成总结与开源分享/" data-id="cj6bsl1b2000b9f73e8nwxcha" class="article-share-link" data-share="baidu" data-title="电商项目物流接口集成总结与开源分享">分享到</a>
+        <a data-url="http://yoursite.com/2017/06/11/电商项目物流接口集成总结与开源分享/" data-id="cj6d1qoe3000a9973dmlr88lz" class="article-share-link" data-share="baidu" data-title="电商项目物流接口集成总结与开源分享">分享到</a>
       
 
 
@@ -360,7 +471,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/06/07/mac下IntelliJ使用记录/" data-id="cj6bsl1az00059f73bv0e7e7n" class="article-share-link" data-share="baidu" data-title="mac下IntelliJ使用记录">分享到</a>
+        <a data-url="http://yoursite.com/2017/06/07/mac下IntelliJ使用记录/" data-id="cj6d1qods00019973bq8t35bi" class="article-share-link" data-share="baidu" data-title="mac下IntelliJ使用记录">分享到</a>
       
 
 
@@ -412,7 +523,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/06/04/读《罗马人物语-恺撒时代》/" data-id="cj6bsl1b6000f9f735u0gwk8x" class="article-share-link" data-share="baidu" data-title="读《罗马人物语-恺撒时代》">分享到</a>
+        <a data-url="http://yoursite.com/2017/06/04/读《罗马人物语-恺撒时代》/" data-id="cj6d1qoec000j9973spqp7ufg" class="article-share-link" data-share="baidu" data-title="读《罗马人物语-恺撒时代》">分享到</a>
       
 
 
@@ -464,111 +575,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/05/31/mac下hexo搭建操作记录/" data-id="cj6bsl1ay00049f73yhpvr5h3" class="article-share-link" data-share="baidu" data-title="mac下hexo搭建相关记录">分享到</a>
-      
-
-
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作记录/">操作记录</a></li></ul>
-
-    </footer>
-  </div>
-  
-
-
-
-</article>
-
-
-
-
-  
-    <article id="post-缘起" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/05/30/缘起/" class="article-date">
-  <time datetime="2017-05-30T02:05:54.000Z" itemprop="datePublished">2017-05-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/05/30/缘起/">缘起</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>端午之前读了一篇文章，讲了从写博客对一个程序员的进步的好处。遂决定开始动手，完成半年之前未竟的搭建hexo的事业。<br>
-        
-          <p class="article-more-link">
-            <a href="/2017/05/30/缘起/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2017/05/30/缘起/" data-id="cj6bsl1b2000d9f731cxor8nb" class="article-share-link" data-share="baidu" data-title="缘起">分享到</a>
-      
-
-
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/杂感/">杂感</a></li></ul>
-
-    </footer>
-  </div>
-  
-
-
-
-</article>
-
-
-
-
-  
-    <article id="post-Redis集群部署与集成总结" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/12/19/Redis集群部署与集成总结/" class="article-date">
-  <time datetime="2016-12-19T02:05:54.000Z" itemprop="datePublished">2016-12-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/19/Redis集群部署与集成总结/">Redis集群部署与集成总结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>16年末开始了解redis并加入当时所做电商项目中。遇到过一些问题，于当时做了记录。</p>
-        
-          <p class="article-more-link">
-            <a href="/2016/12/19/Redis集群部署与集成总结/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2016/12/19/Redis集群部署与集成总结/" data-id="cj6bsl1aq00019f73q5yx5f75" class="article-share-link" data-share="baidu" data-title="Redis集群部署与集成总结">分享到</a>
+        <a data-url="http://yoursite.com/2017/05/31/mac下hexo搭建操作记录/" data-id="cj6d1qoe7000c9973fx678qze" class="article-share-link" data-share="baidu" data-title="mac下hexo搭建相关记录">分享到</a>
       
 
 
@@ -589,6 +596,10 @@
 
   
 
+
+  <nav id="page-nav">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
+  </nav>
 </section>
       
       <aside id="sidebar">
@@ -599,7 +610,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂感/">杂感</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人经历/">个人经历</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂感/">杂感</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -608,7 +619,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/JVM相关/" style="font-size: 10px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 10px;">Java基础</a> <a href="/tags/个人开源项目/" style="font-size: 15px;">个人开源项目</a> <a href="/tags/操作记录/" style="font-size: 20px;">操作记录</a> <a href="/tags/杂感/" style="font-size: 10px;">杂感</a> <a href="/tags/读书笔记/" style="font-size: 10px;">读书笔记</a>
+      <a href="/tags/JVM相关/" style="font-size: 20px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 10px;">Java基础</a> <a href="/tags/个人开源项目/" style="font-size: 15px;">个人开源项目</a> <a href="/tags/个人经历/" style="font-size: 10px;">个人经历</a> <a href="/tags/操作记录/" style="font-size: 20px;">操作记录</a> <a href="/tags/杂感/" style="font-size: 10px;">杂感</a> <a href="/tags/读书笔记/" style="font-size: 10px;">读书笔记</a>
     </div>
   </div>
 
@@ -617,7 +628,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -633,19 +644,19 @@
           </li>
         
           <li>
+            <a href="/2017/08/15/Java并发编程：volatile关键字解析/">Java并发编程：volatile关键字解析</a>
+          </li>
+        
+          <li>
             <a href="/2017/08/14/Java中equals与==的区别与使用场景分析/">谈谈Java中equals和==的区别和使用场景</a>
           </li>
         
           <li>
-            <a href="/2017/06/17/深入理解JVM阅读笔记/">《深入理解JVM》阅读笔记</a>
+            <a href="/2017/08/12/我为什么离开学校——十六岁那一年/">我为什么离开学校——十六岁那一年</a>
           </li>
         
           <li>
-            <a href="/2017/06/12/shiro权限框架整合开源分享/">Shiro权限框架整合总结与开源分享</a>
-          </li>
-        
-          <li>
-            <a href="/2017/06/11/电商项目物流接口集成总结与开源分享/">电商项目物流接口集成总结与开源分享</a>
+            <a href="/2017/06/17/深入理解JVM阅读笔记以及问题整理/">《深入理解JVM》阅读笔记以及问题整理</a>
           </li>
         
       </ul>

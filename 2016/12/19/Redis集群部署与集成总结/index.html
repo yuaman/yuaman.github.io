@@ -15,7 +15,7 @@
 <meta property="og:url" content="http://yoursite.com/2016/12/19/Redis集群部署与集成总结/index.html">
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="16年末开始了解redis并加入当时所做电商项目中。遇到过一些问题，于当时做了记录。">
-<meta property="og:updated_time" content="2017-06-11T12:45:13.000Z">
+<meta property="og:updated_time" content="2017-08-14T06:51:08.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis集群部署与集成总结">
 <meta name="twitter:description" content="16年末开始了解redis并加入当时所做电商项目中。遇到过一些问题，于当时做了记录。">
@@ -100,13 +100,17 @@
 <p>在类文件中连接集群某一结点，调用，报错如下<br>no reachable node in cluster</p>
 <p>于application.xml中配置<br>启动tomcat抱如下错：<br>org.springframework.beans.factory.BeanCreationException: Error creating bean with name ‘JedisCluster’ defined in class path resource [conf/applicationContext.xml]: Could not resolve matching constructor (hint: specify index/type/name arguments for simple parameters to avoid type ambiguities)</p>
 <p>最终解决：<br>发现三个错误：<br>连接池配置错误，集群不能使用jedispool<br>jar包冲突，spring session与jedis2.7冲突，但集群又必须使用2.7，以前使用单机版redis<br>redis集群服务器防火墙设置问题，导致no rechable nodes异常</p>
-<p>后来又报了一个异常：<br>too many nodes<br>重启redis服务器还有增大连接数</p>
+<p>#####后来又报了一个异常：</p>
+<blockquote>
+<p>too many nodes </p>
+</blockquote>
+<p>解决方案：重启redis服务器还有增大连接数</p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/12/19/Redis集群部署与集成总结/" data-id="cj6bsl1aq00019f73q5yx5f75" class="article-share-link" data-share="baidu" data-title="Redis集群部署与集成总结">分享到</a>
+        <a data-url="http://yoursite.com/2016/12/19/Redis集群部署与集成总结/" data-id="cj6d1qodw00039973sityxp2r" class="article-share-link" data-share="baidu" data-title="Redis集群部署与集成总结">分享到</a>
       
 
 
@@ -150,7 +154,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂感/">杂感</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人经历/">个人经历</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂感/">杂感</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -159,7 +163,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/JVM相关/" style="font-size: 10px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 10px;">Java基础</a> <a href="/tags/个人开源项目/" style="font-size: 15px;">个人开源项目</a> <a href="/tags/操作记录/" style="font-size: 20px;">操作记录</a> <a href="/tags/杂感/" style="font-size: 10px;">杂感</a> <a href="/tags/读书笔记/" style="font-size: 10px;">读书笔记</a>
+      <a href="/tags/JVM相关/" style="font-size: 20px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 10px;">Java基础</a> <a href="/tags/个人开源项目/" style="font-size: 15px;">个人开源项目</a> <a href="/tags/个人经历/" style="font-size: 10px;">个人经历</a> <a href="/tags/操作记录/" style="font-size: 20px;">操作记录</a> <a href="/tags/杂感/" style="font-size: 10px;">杂感</a> <a href="/tags/读书笔记/" style="font-size: 10px;">读书笔记</a>
     </div>
   </div>
 
@@ -168,7 +172,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -184,19 +188,19 @@
           </li>
         
           <li>
+            <a href="/2017/08/15/Java并发编程：volatile关键字解析/">Java并发编程：volatile关键字解析</a>
+          </li>
+        
+          <li>
             <a href="/2017/08/14/Java中equals与==的区别与使用场景分析/">谈谈Java中equals和==的区别和使用场景</a>
           </li>
         
           <li>
-            <a href="/2017/06/17/深入理解JVM阅读笔记/">《深入理解JVM》阅读笔记</a>
+            <a href="/2017/08/12/我为什么离开学校——十六岁那一年/">我为什么离开学校——十六岁那一年</a>
           </li>
         
           <li>
-            <a href="/2017/06/12/shiro权限框架整合开源分享/">Shiro权限框架整合总结与开源分享</a>
-          </li>
-        
-          <li>
-            <a href="/2017/06/11/电商项目物流接口集成总结与开源分享/">电商项目物流接口集成总结与开源分享</a>
+            <a href="/2017/06/17/深入理解JVM阅读笔记以及问题整理/">《深入理解JVM》阅读笔记以及问题整理</a>
           </li>
         
       </ul>
