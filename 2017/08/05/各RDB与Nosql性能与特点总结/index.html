@@ -1,0 +1,315 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<meta name="baidu-site-verification" content="LHYPl19xg9" />
+<meta name="google-site-verification" content="s5HGo7JQp9QFcl2HIOHaNDUdwj3_kdgi5nPkB5bfMHs" />
+  
+  <title>各RDB与Nosql性能与特点总结 | 无题</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="参考地址：http://www.besttest.cn/article/42.htmlhttp://www.cnblogs.com/crazylights/archive/2013/05/08/3066056.htmlhttp://blog.csdn.net/yumengkk/article/details/7902103 最近考虑到数据库包括各种缓存到底面对高并发情况性能到底是怎么样的，所以多方">
+<meta name="keywords" content="高并发方案">
+<meta property="og:type" content="article">
+<meta property="og:title" content="各RDB与Nosql性能与特点总结">
+<meta property="og:url" content="http://yoursite.com/2017/08/05/各RDB与Nosql性能与特点总结/index.html">
+<meta property="og:site_name" content="无题">
+<meta property="og:description" content="参考地址：http://www.besttest.cn/article/42.htmlhttp://www.cnblogs.com/crazylights/archive/2013/05/08/3066056.htmlhttp://blog.csdn.net/yumengkk/article/details/7902103 最近考虑到数据库包括各种缓存到底面对高并发情况性能到底是怎么样的，所以多方">
+<meta property="og:updated_time" content="2017-08-16T09:43:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="各RDB与Nosql性能与特点总结">
+<meta name="twitter:description" content="参考地址：http://www.besttest.cn/article/42.htmlhttp://www.cnblogs.com/crazylights/archive/2013/05/08/3066056.htmlhttp://blog.csdn.net/yumengkk/article/details/7902103 最近考虑到数据库包括各种缓存到底面对高并发情况性能到底是怎么样的，所以多方">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">无题</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">天南地北问乾坤</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/tags/操作记录/">操作记录</a>
+        
+          <a class="main-nav-link" href="/tags/杂感/">杂感</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="yoursite.com">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-各RDB与Nosql性能与特点总结" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/08/05/各RDB与Nosql性能与特点总结/" class="article-date">
+  <time datetime="2017-08-05T09:37:31.000Z" itemprop="datePublished">2017-08-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      各RDB与Nosql性能与特点总结
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="参考地址："><a href="#参考地址：" class="headerlink" title="参考地址："></a>参考地址：</h5><p><a href="http://www.besttest.cn/article/42.html" target="_blank" rel="external">http://www.besttest.cn/article/42.html</a><br><a href="http://www.cnblogs.com/crazylights/archive/2013/05/08/3066056.html" target="_blank" rel="external">http://www.cnblogs.com/crazylights/archive/2013/05/08/3066056.html</a><br><a href="http://blog.csdn.net/yumengkk/article/details/7902103" target="_blank" rel="external">http://blog.csdn.net/yumengkk/article/details/7902103</a></p>
+<h5 id="最近考虑到数据库包括各种缓存到底面对高并发情况性能到底是怎么样的，所以多方收集整理成此篇，以后也会持续更新。"><a href="#最近考虑到数据库包括各种缓存到底面对高并发情况性能到底是怎么样的，所以多方收集整理成此篇，以后也会持续更新。" class="headerlink" title="最近考虑到数据库包括各种缓存到底面对高并发情况性能到底是怎么样的，所以多方收集整理成此篇，以后也会持续更新。"></a>最近考虑到数据库包括各种缓存到底面对高并发情况性能到底是怎么样的，所以多方收集整理成此篇，以后也会持续更新。</h5><a id="more"></a>
+<h2 id="mysql："><a href="#mysql：" class="headerlink" title="mysql："></a>mysql：</h2><p>1.性能从10万条规模升到100万条时降低非常明显，从100万到1000万性能降低更明显。</p>
+<h2 id="Memcached："><a href="#Memcached：" class="headerlink" title="Memcached："></a>Memcached：</h2><p>1、Memcached是一个cache机制，当内存不足时会采用LRU机制，替换出陈旧数据，因此他不能保证我们的数据像在HashMap中一样不丢失，且没有数据持久化机制；</p>
+<h2 id="redis："><a href="#redis：" class="headerlink" title="redis："></a>redis：</h2><p>1、redis克服了这一缺点，采取磁盘存储机制实现数据持久化。但是，当数据量达到1千万左右时，由于内存中不能存储如此大量数目的数据，频繁同磁盘进行数据交换，导致数据查询、存储性能的急剧下降，将导致服务不可用。</p>
+<p>###redis作者在stackoverflow上关于redis与memcache对比的一段话：</p>
+<ul>
+<li><p>没有必要过于关注性能，因为二者的性能都已经足够高了。由于Redis只使用单核，而Memcached可以使用多核，所以二者比较起来，平均每一个核上，Redis在存储小数据时比Memcached性能更高。而在100k以上的数据中，Memcached性能要高于Redis。虽然Redis最近也在存储大数据的性能上进行优化，但是比起Memcached，还是稍有逊色。说了这么多，结论是，无论你使用哪一个，每秒处理请求的次数都不会成为瓶颈。</p>
+</li>
+<li><p>在内存使用效率上，如果使用简单的key-value存储，Memcached的内存利用率更高。而如果Redis采用hash结构来做key-value存储，由于其组合式的压缩，其内存利用率会高于Memcached。当然，这和你的应用场景和数据特性有关。</p>
+</li>
+<li><p>如果你对数据持久化和数据同步有所要求，那么推荐你选择Redis。因为这两个特性Memcached都不具备。即使你只是希望在升级或者重启系统后缓存数据不会丢失，选择Redis也是明智的。</p>
+</li>
+</ul>
+<ul>
+<li>当然，最后还得说到你的具体应用需求。Redis相比Memcached来说，拥有更多的数据结构，并支持更丰富的数据操作。通常在Memcached里，你需要将数据拿到客户端来进行类似的修改再set回去。这大大增加了网络IO的次数和数据体积。在Redis中，这些复杂的操作通常和一般的GET/SET一样高效。所以，如果你需要缓存能够支持更复杂的结构和操作，那么Redis会是不错的选择。</li>
+</ul>
+<h2 id="mongo："><a href="#mongo：" class="headerlink" title="mongo："></a>mongo：</h2><p>1.不设其他唯一索引的情况下，只用_id 在普通办公电脑上每秒插入几万，在普通x86服务器上每秒插入十几万，，比mysql强出一个数量级。</p>
+<p>2.检索是真的慢，和sql数据库不同，越复杂的条件搜索MangoDB越吃亏，CPU和IO的双重压力。面对那些直接把SQL查询改写成MangoDB的用法，别转了，你不会收获任何性能提升。</p>
+<h3 id="结论：当前还没有好的产品可以实现key-value保证数据完整性，千万级条数量级的，高效存储和查询支持产品。"><a href="#结论：当前还没有好的产品可以实现key-value保证数据完整性，千万级条数量级的，高效存储和查询支持产品。" class="headerlink" title="结论：当前还没有好的产品可以实现key-value保证数据完整性，千万级条数量级的，高效存储和查询支持产品。"></a>结论：当前还没有好的产品可以实现key-value保证数据完整性，千万级条数量级的，高效存储和查询支持产品。</h3>
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2017/08/05/各RDB与Nosql性能与特点总结/" data-id="cj6euwwac000luk737oskzzuo" class="article-share-link" data-share="baidu" data-title="各RDB与Nosql性能与特点总结">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/高并发方案/">高并发方案</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/08/06/Java多线程构件/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          JAVA多线程构件（java.util.concurrent包下高级工具）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/08/05/Java容器各实现类的底层实现原理/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">Java容器各实现类的底层实现原理</div>
+    </a>
+  
+</nav>
+
+  
+
+
+
+</article>
+
+
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java多线程/">Java多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器/">Java容器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人经历/">个人经历</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂感/">杂感</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JVM相关/" style="font-size: 20px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 16.67px;">Java基础</a> <a href="/tags/Java多线程/" style="font-size: 10px;">Java多线程</a> <a href="/tags/Java容器/" style="font-size: 10px;">Java容器</a> <a href="/tags/个人开源项目/" style="font-size: 13.33px;">个人开源项目</a> <a href="/tags/个人经历/" style="font-size: 10px;">个人经历</a> <a href="/tags/操作记录/" style="font-size: 16.67px;">操作记录</a> <a href="/tags/杂感/" style="font-size: 10px;">杂感</a> <a href="/tags/读书笔记/" style="font-size: 10px;">读书笔记</a> <a href="/tags/高并发方案/" style="font-size: 16.67px;">高并发方案</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/08/15/JVM GC要点整理与总结（转载）/">JVM GC要点整理与总结</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/14/线程安全与锁优化/">线程安全与锁优化——深入理解JVM阅读笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/13/Java并发编程：volatile关键字解析/">Java并发编程：volatile关键字解析</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/12/我为什么离开学校——十六岁那一年/">我为什么离开学校——十六岁那一年</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/11/事务的四大特性以及事务的四种隔离级别/">事务的四大特性以及事务的四种隔离级别</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/yuaman" target="_blank">我的git同性交友主页</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+
+
+
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 yutinglin<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+
+
+
+</footer>
+
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/tags/操作记录/" class="mobile-nav-link">操作记录</a>
+  
+    <a href="/tags/杂感/" class="mobile-nav-link">杂感</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+
+
+
+
+
+
+
+
+</div>
+</body>
+</html>

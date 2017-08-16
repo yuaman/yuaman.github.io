@@ -1,0 +1,331 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<meta name="baidu-site-verification" content="LHYPl19xg9" />
+<meta name="google-site-verification" content="s5HGo7JQp9QFcl2HIOHaNDUdwj3_kdgi5nPkB5bfMHs" />
+  
+  <title>Java容器各实现类的底层实现原理 | 无题</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="参考地址：http://blog.csdn.net/qq_25868207/article/details/55259978http://blog.csdn.net/zcbyzcb/article/details/70666438 在原作基础做了一些删减和补充，请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。">
+<meta name="keywords" content="Java容器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java容器各实现类的底层实现原理">
+<meta property="og:url" content="http://yoursite.com/2017/08/05/Java容器各实现类的底层实现原理/index.html">
+<meta property="og:site_name" content="无题">
+<meta property="og:description" content="参考地址：http://blog.csdn.net/qq_25868207/article/details/55259978http://blog.csdn.net/zcbyzcb/article/details/70666438 在原作基础做了一些删减和补充，请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。">
+<meta property="og:updated_time" content="2017-08-16T05:24:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java容器各实现类的底层实现原理">
+<meta name="twitter:description" content="参考地址：http://blog.csdn.net/qq_25868207/article/details/55259978http://blog.csdn.net/zcbyzcb/article/details/70666438 在原作基础做了一些删减和补充，请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">无题</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">天南地北问乾坤</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/tags/操作记录/">操作记录</a>
+        
+          <a class="main-nav-link" href="/tags/杂感/">杂感</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="yoursite.com">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-Java容器各实现类的底层实现原理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/08/05/Java容器各实现类的底层实现原理/" class="article-date">
+  <time datetime="2017-08-05T05:18:31.000Z" itemprop="datePublished">2017-08-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java容器各实现类的底层实现原理
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="参考地址："><a href="#参考地址：" class="headerlink" title="参考地址："></a>参考地址：</h5><p><a href="http://blog.csdn.net/qq_25868207/article/details/55259978" target="_blank" rel="external">http://blog.csdn.net/qq_25868207/article/details/55259978</a><br><a href="http://blog.csdn.net/zcbyzcb/article/details/70666438" target="_blank" rel="external">http://blog.csdn.net/zcbyzcb/article/details/70666438</a></p>
+<h5 id="在原作基础做了一些删减和补充，请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。"><a href="#在原作基础做了一些删减和补充，请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。" class="headerlink" title="在原作基础做了一些删减和补充，请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。"></a>在原作基础做了一些删减和补充，请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。</h5><a id="more"></a>
+<h2 id="ArrayList实现原理要点概括"><a href="#ArrayList实现原理要点概括" class="headerlink" title="ArrayList实现原理要点概括"></a>ArrayList实现原理要点概括</h2><p>参考文献：<a href="http://zhangshixi.iteye.com/blog/674856l" target="_blank" rel="external">http://zhangshixi.iteye.com/blog/674856l</a></p>
+<p>ArrayList是List接口的可变数组非同步实现，并允许包括null在内的所有元素。</p>
+<p>底层使用数组实现</p>
+<p>该集合是可变长度数组，数组扩容时，会将老数组中的元素重新拷贝一份到新的数组中，每次数组容量增长大约是其容量的1.5倍，这种操作的代价很高。</p>
+<p>采用了Fail-Fast机制，面对并发的修改时，迭代器很快就会完全失败，而不是冒着在将来某个不确定时间发生任意不确定行为的风险</p>
+<h2 id="LinkedList实现原理要点概括"><a href="#LinkedList实现原理要点概括" class="headerlink" title="LinkedList实现原理要点概括"></a>LinkedList实现原理要点概括</h2><p>参考文献：<a href="http://www.cnblogs.com/ITtangtang/p/3948610.htmll" target="_blank" rel="external">http://www.cnblogs.com/ITtangtang/p/3948610.htmll</a></p>
+<p>LinkedList是List接口的双向链表非同步实现，并允许包括null在内的所有元素。</p>
+<p>底层的数据结构是基于双向链表的，该数据结构我们称为节点</p>
+<p>双向链表节点对应的类Entry的实例，Entry中包含成员变量：previous，next，element。其中，previous是该节点的上一个节点，next是该节点的下一个节点，element是该节点所包含的值。</p>
+<h2 id="HashMap实现原理要点概括"><a href="#HashMap实现原理要点概括" class="headerlink" title="HashMap实现原理要点概括"></a>HashMap实现原理要点概括</h2><p>参考文献：<a href="http://zhangshixi.iteye.com/blog/672697l" target="_blank" rel="external">http://zhangshixi.iteye.com/blog/672697l</a></p>
+<p>HashMap是基于哈希表的Map接口的非同步实现，允许使用null值和null键，但不保证映射的顺序。</p>
+<p>底层使用数组实现，数组中每一项是个链表，即数组和链表的结合体</p>
+<p>HashMap在底层将key-value当成一个整体进行处理，这个整体就是一个Entry对象。HashMap底层采用一个Entry[]数组来保存所有的key-value对，当需要存储一个Entry对象时，会根据key的hash算法来决定其在数组中的存储位置，在根据equals方法决定其在该数组位置上的链表中的存储位置；当需要取出一个Entry时，也会根据key的hash算法找到其在数组中的存储位置，再根据equals方法从该位置上的链表中取出该Entry。</p>
+<p>HashMap进行数组扩容需要重新计算扩容后每个元素在数组中的位置，很耗性能</p>
+<p>采用了Fail-Fast机制，通过一个modCount值记录修改次数，对HashMap内容的修改都将增加这个值。迭代器初始化过程中会将这个值赋给迭代器的expectedModCount，在迭代过程中，判断modCount跟expectedModCount是否相等，如果不相等就表示已经有其他线程修改了Map，马上抛出异常</p>
+<h2 id="Hashtable实现原理要点概括"><a href="#Hashtable实现原理要点概括" class="headerlink" title="Hashtable实现原理要点概括"></a>Hashtable实现原理要点概括</h2><p>参考文献：<a href="http://blog.csdn.net/zheng0518/article/details/42199477" target="_blank" rel="external">http://blog.csdn.net/zheng0518/article/details/42199477</a></p>
+<p>Hashtable是基于哈希表的Map接口的同步实现，不允许使用null值和null键</p>
+<p>底层使用数组实现，数组中每一项是个单链表，即数组和链表的结合体</p>
+<p>Hashtable在底层将key-value当成一个整体进行处理，这个整体就是一个Entry对象。Hashtable底层采用一个Entry[]数组来保存所有的key-value对，当需要存储一个Entry对象时，会根据key的hash算法来决定其在数组中的存储位置，在根据equals方法决定其在该数组位置上的链表中的存储位置；当需要取出一个Entry时，也会根据key的hash算法找到其在数组中的存储位置，再根据equals方法从该位置上的链表中取出该Entry。</p>
+<p>synchronized是针对整张Hash表的，即每次锁住整张表让线程独占</p>
+<h2 id="ConcurrentHashMap实现原理要点概括"><a href="#ConcurrentHashMap实现原理要点概括" class="headerlink" title="ConcurrentHashMap实现原理要点概括"></a>ConcurrentHashMap实现原理要点概括</h2><p>参考文献：<a href="http://blog.csdn.net/zheng0518/article/details/42199477" target="_blank" rel="external">http://blog.csdn.net/zheng0518/article/details/42199477</a></p>
+<p>ConcurrentHashMap允许多个修改操作并发进行，其关键在于使用了锁分离技术。<br>它使用了多个锁来控制对hash表的不同段进行的修改，每个段其实就是一个小的hashtable，它们有自己的锁。只要多个并发发生在不同的段上，它们就可以并发进行。</p>
+<p>ConcurrentHashMap在底层将key-value当成一个整体进行处理，这个整体就是一个Entry对象。</p>
+<p>Hashtable底层采用一个Entry[]数组来保存所有的key-value对，当需要存储一个Entry对象时，会根据key的hash算法来决定其在数组中的存储位置，在根据equals方法决定其在该数组位置上的链表中的存储位置；当需要取出一个Entry时，也会根据key的hash算法找到其在数组中的存储位置，再根据equals方法从该位置上的链表中取出该Entry。</p>
+<p>与HashMap不同的是，ConcurrentHashMap使用多个子Hash表，也就是段(Segment)</p>
+<p>ConcurrentHashMap完全允许多个读操作并发进行，读操作并不需要加锁。如果使用传统的技术，如HashMap中的实现，如果允许可以在hash链的中间添加或删除元素，读操作不加锁将得到不一致的数据。ConcurrentHashMap实现技术是保证HashEntry几乎是不可变的。</p>
+<h2 id="HashSet实现原理要点概括"><a href="#HashSet实现原理要点概括" class="headerlink" title="HashSet实现原理要点概括"></a>HashSet实现原理要点概括</h2><p>参考文献：<a href="http://zhangshixi.iteye.com/blog/673143l" target="_blank" rel="external">http://zhangshixi.iteye.com/blog/673143l</a></p>
+<p>HashSet由哈希表(实际上是一个HashMap实例)支持，不保证set的迭代顺序，并允许使用null元素。<br>基于HashMap实现，API也是对HashMap的行为进行了封装，可参考HashMap</p>
+<h2 id="LinkedHashMap实现原理要点概括"><a href="#LinkedHashMap实现原理要点概括" class="headerlink" title="LinkedHashMap实现原理要点概括"></a>LinkedHashMap实现原理要点概括</h2><p>参考文献：<a href="http://zhangshixi.iteye.com/blog/673789l" target="_blank" rel="external">http://zhangshixi.iteye.com/blog/673789l</a></p>
+<p>LinkedHashMap继承于HashMap，底层使用哈希表和双向链表来保存所有元素，并且它是非同步，允许使用null值和null键。</p>
+<p>基本操作与父类HashMap相似，通过重写HashMap相关方法，重新定义了数组中保存的元素Entry，来实现自己的链接列表特性。该Entry除了保存当前对象的引用外，还保存了其上一个元素before和下一个元素after的引用，从而构成了双向链接列表。</p>
+<h2 id="LinkedHashSet实现原理要点概括"><a href="#LinkedHashSet实现原理要点概括" class="headerlink" title="LinkedHashSet实现原理要点概括"></a>LinkedHashSet实现原理要点概括</h2><p>参考文献：<a href="http://zhangshixi.iteye.com/blog/673319l" target="_blank" rel="external">http://zhangshixi.iteye.com/blog/673319l</a></p>
+<p>对于LinkedHashSet而言，它继承与HashSet、又基于LinkedHashMap来实现的。LinkedHashSet底层使用LinkedHashMap来保存所有元素，它继承与HashSet，其所有的方法操作上又与HashSet相同。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2017/08/05/Java容器各实现类的底层实现原理/" data-id="cj6euww9u0003uk73txvsj0wt" class="article-share-link" data-share="baidu" data-title="Java容器各实现类的底层实现原理">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java容器/">Java容器</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/08/05/各RDB与Nosql性能与特点总结/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          各RDB与Nosql性能与特点总结
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/08/03/数据库Sharding的基本思想和切分策略/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">数据库Sharding的基本思想和切分策略</div>
+    </a>
+  
+</nav>
+
+  
+
+
+
+</article>
+
+
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java多线程/">Java多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器/">Java容器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人经历/">个人经历</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂感/">杂感</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JVM相关/" style="font-size: 20px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 16.67px;">Java基础</a> <a href="/tags/Java多线程/" style="font-size: 10px;">Java多线程</a> <a href="/tags/Java容器/" style="font-size: 10px;">Java容器</a> <a href="/tags/个人开源项目/" style="font-size: 13.33px;">个人开源项目</a> <a href="/tags/个人经历/" style="font-size: 10px;">个人经历</a> <a href="/tags/操作记录/" style="font-size: 16.67px;">操作记录</a> <a href="/tags/杂感/" style="font-size: 10px;">杂感</a> <a href="/tags/读书笔记/" style="font-size: 10px;">读书笔记</a> <a href="/tags/高并发方案/" style="font-size: 16.67px;">高并发方案</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/08/15/JVM GC要点整理与总结（转载）/">JVM GC要点整理与总结</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/14/线程安全与锁优化/">线程安全与锁优化——深入理解JVM阅读笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/13/Java并发编程：volatile关键字解析/">Java并发编程：volatile关键字解析</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/12/我为什么离开学校——十六岁那一年/">我为什么离开学校——十六岁那一年</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/11/事务的四大特性以及事务的四种隔离级别/">事务的四大特性以及事务的四种隔离级别</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/yuaman" target="_blank">我的git同性交友主页</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+
+
+
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 yutinglin<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+
+
+
+</footer>
+
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/tags/操作记录/" class="mobile-nav-link">操作记录</a>
+  
+    <a href="/tags/杂感/" class="mobile-nav-link">杂感</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+
+
+
+
+
+
+
+
+</div>
+</body>
+</html>
