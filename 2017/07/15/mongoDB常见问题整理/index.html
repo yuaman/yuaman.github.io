@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<meta name="baidu-site-verification" content="LHYPl19xg9" />
+<meta name="google-site-verification" content="s5HGo7JQp9QFcl2HIOHaNDUdwj3_kdgi5nPkB5bfMHs" />
+  
+  <title>mongoDB常见问题整理 | 无题</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="多方收集整理成此篇，以后也会持续更新。">
+<meta name="keywords" content="分布式缓存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mongoDB常见问题整理">
+<meta property="og:url" content="http://yoursite.com/2017/07/15/mongoDB常见问题整理/index.html">
+<meta property="og:site_name" content="无题">
+<meta property="og:description" content="多方收集整理成此篇，以后也会持续更新。">
+<meta property="og:updated_time" content="2017-08-18T06:48:43.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mongoDB常见问题整理">
+<meta name="twitter:description" content="多方收集整理成此篇，以后也会持续更新。">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">无题</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">天南地北问乾坤</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/tags/操作记录/">操作记录</a>
+        
+          <a class="main-nav-link" href="/tags/杂感/">杂感</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="yoursite.com">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-mongoDB常见问题整理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/07/15/mongoDB常见问题整理/" class="article-date">
+  <time datetime="2017-07-15T09:37:31.000Z" itemprop="datePublished">2017-07-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      mongoDB常见问题整理
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="多方收集整理成此篇，以后也会持续更新。"><a href="#多方收集整理成此篇，以后也会持续更新。" class="headerlink" title="多方收集整理成此篇，以后也会持续更新。"></a>多方收集整理成此篇，以后也会持续更新。</h5><a id="more"></a>
+<h2 id="为什么要使用Nosql"><a href="#为什么要使用Nosql" class="headerlink" title="为什么要使用Nosql"></a>为什么要使用Nosql</h2><p>关系型数据库采用的结构化的数据，NoSQL采用的是键值对的方式存储数据。</p>
+<h2 id="mongo使用场景："><a href="#mongo使用场景：" class="headerlink" title="mongo使用场景："></a>mongo使用场景：</h2><p>在处理非结构化/半结构化的大数据时；<br>在水平方向上进行扩展时；<br>随时应对动态增加的数据项时可以优先考虑使用NoSQL数据库。<br>高并发解决方案时；</p>
+<h2 id="以下特点使得MongoDB成为最好的NoSQL数据库："><a href="#以下特点使得MongoDB成为最好的NoSQL数据库：" class="headerlink" title="以下特点使得MongoDB成为最好的NoSQL数据库："></a>以下特点使得MongoDB成为最好的NoSQL数据库：</h2><p>面向文件的<br>高性能<br>高可用性<br>易扩展性<br>丰富的查询语言<br>完全索引</p>
+<h2 id="mongoDB的基本结构"><a href="#mongoDB的基本结构" class="headerlink" title="mongoDB的基本结构"></a>mongoDB的基本结构</h2><p>MongoDB的最基本的数据单元，叫document，类似于关系式数据库中的行 row。一系列documents，组成了一个collection，相当于关系式数据库中的table。当一个 collection 数据量太大时，可以把该collection按documents切分，分成多个数据块，每个数据块叫做一个chunk，多个chunks聚集在一起，组成了一个shard。</p>
+<p>Sharding 的意义，不仅保障了数据库的扩容（scalability），同时也保障了系统的负载均衡（load balance）。</p>
+<h2 id="MongoDB支持存储过程吗？如果支持的话，怎么用？"><a href="#MongoDB支持存储过程吗？如果支持的话，怎么用？" class="headerlink" title="MongoDB支持存储过程吗？如果支持的话，怎么用？"></a>MongoDB支持存储过程吗？如果支持的话，怎么用？</h2><p>MongoDB支持存储过程，它是JavaScript写的，保存在db.system.js表中。</p>
+<h2 id="如何执行事务-加锁"><a href="#如何执行事务-加锁" class="headerlink" title="如何执行事务/加锁?"></a>如何执行事务/加锁?</h2><p>MongoDB没有使用传统的锁或者复杂的带回滚的事务，因为它设计的宗旨是轻量，快速以及可预计的高性能。可以把它类比成MySQL MylSAM的自动提交模式。通过精简对事务的支持，性能得到了提升，特别是在一个可能会穿过多个服务器的系统里。</p>
+<h2 id="什么是“片键”"><a href="#什么是“片键”" class="headerlink" title="什么是“片键”"></a>什么是“片键”</h2><p>片键是拆分集合的依据，管理员设置的“片键”将数据分摊到自己管理的mongod集群，数据 和片的对应关系以及相应的配置信息保存在”config服务器”上。</p>
+<h2 id="什么是master或primary"><a href="#什么是master或primary" class="headerlink" title="什么是master或primary?"></a>什么是master或primary?</h2><p>它是当前备份集群(replica set)中负责处理所有写入操作的主要节点/成员。在一个备份集群中，当失效备援(failover)事件发生时，一个另外的成员会变成primary。</p>
+<p>主从复制模式：master slave<br>副本集 ：primary（活跃）  secondary（备份）</p>
+<h2 id="什么是secondary或slave"><a href="#什么是secondary或slave" class="headerlink" title="什么是secondary或slave?"></a>什么是secondary或slave?</h2><p>Seconday从当前的primary上复制相应的操作。它是通过跟踪复制oplog(local.oplog.rs)做到的。</p>
+<h2 id="数据库的整体结构"><a href="#数据库的整体结构" class="headerlink" title="数据库的整体结构"></a>数据库的整体结构</h2><p>键值对–》文档–》集合–》数据库</p>
+<h2 id="mongodb的结构介绍"><a href="#mongodb的结构介绍" class="headerlink" title="mongodb的结构介绍"></a>mongodb的结构介绍</h2><p>数据库中存储的对象设计bson，一种类似json的二进制文件，由键值对组成</p>
+<h2 id="为什么mongodb的数据文件那么庞大"><a href="#为什么mongodb的数据文件那么庞大" class="headerlink" title="为什么mongodb的数据文件那么庞大"></a>为什么mongodb的数据文件那么庞大</h2><p>mongodb会积极的预分配预留空间，防止文件系统碎片</p>
+<h2 id="名字空间（namespace）是什么？"><a href="#名字空间（namespace）是什么？" class="headerlink" title="名字空间（namespace）是什么？"></a>名字空间（namespace）是什么？</h2><p>在collection中，数据库名+集合名叫做名字空间。也就是一个集合的完整名</p>
+<h2 id="数据在什么时候才会扩展到多个分片（shard）里？"><a href="#数据在什么时候才会扩展到多个分片（shard）里？" class="headerlink" title="数据在什么时候才会扩展到多个分片（shard）里？"></a>数据在什么时候才会扩展到多个分片（shard）里？</h2><p>mongodb分片是基于区域的，所以一个集合的所有对象都放置在同一个块中，只有当存在多余一个块的时候，才会有多个分片获取数据的选项</p>
+<h2 id="当我试图更新一个正在被迁移的块（chunk）上的文档时会发生什么？"><a href="#当我试图更新一个正在被迁移的块（chunk）上的文档时会发生什么？" class="headerlink" title="当我试图更新一个正在被迁移的块（chunk）上的文档时会发生什么？"></a>当我试图更新一个正在被迁移的块（chunk）上的文档时会发生什么？</h2><p>会立即更新旧的分片，然后更改才会在所有权转移前复制到新的分片上</p>
+<h2 id="能否使用日志特征进行安全备份？"><a href="#能否使用日志特征进行安全备份？" class="headerlink" title="能否使用日志特征进行安全备份？"></a>能否使用日志特征进行安全备份？</h2><p>是的。</p>
+<h2 id="更新操作立刻fsync到磁盘？"><a href="#更新操作立刻fsync到磁盘？" class="headerlink" title="更新操作立刻fsync到磁盘？"></a>更新操作立刻fsync到磁盘？</h2><p>一般磁盘的写操作都是延迟执行的</p>
+<h2 id="如果用户移除对象的属性，该属性是否从存储层中删除？"><a href="#如果用户移除对象的属性，该属性是否从存储层中删除？" class="headerlink" title="如果用户移除对象的属性，该属性是否从存储层中删除？"></a>如果用户移除对象的属性，该属性是否从存储层中删除？</h2><p>是的，用户移除属性然后对象会重新保存（re-save()）。</p>
+<h2 id="分析器在MongoDB中的作用是什么"><a href="#分析器在MongoDB中的作用是什么" class="headerlink" title="分析器在MongoDB中的作用是什么?"></a>分析器在MongoDB中的作用是什么?</h2><p>分析器就是explain 显示每次操作性能特点的数据库分析器。通过分析器可能查找比预期慢的操作</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2017/07/15/mongoDB常见问题整理/" data-id="cj6hjhjhp000lwx73euj5my4o" class="article-share-link" data-share="baidu" data-title="mongoDB常见问题整理">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式缓存/">分布式缓存</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/07/20/Java类加载机制常见问题/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          Java类加载机制常见问题
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/07/05/mongoDB底层运作原理/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">mongoDB底层运作原理</div>
+    </a>
+  
+</nav>
+
+  
+
+
+
+</article>
+
+
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java多线程/">Java多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器/">Java容器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人/">个人</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人经历/">个人经历</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂感/">杂感</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JVM相关/" style="font-size: 20px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 15px;">Java基础</a> <a href="/tags/Java多线程/" style="font-size: 10px;">Java多线程</a> <a href="/tags/Java容器/" style="font-size: 10px;">Java容器</a> <a href="/tags/个人/" style="font-size: 10px;">个人</a> <a href="/tags/个人开源项目/" style="font-size: 12.5px;">个人开源项目</a> <a href="/tags/个人经历/" style="font-size: 10px;">个人经历</a> <a href="/tags/分布式缓存/" style="font-size: 17.5px;">分布式缓存</a> <a href="/tags/操作记录/" style="font-size: 15px;">操作记录</a> <a href="/tags/杂感/" style="font-size: 10px;">杂感</a> <a href="/tags/读书笔记/" style="font-size: 10px;">读书笔记</a> <a href="/tags/高并发方案/" style="font-size: 12.5px;">高并发方案</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/08/17/创业一段时间的总结和感悟/">创业一段时间的总结和感悟：</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/15/JVM GC要点整理与总结（转载）/">JVM GC要点整理与总结</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/14/线程安全与锁优化/">线程安全与锁优化——深入理解JVM阅读笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/13/Java并发编程：volatile关键字解析/">Java并发编程：volatile关键字解析</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/12/我为什么离开学校——十六岁那一年/">我为什么离开学校——十六岁那一年</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/yuaman" target="_blank">我的git同性交友主页</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+
+
+
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 yutinglin<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+
+
+
+</footer>
+
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/tags/操作记录/" class="mobile-nav-link">操作记录</a>
+  
+    <a href="/tags/杂感/" class="mobile-nav-link">杂感</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+
+
+
+
+
+
+
+
+</div>
+</body>
+</html>

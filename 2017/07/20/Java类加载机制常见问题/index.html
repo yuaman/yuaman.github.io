@@ -1,0 +1,315 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<meta name="baidu-site-verification" content="LHYPl19xg9" />
+<meta name="google-site-verification" content="s5HGo7JQp9QFcl2HIOHaNDUdwj3_kdgi5nPkB5bfMHs" />
+  
+  <title>Java类加载机制常见问题 | 无题</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Java类加载机制常见问题梳理">
+<meta name="keywords" content="JVM相关">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java类加载机制常见问题">
+<meta property="og:url" content="http://yoursite.com/2017/07/20/Java类加载机制常见问题/index.html">
+<meta property="og:site_name" content="无题">
+<meta property="og:description" content="Java类加载机制常见问题梳理">
+<meta property="og:updated_time" content="2017-08-18T06:44:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java类加载机制常见问题">
+<meta name="twitter:description" content="Java类加载机制常见问题梳理">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">无题</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">天南地北问乾坤</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/tags/操作记录/">操作记录</a>
+        
+          <a class="main-nav-link" href="/tags/杂感/">杂感</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="yoursite.com">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-Java类加载机制常见问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/07/20/Java类加载机制常见问题/" class="article-date">
+  <time datetime="2017-07-20T06:43:54.000Z" itemprop="datePublished">2017-07-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java类加载机制常见问题
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Java类加载机制常见问题梳理<br><a id="more"></a> </p>
+<h2 id="什么是类加载："><a href="#什么是类加载：" class="headerlink" title="什么是类加载："></a>什么是类加载：</h2><p>概念：虚拟机把描述类的数据从Class文件加载到内存，并对数据进行校验–转换解析–初始化，最终形成能被java虚拟机直接使用的java类型，就是jvm的类加载机制。<br>类加载包含了以下过程：加载–验证–准备–解析–初始化–使用–卸载</p>
+<h2 id="Java的类加载器都有哪些？每个类加载器都加载哪些类？"><a href="#Java的类加载器都有哪些？每个类加载器都加载哪些类？" class="headerlink" title="Java的类加载器都有哪些？每个类加载器都加载哪些类？"></a>Java的类加载器都有哪些？每个类加载器都加载哪些类？</h2><h3 id="启动（Bootstrap）类加载器："><a href="#启动（Bootstrap）类加载器：" class="headerlink" title="启动（Bootstrap）类加载器："></a>启动（Bootstrap）类加载器：</h3><p>引导类装入器是用本地代码实现的类装入器，它负责将 <java_runtime_home>/lib下面的核心类库或-Xbootclasspath选项指定的jar包加载到内存中。由于引导类加载器涉及到虚拟机本地实现细节，开发者无法直接获取到启动类加载器的引用，所以不允许直接通过引用进行操作。</java_runtime_home></p>
+<h3 id="扩展（Extension）类加载器："><a href="#扩展（Extension）类加载器：" class="headerlink" title="扩展（Extension）类加载器："></a>扩展（Extension）类加载器：</h3><p>扩展类加载器是由Sun的ExtClassLoader（sun.misc.Launcher$ExtClassLoader）实现的。它负责将&lt; Java_Runtime_Home &gt;/lib/ext或者由系统变量-Djava.ext.dir指定位置中的类库加载到内存中。开发者可以直接使用标准扩展类加载器。</p>
+<h3 id="系统（System）类加载器："><a href="#系统（System）类加载器：" class="headerlink" title="系统（System）类加载器："></a>系统（System）类加载器：</h3><p>系统类加载器是由 Sun的 AppClassLoader（sun.misc.Launcher$AppClassLoader）实现的。它负责将系统类路径java -classpath或-Djava.class.path变量所指的目录下的类库加载到内存中。开发者可以直接使用系统类加载器。</p>
+<h2 id="这些类加载之间的父子关系是怎样的？"><a href="#这些类加载之间的父子关系是怎样的？" class="headerlink" title="这些类加载之间的父子关系是怎样的？"></a>这些类加载之间的父子关系是怎样的？</h2><p>他们的委派关系是系统类加载器委派给扩展类加载器，扩展类加载器委派给启动类加载器<br>继承关系是系统类继承自扩展类加载器，扩展类加载器继承自url加载器和secure加载器以及classloader抽象类</p>
+<h2 id="什么是双亲委派模型？"><a href="#什么是双亲委派模型？" class="headerlink" title="什么是双亲委派模型？"></a>什么是双亲委派模型？</h2><p>就是某个特定的类加载器在接到加载类的请求时，首先将加载任务委托给父类加载器，依次递归，如果父类加载器可以完成类加载任务，就成功返回；只有父类加载器无法完成此加载任务时，才自己去加载。</p>
+<h2 id="为什么Java的类加载器要使用双亲委派模型？"><a href="#为什么Java的类加载器要使用双亲委派模型？" class="headerlink" title="为什么Java的类加载器要使用双亲委派模型？"></a>为什么Java的类加载器要使用双亲委派模型？</h2><p>java类以及它的类加载器一起具备了一种带有优先级的层次关系。如 java.lang.Object(它在rt.jar之中)。</p>
+<p>首先我们要知道一点，同一个类 被不同的 类加载器 加载成两个类之后，这两个类是不同的。<br>如果java.lang.Object类被不同的类加载器加载很多次，jvm中存在了多个不同的Object类，那么java类型体系中最基础的行为也无从保证，应用程序会一片混乱(we know,all the class extends from java.lang.Object,如果Object存在多个品种，那绝对是灾难)。</p>
+<p>相反，使用了双亲委派模型，无论哪个类加载器去加载，都会委派到BoorStrap ClassLoader进行加载，保证了Object在各个类加载器环境中，都是同一个类。</p>
+<p>再提一点双亲委派模型的工作机制，以类 A 为例，A如果以Application ClassLoader方式来加载，Application ClassLoader委派给Extension ClassLoader,再到BootStrap ClassLoader.<br>然而，BootStrap ClassLoader管理范围内(<java_home>/lib目录中 ，或-Xbootclasspath参数指定路径中的jar包)没查到类A，那么就让最初请求的类加载器，Application ClassLoader来加载</java_home></p>
+<p>at last，提一点，双亲委派模型 在jvm成长史上被重大破坏过三次，但是 双亲委派模型确实不错，还是像小强一样的活了下来</p>
+<h2 id="如何自定义自己的类加载器，自己的类加载器和Java自带的类加载器关系如何处理？"><a href="#如何自定义自己的类加载器，自己的类加载器和Java自带的类加载器关系如何处理？" class="headerlink" title="如何自定义自己的类加载器，自己的类加载器和Java自带的类加载器关系如何处理？"></a>如何自定义自己的类加载器，自己的类加载器和Java自带的类加载器关系如何处理？</h2><p>除了和本地实现密切相关的启动类加载器之外，包括标准扩展类加载器和系统类加载器在内的所有其他类加载器我们都可以当做自定义类加载器来对待，唯一区别是是否被虚拟机默认使用。前面的内容中已经对java.lang.ClassLoader抽象类中的几个重要的方法做了介绍，这里就简要叙述一下一般用户自定义类加载器的工作流程吧（可以结合后面问题解答一起看）</p>
+<p>1、首先检查请求的类型是否已经被这个类装载器装载到命名空间中了，如果已经装载，直接返回；否则转入步骤<br>　　<br>2、委派类加载请求给父类加载器（更准确的说应该是双亲类加载器，真实虚拟机中各种类加载器最终会呈现树状结构），如果父类加载器能够完成，则返回父类加载器加载的Class实例；否则转入步骤<br>　　<br>3、调用本类加载器的findClass（…）方法，试图获取对应的字节码，如果获取的到，则调用defineClass（…）导入类型到方法区；如果获取不到对应的字节码或者其他原因失败，返回异常给loadClass（…）， loadClass（…）转而抛异常，终止加载过程（注意：这里的异常种类不止一种）。<br>　　<br>说明：这里说的自定义类加载器是指JDK 1.2以后版本的写法，即不覆写改变java.lang.loadClass(…)已有委派逻辑情况下。</p>
+<h2 id="由不同的类加载器加载的指定类还是相同的类型吗？"><a href="#由不同的类加载器加载的指定类还是相同的类型吗？" class="headerlink" title="由不同的类加载器加载的指定类还是相同的类型吗？"></a>由不同的类加载器加载的指定类还是相同的类型吗？</h2><p>在Java中，一个类用其完全匹配类名(fully qualified class name)作为标识，这里指的完全匹配类名包括包名和类名。但在JVM中一个类用其全名和一个加载类ClassLoader的实例作为唯一标识，不同类加载器加载的类将被置于不同的命名空间。</p>
+<p>我们可以用两个自定义类加载器去加载某自定义类型（注意不要将自定义类型的字节码放置到系统路径或者扩展路径中，否则会被系统类加载器或扩展类加载器抢先加载），然后用获取到的两个Class实例进行java.lang.Object.equals（…）判断，将会得到不相等的结果。</p>
+<p>这个大家可以写两个自定义的类加载器去加载相同的自定义类型，然后做个判断；同时，可以测试加载java.*类型，然后再对比测试一下测试结果。</p>
+<h2 id="在编写自定义类加载器时，如果没有设定父加载器，那么父加载器是谁？"><a href="#在编写自定义类加载器时，如果没有设定父加载器，那么父加载器是谁？" class="headerlink" title="在编写自定义类加载器时，如果没有设定父加载器，那么父加载器是谁？"></a>在编写自定义类加载器时，如果没有设定父加载器，那么父加载器是谁？</h2><p>前面讲过，在不指定父类加载器的情况下，默认采用系统类加载器。可能有人觉得不明白，现在我们来看一下JDK对应的代码实现。</p>
+<h2 id="在编写自定义类加载器时，如果没有设定父加载器，那么父加载器是谁？-1"><a href="#在编写自定义类加载器时，如果没有设定父加载器，那么父加载器是谁？-1" class="headerlink" title="在编写自定义类加载器时，如果没有设定父加载器，那么父加载器是谁？"></a>在编写自定义类加载器时，如果没有设定父加载器，那么父加载器是谁？</h2><p>前面讲过，在不指定父类加载器的情况下，默认采用系统类加载器。可能有人觉得不明白，现在我们来看一下JDK对应的代码实现。众所周知，我们编写自定义的类加载器直接或者间接继承自java.lang.ClassLoader抽象类，</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2017/07/20/Java类加载机制常见问题/" data-id="cj6hjhjhb0008wx73jnzq38qj" class="article-share-link" data-share="baidu" data-title="Java类加载机制常见问题">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM相关/">JVM相关</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/07/25/Java类加载机制原理解析/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          Java类加载机制原理解析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/07/15/mongoDB常见问题整理/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">mongoDB常见问题整理</div>
+    </a>
+  
+</nav>
+
+  
+
+
+
+</article>
+
+
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java多线程/">Java多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器/">Java容器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人/">个人</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人经历/">个人经历</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂感/">杂感</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JVM相关/" style="font-size: 20px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 15px;">Java基础</a> <a href="/tags/Java多线程/" style="font-size: 10px;">Java多线程</a> <a href="/tags/Java容器/" style="font-size: 10px;">Java容器</a> <a href="/tags/个人/" style="font-size: 10px;">个人</a> <a href="/tags/个人开源项目/" style="font-size: 12.5px;">个人开源项目</a> <a href="/tags/个人经历/" style="font-size: 10px;">个人经历</a> <a href="/tags/分布式缓存/" style="font-size: 17.5px;">分布式缓存</a> <a href="/tags/操作记录/" style="font-size: 15px;">操作记录</a> <a href="/tags/杂感/" style="font-size: 10px;">杂感</a> <a href="/tags/读书笔记/" style="font-size: 10px;">读书笔记</a> <a href="/tags/高并发方案/" style="font-size: 12.5px;">高并发方案</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/08/17/创业一段时间的总结和感悟/">创业一段时间的总结和感悟：</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/15/JVM GC要点整理与总结（转载）/">JVM GC要点整理与总结</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/14/线程安全与锁优化/">线程安全与锁优化——深入理解JVM阅读笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/13/Java并发编程：volatile关键字解析/">Java并发编程：volatile关键字解析</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/12/我为什么离开学校——十六岁那一年/">我为什么离开学校——十六岁那一年</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/yuaman" target="_blank">我的git同性交友主页</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+
+
+
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 yutinglin<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+
+
+
+</footer>
+
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/tags/操作记录/" class="mobile-nav-link">操作记录</a>
+  
+    <a href="/tags/杂感/" class="mobile-nav-link">杂感</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+
+
+
+
+
+
+
+
+</div>
+</body>
+</html>

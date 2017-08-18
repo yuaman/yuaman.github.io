@@ -1,0 +1,397 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<meta name="baidu-site-verification" content="LHYPl19xg9" />
+<meta name="google-site-verification" content="s5HGo7JQp9QFcl2HIOHaNDUdwj3_kdgi5nPkB5bfMHs" />
+  
+  <title>mongoDB底层运作原理 | 无题</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="觉得这一篇整理比较好，主要在于通俗易懂，逻辑清晰。但是网上转载的人太多了，我实在找不到原作者了。">
+<meta name="keywords" content="分布式缓存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mongoDB底层运作原理">
+<meta property="og:url" content="http://yoursite.com/2017/07/05/mongoDB底层运作原理/index.html">
+<meta property="og:site_name" content="无题">
+<meta property="og:description" content="觉得这一篇整理比较好，主要在于通俗易懂，逻辑清晰。但是网上转载的人太多了，我实在找不到原作者了。">
+<meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/12">
+<meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/C1233B41-A9E7-4379-A1C1-2A28391D7414.jpg">
+<meta property="og:updated_time" content="2017-08-18T06:57:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mongoDB底层运作原理">
+<meta name="twitter:description" content="觉得这一篇整理比较好，主要在于通俗易懂，逻辑清晰。但是网上转载的人太多了，我实在找不到原作者了。">
+<meta name="twitter:image" content="http://og287lnu0.bkt.clouddn.com/12">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">无题</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">天南地北问乾坤</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/tags/操作记录/">操作记录</a>
+        
+          <a class="main-nav-link" href="/tags/杂感/">杂感</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="yoursite.com">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-mongoDB底层运作原理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/07/05/mongoDB底层运作原理/" class="article-date">
+  <time datetime="2017-07-05T09:37:31.000Z" itemprop="datePublished">2017-07-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      mongoDB底层运作原理
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="觉得这一篇整理比较好，主要在于通俗易懂，逻辑清晰。但是网上转载的人太多了，我实在找不到原作者了。"><a href="#觉得这一篇整理比较好，主要在于通俗易懂，逻辑清晰。但是网上转载的人太多了，我实在找不到原作者了。" class="headerlink" title="觉得这一篇整理比较好，主要在于通俗易懂，逻辑清晰。但是网上转载的人太多了，我实在找不到原作者了。"></a>觉得这一篇整理比较好，主要在于通俗易懂，逻辑清晰。但是网上转载的人太多了，我实在找不到原作者了。</h5><a id="more"></a>
+<p>关于MongoDB，我们能看到的资料，基本都是在指导大家如何使用MongoDB，但是，MongoDB内部是如何运作的，资料不是很多。</p>
+<p>阅读使用手册，会有很多疑惑之处。例如，有人说，MongoDB 等同于分布式的 MySQL。它把一个Table，按 row，分割成多个Shards，分别存放在不同的 Servers 上。这种说法是否正确？</p>
+<p>不深入了解 MongoDB 的内部结构，就无法透彻地回答类似问题。这个系列文章，就来和大家探讨MongoDB的内部的工作方式。</p>
+<p><img src="http://og287lnu0.bkt.clouddn.com/12"><br>图1-1 MongoDB架构图</p>
+<h2 id="MongoDB"><a href="#MongoDB" class="headerlink" title="MongoDB"></a>MongoDB</h2><p>通常运行在一个服务器集群上，而不是一个单机。图1-1，描述了一个MongoDB集群的基本组成部分，包括若干shards，至少一个config server，至少一个routing servers（又称 mongos）。</p>
+<h2 id="Shards"><a href="#Shards" class="headerlink" title="Shards"></a>Shards</h2><p>MongoDB的最基本的数据单元，叫document，类似于关系式数据库中的行 row。一系列documents，组成了一个collection，相当于关系式数据库中的table。当一个 collection 数据量太大时，可以把该collection按documents切分，分成多个数据块，每个数据块叫做一个chunk，多个chunks聚集在一起，组成了一个shard。</p>
+<p>Sharding 的意义，不仅保障了数据库的扩容（scalability），同时也保障了系统的负载均衡（load balance）。</p>
+<h2 id="Shard-keys"><a href="#Shard-keys" class="headerlink" title="Shard keys"></a>Shard keys</h2><p>为了把collection切分成不同的chunks，从而存放到不同的shards中，我们需要制定一个切分的方式。</p>
+<p>如前所述，在 MongoDB 数据库中，一个表collection由多个行 documents 组成，而每个 document，有多个属性 fields。同一个 collection 中的不同的 documents，可能会有不同的 fields。例如，有个 collection叫 Media，包含两条 documents，</p>
+<pre><code> {
+
+&quot;ISBN&quot;: &quot;987-30-3652-5130-82&quot;,
+
+&quot;Type&quot;: &quot;CD&quot;,
+
+&quot;Author&quot;: &quot;Nirvana&quot;,
+
+&quot;Title&quot;: &quot;Nevermind&quot;,
+
+&quot;Genre&quot;: &quot;Grunge&quot;,
+
+&quot;Releasedate&quot;: &quot;1991.09.24&quot;,
+
+&quot;Tracklist&quot;: [
+
+   {
+
+     &quot;Track&quot; : &quot;1&quot;,
+
+     &quot;Title&quot; : &quot;Smells like teen spirit&quot;,
+
+     &quot;Length&quot; : &quot;5:02&quot;
+
+   },
+
+   {
+
+     &quot;Track&quot; : &quot;2&quot;,
+
+     &quot;Title&quot; : &quot;In Bloom&quot;,
+
+     &quot;Length&quot; : &quot;4:15&quot;
+
+   }
+
+ ]
+
+  }
+
+
+
+ {
+
+ &quot;ISBN&quot;: &quot;987-1-4302-3051-9&quot;,
+
+ &quot;Type&quot;: &quot;Book&quot;,
+
+ &quot;Title&quot;: &quot;Definite Guide to MongoDB: The NoSQL Database&quot;,
+
+ &quot;Publisher&quot;: &quot;Apress&quot;,
+
+ &quot;Author&quot;: &quot; Eelco Plugge&quot;,
+
+ &quot;Releasedate&quot;: &quot;2011.06.09&quot;
+
+ }
+</code></pre><p>假如，在同一个 collection 中的所有 document，都包含某个共同的 field，例如前例中的“ISBN”，那么我们就可以按照这个 field 的值，来分割 collection。这个 field 的值，又称为 shard key。</p>
+<p>在选择 shard key 的时候，一定要确保这个 key 能够把 collection 均匀地切分成很多 chunks。</p>
+<p>例如，如果我们选择“author”作为 shard key，如果有大量的作者是重名的，那么就会有大量的数据聚集在同一个 chunk 中。当然，假设很少有作者同名同姓，那么“author”也可以作为一个shard key。换句话说，shard key 的选择，与使用场景密切相关。</p>
+<p>很多情况下，无论选择哪一个单一的 field 作为 shard key，都无法均匀分割 collection。在这种情况下，我们可以考虑，用多个 fields，构成一个复合的 shard key。</p>
+<p>延续前例，假如有很多作者同名同姓，他们都叫“王二”。用 author 作为 shard key，显然无法均匀切割 collection。这时我们可以加上 release-date，组成 name-date 的复合的 shard key，例如“王二 2011”。</p>
+<h2 id="Chunks"><a href="#Chunks" class="headerlink" title="Chunks"></a>Chunks</h2><p>MongoDB 按 shard key，把 collection切割成若干chunks。每个 chunk 的数据结构，是一个三元组，{collection，minKey，maxKey}，如图1-2 所示。</p>
+<p> <img src="http://og287lnu0.bkt.clouddn.com/C1233B41-A9E7-4379-A1C1-2A28391D7414.jpg"></p>
+<p>图1-2 chunk的三元组</p>
+<p>其中，collection 是数据库中某一个表的名称，而 minKey 和 maxKey 是 shard key的范围。每一个 document 的shard key 的值，决定了这条document应该存放在哪个chunk中。</p>
+<p>如果两条 documents 的 shard keys 的值很接近，这两条 documents 很可能被存放在同一个 chunk 中。</p>
+<p>Shard key 的值的顺序，决定了 document 存放的 chunk。在 MongoDB 的文献中，这种切割 collection的方式，称为 order-preserving。</p>
+<p>一个 chunk 最多能够存储64MB的数据。 当某个 chunk 存储的 documents 包含的数据量，接近这个阈值时，一个 chunk 会被切分成两个新的 chunks。</p>
+<p>当一个 shard 存储了过多的 chunks，这个shard中的某些 chunks 会被迁移到其它 shard 中。</p>
+<p>这里有个问题，假如某一条 document 包含的数据量很大，超过 64MB，一个 chunk 存放不下，怎么办？在后续章节介绍 GridFS 时，我们会详细讨论。</p>
+<h2 id="Replica-set"><a href="#Replica-set" class="headerlink" title="Replica set"></a>Replica set</h2><p>在生产环境中，为了保证数据不丢失，为了提高系统的可用性（availability），每一个shard被存储多份，每个备份所在的 servers，组成了一个 replica set。</p>
+<p>这个 replica set 包括一个 primary DB 和多个secondary DBs。为了数据的一致性，所有的修改 (insert / update / deletes) 请求都交给 primary 处理。处理结束之后，再异步地备份到其他 secondary 中。</p>
+<p>Primary DB 由 replica set中的所有 servers，共同选举产生。当这个 primaryDB server 出错的时候，可以从 replica set 中重新选举一个新的 primaryDB，从而避免了单点故障。</p>
+<p>Replica set 的选举策略和数据同步机制，确保了系统的数据的一致性。后文详述。</p>
+<h3 id="Config-Server"><a href="#Config-Server" class="headerlink" title="Config Server"></a>Config Server</h3><p>Config servers 用于存储 MongoDB 集群的元数据 metadata，这些元数据包括如下两个部分，每一个 shard server 包括哪些 chunks，每个 chunk 存储了哪些 collections 的哪些 documents。</p>
+<p>每一个 config server 都包括了 MongoDB 中所有 chunk 的信息。</p>
+<p>Config server 也需要 replication。但是有趣的是，config server 采用了自己独特的 replication 模式，而没有沿用 replica set。</p>
+<p>如果任何一台 config server 挂了，整个 config server 集群中，其它 config server 变成只读状态。这样做的原因，是避免在系统不稳定的情况下，冒然对元数据做任何改动，导致在不同的 config servers 中，出现元数据不一致的情况。</p>
+<p>MongoDB 的官方文档建议，配置 3 个 config servers 比较合适，既提供了足够的安全性，又避免了更多的 config servers 实例之间的数据同步，引起的元数据不一致的麻烦。</p>
+<h3 id="Mongos"><a href="#Mongos" class="headerlink" title="Mongos"></a>Mongos</h3><p>用户使用MongoDB 时，用户的操作请求，全部由 mongos 来转发。</p>
+<p>当 mongos 接收到用户请求时，它先查询 config server，找到存放相应数据的 shard servers。然后把用户请求，转发到这些 shard servers。当这些 shard servers完成操作后，它们把结果分别返回给 mongos。而当 mongos 汇总了所有的结果后，它把结果返回给用户。</p>
+<p>Mongos 每次启动的时候，都要到 config servers 中读取元数据，并缓存在本地。每当 config server中的元数据有改动，它都会通知所有的 mongos。</p>
+<p>Mongos 之间，不存在彼此协同工作的问题。因此，MongoDB 所需要配置的 mongos server的数量，没有限制。</p>
+<p>通过以上的介绍，我们对每个组成部分都有了基本的了解，但是涉及到工作的细节，我们尚有诸多疑问，例如，一个chunk的数据太大，如何切分？一个shard数据太多，如何迁移？在 replica set 中，如何选择primary？server挂了，怎么进行故障恢复？接下来的章节，我们逐个回答这些问题。</p>
+<p>Reference，</p>
+<p>[0] Architectural Overview</p>
+<p><a href="http://www.mongodb.org/display/DOCS/Sharding+Introduction" target="_blank" rel="external">http://www.mongodb.org/display/DOCS/Sharding+Introduction</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2017/07/05/mongoDB底层运作原理/" data-id="cj6hjhjht000rwx733phw7kym" class="article-share-link" data-share="baidu" data-title="mongoDB底层运作原理">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式缓存/">分布式缓存</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/07/15/mongoDB常见问题整理/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          mongoDB常见问题整理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/06/17/深入理解JVM阅读笔记以及问题整理/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">《深入理解JVM》阅读笔记以及问题整理</div>
+    </a>
+  
+</nav>
+
+  
+
+
+
+</article>
+
+
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java多线程/">Java多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器/">Java容器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人/">个人</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人经历/">个人经历</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂感/">杂感</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JVM相关/" style="font-size: 20px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 15px;">Java基础</a> <a href="/tags/Java多线程/" style="font-size: 10px;">Java多线程</a> <a href="/tags/Java容器/" style="font-size: 10px;">Java容器</a> <a href="/tags/个人/" style="font-size: 10px;">个人</a> <a href="/tags/个人开源项目/" style="font-size: 12.5px;">个人开源项目</a> <a href="/tags/个人经历/" style="font-size: 10px;">个人经历</a> <a href="/tags/分布式缓存/" style="font-size: 17.5px;">分布式缓存</a> <a href="/tags/操作记录/" style="font-size: 15px;">操作记录</a> <a href="/tags/杂感/" style="font-size: 10px;">杂感</a> <a href="/tags/读书笔记/" style="font-size: 10px;">读书笔记</a> <a href="/tags/高并发方案/" style="font-size: 12.5px;">高并发方案</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/08/17/创业一段时间的总结和感悟/">创业一段时间的总结和感悟：</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/15/JVM GC要点整理与总结（转载）/">JVM GC要点整理与总结</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/14/线程安全与锁优化/">线程安全与锁优化——深入理解JVM阅读笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/13/Java并发编程：volatile关键字解析/">Java并发编程：volatile关键字解析</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/12/我为什么离开学校——十六岁那一年/">我为什么离开学校——十六岁那一年</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/yuaman" target="_blank">我的git同性交友主页</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+
+
+
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 yutinglin<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+
+
+
+</footer>
+
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/tags/操作记录/" class="mobile-nav-link">操作记录</a>
+  
+    <a href="/tags/杂感/" class="mobile-nav-link">杂感</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+
+
+
+
+
+
+
+
+</div>
+</body>
+</html>
