@@ -1,0 +1,438 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<meta name="baidu-site-verification" content="LHYPl19xg9" />
+<meta name="google-site-verification" content="s5HGo7JQp9QFcl2HIOHaNDUdwj3_kdgi5nPkB5bfMHs" />
+  
+  <title>Spring Boot核心原理－自动配置 | 无题</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="之前在公司内部推行spring boot时，有同事跟我提到过，感觉换到spring boot这个框架后，好处是小白也能迅速上手写业务代码了。但是呢，这种情况下新手很容易写得云里雾里的，因为完全不知道背后的原理是什么，相对比在学习spring时需要深刻理解ioc、搞一堆繁琐的配置来说，的确缺少了被迫跳出舒适区去学习一些原理的过程，那么今天就讲讲，为什么spring boot能够如此简单的让我们迅速上">
+<meta name="keywords" content="框架相关">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Boot核心原理－自动配置">
+<meta property="og:url" content="http://yoursite.com/2016/05/23/SpringBoot核心原理——自动配置/index.html">
+<meta property="og:site_name" content="无题">
+<meta property="og:description" content="之前在公司内部推行spring boot时，有同事跟我提到过，感觉换到spring boot这个框架后，好处是小白也能迅速上手写业务代码了。但是呢，这种情况下新手很容易写得云里雾里的，因为完全不知道背后的原理是什么，相对比在学习spring时需要深刻理解ioc、搞一堆繁琐的配置来说，的确缺少了被迫跳出舒适区去学习一些原理的过程，那么今天就讲讲，为什么spring boot能够如此简单的让我们迅速上">
+<meta property="og:updated_time" content="2017-08-25T09:06:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring Boot核心原理－自动配置">
+<meta name="twitter:description" content="之前在公司内部推行spring boot时，有同事跟我提到过，感觉换到spring boot这个框架后，好处是小白也能迅速上手写业务代码了。但是呢，这种情况下新手很容易写得云里雾里的，因为完全不知道背后的原理是什么，相对比在学习spring时需要深刻理解ioc、搞一堆繁琐的配置来说，的确缺少了被迫跳出舒适区去学习一些原理的过程，那么今天就讲讲，为什么spring boot能够如此简单的让我们迅速上">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">无题</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">天南地北问乾坤</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/tags/操作记录/">操作记录</a>
+        
+          <a class="main-nav-link" href="/tags/杂感/">杂感</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="yoursite.com">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-SpringBoot核心原理——自动配置" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/05/23/SpringBoot核心原理——自动配置/" class="article-date">
+  <time datetime="2016-05-23T09:37:31.000Z" itemprop="datePublished">2016-05-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Spring Boot核心原理－自动配置
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>之前在公司内部推行spring boot时，有同事跟我提到过，感觉换到spring boot这个框架后，好处是小白也能迅速上手写业务代码了。但是呢，这种情况下新手很容易写得云里雾里的，因为完全不知道背后的原理是什么，相对比在学习spring时需要深刻理解ioc、搞一堆繁琐的配置来说，的确缺少了被迫跳出舒适区去学习一些原理的过程，那么今天就讲讲，为什么spring boot能够如此简单的让我们迅速上手。</p>
+<p>Spring由于其繁琐的配置，一度被人成为“配置地狱”，各种XML、Annotation配置，让人眼花缭乱，而且如果出错了也很难找出原因。Spring Boot项目就是为了解决配置繁琐的问题，最大化的实现convention over configuration(约定大于配置)。熟悉Ruby On Rails（ROR框架的程序员都知道，借助于ROR的脚手架工具只需简单的几步即可建立起一个Web应用程序。而Spring Boot就相当于Java平台上的ROR。</p>
+<p>Spring boot出现之后，得益于“习惯优于配置”这个理念，再也没有繁琐的配置、难以集成的内容（大多数流行第三方技术都被集成在内）。 那么背后实现的核心原理到底是什么呢？ 其实是spring 4.x提供的基于条件配置bean的能力。</p>
+<p>Spring boot关于自动配置的源码在spring-boot-autoconfigure-x.x.x.x.jar中，主要包含了如下图所示的配置（并未截全）：</p>
+<p>我们可以在这里看见所有spring boot为我们做的自动配置。通过在application.properties中设置属性：debug=true，可以通过控制台的输出观察自动配置启动的情况：(以下有删减，建议自己运行一下看看)</p>
+<pre><code>=========================AUTO-CONFIGURATION REPORT
+Positive matches:
+————————
+ - @ConditionalOnClass classes found: org.springframework.web.servlet.DispatcherServlet (OnClassCondition)  - found web application StandardServletEnvironment (OnWebApplicationCondition)
+ Negative matches:
+-----------------   ActiveMQAutoConfiguration did not match
+      - required @ConditionalOnClass classes not found: javax.jms.ConnectionFactory,org.apache.activemq.ActiveMQConnectionFactory (OnClassCondition)
+运行原理
+
+在第一次使用spring boot的时候，大家都会惊讶于@SpringBootApplication这个注解，有了它马上就能够让整个应用跑起来。实际上它只是一个组合注解，包含@Configuration、@EnableAutoConfiguration、@ComponentScan这三个注解。
+
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+@Configuration
+@EnableAutoConfiguration
+@ComponentScan
+public @interface SpringBootApplication {
+    Class&lt;?&gt;[] exclude() default {};
+    String[] excludeName() default {};
+    @AliasFor(
+        annotation = ComponentScan.class,
+        attribute = &quot;basePackages&quot;
+    )
+    String[] scanBasePackages() default {};
+    @AliasFor(
+        annotation = ComponentScan.class,
+        attribute = &quot;basePackageClasses&quot;
+    )
+    Class&lt;?&gt;[] scanBasePackageClasses() default {};
+}
+它的核心功能是由@EnableAutoConfiguration这个注解提供的，我们来看看@EnableAutoConfiguration的源代码：
+
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+@AutoConfigurationPackage
+@Import({EnableAutoConfigurationImportSelector.class})
+public @interface EnableAutoConfiguration {
+    Class&lt;?&gt;[] exclude() default {};
+    String[] excludeName() default {};
+}
+</code></pre><p>这里的关键功能是@Import注解导入的配置功能<br>EnableAutoConfigurationImportSelector使用SpringFactoriesLoader.loadFactoryNames方法来扫描具有META-INF/spring.factories文件的jar包，spring-boot-autoconfigure-x.x.x.x.jar里就有一个spring.factories文件，这个文件中声明了有哪些要自动配置。<br>下面我们来分析一下spring boot autoconfigure里面的MongoAutoConfiguration（MongoDB的自动配置），相信你就会明白这套自动配置机制到底是怎么一回事儿：</p>
+<pre><code>//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by Fernflower decompiler)
+//
+package org.springframework.boot.autoconfigure.mongo;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
+import java.net.UnknownHostException;
+import javax.annotation.PreDestroy;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.mongo.MongoProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+@Configuration
+@ConditionalOnClass({MongoClient.class})  
+@EnableConfigurationProperties({MongoProperties.class}) //开启属性注入。
+@ConditionalOnMissingBean(
+    type = {&quot;org.springframework.data.mongodb.MongoDbFactory&quot;}
+) 
+public class MongoAutoConfiguration {
+    @Autowired
+    private MongoProperties properties;
+    @Autowired(
+        required = false
+    )
+    private MongoClientOptions options;
+    @Autowired
+    private Environment environment;
+    private MongoClient mongo;
+    public MongoAutoConfiguration() {
+    }
+    @PreDestroy
+    public void close() {
+        if(this.mongo != null) {
+            this.mongo.close();
+        }
+    }
+    @Bean //使用java配置，当容器中没有这个bean的时候执行初始化
+    @ConditionalOnMissingBean
+    public MongoClient mongo() throws UnknownHostException {
+        this.mongo = this.properties.createMongoClient(this.options, this.environment);
+        return this.mongo;
+    }
+}
+</code></pre><p>首先这被@Configuration注解了，是一个配置类，当满足以下条件这个bean被装配：</p>
+<ul>
+<li><p>当MongoClient在类路径下。</p>
+</li>
+<li><p>当容器中没有org.springframework.data.mongodb.MongoDbFactory这类bean的时候。</p>
+</li>
+</ul>
+<p>此外，我们可以看一下通过@EnableConfigurationProperties({MongoProperties.class}) 自动注入的属性（这是习惯优于配置的最终落地点）：</p>
+<pre><code>@ConfigurationProperties(
+    prefix = &quot;spring.data.mongodb&quot;
+)
+public class MongoProperties {
+    public static final int DEFAULT_PORT = 27017;
+    private String host;
+    private Integer port = null;
+    private String uri = &quot;mongodb://localhost/test&quot;;
+    private String database;
+    private String authenticationDatabase;
+    private String gridFsDatabase;
+    private String username;
+    private char[] password;
+    private Class&lt;?&gt; fieldNamingStrategy;
+
+    ......
+}
+</code></pre><p>所以在我们什么都不干的情况下，只需要引入spring-data-mongodb这个依赖再加上默认的MongoDB server我们就能够快速集成MongoDB，用MongodbTemplate访问数据库。</p>
+<p>同时我们可以通过在application.yaml中修改spring.data.mongodb相关的参数就能够修改连接配置，如：</p>
+<pre><code>spring:
+    data:
+        mongodb:
+            host: localhost
+            port: 27017
+            username: chingzhu
+            password: test123
+            database: icekredit
+</code></pre><p>利用这套原理，我们也可以轻松地把目前spring boot还未集成的、我们自己要使用的第三方技术自动集成起来。</p>
+<p>现在，不知道你对spring boot的机制有一个清楚的认识了吗？</p>
+<p>附：常见org.springframework.boot.autoconfigure.condition包下的条件注解意思</p>
+<p>@ConditionalOnBean：当容器里有指定的bean的条件下。</p>
+<p>@ConditionalOnMissingBean：当容器里不存在指定bean的条件下。</p>
+<p>@ConditionalOnClass：当类路径下有指定类的条件下。</p>
+<p>@ConditionalOnMissingClass：当类路径下不存在指定类的条件下。</p>
+<p>@ConditionalOnProperty：指定的属性是否有指定的值，比如@ConditionalOnProperties(prefix=”xxx.xxx”, value=”enable”, matchIfMissing=true)，代表当xxx.xxx为enable时条件的布尔值为true，如果没有设置的情况下也为true。</p>
+<p>转载地址：<a href="http://blog.csdn.net/xiaobing_122613/article/details/54943448" target="_blank" rel="external">http://blog.csdn.net/xiaobing_122613/article/details/54943448</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2016/05/23/SpringBoot核心原理——自动配置/" data-id="cj6rqyma6000qfm73qamtgitb" class="article-share-link" data-share="baidu" data-title="Spring Boot核心原理－自动配置">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/框架相关/">框架相关</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/06/04/读《罗马人物语-恺撒时代》/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          读《罗马人物语-恺撒时代》
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/05/09/Java中equals与==的区别与使用场景分析/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">谈谈Java中equals和==的区别和使用场景</div>
+    </a>
+  
+</nav>
+
+  
+
+
+
+</article>
+
+
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java多线程/">Java多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器/">Java容器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器相关/">Java容器相关</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器类/">Java容器类</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java容器相关/">java容器相关</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人/">个人</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人经历/">个人经历</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式消息/">分布式消息</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发相关/">并发相关</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂感/">杂感</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架相关/">框架相关</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JVM相关/" style="font-size: 17.5px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 15px;">Java基础</a> <a href="/tags/Java多线程/" style="font-size: 10px;">Java多线程</a> <a href="/tags/Java容器/" style="font-size: 10px;">Java容器</a> <a href="/tags/Java容器相关/" style="font-size: 12.5px;">Java容器相关</a> <a href="/tags/Java容器类/" style="font-size: 10px;">Java容器类</a> <a href="/tags/java容器相关/" style="font-size: 10px;">java容器相关</a> <a href="/tags/个人/" style="font-size: 10px;">个人</a> <a href="/tags/个人开源项目/" style="font-size: 12.5px;">个人开源项目</a> <a href="/tags/个人经历/" style="font-size: 10px;">个人经历</a> <a href="/tags/分布式消息/" style="font-size: 12.5px;">分布式消息</a> <a href="/tags/分布式缓存/" style="font-size: 20px;">分布式缓存</a> <a href="/tags/并发相关/" style="font-size: 15px;">并发相关</a> <a href="/tags/操作记录/" style="font-size: 15px;">操作记录</a> <a href="/tags/杂感/" style="font-size: 10px;">杂感</a> <a href="/tags/框架相关/" style="font-size: 15px;">框架相关</a> <a href="/tags/读书笔记/" style="font-size: 10px;">读书笔记</a> <a href="/tags/高并发方案/" style="font-size: 12.5px;">高并发方案</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/08/17/创业一段时间的总结和感悟/">创业一段时间的总结和感悟：</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/14/线程安全与锁优化/">线程安全与锁优化——深入理解JVM阅读笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/13/Java并发编程：volatile关键字解析/">Java并发编程：volatile关键字解析</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/12/我为什么离开学校——十六岁那一年/">我为什么离开学校——十六岁那一年</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/11/事务的四大特性以及事务的四种隔离级别/">事务的四大特性以及事务的四种隔离级别</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/yuaman" target="_blank">我的git同性交友主页</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+
+
+
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 yutinglin<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+
+
+
+</footer>
+
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/tags/操作记录/" class="mobile-nav-link">操作记录</a>
+  
+    <a href="/tags/杂感/" class="mobile-nav-link">杂感</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+
+
+
+
+
+
+
+
+</div>
+</body>
+</html>
