@@ -1,0 +1,514 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<meta name="baidu-site-verification" content="LHYPl19xg9" />
+<meta name="google-site-verification" content="s5HGo7JQp9QFcl2HIOHaNDUdwj3_kdgi5nPkB5bfMHs" />
+  
+  <title>链式存储线性表（LinkedList）数据结构解析 | 无题</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Redis常见问题整理">
+<meta name="keywords" content="Java容器类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="链式存储线性表（LinkedList）数据结构解析">
+<meta property="og:url" content="http://yoursite.com/2016/11/03/链式存储线性表（LinkedList）数据结构解析/index.html">
+<meta property="og:site_name" content="无题">
+<meta property="og:description" content="Redis常见问题整理">
+<meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/06151107_JGLx.png">
+<meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/w2.png">
+<meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/w3.png">
+<meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/w4.png">
+<meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/w5.png">
+<meta property="og:updated_time" content="2017-08-25T08:14:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="链式存储线性表（LinkedList）数据结构解析">
+<meta name="twitter:description" content="Redis常见问题整理">
+<meta name="twitter:image" content="http://og287lnu0.bkt.clouddn.com/06151107_JGLx.png">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">无题</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">天南地北问乾坤</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/tags/操作记录/">操作记录</a>
+        
+          <a class="main-nav-link" href="/tags/杂感/">杂感</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="yoursite.com">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-链式存储线性表（LinkedList）数据结构解析" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/03/链式存储线性表（LinkedList）数据结构解析/" class="article-date">
+  <time datetime="2016-11-03T09:37:31.000Z" itemprop="datePublished">2016-11-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      链式存储线性表（LinkedList）数据结构解析
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Redis常见问题整理<br><a id="more"></a></p>
+<h3 id="一、节点分析"><a href="#一、节点分析" class="headerlink" title="一、节点分析"></a>一、节点分析</h3><p>LinkedList内部是通过链表来实现的，那么就少不了节点，所以在源码中必然能找到这样一个节点。</p>
+<pre><code>private static class Node&lt;E&gt; {
+    E item;
+    Node&lt;E&gt; next;
+    Node&lt;E&gt; prev;
+
+    Node(Node&lt;E&gt; prev, E element, Node&lt;E&gt; next) {
+        this.item = element;
+        this.next = next;
+        this.prev = prev;
+    }
+}
+</code></pre><p>节点中定义了三个成员变量：E item（节点的存储内容）、Node<e> next（记录下一个节点的指针）、Node<e> prev（记录后一个节点的指针），其构造方法我觉得很巧妙，该构造函数的三个参数中就包含了它的前一个节点，节点保存的内容，和它的后一个节点，只要通过这个构造函数new出的新节点就自动实现了节点间的链接，在后面的增删改查操作中我们会发现，通过这个构造方法我们可以省去很多Node<e> next和Node<e> prev指针指来指去的操作。</e></e></e></e></p>
+<h3 id="二、LinkedList的核心操作方法"><a href="#二、LinkedList的核心操作方法" class="headerlink" title="二、LinkedList的核心操作方法"></a>二、LinkedList的核心操作方法</h3><p>在LinkedList中有可以看到这样两个成员变量Node<e> first和Node<e> last</e></e></p>
+<pre><code>/**
+     * Pointer to first node.
+     * Invariant: (first == null &amp;&amp; last == null) ||
+     *            (first.prev == null &amp;&amp; first.item != null)
+     */
+    transient Node&lt;E&gt; first;
+
+
+/**
+     * Pointer to last node.
+     * Invariant: (first == null &amp;&amp; last == null) ||
+     *            (last.next == null &amp;&amp; last.item != null)
+     */
+    transient Node&lt;E&gt; last;
+</code></pre><p>这个两个成员变量很关键，主要用来记录链表的头和尾，这样方便我们在CRUD操作的过程中来查找到相应位置的节点。通过分析源码可以知道LinkedList其实是用的是双向链表来实现的。</p>
+<p><img src="http://og287lnu0.bkt.clouddn.com/06151107_JGLx.png"></p>
+<p>在分析一个数据结构的时候，从相关add方法分析走能很好的理清数据结构的脉络。  </p>
+<ul>
+<li><p>linkFirst方法的分析<br>可以看到在addFirst的方法中其实是调用的linkFirst方法。</p>
+<pre><code>/**
+   * Inserts the specified element at the beginning of this list.
+   *
+   * @param e the element to add
+   */
+  public void addFirst(E e) {
+      linkFirst(e);
+  }
+</code></pre><p>  接下来看看linkFirst方法是如何实现节点间操作的：</p>
+</li>
+</ul>
+<pre><code>/**
+   * Links e as first element.
+   */
+  private void linkFirst(E e) {
+      final Node&lt;E&gt; f = first;
+      final Node&lt;E&gt; newNode = new Node&lt;&gt;(null, e, f);
+      first = newNode;
+      if (f == null)
+          last = newNode;
+      else
+          f.prev = newNode;
+      size++;
+      modCount++;
+  }
+</code></pre><p>  linkFirst顾名思义，就是将节点链接到第一个。该方法首先是拿到链表的first(第一个）节点，然后通过那个巧妙的节点构造函数构造出一个新节点，然后将记录链表头的first指向这个新的节点，如果之前那个记录链表头的first节点等于null，说明当前链表中还没有一个节点（空链表）,所以就将记录链表尾的last节点也指向这个新节点；如果之前那个记录链表头的first节点不为null，那么就将之前的第一个节点的prev指针指向新节点，在节点的构造函数中就完成了新节点的next指针指向之前的第一个节点，所以这样就形成了节点间的双向记录。  </p>
+<ul>
+<li>linkLast方法的分析<br>可以看到在addLast的方法中其实是调用的linkLast方法。</li>
+</ul>
+<pre><code>/**
+   * Appends the specified element to the end of this list.
+   *
+   * &lt;p&gt;This method is equivalent to {
+@link
+ #add}.
+   *
+   * 
+@param
+ e the element to add
+   */
+  public void addLast(E e) {
+      linkLast(e);
+  }
+</code></pre><p>再来看看linkLast方法是如何实现的：</p>
+<pre><code>/**
+   * Links e as last element.
+   */
+  void linkLast(E e) {
+      final Node&lt;E&gt; l = last;
+      final Node&lt;E&gt; newNode = new Node&lt;&gt;(l, e, null);
+      last = newNode;
+      if (l == null)
+          first = newNode;
+      else
+          l.next = newNode;
+      size++;
+      modCount++;
+  }
+</code></pre><p>  这个方法是不是和linkFirst方法很像，它首先是拿到记录链表的last节点，然后又通过那个巧妙的构造方法构造一个新的节点，最后同样是判断之前记录链表的last节点为不为null，如果为null说明链表依然是空的，所以就将记录链表头的first指向该新节点，如果不为null说明链表之前已经有节点了，此时只需要将之前的那个尾节点的next指针指向当前新节点即可，同样是构造方法帮助我们完成了新节点的prev指针指向前一个节点。所以我觉得那个节点的构造函数很巧妙。</p>
+<ul>
+<li><p>linkBefore方法的分析<br>这个方法是比较重要也比较难理解的方法，先来看看这个函数的代码：</p>
+<pre><code>/**
+   * Inserts element e before non-null Node succ.
+   */
+  void linkBefore(E e, Node&lt;E&gt; succ) {
+      // assert succ != null;
+      final Node&lt;E&gt; pred = succ.prev;
+      final Node&lt;E&gt; newNode = new Node&lt;&gt;(pred, e, succ);
+      succ.prev = newNode;
+      if (pred == null)
+          first = newNode;
+      else
+          pred.next = newNode;
+      size++;
+      modCount++;
+  }
+</code></pre></li>
+</ul>
+<p>虽然代码和简洁，但却比较难理解，这个方法的两个参数分别表示：插入新节点的元素、需要在哪个节点前插入的节点。结合下面的这张图来分析：<br><img src="http://og287lnu0.bkt.clouddn.com/w2.png"><br>比如我现在想在Node3前面插入一个节点，那么当前的succ =  Node3，所以这句代码final Node<e> pred = succ.prev;执行后pred = Node2，再通过那个巧妙的节点构造函数就将新节点链接上去了，如图：<br><img src="http://og287lnu0.bkt.clouddn.com/w3.png"><br>这时候再通这句代码succ.prev = newNode;就Node3的prev指针指向了插入的新节点。后面的判读pred为不为null是为了知道是不是再第一个节点前插入新节点，如果是在第一个节点前插入新节点，那么就将记录链表头的first指针指向新节点，否则就pred的next指针指向插入的新节点，这样就完成了 新节点的插入操作。如图：<br><img src="http://og287lnu0.bkt.clouddn.com/w4.png"></e></p>
+<ul>
+<li>unlinkFirst方法的分析</li>
+</ul>
+<pre><code>/**
+   * Unlinks non-null first node f.
+   */
+  private E unlinkFirst(Node&lt;E&gt; f) {
+      // assert f == first &amp;&amp; f != null;
+      final E element = f.item;
+      final Node&lt;E&gt; next = f.next;
+      f.item = null;
+      f.next = null; // help GC
+      first = next;
+      if (next == null)
+          last = null;
+      else
+          next.prev = null;
+      size--;
+      modCount++;
+      return element;
+  }
+</code></pre><p>  该方法是移除第一个节点，首先是通过传入的first指针拿到第一个节点的内容，然后拿到它的下一个节点，再将第一个节点的内容和指向下个节点的next指针置空，方便GC回收。下一步便是将记录头节点的first指向final Node<e> next = f.next;拿到的这个节点，如果这个的节点为空，那么last = null（说明链表在移除第一个节点前只有一个节点），否则就将拿到的这个节点中的prev指针置空，表示这个节点就是第一个节点。</e></p>
+<ul>
+<li>unlinkLast方法的分析  </li>
+</ul>
+<pre><code>/**
+   * Unlinks non-null last node l.
+   */
+  private E unlinkLast(Node&lt;E&gt; l) {
+      // assert l == last &amp;&amp; l != null;
+      final E element = l.item;
+      final Node&lt;E&gt; prev = l.prev;
+      l.item = null;
+      l.prev = null; // help GC
+      last = prev;
+      if (prev == null)
+          first = null;
+      else
+          prev.next = null;
+      size--;
+      modCount++;
+      return element;
+  }
+</code></pre><p>这个方法和unlinkFirst的实现基本差不多，此方法的作用是移除链表中的最后一个节点。只要清楚了unlinkFirst这个方法，那么unlinkLast也就清楚了。  </p>
+<ul>
+<li>unlink方法的分析  </li>
+</ul>
+<pre><code>/**
+   * Unlinks non-null node x.
+   */
+  E unlink(Node&lt;E&gt; x) {
+      // assert x != null;
+      final E element = x.item;
+      final Node&lt;E&gt; next = x.next;
+      final Node&lt;E&gt; prev = x.prev;
+
+      if (prev == null) {
+          first = next;
+      } else {
+          prev.next = next;
+          x.prev = null;
+      }
+
+      if (next == null) {
+          last = prev;
+      } else {
+          next.prev = prev;
+          x.next = null;
+      }
+
+      x.item = null;
+      size--;
+      modCount++;
+      return element;
+     }
+</code></pre><p>此方法是移除链表中指定的节点，在移除这个节点前肯定需要拿到这个节点prev指针和next指针所记录的节点，并需要判断prev指针和next是否为空，prev指针为空表示这个节点就是第一个节点，next指针为空表示这个节点就是最后一个节点。关键代码便是通过判断将拿到的prev节点的next指针指向拿到的next节点，以及将拿到的next节点的prev指针指向拿到的prev节点。</p>
+<h3 id="三、LinkedList中的经典算法"><a href="#三、LinkedList中的经典算法" class="headerlink" title="三、LinkedList中的经典算法"></a>三、LinkedList中的经典算法</h3><p>在LinkedList中有一个根据索引查找相应节点的方法，此方法的源码如下：</p>
+<p>/**</p>
+<pre><code> * Returns the (non-null) Node at the specified element index.
+ */
+Node&lt;E&gt; node(int index) {
+    // assert isElementIndex(index);
+
+    if (index &lt; (size &gt;&gt; 1)) {
+        Node&lt;E&gt; x = first;
+        for (int i = 0; i &lt; index; i++)
+            x = x.next;
+        return x;
+    } else {
+        Node&lt;E&gt; x = last;
+        for (int i = size - 1; i &gt; index; i--)
+            x = x.prev;
+        return x;
+    }
+}
+</code></pre><p>在这个方法中可以看到用到了折半查找的算法，当传入一个索引后会判断index &lt; (size &gt;&gt; 1)，如果index小于size的一半，则从前往后找节点；否则就从后往前找节点。</p>
+<p>通过对LinkedList的分析后，对数据结构中的链表有了新的认识，在LinkedList中用的链表是双向链表，其实通过双向循环链表也可以来实现，如果是通过双向循环链表可以不需要last这个记录链表尾的变量了，只需要一个first变量记录链表的头，也可以实现从前往后和从后往前的查找等操作。</p>
+<p><img src="http://og287lnu0.bkt.clouddn.com/w5.png"></p>
+<p>转载地址：<a href="https://my.oschina.net/devbird/blog/807571" target="_blank" rel="external">https://my.oschina.net/devbird/blog/807571</a><br>感谢原作者🙏</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2016/11/03/链式存储线性表（LinkedList）数据结构解析/" data-id="cj6rmsdsk001y7573mv12qb6o" class="article-share-link" data-share="baidu" data-title="链式存储线性表（LinkedList）数据结构解析">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java容器类/">Java容器类</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/11/15/JVM GC要点整理与总结（转载）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          JVM GC要点整理与总结
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/10/24/myBatis特点总结/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">Mybatis特点总结</div>
+    </a>
+  
+</nav>
+
+  
+
+
+
+</article>
+
+
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java多线程/">Java多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器/">Java容器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器类/">Java容器类</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人/">个人</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人经历/">个人经历</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂感/">杂感</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架相关/">框架相关</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JVM相关/" style="font-size: 17.5px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 15px;">Java基础</a> <a href="/tags/Java多线程/" style="font-size: 10px;">Java多线程</a> <a href="/tags/Java容器/" style="font-size: 10px;">Java容器</a> <a href="/tags/Java容器类/" style="font-size: 10px;">Java容器类</a> <a href="/tags/个人/" style="font-size: 10px;">个人</a> <a href="/tags/个人开源项目/" style="font-size: 12.5px;">个人开源项目</a> <a href="/tags/个人经历/" style="font-size: 10px;">个人经历</a> <a href="/tags/分布式缓存/" style="font-size: 20px;">分布式缓存</a> <a href="/tags/操作记录/" style="font-size: 15px;">操作记录</a> <a href="/tags/杂感/" style="font-size: 10px;">杂感</a> <a href="/tags/框架相关/" style="font-size: 12.5px;">框架相关</a> <a href="/tags/读书笔记/" style="font-size: 10px;">读书笔记</a> <a href="/tags/高并发方案/" style="font-size: 12.5px;">高并发方案</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/08/17/创业一段时间的总结和感悟/">创业一段时间的总结和感悟：</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/14/线程安全与锁优化/">线程安全与锁优化——深入理解JVM阅读笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/13/Java并发编程：volatile关键字解析/">Java并发编程：volatile关键字解析</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/12/我为什么离开学校——十六岁那一年/">我为什么离开学校——十六岁那一年</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/11/事务的四大特性以及事务的四种隔离级别/">事务的四大特性以及事务的四种隔离级别</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/yuaman" target="_blank">我的git同性交友主页</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+
+
+
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 yutinglin<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+
+
+
+</footer>
+
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/tags/操作记录/" class="mobile-nav-link">操作记录</a>
+  
+    <a href="/tags/杂感/" class="mobile-nav-link">杂感</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+
+
+
+
+
+
+
+
+</div>
+</body>
+</html>
