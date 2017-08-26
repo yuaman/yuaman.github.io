@@ -8,13 +8,11 @@
   
   <title>消息队列两种模式：点对点与发布订阅 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Java消息服务（JavaMessage Service，JMS）应用程序接口是一个Java平台中关于面向消息中间件（MOM）的API，用于在两个应用程序之间，或分布式系统中发送消息，进行异步通信。点对点与发布订阅最初是由JMS定义的。这两种模式主要区别或解决的问题就是发送到队列的消息能否重复消费(多订阅) 1、定义JMS规范目前支持两种消息模型：点对点（point to point， queue">
-<meta name="keywords" content="分布式消息">
+  <meta name="keywords" content="分布式消息">
 <meta property="og:type" content="article">
 <meta property="og:title" content="消息队列两种模式：点对点与发布订阅">
 <meta property="og:url" content="http://yoursite.com/2016/06/09/消息队列两种模式：点对点与发布订阅/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="Java消息服务（JavaMessage Service，JMS）应用程序接口是一个Java平台中关于面向消息中间件（MOM）的API，用于在两个应用程序之间，或分布式系统中发送消息，进行异步通信。点对点与发布订阅最初是由JMS定义的。这两种模式主要区别或解决的问题就是发送到队列的消息能否重复消费(多订阅) 1、定义JMS规范目前支持两种消息模型：点对点（point to point， queue">
 <meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/r0.png">
 <meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/r1.jpg">
 <meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/r2.jpg">
@@ -22,10 +20,9 @@
 <meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/r4.jpg">
 <meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/r5.jpg">
 <meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/r6.jpg">
-<meta property="og:updated_time" content="2017-08-25T10:37:22.000Z">
+<meta property="og:updated_time" content="2017-08-26T04:41:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="消息队列两种模式：点对点与发布订阅">
-<meta name="twitter:description" content="Java消息服务（JavaMessage Service，JMS）应用程序接口是一个Java平台中关于面向消息中间件（MOM）的API，用于在两个应用程序之间，或分布式系统中发送消息，进行异步通信。点对点与发布订阅最初是由JMS定义的。这两种模式主要区别或解决的问题就是发送到队列的消息能否重复消费(多订阅) 1、定义JMS规范目前支持两种消息模型：点对点（point to point， queue">
 <meta name="twitter:image" content="http://og287lnu0.bkt.clouddn.com/r0.png">
   
   
@@ -97,7 +94,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="http://og287lnu0.bkt.clouddn.com/r0.png"><br>Java消息服务（JavaMessage Service，JMS）应用程序接口是一个Java平台中关于面向消息中间件（MOM）的API，用于在两个应用程序之间，或分布式系统中发送消息，进行异步通信。<br>点对点与发布订阅最初是由JMS定义的。这两种模式主要区别或解决的问题就是发送到队列的消息能否重复消费(多订阅)</p>
+        <p><img src="http://og287lnu0.bkt.clouddn.com/r0.png"></p>
+<a id="more"></a>
+<p>Java消息服务（JavaMessage Service，JMS）应用程序接口是一个Java平台中关于面向消息中间件（MOM）的API，用于在两个应用程序之间，或分布式系统中发送消息，进行异步通信。<br>点对点与发布订阅最初是由JMS定义的。这两种模式主要区别或解决的问题就是发送到队列的消息能否重复消费(多订阅)</p>
 <h2 id="1、定义"><a href="#1、定义" class="headerlink" title="1、定义"></a>1、定义</h2><p>JMS规范目前支持两种消息模型：点对点（point to point， queue）和发布/订阅（publish/subscribe，topic）。</p>
 <h3 id="1-1、点对点：Queue，不可重复消费"><a href="#1-1、点对点：Queue，不可重复消费" class="headerlink" title="1.1、点对点：Queue，不可重复消费"></a>1.1、点对点：Queue，不可重复消费</h3><p>消息生产者生产消息发送到queue中，然后消息消费者从queue中取出并且消费消息。<br>消息被消费以后，queue中不再有存储，所以消息消费者不可能消费到已经被消费的消息。Queue支持存在多个消费者，但是对一个消息而言，只会有一个消费者可以消费。<br><img src="http://og287lnu0.bkt.clouddn.com/r1.jpg"></p>
 <h3 id="1-2、发布-订阅：Topic，可以重复消费"><a href="#1-2、发布-订阅：Topic，可以重复消费" class="headerlink" title="1.2、发布/订阅：Topic，可以重复消费"></a>1.2、发布/订阅：Topic，可以重复消费</h3><p>消息生产者（发布）将消息发布到topic中，同时有多个消息消费者（订阅）消费该消息。和点对点方式不同，发布到topic的消息会被所有订阅者消费。<br><img src="http://og287lnu0.bkt.clouddn.com/r2.jpg"><br>支持订阅组的发布订阅模式：<br>发布订阅模式下，当发布者消息量很大时，显然单个订阅者的处理能力是不足的。实际上现实场景中是多个订阅者节点组成一个订阅组负载均衡消费topic消息即分组订阅，这样订阅者很容易实现消费能力线性扩展。可以看成是一个topic下有多个Queue，每个Queue是点对点的方式，Queue之间是发布订阅方式。<br><img src="http://og287lnu0.bkt.clouddn.com/r3.jpg"></p>
@@ -114,7 +113,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/06/09/消息队列两种模式：点对点与发布订阅/" data-id="cj6sssb880024zpsejz7brnii" class="article-share-link" data-share="baidu" data-title="消息队列两种模式：点对点与发布订阅">分享到</a>
+        <a data-url="http://yoursite.com/2016/06/09/消息队列两种模式：点对点与发布订阅/" data-id="cj6stk0zz0024y0seuy3z1wmd" class="article-share-link" data-share="baidu" data-title="消息队列两种模式：点对点与发布订阅">分享到</a>
       
 
 
