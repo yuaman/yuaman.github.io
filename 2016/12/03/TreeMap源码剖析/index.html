@@ -8,17 +8,17 @@
   
   <title>TreeMap源码剖析 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="转载：http://blog.csdn.net/ns_code/article/details/36421085 几点总结 本文对TreeMap的分析较前几篇文章有些浅尝辄止，TreeMap用的没有HashMap那么多，我们有个宏观上的把我和比较即可。  1、TreeMap是基于红黑树实现的TreeMap是根据key进行排序的，它的排序和定位需要依赖比较器或覆写Comparable接口，也因此不需">
+  <meta name="description" content="几点总结 本文对TreeMap的分析较前几篇文章有些浅尝辄止，TreeMap用的没有HashMap那么多，我们有个宏观上的把我和比较即可。  1、TreeMap是基于红黑树实现的TreeMap是根据key进行排序的，它的排序和定位需要依赖比较器或覆写Comparable接口，也因此不需要key覆写hashCode方法和equals方法，就可以排除掉重复的key，而HashMap的key则需要通过覆">
 <meta name="keywords" content="Java容器相关">
 <meta property="og:type" content="article">
 <meta property="og:title" content="TreeMap源码剖析">
 <meta property="og:url" content="http://yoursite.com/2016/12/03/TreeMap源码剖析/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="转载：http://blog.csdn.net/ns_code/article/details/36421085 几点总结 本文对TreeMap的分析较前几篇文章有些浅尝辄止，TreeMap用的没有HashMap那么多，我们有个宏观上的把我和比较即可。  1、TreeMap是基于红黑树实现的TreeMap是根据key进行排序的，它的排序和定位需要依赖比较器或覆写Comparable接口，也因此不需">
-<meta property="og:updated_time" content="2017-08-25T10:48:54.000Z">
+<meta property="og:description" content="几点总结 本文对TreeMap的分析较前几篇文章有些浅尝辄止，TreeMap用的没有HashMap那么多，我们有个宏观上的把我和比较即可。  1、TreeMap是基于红黑树实现的TreeMap是根据key进行排序的，它的排序和定位需要依赖比较器或覆写Comparable接口，也因此不需要key覆写hashCode方法和equals方法，就可以排除掉重复的key，而HashMap的key则需要通过覆">
+<meta property="og:updated_time" content="2017-08-26T03:36:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TreeMap源码剖析">
-<meta name="twitter:description" content="转载：http://blog.csdn.net/ns_code/article/details/36421085 几点总结 本文对TreeMap的分析较前几篇文章有些浅尝辄止，TreeMap用的没有HashMap那么多，我们有个宏观上的把我和比较即可。  1、TreeMap是基于红黑树实现的TreeMap是根据key进行排序的，它的排序和定位需要依赖比较器或覆写Comparable接口，也因此不需">
+<meta name="twitter:description" content="几点总结 本文对TreeMap的分析较前几篇文章有些浅尝辄止，TreeMap用的没有HashMap那么多，我们有个宏观上的把我和比较即可。  1、TreeMap是基于红黑树实现的TreeMap是根据key进行排序的，它的排序和定位需要依赖比较器或覆写Comparable接口，也因此不需要key覆写hashCode方法和equals方法，就可以排除掉重复的key，而HashMap的key则需要通过覆">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -93,8 +93,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>转载：<a href="http://blog.csdn.net/ns_code/article/details/36421085" target="_blank" rel="external">http://blog.csdn.net/ns_code/article/details/36421085</a></p>
-<h2 id="几点总结"><a href="#几点总结" class="headerlink" title="几点总结"></a>几点总结</h2><p> 本文对TreeMap的分析较前几篇文章有些浅尝辄止，TreeMap用的没有HashMap那么多，我们有个宏观上的把我和比较即可。</p>
+        <h2 id="几点总结"><a href="#几点总结" class="headerlink" title="几点总结"></a>几点总结</h2><p> 本文对TreeMap的分析较前几篇文章有些浅尝辄止，TreeMap用的没有HashMap那么多，我们有个宏观上的把我和比较即可。</p>
 <p> 1、TreeMap是基于红黑树实现的<br>TreeMap是根据key进行排序的，它的排序和定位需要依赖比较器或覆写Comparable接口，也因此不需要key覆写hashCode方法和equals方法，就可以排除掉重复的key，而HashMap的key则需要通过覆写hashCode方法和equals方法来确保没有重复的key。</p>
 <p>2、TreeMap的查询、插入、删除效率均没有HashMap高，一般只有要对key排序时才使用TreeMap。</p>
 <p>3、TreeMap的key不能为null，而HashMap的key可以为null。</p>
@@ -338,12 +337,13 @@ TreeMap的排序是基于对key的排序实现的，它的每一个Entry代表�
 
 
 注：对TreeSet和HashSet的源码不再进行剖析，二者分别是基于TreeMap和HashMap实现的，只是对应的节点中只有key，而没有value，因此对TreeMap和HashMap比较了解的话，对TreeSet和HashSet的理解就会非常容易。
-</code></pre>
+</code></pre><p>转载：<a href="http://blog.csdn.net/ns_code/article/details/36421085" target="_blank" rel="external">http://blog.csdn.net/ns_code/article/details/36421085</a></p>
+
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/12/03/TreeMap源码剖析/" data-id="cj6rr9pb300110f73jhysit3h" class="article-share-link" data-share="baidu" data-title="TreeMap源码剖析">分享到</a>
+        <a data-url="http://yoursite.com/2016/12/03/TreeMap源码剖析/" data-id="cj6sr8l2m000xg3seaer2nm4g" class="article-share-link" data-share="baidu" data-title="TreeMap源码剖析">分享到</a>
       
 
 
@@ -357,11 +357,11 @@ TreeMap的排序是基于对key的排序实现的，它的每一个Entry代表�
     
 <nav id="article-nav">
   
-    <a href="/2016/12/03/Redis常见问题整理/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/12/03/synchronized关键字、ReentrantLock与原子类比较/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
       <div class="article-nav-title">
         
-          Redis常见问题整理
+          synchronized关键字、ReentrantLock与原子类比较
         
       </div>
     </a>
