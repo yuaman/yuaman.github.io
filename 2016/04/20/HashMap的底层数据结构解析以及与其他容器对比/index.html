@@ -8,17 +8,17 @@
   
   <title>HashMap的底层数据结构解析以及与其他容器对比 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="参考地址：http://blog.csdn.net/ustcbob/article/details/23709589 ###要点总结：HashMap实际上是一个“链表的数组”的数据结构，每个元素存放链表头结点的数组，即数组和链表的结合体。 当我们往HashMap中put元素的时候，先根据key的hashCode重新计算hash值，根据hash值得到这个元素在数组中的位置（即下标），如果数组该位置上">
+  <meta name="description" content="HashMap的底层数据结构解析以及与其他容器对比">
 <meta name="keywords" content="Java容器相关">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HashMap的底层数据结构解析以及与其他容器对比">
 <meta property="og:url" content="http://yoursite.com/2016/04/20/HashMap的底层数据结构解析以及与其他容器对比/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="参考地址：http://blog.csdn.net/ustcbob/article/details/23709589 ###要点总结：HashMap实际上是一个“链表的数组”的数据结构，每个元素存放链表头结点的数组，即数组和链表的结合体。 当我们往HashMap中put元素的时候，先根据key的hashCode重新计算hash值，根据hash值得到这个元素在数组中的位置（即下标），如果数组该位置上">
-<meta property="og:updated_time" content="2017-08-25T10:49:52.000Z">
+<meta property="og:description" content="HashMap的底层数据结构解析以及与其他容器对比">
+<meta property="og:updated_time" content="2017-08-26T04:17:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HashMap的底层数据结构解析以及与其他容器对比">
-<meta name="twitter:description" content="参考地址：http://blog.csdn.net/ustcbob/article/details/23709589 ###要点总结：HashMap实际上是一个“链表的数组”的数据结构，每个元素存放链表头结点的数组，即数组和链表的结合体。 当我们往HashMap中put元素的时候，先根据key的hashCode重新计算hash值，根据hash值得到这个元素在数组中的位置（即下标），如果数组该位置上">
+<meta name="twitter:description" content="HashMap的底层数据结构解析以及与其他容器对比">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -47,10 +47,6 @@
         <a id="main-nav-toggle" class="nav-icon"></a>
         
           <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/tags/操作记录/">操作记录</a>
-        
-          <a class="main-nav-link" href="/tags/杂感/">杂感</a>
         
       </nav>
       <nav id="sub-nav">
@@ -93,7 +89,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>参考地址：<a href="http://blog.csdn.net/ustcbob/article/details/23709589" target="_blank" rel="external">http://blog.csdn.net/ustcbob/article/details/23709589</a></p>
+        <p>HashMap的底层数据结构解析以及与其他容器对比<br><a id="more"></a><br>参考地址：<a href="http://blog.csdn.net/ustcbob/article/details/23709589" target="_blank" rel="external">http://blog.csdn.net/ustcbob/article/details/23709589</a></p>
 <p>###要点总结：<br>HashMap实际上是一个“链表的数组”的数据结构，每个元素存放链表头结点的数组，即数组和链表的结合体。</p>
 <p>当我们往HashMap中put元素的时候，先根据key的hashCode重新计算hash值，根据hash值得到这个元素在数组中的位置（即下标），如果数组该位置上已经存放有其他元素了，那么在这个位置上的元素将以链表的形式存放，新加入的放在链头，最先加入的放在链尾。如果数组该位置上没有元素，就直接将该元素放到此数组中的该位置上。</p>
 <p>HashMap 在底层将 key-value 当成一个整体进行处理，这个整体就是一个 Entry 对象。HashMap 底层采用一个 Entry[] 数组来保存所有的 key-value 对，当需要存储一个 Entry 对象时，会根据hash算法来决定其在数组中的存储位置，在根据equals方法决定其在该数组位置上的链表中的存储位置；当需要取出一个Entry时，也会根据hash算法找到其在数组中的存储位置，再根据equals方法从该位置上的链表中取出该Entry。</p>
@@ -329,7 +325,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/04/20/HashMap的底层数据结构解析以及与其他容器对比/" data-id="cj6sscjsf0004vysemyon3c9f" class="article-share-link" data-share="baidu" data-title="HashMap的底层数据结构解析以及与其他容器对比">分享到</a>
+        <a data-url="http://yoursite.com/2016/04/20/HashMap的底层数据结构解析以及与其他容器对比/" data-id="cj6sssb6h0001zpse8rgfhh9k" class="article-share-link" data-share="baidu" data-title="HashMap的底层数据结构解析以及与其他容器对比">分享到</a>
       
 
 
@@ -343,11 +339,11 @@
     
 <nav id="article-nav">
   
-    <a href="/2016/05/03/Rabbitmq基本原理/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/05/03/ReenTrantLock可重入锁（和synchronized的区别）总结/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
       <div class="article-nav-title">
         
-          Rabbitmq基本原理
+          ReenTrantLock可重入锁（和synchronized的区别）总结
         
       </div>
     </a>
@@ -473,10 +469,6 @@
   <nav id="mobile-nav">
   
     <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/tags/操作记录/" class="mobile-nav-link">操作记录</a>
-  
-    <a href="/tags/杂感/" class="mobile-nav-link">杂感</a>
   
 </nav>
   <!-- totop start -->

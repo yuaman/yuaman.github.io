@@ -43,10 +43,6 @@
         
           <a class="main-nav-link" href="/">Home</a>
         
-          <a class="main-nav-link" href="/tags/操作记录/">操作记录</a>
-        
-          <a class="main-nav-link" href="/tags/杂感/">杂感</a>
-        
       </nav>
       <nav id="sub-nav">
         
@@ -90,243 +86,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>参考地址：<a href="http://blog.csdn.net/ustcbob/article/details/23709589" target="_blank" rel="external">http://blog.csdn.net/ustcbob/article/details/23709589</a></p>
-<p>###要点总结：<br>HashMap实际上是一个“链表的数组”的数据结构，每个元素存放链表头结点的数组，即数组和链表的结合体。</p>
-<p>当我们往HashMap中put元素的时候，先根据key的hashCode重新计算hash值，根据hash值得到这个元素在数组中的位置（即下标），如果数组该位置上已经存放有其他元素了，那么在这个位置上的元素将以链表的形式存放，新加入的放在链头，最先加入的放在链尾。如果数组该位置上没有元素，就直接将该元素放到此数组中的该位置上。</p>
-<p>HashMap 在底层将 key-value 当成一个整体进行处理，这个整体就是一个 Entry 对象。HashMap 底层采用一个 Entry[] 数组来保存所有的 key-value 对，当需要存储一个 Entry 对象时，会根据hash算法来决定其在数组中的存储位置，在根据equals方法决定其在该数组位置上的链表中的存储位置；当需要取出一个Entry时，也会根据hash算法找到其在数组中的存储位置，再根据equals方法从该位置上的链表中取出该Entry。</p>
-<h3 id="HashMap和Hashtable的区别"><a href="#HashMap和Hashtable的区别" class="headerlink" title="HashMap和Hashtable的区别"></a>HashMap和Hashtable的区别</h3><h4 id="HashMap和Hashtable都实现了Map接口，但决定用哪一个之前先要弄清楚它们之间的分别。主要的区别有：线程安全性，同步-synchronization-，以及速度。"><a href="#HashMap和Hashtable都实现了Map接口，但决定用哪一个之前先要弄清楚它们之间的分别。主要的区别有：线程安全性，同步-synchronization-，以及速度。" class="headerlink" title="HashMap和Hashtable都实现了Map接口，但决定用哪一个之前先要弄清楚它们之间的分别。主要的区别有：线程安全性，同步(synchronization)，以及速度。"></a>HashMap和Hashtable都实现了Map接口，但决定用哪一个之前先要弄清楚它们之间的分别。主要的区别有：线程安全性，同步(synchronization)，以及速度。</h4><ol>
-<li><p>HashMap几乎可以等价于Hashtable，除了HashMap是非synchronized的，并可以接受null(HashMap可以接受为null的键值(key)和值(value)，而Hashtable则不行)。</p>
-</li>
-<li><p>HashMap是非synchronized，而Hashtable是synchronized，这意味着Hashtable是线程安全的，多个线程可以共享一个Hashtable；而如果没有正确的同步的话，多个线程是不能共享HashMap的。Java 5提供了ConcurrentHashMap，它是HashTable的替代，比HashTable的扩展性更好。</p>
-</li>
-<li><p>另一个区别是HashMap的迭代器(Iterator)是fail-fast迭代器，而Hashtable的enumerator迭代器不是fail-fast的。所以当有其它线程改变了HashMap的结构（增加或者移除元素），将会抛出ConcurrentModificationException，但迭代器本身的remove()方法移除元素则不会抛出ConcurrentModificationException异常。但这并不是一个一定发生的行为，要看JVM。这条同样也是Enumeration和Iterator的区别。</p>
-</li>
-</ol>
-<ol>
-<li><p>由于Hashtable是线程安全的也是synchronized，所以在单线程环境下它比HashMap要慢。如果你不需要同步，只需要单一线程，那么使用HashMap性能要好过Hashtable。</p>
-</li>
-<li><p>HashMap不能保证随着时间的推移Map中的元素次序是不变的。</p>
-</li>
-</ol>
-<p>HashMap和Hashtable的底层实现都是数组+链表结构实现的，这点上完全一致</p>
-<p>除开HashMap和Hashtable外，还有一个hash集合HashSet，有所区别的是HashSet不是key value结构，仅仅是存储不重复的元素，相当于简化版的HashMap，只是包含HashMap中的key而已</p>
-<h2 id="ConcurrentHashMap和HashMap的区别"><a href="#ConcurrentHashMap和HashMap的区别" class="headerlink" title="ConcurrentHashMap和HashMap的区别"></a>ConcurrentHashMap和HashMap的区别</h2><p>（1）ConcurrentHashMap对整个桶数组进行了分段，而HashMap则没有</p>
-<p>（2）ConcurrentHashMap在每一个分段上都用锁进行保护，从而让锁的粒度更精细一些，并发性能更好，而HashMap没有锁机制，不是线程安全的</p>
-<p> HashMap概述：</p>
-<p>　　HashMap是基于哈希表的Map接口的非同步实现（Hashtable跟HashMap很像，唯一的区别是Hashtalbe中的方法是线程安全的，也就是同步的）。此实现提供所有可选的映射操作，并允许使用null值和null键。此类不保证映射的顺序，特别是它不保证该顺序恒久不变。</p>
-<ol>
-<li>HashMap的数据结构：</li>
-</ol>
-<p>　　在Java编程语言中，最基本的结构就是两种，一个是数组，另外一个是模拟指针（引用），所有的数据结构都可以用这两个基本结构来构造的，HashMap也不例外。HashMap实际上是一个“链表的数组”的数据结构，每个元素存放链表头结点的数组，即数组和链表的结合体。</p>
-<p>从上图中可以看出，HashMap底层就是一个数组，数组中的每一项又是一个链表。当新建一个HashMap的时候，就会初始化一个数组。源码如下：</p>
-<pre><code>[java] view plain copy
-1. /** 
-2.  * The table, resized as necessary. Length MUST Always be a power of two. 
-3.  */  
-4. transient Entry[] table;  
-5.   
-6. static class Entry&lt;K,V&gt; implements Map.Entry&lt;K,V&gt; {  
-7.     final K key;  
-8.     V value;  
-9.     Entry&lt;K,V&gt; next;  
-10.     final int hash;  
-11.     ……  
-12. }  
-</code></pre><p>可以看出，Entry就是数组中的元素，每个Map.Entry就是一个key-value对，它持有一个指向下一个元素的引用，这就构成了链表。</p>
-<ol>
-<li><p>HashMap的存取实现：</p>
-<p>1) 存储：</p>
-<p>[java] view plain copy</p>
-<ol>
-<li>public V put(K key, V value) {  </li>
-<li>// HashMap允许存放null键和null值。  </li>
-<li>// 当key为null时，调用putForNullKey方法，将value放置在数组第一个位置。  </li>
-<li>if (key == null)  </li>
-<li>return putForNullKey(value);  </li>
-<li>// 根据key的hashCode重新计算hash值。  </li>
-<li>int hash = hash(key.hashCode());  </li>
-<li>// 搜索指定hash值所对应table中的索引。  </li>
-<li>int i = indexFor(hash, table.length);  </li>
-<li>// 如果 i 索引处的 Entry 不为 null，通过循环不断遍历 e 元素的下一个元素。  </li>
-<li>for (Entry<k,v> e = table[i]; e != null; e = e.next) {  </k,v></li>
-<li>Object k;  </li>
-<li>if (e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k))) {  </li>
-<li>V oldValue = e.value;  </li>
-<li>e.value = value;  </li>
-<li>e.recordAccess(this);  </li>
-<li>return oldValue;  </li>
-<li>}  </li>
-<li>}  </li>
-<li>// 如果i索引处的Entry为null，表明此处还没有Entry。  </li>
-<li>// modCount记录HashMap中修改结构的次数  </li>
-<li>modCount++;  </li>
-<li>// 将key、value添加到i索引处。  </li>
-<li>addEntry(hash, key, value, i);  </li>
-<li>return null;  </li>
-<li>}  </li>
-</ol>
-</li>
-</ol>
-<p>从上面的源代码中可以看出：当我们往HashMap中put元素的时候，先根据key的hashCode重新计算hash值，根据hash值得到这个元素在数组中的位置（即下标），如果数组该位置上已经存放有其他元素了，那么在这个位置上的元素将以链表的形式存放，新加入的放在链头，最先加入的放在链尾。如果数组该位置上没有元素，就直接将该元素放到此数组中的该位置上。</p>
-<p>　　addEntry(hash, key, value, i)方法根据计算出的hash值，将key-value对放在数组table的 i 索引处。addEntry 是HashMap 提供的一个包访问权限的方法（就是没有public，protected，private这三个访问权限修饰词修饰，为默认的访问权限，用default表示，但在代码中没有这个default），代码如下：</p>
-<pre><code>[java] view plain copy
-1. void addEntry(int hash, K key, V value, int bucketIndex) {  
-2.     // 获取指定 bucketIndex 索引处的 Entry   
-3.     Entry&lt;K,V&gt; e = table[bucketIndex];  
-4.     // 将新创建的 Entry 放入 bucketIndex 索引处，并让新的 Entry 指向原来的 Entry  
-5.     table[bucketIndex] = new Entry&lt;K,V&gt;(hash, key, value, e);  
-6.     // 如果 Map 中的 key-value 对的数量超过了极限  
-7.     if (size++ &gt;= threshold)  
-8.     // 把 table 对象的长度扩充到原来的2倍。  
-9.         resize(2 * table.length);  
-10. }  
-</code></pre><p>　当系统决定存储HashMap中的key-value对时，完全没有考虑Entry中的value，仅仅只是根据key来计算并决定每个Entry的存储位置。我们完全可以把 Map 集合中的 value 当成 key 的附属，当系统决定了 key 的存储位置之后，value 随之保存在那里即可。</p>
-<p>　　hash(int h)方法根据key的hashCode重新计算一次散列。此算法加入了高位计算，防止低位不变，高位变化时，造成的hash冲突。</p>
-<pre><code>[java] view plain copy
-1. static int hash(int h) {  
-2.     h ^= (h &gt;&gt;&gt; 20) ^ (h &gt;&gt;&gt; 12);  
-3.     return h ^ (h &gt;&gt;&gt; 7) ^ (h &gt;&gt;&gt; 4);  
-4. }  
-</code></pre><p>我们可以看到在HashMap中要找到某个元素，需要根据key的hash值来求得对应数组中的位置。如何计算这个位置就是hash算法。前面说过HashMap的数据结构是数组和链表的结合，所以我们当然希望这个HashMap里面的 元素位置尽量的分布均匀些，尽量使得每个位置上的元素数量只有一个，那么当我们用hash算法求得这个位置的时候，马上就可以知道对应位置的元素就是我们要的，而不用再去遍历链表，这样就大大优化了查询的效率。</p>
-<p>　　对于任意给定的对象，只要它的 hashCode() 返回值相同，那么程序调用 hash(int h) 方法所计算得到的 hash 码值总是相同的。我们首先想到的就是把hash值对数组长度取模运算，这样一来，元素的分布相对来说是比较均匀的。但是，“模”运算的消耗还是比较大的，在HashMap中是这样做的：调用 indexFor(int h, int length) 方法来计算该对象应该保存在 table 数组的哪个索引处。indexFor(int h, int length) 方法的代码如下：</p>
-<p>[java] view plain copy</p>
-<ol>
-<li>static int indexFor(int h, int length) {  </li>
-<li>return h &amp; (length-1);  </li>
-<li>}  </li>
-</ol>
-<p>这个方法非常巧妙，它通过 h &amp; (table.length -1) 来得到该对象的保存位，而HashMap底层数组的长度总是 2 的n 次方，这是HashMap在速度上的优化。在 HashMap 构造器中有如下代码：</p>
-<p>[java] view plain copy</p>
-<ol>
-<li>int capacity = 1;  </li>
-<li>while (capacity &lt; initialCapacity)  </li>
-<li>capacity &lt;&lt;= 1;<br>这段代码保证初始化时HashMap的容量总是2的n次方，即底层数组的长度总是为2的n次方。</li>
-</ol>
-<p>　　当length总是 2 的n次方时，h&amp; (length-1)运算等价于对length取模，也就是h%length，但是&amp;比%具有更高的效率。</p>
-<p>　　这看上去很简单，其实比较有玄机的，我们举个例子来说明：</p>
-<p>　　假设数组长度分别为15和16，优化后的hash码分别为8和9，那么&amp;运算后的结果如下：</p>
-<pre><code> h &amp; (table.length-1)                     hash                             table.length-1
-
- 8 &amp; (15-1)：                                 0100                   &amp;              1110                   =                0100
-
- 9 &amp; (15-1)：                                 0101                   &amp;              1110                   =                0100
-
------------------------------------------------------------------------------------------------------------------------
-
- 8 &amp; (16-1)：                                 0100                   &amp;              1111                   =                0100
-
- 9 &amp; (16-1)：                                 0101                   &amp;              1111                   =                0101
-
------------------------------------------------------------------------------------------------------------------------
-</code></pre><p>　　从上面的例子中可以看出：当8、9两个数和(15-1)2=(1110)进行“与运算&amp;”的时候，产生了相同的结果，都为0100，也就是说它们会定位到数组中的同一个位置上去，这就产生了碰撞，8和9会被放到数组中的同一个位置上形成链表，那么查询的时候就需要遍历这个链 表，得到8或者9，这样就降低了查询的效率。同时，我们也可以发现，当数组长度为15的时候，hash值会与(15-1)2=(1110)进行“与运算&amp;”，那么最后一位永远是0，而0001，0011，0101，1001，1011，0111，1101这几个位置永远都不能存放元素了，空间浪费相当大，更糟的是这种情况中，数组可以使用的位置比数组长度小了很多，这意味着进一步增加了碰撞的几率，减慢了查询的效率！</p>
-<p>　　而当数组长度为16时，即为2的n次方时，2n-1得到的二进制数的每个位上的值都为1（比如(24-1)2=1111），这使得在低位上&amp;时，得到的和原hash的低位相同，加之hash(int h)方法对key的hashCode的进一步优化，加入了高位计算，就使得只有相同的hash值的两个值才会被放到数组中的同一个位置上形成链表。</p>
-<p>　　所以说，当数组长度为2的n次幂的时候，不同的key算得得index相同的几率较小，那么数据在数组上分布就比较均匀，也就是说碰撞的几率小，相对的，查询的时候就不用遍历某个位置上的链表，这样查询效率也就较高了。</p>
-<p>　　根据上面 put 方法的源代码可以看出，当程序试图将一个key-value对放入HashMap中时，程序首先根据该 key的 hashCode() 返回值决定该 Entry 的存储位置：如果两个 Entry 的 key 的 hashCode() 返回值相同，那它们的存储位置相同。如果这两个 Entry 的 key 通过 equals 比较返回 true，新添加 Entry 的 value 将覆盖集合中原有Entry 的 value，但key不会覆盖。如果这两个 Entry 的 key 通过 equals 比较返回 false，新添加的 Entry 将与集合中原有 Entry 形成 Entry 链，而且新添加的 Entry 位于 Entry 链的头部——具体说明继续看 addEntry() 方法的说明。</p>
-<p>  2) 读取：</p>
-<pre><code>[java] view plain copy
-1. public V get(Object key) {  
-2.     if (key == null)  
-3.         return getForNullKey();  
-4.     int hash = hash(key.hashCode());  
-5.     for (Entry&lt;K,V&gt; e = table[indexFor(hash, table.length)];  
-6.         e != null;  
-7.         e = e.next) {  
-8.         Object k;  
-9.         if (e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k)))  
-10.             return e.value;  
-11.     }  
-12.     return null;  
-13. }  
-</code></pre><p>　有了上面存储时的hash算法作为基础，理解起来这段代码就很容易了。从上面的源代码中可以看出：从HashMap中get元素时，首先计算key的hashCode，找到数组中对应位置的某一元素，然后通过key的equals方法在对应位置的链表中找到需要的元素。</p>
-<p>  3) 归纳起来简单地说，HashMap 在底层将 key-value 当成一个整体进行处理，这个整体就是一个 Entry 对象。HashMap 底层采用一个 Entry[] 数组来保存所有的 key-value 对，当需要存储一个 Entry 对象时，会根据hash算法来决定其在数组中的存储位置，在根据equals方法决定其在该数组位置上的链表中的存储位置；当需要取出一个Entry时，也会根据hash算法找到其在数组中的存储位置，再根据equals方法从该位置上的链表中取出该Entry。</p>
-<p>Map类提供了一个称为entrySet()的方法，这个方法返回一个Map.Entry实例化后的对象集。接着，Map.Entry类提供了一个getKey()方法和一个getValue()方法，因此，上面的代码可以被组织得更符合逻辑。举例如下：<br>    Map map = new HashMap();<br>    Iterator iterator = map.entrySet().iterator();<br>    while(iterator.hasNext()){<br>          Map.Entry entry = (Map.Entry)iterator.next();<br>          Object key = entry.getKey();<br>          Object value = entry.getValue();<br>    } </p>
-<ol>
-<li>HashMap的resize（rehash）：</li>
-</ol>
-<p>　　当HashMap中的元素越来越多的时候，hash冲突的几率也就越来越高，因为数组的长度是固定的。所以为了提高查询的效率，就要对HashMap的数组进行扩容，数组扩容这个操作也会出现在ArrayList中，这是一个常用的操作，而在HashMap数组扩容之后，最消耗性能的点就出现了：原数组中的数据必须重新计算其在新数组中的位置，并放进去，这就是resize。</p>
-<p>　　那么HashMap什么时候进行扩容呢？当HashMap中的元素个数超过数组大小<em>loadFactor时，就会进行数组扩容，loadFactor的默认值为0.75，这是一个折中的取值。也就是说，默认情况下，数组大小为16，那么当HashMap中元素个数超过16</em>0.75=12（这个值就是代码中的threshold值，也叫做临界值）的时候，就把数组的大小扩展为 2*16=32，即扩大一倍，然后重新计算每个元素在数组中的位置，而这是一个非常消耗性能的操作，所以如果我们已经预知HashMap中元素的个数，那么预设元素的个数能够有效的提高HashMap的性能。</p>
-<p>HashMap扩容的代码如下所示：</p>
-<pre><code>[java] view plain copy
-1. //HashMap数组扩容  
-2.           void resize(int newCapacity) {  
-3.                 Entry[] oldTable = table;  
-4.                 int oldCapacity = oldTable.length;  
-5.                 //如果当前的数组长度已经达到最大值，则不在进行调整  
-6.                 if (oldCapacity == MAXIMUM_CAPACITY) {  
-7.                     threshold = Integer.MAX_VALUE;  
-8.                     return;  
-9.                 }  
-10.                 //根据传入参数的长度定义新的数组  
-11.                 Entry[] newTable = new Entry[newCapacity];  
-12.                 //按照新的规则，将旧数组中的元素转移到新数组中  
-13.                 transfer(newTable);  
-14.                 table = newTable;  
-15.                 //更新临界值  
-16.                 threshold = (int)(newCapacity * loadFactor);  
-17.             }  
-18.   
-19.           //旧数组中元素往新数组中迁移  
-20.             void transfer(Entry[] newTable) {  
-21.                 //旧数组  
-22.                 Entry[] src = table;  
-23.                 //新数组长度  
-24.                 int newCapacity = newTable.length;  
-25.                 //遍历旧数组  
-26.                 for (int j = 0; j &lt; src.length; j++) {  
-27.                     Entry&lt;K,V&gt; e = src[j];  
-28.                     if (e != null) {  
-29.                         src[j] = null;  
-30.                         do {  
-31.                             Entry&lt;K,V&gt; next = e.next;  
-32.                             int i = indexFor(e.hash, newCapacity);  
-33.                             e.next = newTable[i];  
-34.                             newTable[i] = e;  
-35.                             e = next;  
-36.                         } while (e != null);  
-37.                     }  
-38.                 }  
-39.             }  
-</code></pre><p>5.HashMap的性能参数：</p>
-<p>HashMap 包含如下几个构造器：</p>
-<ol>
-<li>HashMap()：构建一个初始容量为 16，负载因子为 0.75 的 HashMap。</li>
-<li>HashMap(int initialCapacity)：构建一个初始容量为 initialCapacity，负载因子为 0.75 的 HashMap。</li>
-<li>HashMap(int initialCapacity, float loadFactor)：以指定初始容量、指定的负载因子创建一个 HashMap。</li>
-<li>HashMap的基础构造器HashMap(int initialCapacity, float loadFactor)带有两个参数，它们是初始容量initialCapacity和加载因子loadFactor。</li>
-<li>initialCapacity：HashMap的最大容量，即为底层数组的长度。</li>
-<li>loadFactor：负载因子loadFactor定义为：散列表的实际元素数目(n)/ 散列表的容量(m)。<br>　　负载因子衡量的是一个散列表的空间的使用程度，负载因子越大表示散列表的装填程度越高，反之愈小。对于使用链表法的散列表来说，查找一个元素的平均时间是O(1+a)，因此如果负载因子越大，对空间的利用更充分，然而后果是查找效率的降低；如果负载因子太小，那么散列表的数据将过于稀疏，对空间造成严重浪费。</li>
-</ol>
-<p>　　HashMap的实现中，通过threshold字段来判断HashMap的最大容量：</p>
-<p>threshold = (int)(capacity * loadFactor);<br>　　结合负载因子的定义公式可知，threshold就是在此loadFactor和capacity对应下允许的最大元素数目，超过这个数目就重新resize，以降低实际的负载因子（也就是说虽然数组长度是capacity，但其扩容的临界值确是threshold）。默认的的负载因子0.75是对空间和时间效率的一个平衡选择。当容量超出此最大容量时， resize后的HashMap容量是容量的两倍：</p>
-<pre><code>if (size++ &gt;=
- threshold)   
-    resize(
-2 * table.length); 
-</code></pre><p>6.Fail-Fast机制：</p>
-<p>　　我们知道java.util.HashMap不是线程安全的，因此如果在使用迭代器的过程中有其他线程修改了map，那么将抛出ConcurrentModificationException，这就是所谓fail-fast策略。（这个在core java这本书中也有提到。）</p>
-<p>　　这一策略在源码中的实现是通过modCount域，modCount顾名思义就是修改次数，对HashMap内容的修改都将增加这个值，那么在迭代器初始化过程中会将这个值赋给迭代器的expectedModCount。</p>
-<pre><code>[java] view plain copy
-1. HashIterator() {  
-2.     expectedModCount = modCount;  
-3.     if (size &gt; 0) { // advance to first entry  
-4.     Entry[] t = table;  
-5.     while (index &lt; t.length &amp;&amp; (next = t[index++]) == null)  
-6.         ;  
-7.     }  
-8. }  
-</code></pre><p>在迭代过程中，判断modCount跟expectedModCount是否相等，如果不相等就表示已经有其他线程修改了Map：</p>
-<p>　　注意到modCount声明为volatile，保证线程之间修改的可见性。（volatile之所以线程安全是因为被volatile修饰的变量不保存缓存，直接在内存中修改，因此能够保证线程之间修改的可见性）。</p>
-<p>final Entry<k,v><br> nextEntry() {   </k,v></p>
-<p>if (modCount !=<br> expectedModCount)   </p>
-<p>throw new ConcurrentModificationException();<br>在HashMap的API中指出：</p>
-<p>　　由所有HashMap类的“collection 视图方法”所返回的迭代器都是快速失败的：在迭代器创建之后，如果从结构上对映射进行修改，除非通过迭代器本身的 remove 方法，其他任何时间任何方式的修改，迭代器都将抛出ConcurrentModificationException。因此，面对并发的修改，迭代器很快就会完全失败，而不保证在将来不确定的时间发生任意不确定行为的风险。</p>
-<p>　　注意，迭代器的快速失败行为不能得到保证，一般来说，存在非同步的并发修改时，不可能作出任何坚决的保证。快速失败迭代器尽最大努力抛出 ConcurrentModificationException。因此，编写依赖于此异常的程序的做法是错误的，正确做法是：迭代器的快速失败行为应该仅用于检测程序错误。</p>
-
+        <p>HashMap的底层数据结构解析以及与其他容器对比<br>
+        
+          <p class="article-more-link">
+            <a href="/2016/04/20/HashMap的底层数据结构解析以及与其他容器对比/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/04/20/HashMap的底层数据结构解析以及与其他容器对比/" data-id="cj6sscjsf0004vysemyon3c9f" class="article-share-link" data-share="baidu" data-title="HashMap的底层数据结构解析以及与其他容器对比">分享到</a>
+        <a data-url="http://yoursite.com/2016/04/20/HashMap的底层数据结构解析以及与其他容器对比/" data-id="cj6sssb6h0001zpse8rgfhh9k" class="article-share-link" data-share="baidu" data-title="HashMap的底层数据结构解析以及与其他容器对比">分享到</a>
       
 
 
@@ -380,7 +150,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/04/03/数据库Sharding的基本思想和切分策略/" data-id="cj6sscjup002avyselk8nswzr" class="article-share-link" data-share="baidu" data-title="数据库Sharding的基本思想和切分策略">分享到</a>
+        <a data-url="http://yoursite.com/2016/04/03/数据库Sharding的基本思想和切分策略/" data-id="cj6sssb880021zpsebafb9s30" class="article-share-link" data-share="baidu" data-title="数据库Sharding的基本思想和切分策略">分享到</a>
       
 
 
@@ -432,7 +202,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/03/23/mac下hexo搭建操作记录/" data-id="cj6sscjtd0017vyseyhim8b5b" class="article-share-link" data-share="baidu" data-title="mac下hexo搭建相关记录">分享到</a>
+        <a data-url="http://yoursite.com/2016/03/23/mac下hexo搭建操作记录/" data-id="cj6sssb7k0016zpse4m38t764" class="article-share-link" data-share="baidu" data-title="mac下hexo搭建相关记录">分享到</a>
       
 
 
@@ -474,42 +244,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>“你用过HashMap吗？” “什么是HashMap？你为什么用到它？”</p>
-<p>几乎每个人都会回答“是的”，然后回答HashMap的一些特性，譬如HashMap可以接受null键值和值，而Hashtable则不能；HashMap是非synchronized;HashMap很快；以及HashMap储存的是键值对等等。这显示出你已经用过HashMap，而且对它相当的熟悉。但是面试官来个急转直下，从此刻开始问出一些刁钻的问题，关于HashMap的更多基础的细节。面试官可能会问出下面的问题：</p>
-<p>“你知道HashMap的工作原理吗？” “你知道HashMap的get()方法的工作原理吗？”</p>
-<p>你也许会回答“我没有详查标准的Java API，你可以看看Java源代码或者Open JDK。”“我可以用Google找到答案。”</p>
-<p>但一些面试者可能可以给出答案，“HashMap是基于hashing的原理，我们使用put(key, value)存储对象到HashMap中，使用get(key)从HashMap中获取对象。当我们给put()方法传递键和值时，我们先对键调用hashCode()方法，返回的hashCode用于找到bucket位置来储存Entry对象。”这里关键点在于指出，HashMap是在bucket中储存键对象和值对象，作为Map.Entry。这一点有助于理解获取对象的逻辑。如果你没有意识到这一点，或者错误的认为仅仅只在bucket中存储值的话，你将不会回答如何从HashMap中获取对象的逻辑。这个答案相当的正确，也显示出面试者确实知道hashing以及HashMap的工作原理。但是这仅仅是故事的开始，当面试官加入一些Java程序员每天要碰到的实际场景的时候，错误的答案频现。下个问题可能是关于HashMap中的碰撞探测(collision detection)以及碰撞的解决方法：</p>
-<p>“当两个对象的hashcode相同会发生什么？” 从这里开始，真正的困惑开始了，一些面试者会回答因为hashcode相同，所以两个对象是相等的，HashMap将会抛出异常，或者不会存储它们。然后面试官可能会提醒他们有equals()和hashCode()两个方法，并告诉他们两个对象就算hashcode相同，但是它们可能并不相等。一些面试者可能就此放弃，而另外一些还能继续挺进，他们回答“因为hashcode相同，所以它们的bucket位置相同，‘碰撞’会发生。因为HashMap使用链表存储对象，这个Entry(包含有键值对的Map.Entry对象)会存储在链表中。”这个答案非常的合理，虽然有很多种处理碰撞的方法，这种方法是最简单的，也正是HashMap的处理方法。但故事还没有完结，面试官会继续问：</p>
-<p>“如果两个键的hashcode相同，你如何获取值对象？” 面试者会回答：当我们调用get()方法，HashMap会使用键对象的hashcode找到bucket位置，然后获取值对象。面试官提醒他如果有两个值对象储存在同一个bucket，他给出答案:将会遍历链表直到找到值对象。面试官会问因为你并没有值对象去比较，你是如何确定确定找到值对象的？除非面试者直到HashMap在链表中存储的是键值对，否则他们不可能回答出这一题。</p>
-<p>其中一些记得这个重要知识点的面试者会说，找到bucket位置之后，会调用keys.equals()方法去找到链表中正确的节点，最终找到要找的值对象。完美的答案！</p>
-<p>许多情况下，面试者会在这个环节中出错，因为他们混淆了hashCode()和equals()方法。因为在此之前hashCode()屡屡出现，而equals()方法仅仅在获取值对象的时候才出现。一些优秀的开发者会指出使用不可变的、声明作final的对象，并且采用合适的equals()和hashCode()方法的话，将会减少碰撞的发生，提高效率。不可变性使得能够缓存不同键的hashcode，这将提高整个获取对象的速度，使用String，Interger这样的wrapper类作为键是非常好的选择。</p>
-<p>如果你认为到这里已经完结了，那么听到下面这个问题的时候，你会大吃一惊。“如果HashMap的大小超过了负载因子(load factor)定义的容量，怎么办？”除非你真正知道HashMap的工作原理，否则你将回答不出这道题。默认的负载因子大小为0.75，也就是说，当一个map填满了75%的bucket时候，和其它集合类(如ArrayList等)一样，将会创建原来HashMap大小的两倍的bucket数组，来重新调整map的大小，并将原来的对象放入新的bucket数组中。这个过程叫作rehashing，因为它调用hash方法找到新的bucket位置。</p>
-<p>如果你能够回答这道问题，下面的问题来了：“你了解重新调整HashMap大小存在什么问题吗？”你可能回答不上来，这时面试官会提醒你当多线程的情况下，可能产生条件竞争(race condition)。</p>
-<p>当重新调整HashMap大小的时候，确实存在条件竞争，因为如果两个线程都发现HashMap需要重新调整大小了，它们会同时试着调整大小。在调整大小的过程中，存储在链表中的元素的次序会反过来，因为移动到新的bucket位置的时候，HashMap并不会将元素放在链表的尾部，而是放在头部，这是为了避免尾部遍历(tail traversing)。如果条件竞争发生了，那么就死循环了。这个时候，你可以质问面试官，为什么这么奇怪，要在多线程的环境下使用HashMap呢？：）</p>
-<p>热心的读者贡献了更多的关于HashMap的问题：</p>
-<ol>
-<li>为什么String, Interger这样的wrapper类适合作为键？ String, Interger这样的wrapper类作为HashMap的键是再适合不过了，而且String最为常用。因为String是不可变的，也是final的，而且已经重写了equals()和hashCode()方法了。其他的wrapper类也有这个特点。不可变性是必要的，因为为了要计算hashCode()，就要防止键值改变，如果键值在放入时和获取时返回不同的hashcode的话，那么就不能从HashMap中找到你想要的对象。不可变性还有其他的优点如线程安全。如果你可以仅仅通过将某个field声明成final就能保证hashCode是不变的，那么请这么做吧。因为获取对象的时候要用到equals()和hashCode()方法，那么键对象正确的重写这两个方法是非常重要的。如果两个不相等的对象返回不同的hashcode的话，那么碰撞的几率就会小些，这样就能提高HashMap的性能。</li>
-<li>我们可以使用自定义的对象作为键吗？ 这是前一个问题的延伸。当然你可能使用任何对象作为键，只要它遵守了equals()和hashCode()方法的定义规则，并且当对象插入到Map中之后将不会再改变了。如果这个自定义对象时不可变的，那么它已经满足了作为键的条件，因为当它创建之后就已经不能改变了。</li>
-<li>我们可以使用CocurrentHashMap来代替Hashtable吗？这是另外一个很热门的面试题，因为ConcurrentHashMap越来越多人用了。我们知道Hashtable是synchronized的，但是ConcurrentHashMap同步性能更好，因为它仅仅根据同步级别对map的一部分进行上锁。ConcurrentHashMap当然可以代替HashTable，但是HashTable提供更强的线程安全性。看看这篇博客查看Hashtable和ConcurrentHashMap的区别。<br>我个人很喜欢这个问题，因为这个问题的深度和广度，也不直接的涉及到不同的概念。让我们再来看看这些问题设计哪些知识点：</li>
-</ol>
-<ul>
-<li>hashing的概念</li>
-<li>HashMap中解决碰撞的方法</li>
-<li>equals()和hashCode()的应用，以及它们在HashMap中的重要性</li>
-<li>不可变对象的好处</li>
-<li>HashMap多线程的条件竞争</li>
-<li>重新调整HashMap的大小<br>总结</li>
-</ul>
-<h3 id="HashMap的工作原理"><a href="#HashMap的工作原理" class="headerlink" title="HashMap的工作原理"></a>HashMap的工作原理</h3><p>HashMap基于hashing原理，我们通过put()和get()方法储存和获取对象。当我们将键值对传递给put()方法时，它调用键对象的hashCode()方法来计算hashcode，让后找到bucket位置来储存值对象。当获取对象时，通过键对象的equals()方法找到正确的键值对，然后返回值对象。HashMap使用链表来解决碰撞问题，当发生碰撞了，对象将会储存在链表的下一个节点中。 HashMap在每个链表节点中储存键值对对象。</p>
-<p>当两个不同的键对象的hashcode相同时会发生什么？ 它们会储存在同一个bucket位置的链表中。键对象的equals()方法用来找到键值对。</p>
-<p>因为HashMap的好处非常多，我曾经在电子商务的应用中使用HashMap作为缓存。因为金融领域非常多的运用Java，也出于性能的考虑，我们会经常用到HashMap和ConcurrentHashMap。</p>
-<p>参考地址：<a href="http://www.importnew.com/7099.html" target="_blank" rel="external">http://www.importnew.com/7099.html</a></p>
-
+        <p>HashMap实现原理解析<br>
+        
+          <p class="article-more-link">
+            <a href="/2016/03/03/HashMap实现原理解析/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/03/03/HashMap实现原理解析/" data-id="cj6sscjsd0003vysew2755zf0" class="article-share-link" data-share="baidu" data-title="HashMap实现原理解析">分享到</a>
+        <a data-url="http://yoursite.com/2016/03/03/HashMap实现原理解析/" data-id="cj6sssb6c0000zpsewr3a475m" class="article-share-link" data-share="baidu" data-title="HashMap实现原理解析">分享到</a>
       
 
 
@@ -561,7 +306,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/03/01/缘起/" data-id="cj6sscjuv002lvysey8enkk2o" class="article-share-link" data-share="baidu" data-title="缘起">分享到</a>
+        <a data-url="http://yoursite.com/2016/03/01/缘起/" data-id="cj6sssb8b002bzpsebw5h77in" class="article-share-link" data-share="baidu" data-title="缘起">分享到</a>
       
 
 
@@ -691,10 +436,6 @@
   <nav id="mobile-nav">
   
     <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/tags/操作记录/" class="mobile-nav-link">操作记录</a>
-  
-    <a href="/tags/杂感/" class="mobile-nav-link">杂感</a>
   
 </nav>
   <!-- totop start -->

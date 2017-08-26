@@ -8,17 +8,17 @@
   
   <title>Mybatis特点总结 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="简单来说，他跟你直接用一个sqlUtil的实现是一样，只不过很多复杂的util优化的事情，提前有其他程序员做了。 Mybatis是一个映射封装，他与你用util的区别就是，他将在代码块中的sql存在统一的xml文件也就是sqlmaper中。同时他将你执行sql的传参也就是执行变量进行了通配，然后映射到你的model中。 Mybatis大概的执行过程：通过factory方法获取sqlsession—">
+  <meta name="description" content="Mybatis特点总结">
 <meta name="keywords" content="分布式缓存">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mybatis特点总结">
 <meta property="og:url" content="http://yoursite.com/2016/10/24/myBatis特点总结/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="简单来说，他跟你直接用一个sqlUtil的实现是一样，只不过很多复杂的util优化的事情，提前有其他程序员做了。 Mybatis是一个映射封装，他与你用util的区别就是，他将在代码块中的sql存在统一的xml文件也就是sqlmaper中。同时他将你执行sql的传参也就是执行变量进行了通配，然后映射到你的model中。 Mybatis大概的执行过程：通过factory方法获取sqlsession—">
-<meta property="og:updated_time" content="2017-08-25T08:17:54.000Z">
+<meta property="og:description" content="Mybatis特点总结">
+<meta property="og:updated_time" content="2017-08-26T04:15:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mybatis特点总结">
-<meta name="twitter:description" content="简单来说，他跟你直接用一个sqlUtil的实现是一样，只不过很多复杂的util优化的事情，提前有其他程序员做了。 Mybatis是一个映射封装，他与你用util的区别就是，他将在代码块中的sql存在统一的xml文件也就是sqlmaper中。同时他将你执行sql的传参也就是执行变量进行了通配，然后映射到你的model中。 Mybatis大概的执行过程：通过factory方法获取sqlsession—">
+<meta name="twitter:description" content="Mybatis特点总结">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -47,10 +47,6 @@
         <a id="main-nav-toggle" class="nav-icon"></a>
         
           <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/tags/操作记录/">操作记录</a>
-        
-          <a class="main-nav-link" href="/tags/杂感/">杂感</a>
         
       </nav>
       <nav id="sub-nav">
@@ -93,7 +89,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>简单来说，他跟你直接用一个sqlUtil的实现是一样，只不过很多复杂的util优化的事情，提前有其他程序员做了。</p>
+        <p>Mybatis特点总结<br><a id="more"></a><br>简单来说，他跟你直接用一个sqlUtil的实现是一样，只不过很多复杂的util优化的事情，提前有其他程序员做了。</p>
 <p>Mybatis是一个映射封装，他与你用util的区别就是，他将在代码块中的sql存在统一的xml文件也就是sqlmaper中。同时他将你执行sql的传参也就是执行变量进行了通配，然后映射到你的model中。</p>
 <h4 id="Mybatis大概的执行过程："><a href="#Mybatis大概的执行过程：" class="headerlink" title="Mybatis大概的执行过程："></a>Mybatis大概的执行过程：</h4><p>通过factory方法获取sqlsession—-通过MapperProxy代理到dao–执行底层数据库操作，简单说就是跟楼上说的“据经过controller 再经过service 然后执行service中的相关方法并关联到mapper 再执行mapper.xml中的sql语句=== @象厂喜剧 ”</p>
 <p>我们以JDBC为例看看他们的区别：</p>
@@ -115,7 +111,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/10/24/myBatis特点总结/" data-id="cj6sscju5001pvysecx4sun30" class="article-share-link" data-share="baidu" data-title="Mybatis特点总结">分享到</a>
+        <a data-url="http://yoursite.com/2016/10/24/myBatis特点总结/" data-id="cj6sssb7o0018zpseoirc3jk2" class="article-share-link" data-share="baidu" data-title="Mybatis特点总结">分享到</a>
       
 
 
@@ -259,10 +255,6 @@
   <nav id="mobile-nav">
   
     <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/tags/操作记录/" class="mobile-nav-link">操作记录</a>
-  
-    <a href="/tags/杂感/" class="mobile-nav-link">杂感</a>
   
 </nav>
   <!-- totop start -->

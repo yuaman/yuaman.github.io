@@ -8,17 +8,17 @@
   
   <title>SpringMVC工作流程 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1.Spring MVC概述：Spring MVC是Spring提供的一个强大而灵活的web框架。借助于注解，Spring MVC提供了几乎是POJO的开发模式，使得控制器的开发和测试更加简单。这些控制器一般不直接处理请求，而是将其委托给Spring上下文中的其他bean，通过Spring的依赖注入功能，这些bean被注入到控制器中。 Spring MVC主要由DispatcherServlet、">
+  <meta name="description" content="SpringMVC工作流程">
 <meta name="keywords" content="框架相关">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SpringMVC工作流程">
 <meta property="og:url" content="http://yoursite.com/2016/12/03/SpringMVC工作流程/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="1.Spring MVC概述：Spring MVC是Spring提供的一个强大而灵活的web框架。借助于注解，Spring MVC提供了几乎是POJO的开发模式，使得控制器的开发和测试更加简单。这些控制器一般不直接处理请求，而是将其委托给Spring上下文中的其他bean，通过Spring的依赖注入功能，这些bean被注入到控制器中。 Spring MVC主要由DispatcherServlet、">
-<meta property="og:updated_time" content="2017-08-26T03:46:26.000Z">
+<meta property="og:description" content="SpringMVC工作流程">
+<meta property="og:updated_time" content="2017-08-26T04:10:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringMVC工作流程">
-<meta name="twitter:description" content="1.Spring MVC概述：Spring MVC是Spring提供的一个强大而灵活的web框架。借助于注解，Spring MVC提供了几乎是POJO的开发模式，使得控制器的开发和测试更加简单。这些控制器一般不直接处理请求，而是将其委托给Spring上下文中的其他bean，通过Spring的依赖注入功能，这些bean被注入到控制器中。 Spring MVC主要由DispatcherServlet、">
+<meta name="twitter:description" content="SpringMVC工作流程">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -47,10 +47,6 @@
         <a id="main-nav-toggle" class="nav-icon"></a>
         
           <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/tags/操作记录/">操作记录</a>
-        
-          <a class="main-nav-link" href="/tags/杂感/">杂感</a>
         
       </nav>
       <nav id="sub-nav">
@@ -93,7 +89,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="1-Spring-MVC概述："><a href="#1-Spring-MVC概述：" class="headerlink" title="1.Spring MVC概述："></a>1.Spring MVC概述：</h3><p>Spring MVC是Spring提供的一个强大而灵活的web框架。借助于注解，Spring MVC提供了几乎是POJO的开发模式，使得控制器的开发和测试更加简单。这些控制器一般不直接处理请求，而是将其委托给Spring上下文中的其他bean，通过Spring的依赖注入功能，这些bean被注入到控制器中。</p>
+        <p>SpringMVC工作流程<br><a id="more"></a></p>
+<h3 id="1-Spring-MVC概述："><a href="#1-Spring-MVC概述：" class="headerlink" title="1.Spring MVC概述："></a>1.Spring MVC概述：</h3><p>Spring MVC是Spring提供的一个强大而灵活的web框架。借助于注解，Spring MVC提供了几乎是POJO的开发模式，使得控制器的开发和测试更加简单。这些控制器一般不直接处理请求，而是将其委托给Spring上下文中的其他bean，通过Spring的依赖注入功能，这些bean被注入到控制器中。</p>
 <h4 id="Spring-MVC主要由DispatcherServlet、处理器映射、处理器-控制器-、视图解析器、视图组成。他的两个核心是两个核心："><a href="#Spring-MVC主要由DispatcherServlet、处理器映射、处理器-控制器-、视图解析器、视图组成。他的两个核心是两个核心：" class="headerlink" title="Spring MVC主要由DispatcherServlet、处理器映射、处理器(控制器)、视图解析器、视图组成。他的两个核心是两个核心："></a>Spring MVC主要由DispatcherServlet、处理器映射、处理器(控制器)、视图解析器、视图组成。他的两个核心是两个核心：</h4><h4 id="处理器映射：选择使用哪个控制器来处理请求"><a href="#处理器映射：选择使用哪个控制器来处理请求" class="headerlink" title="处理器映射：选择使用哪个控制器来处理请求"></a>处理器映射：选择使用哪个控制器来处理请求</h4><h4 id="视图解析器：选择结果应该如何渲染"><a href="#视图解析器：选择结果应该如何渲染" class="headerlink" title="视图解析器：选择结果应该如何渲染"></a>视图解析器：选择结果应该如何渲染</h4><h4 id="通过以上两点，Spring-MVC保证了如何选择控制处理请求和如何选择视图展现输出之间的松耦合。"><a href="#通过以上两点，Spring-MVC保证了如何选择控制处理请求和如何选择视图展现输出之间的松耦合。" class="headerlink" title="通过以上两点，Spring MVC保证了如何选择控制处理请求和如何选择视图展现输出之间的松耦合。"></a>通过以上两点，Spring MVC保证了如何选择控制处理请求和如何选择视图展现输出之间的松耦合。</h4><h3 id="2-SpringMVC运行原理"><a href="#2-SpringMVC运行原理" class="headerlink" title="2.SpringMVC运行原理"></a>2.SpringMVC运行原理</h3><p>(1) Http请求：客户端请求提交到DispatcherServlet。 </p>
 <p>(2) 寻找处理器：由DispatcherServlet控制器查询一个或多个HandlerMapping，找到处理请求的Controller。 </p>
 <p>(3) 调用处理器：DispatcherServlet将请求提交到Controller。 </p>
@@ -119,7 +116,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/12/03/SpringMVC工作流程/" data-id="cj6sscjt2000rvyse2r5flejx" class="article-share-link" data-share="baidu" data-title="SpringMVC工作流程">分享到</a>
+        <a data-url="http://yoursite.com/2016/12/03/SpringMVC工作流程/" data-id="cj6sssb79000qzpsegtreksja" class="article-share-link" data-share="baidu" data-title="SpringMVC工作流程">分享到</a>
       
 
 
@@ -133,19 +130,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2016/12/03/TreeMap源码剖析/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/12/03/Redis常见问题整理/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
       <div class="article-nav-title">
         
-          TreeMap源码剖析
+          Redis常见问题整理
         
       </div>
     </a>
   
   
-    <a href="/2016/12/03/LinkedHashMap源码剖析/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/11/20/spring特点总结/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">LinkedHashmap源码剖析</div>
+      <div class="article-nav-title">Spring特点总结</div>
     </a>
   
 </nav>
@@ -263,10 +260,6 @@
   <nav id="mobile-nav">
   
     <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/tags/操作记录/" class="mobile-nav-link">操作记录</a>
-  
-    <a href="/tags/杂感/" class="mobile-nav-link">杂感</a>
   
 </nav>
   <!-- totop start -->

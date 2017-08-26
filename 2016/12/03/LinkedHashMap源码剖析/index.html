@@ -8,17 +8,17 @@
   
   <title>LinkedHashmap源码剖析 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Redis常见问题整理">
+  <meta name="description" content="LinkedHashmap源码剖析">
 <meta name="keywords" content="Java容器相关">
 <meta property="og:type" content="article">
 <meta property="og:title" content="LinkedHashmap源码剖析">
 <meta property="og:url" content="http://yoursite.com/2016/12/03/LinkedHashMap源码剖析/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="Redis常见问题整理">
-<meta property="og:updated_time" content="2017-08-25T10:49:45.000Z">
+<meta property="og:description" content="LinkedHashmap源码剖析">
+<meta property="og:updated_time" content="2017-08-26T04:17:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LinkedHashmap源码剖析">
-<meta name="twitter:description" content="Redis常见问题整理">
+<meta name="twitter:description" content="LinkedHashmap源码剖析">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -47,10 +47,6 @@
         <a id="main-nav-toggle" class="nav-icon"></a>
         
           <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/tags/操作记录/">操作记录</a>
-        
-          <a class="main-nav-link" href="/tags/杂感/">杂感</a>
         
       </nav>
       <nav id="sub-nav">
@@ -93,7 +89,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Redis常见问题整理<br><a id="more"></a><br>转载：<a href="http://blog.csdn.net/ns_code/article/details/37867985" target="_blank" rel="external">http://blog.csdn.net/ns_code/article/details/37867985</a></p>
+        <p>LinkedHashmap源码剖析<br><a id="more"></a><br>转载：<a href="http://blog.csdn.net/ns_code/article/details/37867985" target="_blank" rel="external">http://blog.csdn.net/ns_code/article/details/37867985</a></p>
 <p>LinkedHashMap的源码理解起来也不难（当然，要建立在对HashMap源码有较好理解的基础上）。</p>
 <p>##LinkedHashMap简介</p>
 <h4 id="LinkedHashMap是HashMap的子类，与HashMap有着同样的存储结构，但它加入了一个双向链表的头结点，将所有put到LinkedHashmap的节点一一串成了一个双向循环链表，因此它保留了节点插入的顺序，可以使节点的输出顺序与输入顺序相同。"><a href="#LinkedHashMap是HashMap的子类，与HashMap有着同样的存储结构，但它加入了一个双向链表的头结点，将所有put到LinkedHashmap的节点一一串成了一个双向循环链表，因此它保留了节点插入的顺序，可以使节点的输出顺序与输入顺序相同。" class="headerlink" title="LinkedHashMap是HashMap的子类，与HashMap有着同样的存储结构，但它加入了一个双向链表的头结点，将所有put到LinkedHashmap的节点一一串成了一个双向循环链表，因此它保留了节点插入的顺序，可以使节点的输出顺序与输入顺序相同。"></a>LinkedHashMap是HashMap的子类，与HashMap有着同样的存储结构，但它加入了一个双向链表的头结点，将所有put到LinkedHashmap的节点一一串成了一个双向循环链表，因此它保留了节点插入的顺序，可以使节点的输出顺序与输入顺序相同。</h4><p>LinkedHashMap可以用来实现LRU算法（这会在下面的源码中进行分析）。</p>
@@ -475,7 +471,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/12/03/LinkedHashMap源码剖析/" data-id="cj6sscjsx000jvyse7k7881rf" class="article-share-link" data-share="baidu" data-title="LinkedHashmap源码剖析">分享到</a>
+        <a data-url="http://yoursite.com/2016/12/03/LinkedHashMap源码剖析/" data-id="cj6sssb6x0009zpse5pd5cqtm" class="article-share-link" data-share="baidu" data-title="LinkedHashmap源码剖析">分享到</a>
       
 
 
@@ -489,19 +485,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2016/12/03/SpringMVC工作流程/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/12/03/TreeMap源码剖析/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
       <div class="article-nav-title">
         
-          SpringMVC工作流程
+          TreeMap源码剖析
         
       </div>
     </a>
   
   
-    <a href="/2016/11/20/spring特点总结/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/12/03/synchronized关键字、ReentrantLock与原子类比较/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">Spring特点总结</div>
+      <div class="article-nav-title">synchronized关键字、ReentrantLock与原子类比较</div>
     </a>
   
 </nav>
@@ -619,10 +615,6 @@
   <nav id="mobile-nav">
   
     <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/tags/操作记录/" class="mobile-nav-link">操作记录</a>
-  
-    <a href="/tags/杂感/" class="mobile-nav-link">杂感</a>
   
 </nav>
   <!-- totop start -->

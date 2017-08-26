@@ -8,17 +8,17 @@
   
   <title>Spring特点总结 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="什么是IoC？  我们先来看一下比较官方的解释。 IoC，Inversion of Control的缩写，中文名称为控制反转，意思是将对象的控制权转移至第三方，例如IoC容器，即可由IoC容器来管理对象的生命周期、依赖关系等。 回到我们所说的IoC，首先我们需要肯定的是IoC并不是特指某种技术，而是指一种思想或者说一种设计模式。我们可以简单的理解为我们在进行程序业务逻辑的编程时通常需要大量的对象来">
+  <meta name="description" content="Spring特点总结">
 <meta name="keywords" content="框架相关">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring特点总结">
 <meta property="og:url" content="http://yoursite.com/2016/11/20/spring特点总结/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="什么是IoC？  我们先来看一下比较官方的解释。 IoC，Inversion of Control的缩写，中文名称为控制反转，意思是将对象的控制权转移至第三方，例如IoC容器，即可由IoC容器来管理对象的生命周期、依赖关系等。 回到我们所说的IoC，首先我们需要肯定的是IoC并不是特指某种技术，而是指一种思想或者说一种设计模式。我们可以简单的理解为我们在进行程序业务逻辑的编程时通常需要大量的对象来">
-<meta property="og:updated_time" content="2017-08-25T10:49:31.000Z">
+<meta property="og:description" content="Spring特点总结">
+<meta property="og:updated_time" content="2017-08-26T04:14:55.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring特点总结">
-<meta name="twitter:description" content="什么是IoC？  我们先来看一下比较官方的解释。 IoC，Inversion of Control的缩写，中文名称为控制反转，意思是将对象的控制权转移至第三方，例如IoC容器，即可由IoC容器来管理对象的生命周期、依赖关系等。 回到我们所说的IoC，首先我们需要肯定的是IoC并不是特指某种技术，而是指一种思想或者说一种设计模式。我们可以简单的理解为我们在进行程序业务逻辑的编程时通常需要大量的对象来">
+<meta name="twitter:description" content="Spring特点总结">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -47,10 +47,6 @@
         <a id="main-nav-toggle" class="nav-icon"></a>
         
           <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/tags/操作记录/">操作记录</a>
-        
-          <a class="main-nav-link" href="/tags/杂感/">杂感</a>
         
       </nav>
       <nav id="sub-nav">
@@ -93,7 +89,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="什么是IoC？"><a href="#什么是IoC？" class="headerlink" title="什么是IoC？"></a>什么是IoC？</h2><p>  我们先来看一下比较官方的解释。</p>
+        <p>Spring特点总结<br><a id="more"></a></p>
+<h2 id="什么是IoC？"><a href="#什么是IoC？" class="headerlink" title="什么是IoC？"></a>什么是IoC？</h2><p>  我们先来看一下比较官方的解释。</p>
 <h4 id="IoC，Inversion-of-Control的缩写，中文名称为控制反转，意思是将对象的控制权转移至第三方，例如IoC容器，即可由IoC容器来管理对象的生命周期、依赖关系等。"><a href="#IoC，Inversion-of-Control的缩写，中文名称为控制反转，意思是将对象的控制权转移至第三方，例如IoC容器，即可由IoC容器来管理对象的生命周期、依赖关系等。" class="headerlink" title="IoC，Inversion of Control的缩写，中文名称为控制反转，意思是将对象的控制权转移至第三方，例如IoC容器，即可由IoC容器来管理对象的生命周期、依赖关系等。"></a>IoC，Inversion of Control的缩写，中文名称为控制反转，意思是将对象的控制权转移至第三方，例如IoC容器，即可由IoC容器来管理对象的生命周期、依赖关系等。</h4><p> 回到我们所说的IoC，首先我们需要肯定的是IoC并不是特指某种技术，而是指一种思想或者说一种设计模式。我们可以简单的理解为我们在进行程序业务逻辑的编程时通常需要大量的对象来协作完成，而这些对象都需要我们通过类似如下语句</p>
 <p>Object object=new Object();//对象申请</p>
 <p>object.setName(“XXX”);//对象属性初始化赋值<br>的方式申请和初始化，而这些就是所谓的对象的控制权，IoC设计模式的目的就是把这些对象的控制权转移至第三方，由第三方来进行和管理类似对象申请、初始化、销毁对象的控制权工作。</p>
@@ -123,7 +120,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/11/20/spring特点总结/" data-id="cj6sscjub001tvyseap9eg8ta" class="article-share-link" data-share="baidu" data-title="Spring特点总结">分享到</a>
+        <a data-url="http://yoursite.com/2016/11/20/spring特点总结/" data-id="cj6sssb7u001czpsefir71u76" class="article-share-link" data-share="baidu" data-title="Spring特点总结">分享到</a>
       
 
 
@@ -137,11 +134,11 @@
     
 <nav id="article-nav">
   
-    <a href="/2016/12/03/LinkedHashMap源码剖析/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/12/03/SpringMVC工作流程/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
       <div class="article-nav-title">
         
-          LinkedHashmap源码剖析
+          SpringMVC工作流程
         
       </div>
     </a>
@@ -267,10 +264,6 @@
   <nav id="mobile-nav">
   
     <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/tags/操作记录/" class="mobile-nav-link">操作记录</a>
-  
-    <a href="/tags/杂感/" class="mobile-nav-link">杂感</a>
   
 </nav>
   <!-- totop start -->

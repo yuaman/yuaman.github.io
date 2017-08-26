@@ -43,10 +43,6 @@
         
           <a class="main-nav-link" href="/">Home</a>
         
-          <a class="main-nav-link" href="/tags/操作记录/">操作记录</a>
-        
-          <a class="main-nav-link" href="/tags/杂感/">杂感</a>
-        
       </nav>
       <nav id="sub-nav">
         
@@ -100,7 +96,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/10/06/Java多线程构件/" data-id="cj6sscjsl000avyseakfh1awq" class="article-share-link" data-share="baidu" data-title="JAVA多线程构件（java.util.concurrent包下高级工具）">分享到</a>
+        <a data-url="http://yoursite.com/2016/10/06/Java多线程构件/" data-id="cj6sssb6t0008zpse3ga6p5zq" class="article-share-link" data-share="baidu" data-title="JAVA多线程构件（java.util.concurrent包下高级工具）">分享到</a>
       
 
 
@@ -152,7 +148,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/09/17/深入理解JVM阅读笔记以及问题整理/" data-id="cj6sscjur002fvyselhl9d0hk" class="article-share-link" data-share="baidu" data-title="《深入理解JVM》阅读笔记以及问题整理">分享到</a>
+        <a data-url="http://yoursite.com/2016/09/17/深入理解JVM阅读笔记以及问题整理/" data-id="cj6sssb8a0028zpse7yogvfsd" class="article-share-link" data-share="baidu" data-title="《深入理解JVM》阅读笔记以及问题整理">分享到</a>
       
 
 
@@ -194,126 +190,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="ThreadLocal与synchronized"><a href="#ThreadLocal与synchronized" class="headerlink" title="ThreadLocal与synchronized"></a>ThreadLocal与synchronized</h2><p>synchronized这类线程同步的机制可以解决多线程并发问题，在这种解决方案下，多个线程访问到的，都是同一份变量的内容。为了防止在多线程访问的过程中，可能会出现的并发错误。不得不对多个线程的访问进行同步，这样也就意味着，多个线程必须先后对变量的值进行访问或者修改，这是一种以延长访问时间来换取线程安全性的策略。 </p>
-<p> 而ThreadLocal类为每一个线程都维护了自己独有的变量拷贝。每个线程都拥有了自己独立的一个变量，竞争条件被彻底消除了，那就没有任何必要对这些线程进行同步，它们也能最大限度的由CPU调度，并发执行。并且由于每个线程在访问该变量时，读取和修改的，都是自己独有的那一份变量拷贝，变量被彻底封闭在每个访问的线程中，并发错误出现的可能也完全消除了。对比前一种方案，这是一种以空间来换取线程安全性的策略。 </p>
-<p> 来看一个运用ThreadLocal来实现数据库连接Connection对象线程隔离的例子。 </p>
-<pre><code>import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
-public class ConnectionManager {
-
-    private static ThreadLocal&lt;Connection&gt; connectionHolder = new ThreadLocal&lt;Connection&gt;() {
-        @Override
-        protected Connection initialValue() {
-            Connection conn = null;
-            try {
-                conn = DriverManager.getConnection(
-                        &quot;jdbc:mysql://localhost:3306/test&quot;, &quot;username&quot;,
-                        &quot;password&quot;);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            return conn;
-        }
-    };
-
-    public static Connection getConnection() {
-        return connectionHolder.get();
-    }
-
-    public static void setConnection(Connection conn) {
-        connectionHolder.set(conn);
-    }
-}
-</code></pre><p> 通过调用ConnectionManager.getConnection()方法，每个线程获取到的，都是和当前线程绑定的那个Connection对象，第一次获取时，是通过initialValue()方法的返回值来设置值的。通过ConnectionManager.setConnection(Connection conn)方法设置的Connection对象，也只会和当前线程绑定。这样就实现了Connection对象在多个线程中的完全隔离。在Spring容器中管理多线程环境下的Connection对象时，采用的思路和以上代码非常相似。 </p>
-<p>那么到底ThreadLocal类是如何实现这种“为每个线程提供不同的变量拷贝”的呢？先来看一下ThreadLocal的set()方法的源码是如何实现的： </p>
-<pre><code>/**
-     * Sets the current thread&apos;s copy of this thread-local variable
-     * to the specified value.  Most subclasses will have no need to 
-     * override this method, relying solely on the {@link #initialValue}
-     * method to set the values of thread-locals.
-     *
-     * @param value the value to be stored in the current thread&apos;s copy of
-     *        this thread-local.
-     */
-    public void set(T value) {
-        Thread t = Thread.currentThread();
-        ThreadLocalMap map = getMap(t);
-        if (map != null)
-            map.set(this, value);
-
-else
-
-
-createMap(t, value)
-;
-    }
-</code></pre><p> 没有什么魔法，在这个方法内部我们看到，首先通过getMap(Thread t)方法获取一个和当前线程相关的ThreadLocalMap，然后将变量的值设置到这个ThreadLocalMap对象中，当然如果获取到的ThreadLocalMap对象为空，就通过createMap方法创建。 </p>
-<p> 线程隔离的秘密，就在于ThreadLocalMap这个类。ThreadLocalMap是ThreadLocal类的一个静态内部类，它实现了键值对的设置和获取（对比Map对象来理解），每个线程中都有一个独立的ThreadLocalMap副本，它所存储的值，只能被当前线程读取和修改。ThreadLocal类通过操作每一个线程特有的ThreadLocalMap副本，从而实现了变量访问在不同线程中的隔离。因为每个线程的变量都是自己特有的，完全不会有并发错误。还有一点就是，ThreadLocalMap存储的键值对中的键是this对象指向的ThreadLocal对象，而值就是你所设置的对象了。 </p>
-<p> 为了加深理解，我们接着看上面代码中出现的getMap和createMap方法的实现： </p>
-<pre><code>ThreadLocalMap getMap(Thread t) {
-        return t.threadLocals;
-    }
-
-void createMap(Thread t, T firstValue) {
-        t.threadLocals = new ThreadLocalMap(this, firstValue);
-    }
-</code></pre><p> 代码已经说的非常直白，就是获取和设置Thread内的一个叫threadLocals的变量，而这个变量的类型就是ThreadLocalMap，这样进一步验证了上文中的观点：每个线程都有自己独立的ThreadLocalMap对象。打开java.lang.Thread类的源代码，我们能得到更直观的证明： </p>
-<pre><code>/* ThreadLocal values pertaining to this thread. This map is maintained
-     * by the ThreadLocal class. */
-    ThreadLocal.ThreadLocalMap threadLocals = null;
-</code></pre><p> 那么接下来再看一下ThreadLocal类中的get()方法，代码是这么说的： </p>
-<pre><code>/**
-     * Returns the value in the current thread&apos;s copy of this
-     * thread-local variable.  If the variable has no value for the
-     * current thread, it is first initialized to the value returned
-     * by an invocation of the {@link #initialValue} method.
-     *
-     * @return the current thread&apos;s value of this thread-local
-     */
-    public T get() {
-        Thread t = Thread.currentThread();
-        ThreadLocalMap map = getMap(t);
-        if (map != null) {
-            ThreadLocalMap.Entry e = map.getEntry(this);
-            if (e != null)
-                return (T)e.value;
-        }
-        return setInitialValue();
-    }
-
-
-/**
-     * Variant of set() to establish initialValue. Used instead
-     * of set() in case user has overridden the set() method.
-     *
-     * @return the initial value
-     */
-    private T setInitialValue() {
-        T value = initialValue();
-        Thread t = Thread.currentThread();
-        ThreadLocalMap map = getMap(t);
-        if (map != null)
-            map.set(this, value);
-
-else
-
-
-createMap(t, value)
-;
-        return value;
-    }
-</code></pre><p> 这两个方法的代码告诉我们，在获取和当前线程绑定的值时，ThreadLocalMap对象是以this指向的ThreadLocal对象为键进行查找的，这当然和前面set()方法的代码是相呼应的。 </p>
-<p> 进一步地，我们可以创建不同的ThreadLocal实例来实现多个变量在不同线程间的访问隔离，为什么可以这么做？因为不同的ThreadLocal对象作为不同键，当然也可以在线程的ThreadLocalMap对象中设置不同的值了。通过ThreadLocal对象，在多线程中共享一个值和多个值的区别，就像你在一个HashMap对象中存储一个键值对和多个键值对一样，仅此而已。 </p>
-<p> 设置到这些线程中的隔离变量，会不会导致内存泄漏呢？ThreadLocalMap对象保存在Thread对象中，当某个线程终止后，存储在其中的线程隔离的变量，也将作为Thread实例的垃圾被回收掉，所以完全不用担心内存泄漏的问题。在多个线程中隔离的变量，光荣的生，合理的死，真是圆满，不是么？ </p>
-<p> 最后再提一句，ThreadLocal变量的这种隔离策略，也不是任何情况下都能使用的。如果多个线程并发访问的对象实例只允许，也只能创建那么一个，那就没有别的办法了，老老实实的使用同步机制来访问吧。 </p>
-
+        <h2 id="ThreadLocal与synchronized"><a href="#ThreadLocal与synchronized" class="headerlink" title="ThreadLocal与synchronized"></a>ThreadLocal与synchronized</h2>
+        
+          <p class="article-more-link">
+            <a href="/2016/09/09/ThreadLocal详解/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/09/09/ThreadLocal详解/" data-id="cj6sscjt7000tvyse84ayr3ct" class="article-share-link" data-share="baidu" data-title="ThreadLocal详解">分享到</a>
+        <a data-url="http://yoursite.com/2016/09/09/ThreadLocal详解/" data-id="cj6sssb7d000szpse4bfpprz3" class="article-share-link" data-share="baidu" data-title="ThreadLocal详解">分享到</a>
       
 
 
@@ -366,7 +253,7 @@ createMap(t, value)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/07/11/电商项目物流接口集成总结与开源分享/" data-id="cj6sscjur002hvyse869abkzz" class="article-share-link" data-share="baidu" data-title="电商项目物流接口集成总结与开源分享">分享到</a>
+        <a data-url="http://yoursite.com/2016/07/11/电商项目物流接口集成总结与开源分享/" data-id="cj6sssb8f002gzpse8thox590" class="article-share-link" data-share="baidu" data-title="电商项目物流接口集成总结与开源分享">分享到</a>
       
 
 
@@ -425,7 +312,7 @@ createMap(t, value)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/06/09/消息队列两种模式：点对点与发布订阅/" data-id="cj6sscjup0028vysezaf5qsxo" class="article-share-link" data-share="baidu" data-title="消息队列两种模式：点对点与发布订阅">分享到</a>
+        <a data-url="http://yoursite.com/2016/06/09/消息队列两种模式：点对点与发布订阅/" data-id="cj6sssb880024zpsejz7brnii" class="article-share-link" data-share="baidu" data-title="消息队列两种模式：点对点与发布订阅">分享到</a>
       
 
 
@@ -477,7 +364,7 @@ createMap(t, value)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/06/04/读《罗马人物语-恺撒时代》/" data-id="cj6sscjuz002rvyse480p34i4" class="article-share-link" data-share="baidu" data-title="读《罗马人物语-恺撒时代》">分享到</a>
+        <a data-url="http://yoursite.com/2016/06/04/读《罗马人物语-恺撒时代》/" data-id="cj6sssb8h002lzpserv1ltxcg" class="article-share-link" data-share="baidu" data-title="读《罗马人物语-恺撒时代》">分享到</a>
       
 
 
@@ -519,154 +406,17 @@ createMap(t, value)
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>之前在公司内部推行spring boot时，有同事跟我提到过，感觉换到spring boot这个框架后，好处是小白也能迅速上手写业务代码了。但是呢，这种情况下新手很容易写得云里雾里的，因为完全不知道背后的原理是什么，相对比在学习spring时需要深刻理解ioc、搞一堆繁琐的配置来说，的确缺少了被迫跳出舒适区去学习一些原理的过程，那么今天就讲讲，为什么spring boot能够如此简单的让我们迅速上手。</p>
-<p>Spring由于其繁琐的配置，一度被人成为“配置地狱”，各种XML、Annotation配置，让人眼花缭乱，而且如果出错了也很难找出原因。Spring Boot项目就是为了解决配置繁琐的问题，最大化的实现convention over configuration(约定大于配置)。熟悉Ruby On Rails（ROR框架的程序员都知道，借助于ROR的脚手架工具只需简单的几步即可建立起一个Web应用程序。而Spring Boot就相当于Java平台上的ROR。</p>
-<p>Spring boot出现之后，得益于“习惯优于配置”这个理念，再也没有繁琐的配置、难以集成的内容（大多数流行第三方技术都被集成在内）。 那么背后实现的核心原理到底是什么呢？ 其实是spring 4.x提供的基于条件配置bean的能力。</p>
-<p>Spring boot关于自动配置的源码在spring-boot-autoconfigure-x.x.x.x.jar中，主要包含了如下图所示的配置（并未截全）：</p>
-<p>我们可以在这里看见所有spring boot为我们做的自动配置。通过在application.properties中设置属性：debug=true，可以通过控制台的输出观察自动配置启动的情况：(以下有删减，建议自己运行一下看看)</p>
-<pre><code>=========================AUTO-CONFIGURATION REPORT
-Positive matches:
-————————
- - @ConditionalOnClass classes found: org.springframework.web.servlet.DispatcherServlet (OnClassCondition)  - found web application StandardServletEnvironment (OnWebApplicationCondition)
- Negative matches:
------------------   ActiveMQAutoConfiguration did not match
-      - required @ConditionalOnClass classes not found: javax.jms.ConnectionFactory,org.apache.activemq.ActiveMQConnectionFactory (OnClassCondition)
-运行原理
-
-在第一次使用spring boot的时候，大家都会惊讶于@SpringBootApplication这个注解，有了它马上就能够让整个应用跑起来。实际上它只是一个组合注解，包含@Configuration、@EnableAutoConfiguration、@ComponentScan这三个注解。
-
-@Target({ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-@Inherited
-@Configuration
-@EnableAutoConfiguration
-@ComponentScan
-public @interface SpringBootApplication {
-    Class&lt;?&gt;[] exclude() default {};
-    String[] excludeName() default {};
-    @AliasFor(
-        annotation = ComponentScan.class,
-        attribute = &quot;basePackages&quot;
-    )
-    String[] scanBasePackages() default {};
-    @AliasFor(
-        annotation = ComponentScan.class,
-        attribute = &quot;basePackageClasses&quot;
-    )
-    Class&lt;?&gt;[] scanBasePackageClasses() default {};
-}
-它的核心功能是由@EnableAutoConfiguration这个注解提供的，我们来看看@EnableAutoConfiguration的源代码：
-
-@Target({ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-@Inherited
-@AutoConfigurationPackage
-@Import({EnableAutoConfigurationImportSelector.class})
-public @interface EnableAutoConfiguration {
-    Class&lt;?&gt;[] exclude() default {};
-    String[] excludeName() default {};
-}
-</code></pre><p>这里的关键功能是@Import注解导入的配置功能<br>EnableAutoConfigurationImportSelector使用SpringFactoriesLoader.loadFactoryNames方法来扫描具有META-INF/spring.factories文件的jar包，spring-boot-autoconfigure-x.x.x.x.jar里就有一个spring.factories文件，这个文件中声明了有哪些要自动配置。<br>下面我们来分析一下spring boot autoconfigure里面的MongoAutoConfiguration（MongoDB的自动配置），相信你就会明白这套自动配置机制到底是怎么一回事儿：</p>
-<pre><code>//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by Fernflower decompiler)
-//
-package org.springframework.boot.autoconfigure.mongo;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientOptions;
-import java.net.UnknownHostException;
-import javax.annotation.PreDestroy;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.mongo.MongoProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
-@Configuration
-@ConditionalOnClass({MongoClient.class})  
-@EnableConfigurationProperties({MongoProperties.class}) //开启属性注入。
-@ConditionalOnMissingBean(
-    type = {&quot;org.springframework.data.mongodb.MongoDbFactory&quot;}
-) 
-public class MongoAutoConfiguration {
-    @Autowired
-    private MongoProperties properties;
-    @Autowired(
-        required = false
-    )
-    private MongoClientOptions options;
-    @Autowired
-    private Environment environment;
-    private MongoClient mongo;
-    public MongoAutoConfiguration() {
-    }
-    @PreDestroy
-    public void close() {
-        if(this.mongo != null) {
-            this.mongo.close();
-        }
-    }
-    @Bean //使用java配置，当容器中没有这个bean的时候执行初始化
-    @ConditionalOnMissingBean
-    public MongoClient mongo() throws UnknownHostException {
-        this.mongo = this.properties.createMongoClient(this.options, this.environment);
-        return this.mongo;
-    }
-}
-</code></pre><p>首先这被@Configuration注解了，是一个配置类，当满足以下条件这个bean被装配：</p>
-<ul>
-<li><p>当MongoClient在类路径下。</p>
-</li>
-<li><p>当容器中没有org.springframework.data.mongodb.MongoDbFactory这类bean的时候。</p>
-</li>
-</ul>
-<p>此外，我们可以看一下通过@EnableConfigurationProperties({MongoProperties.class}) 自动注入的属性（这是习惯优于配置的最终落地点）：</p>
-<pre><code>@ConfigurationProperties(
-    prefix = &quot;spring.data.mongodb&quot;
-)
-public class MongoProperties {
-    public static final int DEFAULT_PORT = 27017;
-    private String host;
-    private Integer port = null;
-    private String uri = &quot;mongodb://localhost/test&quot;;
-    private String database;
-    private String authenticationDatabase;
-    private String gridFsDatabase;
-    private String username;
-    private char[] password;
-    private Class&lt;?&gt; fieldNamingStrategy;
-
-    ......
-}
-</code></pre><p>所以在我们什么都不干的情况下，只需要引入spring-data-mongodb这个依赖再加上默认的MongoDB server我们就能够快速集成MongoDB，用MongodbTemplate访问数据库。</p>
-<p>同时我们可以通过在application.yaml中修改spring.data.mongodb相关的参数就能够修改连接配置，如：</p>
-<pre><code>spring:
-    data:
-        mongodb:
-            host: localhost
-            port: 27017
-            username: chingzhu
-            password: test123
-            database: icekredit
-</code></pre><p>利用这套原理，我们也可以轻松地把目前spring boot还未集成的、我们自己要使用的第三方技术自动集成起来。</p>
-<p>现在，不知道你对spring boot的机制有一个清楚的认识了吗？</p>
-<p>附：常见org.springframework.boot.autoconfigure.condition包下的条件注解意思</p>
-<p>@ConditionalOnBean：当容器里有指定的bean的条件下。</p>
-<p>@ConditionalOnMissingBean：当容器里不存在指定bean的条件下。</p>
-<p>@ConditionalOnClass：当类路径下有指定类的条件下。</p>
-<p>@ConditionalOnMissingClass：当类路径下不存在指定类的条件下。</p>
-<p>@ConditionalOnProperty：指定的属性是否有指定的值，比如@ConditionalOnProperties(prefix=”xxx.xxx”, value=”enable”, matchIfMissing=true)，代表当xxx.xxx为enable时条件的布尔值为true，如果没有设置的情况下也为true。</p>
-<p>转载地址：<a href="http://blog.csdn.net/xiaobing_122613/article/details/54943448" target="_blank" rel="external">http://blog.csdn.net/xiaobing_122613/article/details/54943448</a></p>
-
+        <p>Spring Boot核心原理－自动配置<br>
+        
+          <p class="article-more-link">
+            <a href="/2016/05/23/SpringBoot核心原理——自动配置/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/05/23/SpringBoot核心原理——自动配置/" data-id="cj6sscjtb0012vyse121bmkdy" class="article-share-link" data-share="baidu" data-title="Spring Boot核心原理－自动配置">分享到</a>
+        <a data-url="http://yoursite.com/2016/05/23/SpringBoot核心原理——自动配置/" data-id="cj6sssb78000nzpseruwycyo5" class="article-share-link" data-share="baidu" data-title="Spring Boot核心原理－自动配置">分享到</a>
       
 
 
@@ -718,13 +468,65 @@ public class MongoProperties {
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/05/09/Java中equals与==的区别与使用场景分析/" data-id="cj6sscjsh0005vysekl52lcnd" class="article-share-link" data-share="baidu" data-title="谈谈Java中equals和==的区别和使用场景">分享到</a>
+        <a data-url="http://yoursite.com/2016/05/09/Java中equals与==的区别与使用场景分析/" data-id="cj6sssb6m0004zpservsdp1xy" class="article-share-link" data-share="baidu" data-title="谈谈Java中equals和==的区别和使用场景">分享到</a>
       
 
 
 
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java基础/">Java基础</a></li></ul>
+
+    </footer>
+  </div>
+  
+
+
+
+</article>
+
+
+
+
+  
+    <article id="post-Rabbitmq基本原理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/05/03/Rabbitmq基本原理/" class="article-date">
+  <time datetime="2016-05-03T09:37:31.000Z" itemprop="datePublished">2016-05-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/03/Rabbitmq基本原理/">Rabbitmq基本原理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Rabbitmq基本原理<br>
+        
+          <p class="article-more-link">
+            <a href="/2016/05/03/Rabbitmq基本原理/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2016/05/03/Rabbitmq基本原理/" data-id="cj6sssb73000hzpsejs3z78fm" class="article-share-link" data-share="baidu" data-title="Rabbitmq基本原理">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式消息/">分布式消息</a></li></ul>
 
     </footer>
   </div>
@@ -770,99 +572,13 @@ public class MongoProperties {
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/05/03/ReenTrantLock可重入锁（和synchronized的区别）总结/" data-id="cj6sscjta000zvyseu1uqerqj" class="article-share-link" data-share="baidu" data-title="ReenTrantLock可重入锁（和synchronized的区别）总结">分享到</a>
+        <a data-url="http://yoursite.com/2016/05/03/ReenTrantLock可重入锁（和synchronized的区别）总结/" data-id="cj6sssb7h000zzpse3bh1i3u3" class="article-share-link" data-share="baidu" data-title="ReenTrantLock可重入锁（和synchronized的区别）总结">分享到</a>
       
 
 
 
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发相关/">并发相关</a></li></ul>
-
-    </footer>
-  </div>
-  
-
-
-
-</article>
-
-
-
-
-  
-    <article id="post-Rabbitmq基本原理" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/05/03/Rabbitmq基本原理/" class="article-date">
-  <time datetime="2016-05-03T09:37:31.000Z" itemprop="datePublished">2016-05-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/03/Rabbitmq基本原理/">Rabbitmq基本原理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>MQ全称为Message Queue, 是一种分布式应用程序的的通信方法，它是消费-生产者模型的一个典型的代表，producer往消息队列中不断写入消息，而另一端consumer则可以读取或者订阅队列中的消息。RabbitMQ是MQ产品的典型代表，是一款基于AMQP协议可复用的企业消息系统。业务上，可以实现服务提供者和消费者之间的数据解耦，提供高可用性的消息传输机制，在实际生产中应用相当广泛。本文意在介绍Rabbitmq的基本原理，包括rabbitmq基本框架，概念，通信过程等。</p>
-<p>系统架构</p>
-<p>Rabbitmq系统最核心的组件是Exchange和Queue，下图是系统简单的示意图。Exchange和Queue是在rabbitmq server（又叫做broker）端，producer和consumer在应用端。</p>
-<p>##producer&amp;Consumer</p>
-<p>producer指的是消息生产者，consumer消息的消费者。</p>
-<p>##Queue</p>
-<p>消息队列，提供了FIFO的处理机制，具有缓存消息的能力。rabbitmq中，队列消息可以设置为持久化，临时或者自动删除。</p>
-<ol>
-<li>设置为持久化的队列，queue中的消息会在server本地硬盘存储一份，防止系统crash，数据丢失</li>
-<li>设置为临时队列，queue中的数据在系统重启之后就会丢失</li>
-<li>设置为自动删除的队列，当不存在用户连接到server，队列中的数据会被自动删除<br>##Exchange</li>
-</ol>
-<p>Exchange类似于数据通信网络中的交换机，提供消息路由策略。rabbitmq中，producer不是通过信道直接将消息发送给queue，而是先发送给Exchange。一个Exchange可以和多个Queue进行绑定，producer在传递消息的时候，会传递一个ROUTING_KEY，Exchange会根据这个ROUTING_KEY按照特定的路由算法，将消息路由给指定的queue。和Queue一样，Exchange也可设置为持久化，临时或者自动删除。</p>
-<p>Exchange有4种类型：direct(默认)，fanout, topic, 和headers，不同类型的Exchange转发消息的策略有所区别：</p>
-<ol>
-<li>Direct<br>直接交换器，工作方式类似于单播，Exchange会将消息发送完全匹配ROUTING_KEY的Queue</li>
-<li>fanout<br>广播是式交换器，不管消息的ROUTING_KEY设置为什么，Exchange都会将消息转发给所有绑定的Queue。</li>
-<li>topic<br>主题交换器，工作方式类似于组播，Exchange会将消息转发和ROUTING_KEY匹配模式相同的所有队列，比如，ROUTING_KEY为user.stock的Message会转发给绑定匹配模式为 <em> .stock,user.stock， </em> . <em> 和#.user.stock.#的队列。（ </em> 表是匹配一个任意词组，#表示匹配0个或多个词组）</li>
-<li>headers<br>消息体的header匹配（ignore）<br>Binding</li>
-</ol>
-<p>所谓绑定就是将一个特定的 Exchange 和一个特定的 Queue 绑定起来。Exchange 和Queue的绑定可以是多对多的关系。</p>
-<p>##virtual host</p>
-<p>在rabbitmq server上可以创建多个虚拟的message broker，又叫做virtual hosts (vhosts)。每一个vhost本质上是一个mini-rabbitmq server，分别管理各自的exchange，和bindings。vhost相当于物理的server，可以为不同app提供边界隔离，使得应用安全的运行在不同的vhost实例上，相互之间不会干扰。producer和consumer连接rabbit server需要指定一个vhost。</p>
-<p>##通信过程</p>
-<p>假设P1和C1注册了相同的Broker，Exchange和Queue。P1发送的消息最终会被C1消费。基本的通信流程大概如下所示：</p>
-<ol>
-<li>P1生产消息，发送给服务器端的Exchange</li>
-<li>Exchange收到消息，根据ROUTINKEY，将消息转发给匹配的Queue1</li>
-<li>Queue1收到消息，将消息发送给订阅者C1</li>
-<li>C1收到消息，发送ACK给队列确认收到消息</li>
-<li><p>Queue1收到ACK，删除队列中缓存的此条消息<br>Consumer收到消息时需要显式的向rabbit broker发送basic.ack消息或者consumer订阅消息时设置auto_ack参数为true。在通信过程中，队列对ACK的处理有以下几种情况：</p>
-</li>
-<li><p>如果consumer接收了消息，发送ack,rabbitmq会删除队列中这个消息，发送另一条消息给consumer。</p>
-</li>
-<li>如果cosumer接受了消息, 但在发送ack之前断开连接，rabbitmq会认为这条消息没有被deliver,在consumer在次连接的时候，这条消息会被redeliver。</li>
-<li>如果consumer接受了消息，但是程序中有bug,忘记了ack,rabbitmq不会重复发送消息。</li>
-<li>rabbitmq2.0.0和之后的版本支持consumer reject某条（类）消息，可以通过设置requeue参数中的reject为true达到目地，那么rabbitmq将会把消息发送给下一个注册的consumer。<br>Conclusion</li>
-</ol>
-<p>本文和大家一起学习了rabbitmq的一些基础知识，在之后的博文中，笔者将会和大家一起分享更多的Rabbitmq知识</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2016/05/03/Rabbitmq基本原理/" data-id="cj6sscjt0000ovyse71sp4cjj" class="article-share-link" data-share="baidu" data-title="Rabbitmq基本原理">分享到</a>
-      
-
-
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式消息/">分布式消息</a></li></ul>
 
     </footer>
   </div>
@@ -986,10 +702,6 @@ public class MongoProperties {
   <nav id="mobile-nav">
   
     <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/tags/操作记录/" class="mobile-nav-link">操作记录</a>
-  
-    <a href="/tags/杂感/" class="mobile-nav-link">杂感</a>
   
 </nav>
   <!-- totop start -->

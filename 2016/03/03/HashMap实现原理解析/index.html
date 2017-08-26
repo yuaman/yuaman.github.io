@@ -8,17 +8,17 @@
   
   <title>HashMap实现原理解析 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="“你用过HashMap吗？” “什么是HashMap？你为什么用到它？” 几乎每个人都会回答“是的”，然后回答HashMap的一些特性，譬如HashMap可以接受null键值和值，而Hashtable则不能；HashMap是非synchronized;HashMap很快；以及HashMap储存的是键值对等等。这显示出你已经用过HashMap，而且对它相当的熟悉。但是面试官来个急转直下，从此刻开始问">
+  <meta name="description" content="HashMap实现原理解析">
 <meta name="keywords" content="Java容器相关">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HashMap实现原理解析">
 <meta property="og:url" content="http://yoursite.com/2016/03/03/HashMap实现原理解析/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="“你用过HashMap吗？” “什么是HashMap？你为什么用到它？” 几乎每个人都会回答“是的”，然后回答HashMap的一些特性，譬如HashMap可以接受null键值和值，而Hashtable则不能；HashMap是非synchronized;HashMap很快；以及HashMap储存的是键值对等等。这显示出你已经用过HashMap，而且对它相当的熟悉。但是面试官来个急转直下，从此刻开始问">
-<meta property="og:updated_time" content="2017-08-25T08:50:26.000Z">
+<meta property="og:description" content="HashMap实现原理解析">
+<meta property="og:updated_time" content="2017-08-26T04:17:48.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HashMap实现原理解析">
-<meta name="twitter:description" content="“你用过HashMap吗？” “什么是HashMap？你为什么用到它？” 几乎每个人都会回答“是的”，然后回答HashMap的一些特性，譬如HashMap可以接受null键值和值，而Hashtable则不能；HashMap是非synchronized;HashMap很快；以及HashMap储存的是键值对等等。这显示出你已经用过HashMap，而且对它相当的熟悉。但是面试官来个急转直下，从此刻开始问">
+<meta name="twitter:description" content="HashMap实现原理解析">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -47,10 +47,6 @@
         <a id="main-nav-toggle" class="nav-icon"></a>
         
           <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/tags/操作记录/">操作记录</a>
-        
-          <a class="main-nav-link" href="/tags/杂感/">杂感</a>
         
       </nav>
       <nav id="sub-nav">
@@ -93,7 +89,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>“你用过HashMap吗？” “什么是HashMap？你为什么用到它？”</p>
+        <p>HashMap实现原理解析<br><a id="more"></a><br>“你用过HashMap吗？” “什么是HashMap？你为什么用到它？”</p>
 <p>几乎每个人都会回答“是的”，然后回答HashMap的一些特性，譬如HashMap可以接受null键值和值，而Hashtable则不能；HashMap是非synchronized;HashMap很快；以及HashMap储存的是键值对等等。这显示出你已经用过HashMap，而且对它相当的熟悉。但是面试官来个急转直下，从此刻开始问出一些刁钻的问题，关于HashMap的更多基础的细节。面试官可能会问出下面的问题：</p>
 <p>“你知道HashMap的工作原理吗？” “你知道HashMap的get()方法的工作原理吗？”</p>
 <p>你也许会回答“我没有详查标准的Java API，你可以看看Java源代码或者Open JDK。”“我可以用Google找到答案。”</p>
@@ -128,7 +124,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/03/03/HashMap实现原理解析/" data-id="cj6sscjsd0003vysew2755zf0" class="article-share-link" data-share="baidu" data-title="HashMap实现原理解析">分享到</a>
+        <a data-url="http://yoursite.com/2016/03/03/HashMap实现原理解析/" data-id="cj6sssb6c0000zpsewr3a475m" class="article-share-link" data-share="baidu" data-title="HashMap实现原理解析">分享到</a>
       
 
 
@@ -272,10 +268,6 @@
   <nav id="mobile-nav">
   
     <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/tags/操作记录/" class="mobile-nav-link">操作记录</a>
-  
-    <a href="/tags/杂感/" class="mobile-nav-link">杂感</a>
   
 </nav>
   <!-- totop start -->

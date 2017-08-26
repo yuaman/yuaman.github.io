@@ -8,17 +8,17 @@
   
   <title>ThreadLocal详解 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="ThreadLocal与synchronizedsynchronized这类线程同步的机制可以解决多线程并发问题，在这种解决方案下，多个线程访问到的，都是同一份变量的内容。为了防止在多线程访问的过程中，可能会出现的并发错误。不得不对多个线程的访问进行同步，这样也就意味着，多个线程必须先后对变量的值进行访问或者修改，这是一种以延长访问时间来换取线程安全性的策略。   而ThreadLocal类为每一">
+  <meta name="description" content="ThreadLocal与synchronized">
 <meta name="keywords" content="并发相关">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ThreadLocal详解">
 <meta property="og:url" content="http://yoursite.com/2016/09/09/ThreadLocal详解/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="ThreadLocal与synchronizedsynchronized这类线程同步的机制可以解决多线程并发问题，在这种解决方案下，多个线程访问到的，都是同一份变量的内容。为了防止在多线程访问的过程中，可能会出现的并发错误。不得不对多个线程的访问进行同步，这样也就意味着，多个线程必须先后对变量的值进行访问或者修改，这是一种以延长访问时间来换取线程安全性的策略。   而ThreadLocal类为每一">
-<meta property="og:updated_time" content="2017-08-25T10:22:51.000Z">
+<meta property="og:description" content="ThreadLocal与synchronized">
+<meta property="og:updated_time" content="2017-08-26T04:10:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ThreadLocal详解">
-<meta name="twitter:description" content="ThreadLocal与synchronizedsynchronized这类线程同步的机制可以解决多线程并发问题，在这种解决方案下，多个线程访问到的，都是同一份变量的内容。为了防止在多线程访问的过程中，可能会出现的并发错误。不得不对多个线程的访问进行同步，这样也就意味着，多个线程必须先后对变量的值进行访问或者修改，这是一种以延长访问时间来换取线程安全性的策略。   而ThreadLocal类为每一">
+<meta name="twitter:description" content="ThreadLocal与synchronized">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -47,10 +47,6 @@
         <a id="main-nav-toggle" class="nav-icon"></a>
         
           <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/tags/操作记录/">操作记录</a>
-        
-          <a class="main-nav-link" href="/tags/杂感/">杂感</a>
         
       </nav>
       <nav id="sub-nav">
@@ -93,7 +89,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="ThreadLocal与synchronized"><a href="#ThreadLocal与synchronized" class="headerlink" title="ThreadLocal与synchronized"></a>ThreadLocal与synchronized</h2><p>synchronized这类线程同步的机制可以解决多线程并发问题，在这种解决方案下，多个线程访问到的，都是同一份变量的内容。为了防止在多线程访问的过程中，可能会出现的并发错误。不得不对多个线程的访问进行同步，这样也就意味着，多个线程必须先后对变量的值进行访问或者修改，这是一种以延长访问时间来换取线程安全性的策略。 </p>
+        <h2 id="ThreadLocal与synchronized"><a href="#ThreadLocal与synchronized" class="headerlink" title="ThreadLocal与synchronized"></a>ThreadLocal与synchronized</h2><a id="more"></a>
+<p>synchronized这类线程同步的机制可以解决多线程并发问题，在这种解决方案下，多个线程访问到的，都是同一份变量的内容。为了防止在多线程访问的过程中，可能会出现的并发错误。不得不对多个线程的访问进行同步，这样也就意味着，多个线程必须先后对变量的值进行访问或者修改，这是一种以延长访问时间来换取线程安全性的策略。 </p>
 <p> 而ThreadLocal类为每一个线程都维护了自己独有的变量拷贝。每个线程都拥有了自己独立的一个变量，竞争条件被彻底消除了，那就没有任何必要对这些线程进行同步，它们也能最大限度的由CPU调度，并发执行。并且由于每个线程在访问该变量时，读取和修改的，都是自己独有的那一份变量拷贝，变量被彻底封闭在每个访问的线程中，并发错误出现的可能也完全消除了。对比前一种方案，这是一种以空间来换取线程安全性的策略。 </p>
 <p> 来看一个运用ThreadLocal来实现数据库连接Connection对象线程隔离的例子。 </p>
 <pre><code>import java.sql.Connection;
@@ -212,7 +209,7 @@ createMap(t, value)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/09/09/ThreadLocal详解/" data-id="cj6sscjt7000tvyse84ayr3ct" class="article-share-link" data-share="baidu" data-title="ThreadLocal详解">分享到</a>
+        <a data-url="http://yoursite.com/2016/09/09/ThreadLocal详解/" data-id="cj6sssb7d000szpse4bfpprz3" class="article-share-link" data-share="baidu" data-title="ThreadLocal详解">分享到</a>
       
 
 
@@ -356,10 +353,6 @@ createMap(t, value)
   <nav id="mobile-nav">
   
     <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/tags/操作记录/" class="mobile-nav-link">操作记录</a>
-  
-    <a href="/tags/杂感/" class="mobile-nav-link">杂感</a>
   
 </nav>
   <!-- totop start -->
