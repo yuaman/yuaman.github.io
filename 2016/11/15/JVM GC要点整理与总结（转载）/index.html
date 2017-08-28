@@ -8,19 +8,20 @@
   
   <title>JVM GC要点整理与总结 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="这篇文章是我偶然看到的一篇对JVM GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。这是原文的地址：http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk请大家支持原作者，感谢原作者的认真和辛勤整理。">
+  <meta name="description" content="这篇文章是我偶然看到的一篇对JVM GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。参考地址：http://blog.csdn.net/shaozengwei/article/details/39670509http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.">
 <meta name="keywords" content="JVM相关">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JVM GC要点整理与总结">
 <meta property="og:url" content="http://yoursite.com/2016/11/15/JVM GC要点整理与总结（转载）/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="这篇文章是我偶然看到的一篇对JVM GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。这是原文的地址：http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk请大家支持原作者，感谢原作者的认真和辛勤整理。">
+<meta property="og:description" content="这篇文章是我偶然看到的一篇对JVM GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。参考地址：http://blog.csdn.net/shaozengwei/article/details/39670509http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.">
+<meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/20141007114631796.png">
 <meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/591d52e2ab64412be90016a5">
-<meta property="og:updated_time" content="2017-08-18T09:25:24.000Z">
+<meta property="og:updated_time" content="2017-08-27T05:13:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM GC要点整理与总结">
-<meta name="twitter:description" content="这篇文章是我偶然看到的一篇对JVM GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。这是原文的地址：http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk请大家支持原作者，感谢原作者的认真和辛勤整理。">
-<meta name="twitter:image" content="http://og287lnu0.bkt.clouddn.com/591d52e2ab64412be90016a5">
+<meta name="twitter:description" content="这篇文章是我偶然看到的一篇对JVM GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。参考地址：http://blog.csdn.net/shaozengwei/article/details/39670509http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.">
+<meta name="twitter:image" content="http://og287lnu0.bkt.clouddn.com/20141007114631796.png">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -91,13 +92,36 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h5 id="这篇文章是我偶然看到的一篇对JVM-GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。"><a href="#这篇文章是我偶然看到的一篇对JVM-GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。" class="headerlink" title="这篇文章是我偶然看到的一篇对JVM GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。"></a>这篇文章是我偶然看到的一篇对JVM GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。</h5><h5 id="这是原文的地址：http-blog-leanote-com-post-shiwei-Java-GC-spm-5176-100239-blogcont91017-9-3Qo1pk"><a href="#这是原文的地址：http-blog-leanote-com-post-shiwei-Java-GC-spm-5176-100239-blogcont91017-9-3Qo1pk" class="headerlink" title="这是原文的地址：http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk"></a>这是原文的地址：<a href="http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk" target="_blank" rel="external">http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk</a></h5><h5 id="请大家支持原作者，感谢原作者的认真和辛勤整理。"><a href="#请大家支持原作者，感谢原作者的认真和辛勤整理。" class="headerlink" title="请大家支持原作者，感谢原作者的认真和辛勤整理。"></a>请大家支持原作者，感谢原作者的认真和辛勤整理。</h5><a id="more"></a>
-<h3 id="范围：要回收哪些区域"><a href="#范围：要回收哪些区域" class="headerlink" title="范围：要回收哪些区域"></a>范围：要回收哪些区域</h3><p>在JVM五种内存模型中，有三个是不需要进行垃圾回收的：程序计数器、JVM栈、本地方法栈。因为它们的生命周期是和线程同步的，随着线程的销毁，它们占用的内存会自动释放，所以只有方法区和堆需要进行GC。</p>
-<h3 id="前提：如何判断对象已死"><a href="#前提：如何判断对象已死" class="headerlink" title="前提：如何判断对象已死"></a>前提：如何判断对象已死</h3><p>所有的垃圾收集算法都面临同一个问题，那就是找出应用程序不可到达的内存块，将其释放，这里面讲的不可达主要是指应用程序已经没有内存块的引用了， 在Java中，某个对象对应用程序是可到达的是指：这个对象被根（根主要是指类的静态变量，或者活跃在所有线程栈的对象的引用）引用或者对象被另一个可到达的对象引用。</p>
+        <h5 id="这篇文章是我偶然看到的一篇对JVM-GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。"><a href="#这篇文章是我偶然看到的一篇对JVM-GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。" class="headerlink" title="这篇文章是我偶然看到的一篇对JVM GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。"></a>这篇文章是我偶然看到的一篇对JVM GC部分的要点整理的比较全面比较详细的一篇文章，所以大胆转载了过来，也是给我个人做一个备忘和参考，或许以后也会在这个基础之上进行补充。</h5><p>参考地址：<br><a href="http://blog.csdn.net/shaozengwei/article/details/39670509" target="_blank" rel="external">http://blog.csdn.net/shaozengwei/article/details/39670509</a><br><a href="http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk" target="_blank" rel="external">http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk</a></p>
+<h5 id="请大家支持原作者，感谢原作者的认真和辛勤整理。"><a href="#请大家支持原作者，感谢原作者的认真和辛勤整理。" class="headerlink" title="请大家支持原作者，感谢原作者的认真和辛勤整理。"></a>请大家支持原作者，感谢原作者的认真和辛勤整理。</h5><a id="more"></a>
+<p><img src="http://og287lnu0.bkt.clouddn.com/20141007114631796.png"></p>
+<h2 id="要点总结："><a href="#要点总结：" class="headerlink" title="要点总结："></a>要点总结：</h2><h3 id="先来解释一下对象存活？？"><a href="#先来解释一下对象存活？？" class="headerlink" title="先来解释一下对象存活？？"></a>先来解释一下对象存活？？</h3><p>什么样的对象是已经死了的对象，需要垃圾回收器进行回收，这个概念至关重要，因为它影响到垃圾回收器对于哪一个对象进行回收。可以从GCRoot访问到的对象是存活的对象，那么以外的对象就是已死的对象。</p>
+<h4 id="GCRoot：包括四种-1）Java虚拟机栈中存放的reference指针指向的对象-2）本地方法栈中reference指向的对象-3）方法区中的常量引用对象-4）方法区中静态类属性引用的对象"><a href="#GCRoot：包括四种-1）Java虚拟机栈中存放的reference指针指向的对象-2）本地方法栈中reference指向的对象-3）方法区中的常量引用对象-4）方法区中静态类属性引用的对象" class="headerlink" title="GCRoot：包括四种 1）Java虚拟机栈中存放的reference指针指向的对象   2）本地方法栈中reference指向的对象  3）方法区中的常量引用对象 4）方法区中静态类属性引用的对象"></a>GCRoot：包括四种 1）Java虚拟机栈中存放的reference指针指向的对象   2）本地方法栈中reference指向的对象  3）方法区中的常量引用对象 4）方法区中静态类属性引用的对象</h4><h2 id="GC-垃圾回收器"><a href="#GC-垃圾回收器" class="headerlink" title="GC 垃圾回收器"></a>GC 垃圾回收器</h2><p>垃圾回收器采用的是标记-清除-整理算法回收内存。</p>
+<p>Minor GC和Full GC，Minor GC是对年轻代回收的过程， Full GC 是对整个堆以及方法区进行回收的过程。</p>
+<p>分代收集，在Java虚拟机中对于堆的内存区域进行再划分为，Young Generation（年轻代）和Old Generation（老代）</p>
+<p>年轻代用于存储年龄没有达到-XX:PretenureSizeThreshold的对象，老代用于存储年龄超过了-XX:PretenureSizeThreshold的对象。</p>
+<p>然后对于年轻代再进行细分，Eden Space， From Space， ToSpace三个内存区域，这三个内存区域的大小由-XX:SurivorRadio来定义。在进行Minor GC的时候，会将Eden Space和From Space中存活的对象Copy到ToSpace中，并将超过年龄的对象Copy到老代，当老代空间不足时，启动Full GC。</p>
+<p>（上面概念只是进行了简单的描述，在JVM实际运行过程中要复杂的多，不过大概原理是这样的）。</p>
+<p>了解了上面基本概念之后，看下面的垃圾回收器就比较简单了。垃圾回收器总共分为七种：Serial收集器与Serial Old 收集器，Parallel Scavenge 收集器与Parallel Old，ParNew收集器,CMS收集器，G1(Garbage First)收集器。</p>
+<ol>
+<li><p>Serial收集器与Serial Old 收集器，分别用于收集年轻代和老年代内存区域，Serial是单线程的垃圾收集器，在运行过程中需要暂停所有的Java线程。</p>
+</li>
+<li><p>ParNew收集器实际上就是Serial收集器的多线程版本（针对于年轻代）。</p>
+</li>
+<li><p>Parallel Scavenge 收集器与Parallel Old： 是并行的多线程垃圾处理器，可以规定最大垃圾收集停顿时间-XX:MaxGCPauseMillis以及设置吞吐量大小-XX:GCTimeRadio.</p>
+</li>
+<li><p>CMS 收集器（Concurrent Mark Sweep）: 是针对于老年代的多线程并发执行的垃圾回收器。以获取最短回收停顿时间为目标的收集器（主要用于B/S架构的服务器上）。</p>
+</li>
+<li><p>G1(Garbage First)收集器: 是最新的垃圾回收器，适合于（JDK1.6_update14）以上的JVM；G1将整个Java堆（包括新生代和老年代）划分为多个固定大小的独立区域，并且跟踪这些区域里面的垃圾堆积程度，在后台维护一个垃圾优先列表，每次根据允许收集的时间，优先回收垃圾最多的区域。</p>
+</li>
+</ol>
+<p>总之，要想获得最大吞吐量的服务类型就采用Parallel Scavenge 收集器与Parallel Old收集器组合。要实现实时系统最好采用CMS 收集器（Concurrent Mark Sweep）。不过客户端由于比较小，还是使用Serial比较好。</p>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><h3 id="GC范围：要回收哪些区域"><a href="#GC范围：要回收哪些区域" class="headerlink" title="GC范围：要回收哪些区域"></a>GC范围：要回收哪些区域</h3><p>在JVM五种内存模型中，有三个是不需要进行垃圾回收的：程序计数器、JVM栈、本地方法栈。因为它们的生命周期是和线程同步的，随着线程的销毁，它们占用的内存会自动释放，所以只有方法区和堆需要进行GC。</p>
+<h3 id="如何判断对象已死"><a href="#如何判断对象已死" class="headerlink" title="如何判断对象已死"></a>如何判断对象已死</h3><p>所有的垃圾收集算法都面临同一个问题，那就是找出应用程序不可到达的内存块，将其释放，这里面讲的不可达主要是指应用程序已经没有内存块的引用了， 在Java中，某个对象对应用程序是可到达的是指：这个对象被根（根主要是指类的静态变量，或者活跃在所有线程栈的对象的引用）引用或者对象被另一个可到达的对象引用。</p>
 <h3 id="引用计数算法"><a href="#引用计数算法" class="headerlink" title="引用计数算法"></a>引用计数算法</h3><p>引用计数是最简单直接的一种方式，这种方式在每一个对象中增加一个引用的计数，这个计数代表当前程序有多少个引用引用了此对象，如果此对象的引用计数变为0，那么此对象就可以作为垃圾收集器的目标对象来收集。<br>优点：简单，直接，不需要暂停整个应用<br>缺点：1.需要编译器的配合，编译器要生成特殊的指令来进行引用计数的操作；2.不能处理循环引用的问题<br>因此这种方法是垃圾收集的早期策略，现在很少使用。Sun的JVM并没有采用引用计数算法来进行垃圾回收，而是基于根搜索算法的。</p>
 <h3 id="可达性分析算法（根搜索算法）"><a href="#可达性分析算法（根搜索算法）" class="headerlink" title="可达性分析算法（根搜索算法）"></a>可达性分析算法（根搜索算法）</h3><p>通过一系列的名为“GC Root”的对象作为起点，从这些节点向下搜索，搜索所走过的路径称为引用链(Reference Chain)，当一个对象到GC Root没有任何引用链相连时，则该对象不可达，该对象是不可使用的，垃圾收集器将回收其所占的内存。</p>
 <p>在java语言中，可作为GCRoot的对象包括以下几种：<br>a. java虚拟机栈(栈帧中的本地变量表)中的引用的对象。<br>b.方法区中的类静态属性引用的对象。<br>c.方法区中的常量引用的对象。<br>d.本地方法栈中JNI本地方法的引用对象。</p>
-<p>###四种引用<br>GC在收集一个对象的时候会判断是否有引用指向对象，在JAVA中的引用主要有四种：</p>
+<h3 id="四种引用"><a href="#四种引用" class="headerlink" title="四种引用"></a>四种引用</h3><p>GC在收集一个对象的时候会判断是否有引用指向对象，在JAVA中的引用主要有四种：</p>
 <h4 id="强引用（Strong-Reference）"><a href="#强引用（Strong-Reference）" class="headerlink" title="强引用（Strong Reference）"></a>强引用（Strong Reference）</h4><p>强引用是使用最普遍的引用。如果一个对象具有强引用，那垃圾回收器绝不会回收它。当内存空间不足，Java虚拟机宁愿抛出OutOfMemoryError错误，使程序异常终止，也不会靠随意回收具有强引用的对象来解决内存不足的问题。</p>
 <h4 id="软引用（Soft-Reference）"><a href="#软引用（Soft-Reference）" class="headerlink" title="软引用（Soft Reference）"></a>软引用（Soft Reference）</h4><p>如果一个对象只具有软引用，则内存空间足够，垃圾回收器就不会回收它；如果内存空间不足了，就会回收这些对象的内存。只要垃圾回收器没有回收它，该对象就可以被程序使用。软引用可用来实现内存敏感的高速缓存。<br>下面举个例子，假如有一个应用需要读取大量的本地图片，如果每次读取图片都从硬盘读取，则会严重影响性能，但是如果全部加载到内存当中，又有可能造成内存溢出，此时使用软引用可以解决这个问题。<br>设计思路是：用一个HashMap来保存图片的路径和相应图片对象关联的软引用之间的映射关系，在内存不足时，JVM会自动回收这些缓存图片对象所占用的空间，从而有效地避免了内存溢出的问题。<br>软引用可以和一个引用队列（ReferenceQueue）联合使用，如果软引用所引用的对象被垃圾回收器回收，Java虚拟机就会把这个软引用加入到与之关联的引用队列中。</p>
 <h4 id="弱引用（Weak-Reference）"><a href="#弱引用（Weak-Reference）" class="headerlink" title="弱引用（Weak Reference）"></a>弱引用（Weak Reference）</h4><p>弱引用与软引用的区别在于：只具有弱引用的对象拥有更短暂的生命周期。在垃圾回收器线程扫描它所管辖的内存区域的过程中，一旦发现了只具有弱引用的对象，不管当前内存空间足够与否，都会回收它的内存。不过，由于垃圾回收器是一个优先级很低的线程，因此不一定会很快发现那些只具有弱引用的对象。<br>弱引用可以和一个引用队列（ReferenceQueue）联合使用，如果弱引用所引用的对象被垃圾回收，Java虚拟机就会把这个弱引用加入到与之关联的引用队列中。</p>
@@ -105,8 +129,8 @@
 <h3 id="finalize-方法"><a href="#finalize-方法" class="headerlink" title="finalize() 方法"></a>finalize() 方法</h3><p>通过可达性分析，那些不可达的对象并不是立即被销毁，他们还有被拯救的机会。<br>如果要回收一个不可达的对象，要经历两次标记过程。首先是第一次标记，并判断对象是否覆写了 finalize 方法，如果没有覆写，则直接进行第二次标记并被回收。<br>如果对象有覆写finalize 方法，则会将改对象加入一个叫“F-Queue”的队列中，虚拟机会建立一个低优先级的 Finalizer 线程去执行它，这里说的“执行”是指该线程会去触发 finalize 方法，但是并不会等待 finalize 方法执行完成。主要是因为 finalize 方法的不确定性，它可能要花很长时间才能执行完成，甚至死循环，永远不结束，这将导致整个 GC 工作的异常，甚至崩溃。<br>关于拯救，可以在 finalize 方法中将自己（this关键字）赋值给类变量或其他对象的成员变量，则第二次标记时它将被移出回收的集合，如果对象并未被拯救，则最终被回收。<br>finalize 方法只会被调用一次，如果一个在 finalize 被拯救的对象再次需要回收，则它的 finalize 将不会再被触发了。<br>不建议使用finalize 方法，它的运行代价高，不确定性大，GC 也不会等待它执行完成，它的功能完全可以被 try-finally 代替。</p>
 <h3 id="方法区的回收"><a href="#方法区的回收" class="headerlink" title="方法区的回收"></a>方法区的回收</h3><p>方法区也会被回收，其被回收的内存有：废弃常量、无用的类。<br>在 HotSpot 虚拟机规范里，将永久带作为方法区的实现。<br>废弃常量：没有被引用的常量，如 String。<br>判断无用的类：<br>(1).该类的所有实例都已经被回收，即java堆中不存在该类的实例对象。<br>(2).加载该类的类加载器已经被回收。<br>(3).该类所对应的java.lang.Class对象没有任何地方被引用，无法在任何地方通过反射机制访问该类的方法。</p>
 <h2 id="各种垃圾收集算法"><a href="#各种垃圾收集算法" class="headerlink" title="各种垃圾收集算法"></a>各种垃圾收集算法</h2><h3 id="标记-清除算法"><a href="#标记-清除算法" class="headerlink" title="标记-清除算法"></a>标记-清除算法</h3><p>步骤：<br>1、标记：从根集合开始扫描，标记存活对象；<br>2、清除：再次扫描真个内存空间，回收未被标记的对象。<br>此算法一般没有虚拟机采用<br>优点1：解决了循环引用的问题<br>优点2：与复制算法相比，不需要对象移动，效率较高，而且还不需要额外的空间<br>不足1：每个活跃的对象都要进行扫描，而且要扫描两次，效率较低，收集暂停的时间比较长。<br>不足2：产生不连续的内存碎片</p>
-<h3 id="标记-整理（压缩）算法"><a href="#标记-整理（压缩）算法" class="headerlink" title="标记-整理（压缩）算法"></a>标记-整理（压缩）算法</h3><p>对标记-清除算法的改进<br>标记过程与标记-清除算法一样，但是标记完成后，存活对象向一端移动，然后清理边界的内存<br>步骤：<br>1、标记：从根集合开始扫描，标记存活对象；<br>2、整理：再次扫描真个内存空间，并往内存一段移动存活对象，再清理掉边界的对象。<br>不会产生内存碎片，但是依旧移动对象的成本。<br>适合老年代<br>还有一种算法是标记-清除-整理（压缩），是在多次标记清除后，再进行一次整理，这样就减少了移动对象的成本。</p>
-<h3 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h3><p>将内存分成两块容量大小相等的区域，每次只使用其中一块，当这一块内存用完了，就将所有存活对象复制到另一块内存空间，然后清除前一块内存空间。<br>此种方法实现简单、效率较高，优点：<br>1、不会产生内存碎；<br>2、没有了先标记再删除的步骤，而是通过Tracing从 From内存中找到存活对象，复制到另一块To内存区域，From只要移动堆顶指针便可再次使用。<br>缺点：<br>1、复制的代价较高，所有适合新生代，因为新生代的对象存活率较低，需要复制的对象较少；<br>2、需要双倍的内存空间，而且总是有一块内存空闲，浪费空间。</p>
+<h3 id="标记-整理（压缩）算法"><a href="#标记-整理（压缩）算法" class="headerlink" title="标记-整理（压缩）算法"></a>标记-整理（压缩）算法</h3><p>标记整理算法一般引用于老年代的Major GC<br>对标记-清除算法的改进<br>标记过程与标记-清除算法一样，但是标记完成后，存活对象向一端移动，然后清理边界的内存<br>步骤：<br>1、标记：从根集合开始扫描，标记存活对象；<br>2、整理：再次扫描真个内存空间，并往内存一段移动存活对象，再清理掉边界的对象。<br>不会产生内存碎片，但是依旧移动对象的成本。<br>适合老年代<br>还有一种算法是标记-清除-整理（压缩），是在多次标记清除后，再进行一次整理，这样就减少了移动对象的成本。</p>
+<h3 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h3><p>复制算法一般用于年轻代的Minor GC，主要是因为年轻代的大部分对象存活率都较低<br>将内存分成两块容量大小相等的区域，每次只使用其中一块，当这一块内存用完了，就将所有存活对象复制到另一块内存空间，然后清除前一块内存空间。<br>此种方法实现简单、效率较高，优点：<br>1、不会产生内存碎；<br>2、没有了先标记再删除的步骤，而是通过Tracing从 From内存中找到存活对象，复制到另一块To内存区域，From只要移动堆顶指针便可再次使用。<br>缺点：<br>1、复制的代价较高，所有适合新生代，因为新生代的对象存活率较低，需要复制的对象较少；<br>2、需要双倍的内存空间，而且总是有一块内存空闲，浪费空间。</p>
 <h3 id="分代收集算法"><a href="#分代收集算法" class="headerlink" title="分代收集算法"></a>分代收集算法</h3><p>所有商业虚拟机都采用这种方式，将堆分成新生代和老年代，新生代使用复制算法，老年代使用标记-整理算法</p>
 <h3 id="GC-类型"><a href="#GC-类型" class="headerlink" title="GC 类型"></a>GC 类型</h3><p>1.Minor GC 针对新生代的 GC<br>2.Major GC 针对老年代的 GC<br>3.Full GC 针对新生代、老年代、永久带的 GC</p>
 <p>为什么要分不同的 GC 类型，主要是1、对象有不同的生命周期，经研究，98%的对象都是临时对象；2、根据各代的特点应用不同的 GC 算法，提高 GC 效率。</p>
@@ -144,7 +168,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/11/15/JVM GC要点整理与总结（转载）/" data-id="cj6svi4ah0004h8se2toeshmx" class="article-share-link" data-share="baidu" data-title="JVM GC要点整理与总结">分享到</a>
+        <a data-url="http://yoursite.com/2016/11/15/JVM GC要点整理与总结（转载）/" data-id="cj6vif9ev0005vc73ju0iwyy0" class="article-share-link" data-share="baidu" data-title="JVM GC要点整理与总结">分享到</a>
       
 
 
@@ -235,7 +259,7 @@
           </li>
         
           <li>
-            <a href="/2017/08/12/我为什么离开学校——十六岁那一年/">我为什么离开学校——十六岁那一年</a>
+            <a href="/2017/08/12/我为什么离开学校——十六岁那一年/">我为什么离开学校——记十六岁那一年</a>
           </li>
         
           <li>
