@@ -8,17 +8,17 @@
   
   <title>Rabbitmq基本原理 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Rabbitmq基本原理">
+  <meta name="description" content="Exchange类似于数据通信网络中的交换机，提供消息路由策略。rabbitmq中，producer不是通过信道直接将消息发送给queue，而是先发送给Exchange。一个Exchange可以和多个Queue进行绑定，producer在传递消息的时候，会传递一个ROUTING_KEY，Exchange会根据这个ROUTING_KEY按照特定的路由算法，将消息路由给指定的queue。和Queue一">
 <meta name="keywords" content="分布式消息">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Rabbitmq基本原理">
 <meta property="og:url" content="http://yoursite.com/2016/05/03/Rabbitmq基本原理/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="Rabbitmq基本原理">
-<meta property="og:updated_time" content="2017-08-26T04:16:37.000Z">
+<meta property="og:description" content="Exchange类似于数据通信网络中的交换机，提供消息路由策略。rabbitmq中，producer不是通过信道直接将消息发送给queue，而是先发送给Exchange。一个Exchange可以和多个Queue进行绑定，producer在传递消息的时候，会传递一个ROUTING_KEY，Exchange会根据这个ROUTING_KEY按照特定的路由算法，将消息路由给指定的queue。和Queue一">
+<meta property="og:updated_time" content="2017-08-30T02:23:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Rabbitmq基本原理">
-<meta name="twitter:description" content="Rabbitmq基本原理">
+<meta name="twitter:description" content="Exchange类似于数据通信网络中的交换机，提供消息路由策略。rabbitmq中，producer不是通过信道直接将消息发送给queue，而是先发送给Exchange。一个Exchange可以和多个Queue进行绑定，producer在传递消息的时候，会传递一个ROUTING_KEY，Exchange会根据这个ROUTING_KEY按照特定的路由算法，将消息路由给指定的queue。和Queue一">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -89,7 +89,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Rabbitmq基本原理<br><a id="more"></a><br>MQ全称为Message Queue, 是一种分布式应用程序的的通信方法，它是消费-生产者模型的一个典型的代表，producer往消息队列中不断写入消息，而另一端consumer则可以读取或者订阅队列中的消息。RabbitMQ是MQ产品的典型代表，是一款基于AMQP协议可复用的企业消息系统。业务上，可以实现服务提供者和消费者之间的数据解耦，提供高可用性的消息传输机制，在实际生产中应用相当广泛。本文意在介绍Rabbitmq的基本原理，包括rabbitmq基本框架，概念，通信过程等。</p>
+        <p>Exchange类似于数据通信网络中的交换机，提供消息路由策略。rabbitmq中，producer不是通过信道直接将消息发送给queue，而是先发送给Exchange。一个Exchange可以和多个Queue进行绑定，producer在传递消息的时候，会传递一个ROUTING_KEY，Exchange会根据这个ROUTING_KEY按照特定的路由算法，将消息路由给指定的queue。和Queue一样，Exchange也可设置为持久化，临时或者自动删除。<br>queue采用轮询的方式从绑定的queue中取消息。<br><a id="more"></a><br>MQ全称为Message Queue, 是一种分布式应用程序的的通信方法，它是消费-生产者模型的一个典型的代表，producer往消息队列中不断写入消息，而另一端consumer则可以读取或者订阅队列中的消息。RabbitMQ是MQ产品的典型代表，是一款基于AMQP协议可复用的企业消息系统。业务上，可以实现服务提供者和消费者之间的数据解耦，提供高可用性的消息传输机制，在实际生产中应用相当广泛。本文意在介绍Rabbitmq的基本原理，包括rabbitmq基本框架，概念，通信过程等。</p>
 <p>系统架构</p>
 <p>Rabbitmq系统最核心的组件是Exchange和Queue，下图是系统简单的示意图。Exchange和Queue是在rabbitmq server（又叫做broker）端，producer和consumer在应用端。</p>
 <p>##producer&amp;Consumer</p>
@@ -127,13 +127,12 @@
 <li>如果consumer接受了消息，但是程序中有bug,忘记了ack,rabbitmq不会重复发送消息。</li>
 <li>rabbitmq2.0.0和之后的版本支持consumer reject某条（类）消息，可以通过设置requeue参数中的reject为true达到目地，那么rabbitmq将会把消息发送给下一个注册的consumer。<br>Conclusion</li>
 </ol>
-<p>本文和大家一起学习了rabbitmq的一些基础知识，在之后的博文中，笔者将会和大家一起分享更多的Rabbitmq知识</p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/05/03/Rabbitmq基本原理/" data-id="cj6vs3iav000iv273pfpl4p9c" class="article-share-link" data-share="baidu" data-title="Rabbitmq基本原理">分享到</a>
+        <a data-url="http://yoursite.com/2016/05/03/Rabbitmq基本原理/" data-id="cj6ypn46q000nep73s44lsd1o" class="article-share-link" data-share="baidu" data-title="Rabbitmq基本原理">分享到</a>
       
 
 
@@ -212,7 +211,7 @@
       <ul>
         
           <li>
-            <a href="/2017/08/17/创业一段时间的总结和感悟/">创业感悟：</a>
+            <a href="/2017/08/17/创业一段时间的总结和感悟/">创业感悟</a>
           </li>
         
           <li>

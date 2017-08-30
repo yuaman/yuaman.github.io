@@ -6,19 +6,19 @@
 <meta name="baidu-site-verification" content="LHYPl19xg9" />
 <meta name="google-site-verification" content="s5HGo7JQp9QFcl2HIOHaNDUdwj3_kdgi5nPkB5bfMHs" />
   
-  <title>Java容器各实现类的底层实现原理 | 无题</title>
+  <title>Java容器各实现类的底层实现原理概述 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="参考地址：http://blog.csdn.net/qq_25868207/article/details/55259978http://blog.csdn.net/zcbyzcb/article/details/70666438 在原作基础做了一些删减和补充，请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。">
+  <meta name="description" content="ArrayList实现原理要点概括参考文献：http://zhangshixi.iteye.com/blog/674856l ArrayList是List接口的可变数组非同步实现，并允许包括null在内的所有元素。 底层使用数组实现 该集合是可变长度数组，数组扩容时，会将老数组中的元素重新拷贝一份到新的数组中，每次数组容量增长大约是其容量的1.5倍，这种操作的代价很高。 采用了Fail-Fast">
 <meta name="keywords" content="Java容器相关">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java容器各实现类的底层实现原理">
+<meta property="og:title" content="Java容器各实现类的底层实现原理概述">
 <meta property="og:url" content="http://yoursite.com/2017/08/05/Java容器各实现类的底层实现原理/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="参考地址：http://blog.csdn.net/qq_25868207/article/details/55259978http://blog.csdn.net/zcbyzcb/article/details/70666438 在原作基础做了一些删减和补充，请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。">
-<meta property="og:updated_time" content="2017-08-25T10:43:03.000Z">
+<meta property="og:description" content="ArrayList实现原理要点概括参考文献：http://zhangshixi.iteye.com/blog/674856l ArrayList是List接口的可变数组非同步实现，并允许包括null在内的所有元素。 底层使用数组实现 该集合是可变长度数组，数组扩容时，会将老数组中的元素重新拷贝一份到新的数组中，每次数组容量增长大约是其容量的1.5倍，这种操作的代价很高。 采用了Fail-Fast">
+<meta property="og:updated_time" content="2017-08-30T03:57:44.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java容器各实现类的底层实现原理">
-<meta name="twitter:description" content="参考地址：http://blog.csdn.net/qq_25868207/article/details/55259978http://blog.csdn.net/zcbyzcb/article/details/70666438 在原作基础做了一些删减和补充，请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。">
+<meta name="twitter:title" content="Java容器各实现类的底层实现原理概述">
+<meta name="twitter:description" content="ArrayList实现原理要点概括参考文献：http://zhangshixi.iteye.com/blog/674856l ArrayList是List接口的可变数组非同步实现，并允许包括null在内的所有元素。 底层使用数组实现 该集合是可变长度数组，数组扩容时，会将老数组中的元素重新拷贝一份到新的数组中，每次数组容量增长大约是其容量的1.5倍，这种操作的代价很高。 采用了Fail-Fast">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -81,7 +81,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Java容器各实现类的底层实现原理
+      Java容器各实现类的底层实现原理概述
     </h1>
   
 
@@ -89,8 +89,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h5 id="参考地址："><a href="#参考地址：" class="headerlink" title="参考地址："></a>参考地址：</h5><p><a href="http://blog.csdn.net/qq_25868207/article/details/55259978" target="_blank" rel="external">http://blog.csdn.net/qq_25868207/article/details/55259978</a><br><a href="http://blog.csdn.net/zcbyzcb/article/details/70666438" target="_blank" rel="external">http://blog.csdn.net/zcbyzcb/article/details/70666438</a></p>
-<h5 id="在原作基础做了一些删减和补充，请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。"><a href="#在原作基础做了一些删减和补充，请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。" class="headerlink" title="在原作基础做了一些删减和补充，请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。"></a>在原作基础做了一些删减和补充，请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。</h5><a id="more"></a>
+        <a id="more"></a>
 <h2 id="ArrayList实现原理要点概括"><a href="#ArrayList实现原理要点概括" class="headerlink" title="ArrayList实现原理要点概括"></a>ArrayList实现原理要点概括</h2><p>参考文献：<a href="http://zhangshixi.iteye.com/blog/674856l" target="_blank" rel="external">http://zhangshixi.iteye.com/blog/674856l</a></p>
 <p>ArrayList是List接口的可变数组非同步实现，并允许包括null在内的所有元素。</p>
 <p>底层使用数组实现</p>
@@ -124,12 +123,13 @@
 <p>基本操作与父类HashMap相似，通过重写HashMap相关方法，重新定义了数组中保存的元素Entry，来实现自己的链接列表特性。该Entry除了保存当前对象的引用外，还保存了其上一个元素before和下一个元素after的引用，从而构成了双向链接列表。</p>
 <h2 id="LinkedHashSet实现原理要点概括"><a href="#LinkedHashSet实现原理要点概括" class="headerlink" title="LinkedHashSet实现原理要点概括"></a>LinkedHashSet实现原理要点概括</h2><p>参考文献：<a href="http://zhangshixi.iteye.com/blog/673319l" target="_blank" rel="external">http://zhangshixi.iteye.com/blog/673319l</a></p>
 <p>对于LinkedHashSet而言，它继承与HashSet、又基于LinkedHashMap来实现的。LinkedHashSet底层使用LinkedHashMap来保存所有元素，它继承与HashSet，其所有的方法操作上又与HashSet相同。</p>
-
+<h5 id="参考地址："><a href="#参考地址：" class="headerlink" title="参考地址："></a>参考地址：</h5><p><a href="http://blog.csdn.net/qq_25868207/article/details/55259978" target="_blank" rel="external">http://blog.csdn.net/qq_25868207/article/details/55259978</a><br><a href="http://blog.csdn.net/zcbyzcb/article/details/70666438" target="_blank" rel="external">http://blog.csdn.net/zcbyzcb/article/details/70666438</a></p>
+<h5 id="在原作基础做了一些删减和补充"><a href="#在原作基础做了一些删减和补充" class="headerlink" title="在原作基础做了一些删减和补充"></a>在原作基础做了一些删减和补充</h5>
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/05/Java容器各实现类的底层实现原理/" data-id="cj6vs3iam0009v2734fkqhhhq" class="article-share-link" data-share="baidu" data-title="Java容器各实现类的底层实现原理">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/05/Java容器各实现类的底层实现原理/" data-id="cj6ypn46q000lep739e5x54ey" class="article-share-link" data-share="baidu" data-title="Java容器各实现类的底层实现原理概述">分享到</a>
       
 
 
@@ -208,7 +208,7 @@
       <ul>
         
           <li>
-            <a href="/2017/08/17/创业一段时间的总结和感悟/">创业感悟：</a>
+            <a href="/2017/08/17/创业一段时间的总结和感悟/">创业感悟</a>
           </li>
         
           <li>

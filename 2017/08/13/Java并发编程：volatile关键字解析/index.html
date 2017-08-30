@@ -8,17 +8,17 @@
   
   <title>Java并发编程：volatile关键字解析 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="最近阅读技术书籍有一个体会，就是接触到一些新的领域的时候可能需要先大致读一遍有一个雏形，然后再读抓住关键字，一定要体会到每一个关键的名字的意义才可能理解整句话的意思，最终我认为还是要就该领域的内容到网上看看广大同行们的看法和观点。这也是很重要的。曾经有一位阿里客户体验部的面试官问我一个问题，“volatile能否解决i++的并发问题”，问得我一脸茫然。最近对volatile关键字以及Java并发做">
+  <meta name="description" content="我将一些最关键的要点和结论先做一下总结。如果要做细致的理解，通读全文还是很有必要的。 主要参考地址：http://www.cnblogs.com/dolphin0520/p/3920373.html">
 <meta name="keywords" content="JVM相关">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java并发编程：volatile关键字解析">
 <meta property="og:url" content="http://yoursite.com/2017/08/13/Java并发编程：volatile关键字解析/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="最近阅读技术书籍有一个体会，就是接触到一些新的领域的时候可能需要先大致读一遍有一个雏形，然后再读抓住关键字，一定要体会到每一个关键的名字的意义才可能理解整句话的意思，最终我认为还是要就该领域的内容到网上看看广大同行们的看法和观点。这也是很重要的。曾经有一位阿里客户体验部的面试官问我一个问题，“volatile能否解决i++的并发问题”，问得我一脸茫然。最近对volatile关键字以及Java并发做">
-<meta property="og:updated_time" content="2017-08-15T07:39:12.000Z">
+<meta property="og:description" content="我将一些最关键的要点和结论先做一下总结。如果要做细致的理解，通读全文还是很有必要的。 主要参考地址：http://www.cnblogs.com/dolphin0520/p/3920373.html">
+<meta property="og:updated_time" content="2017-08-30T03:05:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java并发编程：volatile关键字解析">
-<meta name="twitter:description" content="最近阅读技术书籍有一个体会，就是接触到一些新的领域的时候可能需要先大致读一遍有一个雏形，然后再读抓住关键字，一定要体会到每一个关键的名字的意义才可能理解整句话的意思，最终我认为还是要就该领域的内容到网上看看广大同行们的看法和观点。这也是很重要的。曾经有一位阿里客户体验部的面试官问我一个问题，“volatile能否解决i++的并发问题”，问得我一脸茫然。最近对volatile关键字以及Java并发做">
+<meta name="twitter:description" content="我将一些最关键的要点和结论先做一下总结。如果要做细致的理解，通读全文还是很有必要的。 主要参考地址：http://www.cnblogs.com/dolphin0520/p/3920373.html">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -89,10 +89,22 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h5 id="最近阅读技术书籍有一个体会，就是接触到一些新的领域的时候可能需要先大致读一遍有一个雏形，然后再读抓住关键字，一定要体会到每一个关键的名字的意义才可能理解整句话的意思，最终我认为还是要就该领域的内容到网上看看广大同行们的看法和观点。这也是很重要的。"><a href="#最近阅读技术书籍有一个体会，就是接触到一些新的领域的时候可能需要先大致读一遍有一个雏形，然后再读抓住关键字，一定要体会到每一个关键的名字的意义才可能理解整句话的意思，最终我认为还是要就该领域的内容到网上看看广大同行们的看法和观点。这也是很重要的。" class="headerlink" title="最近阅读技术书籍有一个体会，就是接触到一些新的领域的时候可能需要先大致读一遍有一个雏形，然后再读抓住关键字，一定要体会到每一个关键的名字的意义才可能理解整句话的意思，最终我认为还是要就该领域的内容到网上看看广大同行们的看法和观点。这也是很重要的。"></a>最近阅读技术书籍有一个体会，就是接触到一些新的领域的时候可能需要先大致读一遍有一个雏形，然后再读抓住关键字，一定要体会到每一个关键的名字的意义才可能理解整句话的意思，最终我认为还是要就该领域的内容到网上看看广大同行们的看法和观点。这也是很重要的。</h5><h5 id="曾经有一位阿里客户体验部的面试官问我一个问题，“volatile能否解决i-的并发问题”，问得我一脸茫然。最近对volatile关键字以及Java并发做了一次细致的了解，主要还是利用的周智明先生的《深入了解JVM》。这篇文章是我转载过来的，对该部分内容整理的比较细致，最重要的是通俗易懂，在读完周先生的书后在阅读一边此文真是感觉一切都通了。周先生写书还是有些天马行空的，哈哈。"><a href="#曾经有一位阿里客户体验部的面试官问我一个问题，“volatile能否解决i-的并发问题”，问得我一脸茫然。最近对volatile关键字以及Java并发做了一次细致的了解，主要还是利用的周智明先生的《深入了解JVM》。这篇文章是我转载过来的，对该部分内容整理的比较细致，最重要的是通俗易懂，在读完周先生的书后在阅读一边此文真是感觉一切都通了。周先生写书还是有些天马行空的，哈哈。" class="headerlink" title="曾经有一位阿里客户体验部的面试官问我一个问题，“volatile能否解决i++的并发问题”，问得我一脸茫然。最近对volatile关键字以及Java并发做了一次细致的了解，主要还是利用的周智明先生的《深入了解JVM》。这篇文章是我转载过来的，对该部分内容整理的比较细致，最重要的是通俗易懂，在读完周先生的书后在阅读一边此文真是感觉一切都通了。周先生写书还是有些天马行空的，哈哈。"></a>曾经有一位阿里客户体验部的面试官问我一个问题，“volatile能否解决i++的并发问题”，问得我一脸茫然。最近对volatile关键字以及Java并发做了一次细致的了解，主要还是利用的周智明先生的《深入了解JVM》。这篇文章是我转载过来的，对该部分内容整理的比较细致，最重要的是通俗易懂，在读完周先生的书后在阅读一边此文真是感觉一切都通了。周先生写书还是有些天马行空的，哈哈。</h5><h5 id="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。"><a href="#我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。" class="headerlink" title="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。"></a>我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。</h5><h5 id="这是原文的地址：http-www-cnblogs-com-dolphin0520-p-3920373-html"><a href="#这是原文的地址：http-www-cnblogs-com-dolphin0520-p-3920373-html" class="headerlink" title="这是原文的地址：http://www.cnblogs.com/dolphin0520/p/3920373.html"></a>这是原文的地址：<a href="http://www.cnblogs.com/dolphin0520/p/3920373.html" target="_blank" rel="external">http://www.cnblogs.com/dolphin0520/p/3920373.html</a></h5><h5 id="请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。"><a href="#请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。" class="headerlink" title="请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。"></a>请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。</h5><a id="more"></a>
-<h3 id="volatile关键字要点与总结"><a href="#volatile关键字要点与总结" class="headerlink" title="volatile关键字要点与总结"></a>volatile关键字要点与总结</h3><h4 id="因为本文较长，所以我将一些最关键的要点和结论先做一下总结。如果要做细致的理解，通读全文还是很有必要的。"><a href="#因为本文较长，所以我将一些最关键的要点和结论先做一下总结。如果要做细致的理解，通读全文还是很有必要的。" class="headerlink" title="因为本文较长，所以我将一些最关键的要点和结论先做一下总结。如果要做细致的理解，通读全文还是很有必要的。"></a>因为本文较长，所以我将一些最关键的要点和结论先做一下总结。如果要做细致的理解，通读全文还是很有必要的。</h4><h4 id="1-并发编程中三个原则："><a href="#1-并发编程中三个原则：" class="headerlink" title="1.并发编程中三个原则："></a>1.并发编程中三个原则：</h4><h5 id="原子性，可见性，有序性"><a href="#原子性，可见性，有序性" class="headerlink" title="原子性，可见性，有序性"></a>原子性，可见性，有序性</h5><h4 id="2-先行发生原则："><a href="#2-先行发生原则：" class="headerlink" title="2.先行发生原则："></a>2.先行发生原则：</h4><h5 id="保证程序在单线程中执行结果的正确性，但无法保证程序在多线程中执行的正确性。"><a href="#保证程序在单线程中执行结果的正确性，但无法保证程序在多线程中执行的正确性。" class="headerlink" title="保证程序在单线程中执行结果的正确性，但无法保证程序在多线程中执行的正确性。"></a>保证程序在单线程中执行结果的正确性，但无法保证程序在多线程中执行的正确性。</h5><h4 id="3-volatile关键字两层语义："><a href="#3-volatile关键字两层语义：" class="headerlink" title="3.volatile关键字两层语义："></a>3.volatile关键字两层语义：</h4><p>#####　    1）保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的。（满足可见性要求）</p>
-<p>#####　    2）禁止进行指令重排序。（一定程度上满足有序性要求）</p>
-<h4 id="4-volatile关键字局限："><a href="#4-volatile关键字局限：" class="headerlink" title="4.volatile关键字局限："></a>4.volatile关键字局限：</h4><h5 id="在某些情况下性能要优于synchronized，但是要注意volatile关键字是无法替代synchronized关键字的，因为volatile关键字无法保证操作的原子性。通常来说，使用volatile必须具备以下2个条件："><a href="#在某些情况下性能要优于synchronized，但是要注意volatile关键字是无法替代synchronized关键字的，因为volatile关键字无法保证操作的原子性。通常来说，使用volatile必须具备以下2个条件：" class="headerlink" title="在某些情况下性能要优于synchronized，但是要注意volatile关键字是无法替代synchronized关键字的，因为volatile关键字无法保证操作的原子性。通常来说，使用volatile必须具备以下2个条件："></a>在某些情况下性能要优于synchronized，但是要注意volatile关键字是无法替代synchronized关键字的，因为volatile关键字无法保证操作的原子性。通常来说，使用volatile必须具备以下2个条件：</h5><h5 id="1）对变量的写操作不依赖于当前值"><a href="#1）对变量的写操作不依赖于当前值" class="headerlink" title="1）对变量的写操作不依赖于当前值"></a>1）对变量的写操作不依赖于当前值</h5><h5 id="2）该变量没有包含在具有其他变量的不变式中"><a href="#2）该变量没有包含在具有其他变量的不变式中" class="headerlink" title="2）该变量没有包含在具有其他变量的不变式中"></a>2）该变量没有包含在具有其他变量的不变式中</h5><h5 id="我的理解就是上面的2个条件需要保证操作是原子性操作，才能保证使用volatile关键字的程序在并发时能够正确执行，因为volatile关键字自身满足不了原子性的要求。"><a href="#我的理解就是上面的2个条件需要保证操作是原子性操作，才能保证使用volatile关键字的程序在并发时能够正确执行，因为volatile关键字自身满足不了原子性的要求。" class="headerlink" title="我的理解就是上面的2个条件需要保证操作是原子性操作，才能保证使用volatile关键字的程序在并发时能够正确执行，因为volatile关键字自身满足不了原子性的要求。"></a>我的理解就是上面的2个条件需要保证操作是原子性操作，才能保证使用volatile关键字的程序在并发时能够正确执行，因为volatile关键字自身满足不了原子性的要求。</h5><h4 id="5-针对volatile关键字局限的解决方案："><a href="#5-针对volatile关键字局限的解决方案：" class="headerlink" title="5.针对volatile关键字局限的解决方案："></a>5.针对volatile关键字局限的解决方案：</h4><h5 id="1）利用synchronized"><a href="#1）利用synchronized" class="headerlink" title="1）利用synchronized"></a>1）利用synchronized</h5><h5 id="2）利用Lock"><a href="#2）利用Lock" class="headerlink" title="2）利用Lock"></a>2）利用Lock</h5><h5 id="3）利用并发包下的atomic"><a href="#3）利用并发包下的atomic" class="headerlink" title="3）利用并发包下的atomic"></a>3）利用并发包下的atomic</h5><h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>　　 volatile这个关键字可能很多朋友都听说过，或许也都用过。在Java 5之前，它是一个备受争议的关键字，因为在程序中使用它往往会导致出人意料的结果。在Java 5之后，volatile关键字才得以重获生机。</p>
+        <p>我将一些最关键的要点和结论先做一下总结。如果要做细致的理解，通读全文还是很有必要的。</p>
+<h5 id="主要参考地址：http-www-cnblogs-com-dolphin0520-p-3920373-html"><a href="#主要参考地址：http-www-cnblogs-com-dolphin0520-p-3920373-html" class="headerlink" title="主要参考地址：http://www.cnblogs.com/dolphin0520/p/3920373.html"></a>主要参考地址：<a href="http://www.cnblogs.com/dolphin0520/p/3920373.html" target="_blank" rel="external">http://www.cnblogs.com/dolphin0520/p/3920373.html</a></h5><a id="more"></a>
+<h4 id="1-并发编程中三个原则："><a href="#1-并发编程中三个原则：" class="headerlink" title="1.并发编程中三个原则："></a>1.并发编程中三个原则：</h4><p> 原子性，可见性，有序性</p>
+<h4 id="2-先行发生原则："><a href="#2-先行发生原则：" class="headerlink" title="2.先行发生原则："></a>2.先行发生原则：</h4><p> 保证程序在单线程中执行结果的正确性，但无法保证程序在多线程中执行的正确性。</p>
+<h4 id="3-volatile关键字两层语义："><a href="#3-volatile关键字两层语义：" class="headerlink" title="3.volatile关键字两层语义："></a>3.volatile关键字两层语义：</h4><p>1）保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的。（满足可见性要求）<br>　<br>2）禁止进行指令重排序。（一定程度上满足有序性要求）</p>
+<h4 id="4-volatile关键字局限："><a href="#4-volatile关键字局限：" class="headerlink" title="4.volatile关键字局限："></a>4.volatile关键字局限：</h4><p> 在某些情况下性能要优于synchronized，但是要注意volatile关键字是无法替代synchronized关键字的，因为volatile关键字无法保证操作的原子性。</p>
+<p> 通常来说，使用volatile必须具备以下2个条件：</p>
+<p>1）对变量的写操作不依赖于当前值</p>
+<p> 2）该变量没有包含在具有其他变量的不变式中</p>
+<p> 我的理解就是上面的2个条件需要保证操作是原子性操作，才能保证使用volatile关键字的程序在并发时能够正确执行，因为volatile关键字自身满足不了原子性的要求。</p>
+<h4 id="5-针对volatile关键字局限的解决方案："><a href="#5-针对volatile关键字局限的解决方案：" class="headerlink" title="5.针对volatile关键字局限的解决方案："></a>5.针对volatile关键字局限的解决方案：</h4><p> 1）利用synchronized</p>
+<p> 2）利用Lock</p>
+<p> 3）利用并发包下的atomic</p>
+<p>最近阅读技术书籍有一个体会，就是接触到一些新的领域的时候可能需要先大致读一遍有一个雏形，然后再读抓住关键字，一定要体会到每一个关键的名字的意义才可能理解整句话的意思，最终我认为还是要就该领域的内容到网上看看广大同行们的看法和观点。这也是很重要的。</p>
+<p>曾经有一位阿里客户体验部的面试官问我一个问题，“volatile能否解决i++的并发问题”，问得我一脸茫然。最近对volatile关键字以及Java并发做了一次细致的了解，主要还是利用的周智明先生的《深入了解JVM》。这篇文章是我转载过来的，对该部分内容整理的比较细致，最重要的是通俗易懂，在读完周先生的书后在阅读一边此文真是感觉一切都通了。周先生写书还是有些天马行空的，哈哈。</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>　　 volatile这个关键字可能很多朋友都听说过，或许也都用过。在Java 5之前，它是一个备受争议的关键字，因为在程序中使用它往往会导致出人意料的结果。在Java 5之后，volatile关键字才得以重获生机。</p>
 <p>　　volatile关键字虽然从字面上理解起来比较简单，但是要用好不是一件容易的事情。由于volatile关键字是与Java的内存模型有关的，因此在讲述volatile关键之前，我们先来了解一下与内存模型相关的概念和知识，然后分析了volatile关键字的实现原理，最后给出了几个使用volatile关键字的场景。</p>
 <p>　　以下是本文的目录大纲：</p>
 <p>　　一.内存模型的相关概念</p>
@@ -434,7 +446,7 @@ doSomethingwithconfig(context);
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/13/Java并发编程：volatile关键字解析/" data-id="cj6vs3iar000bv2731t50h46h" class="article-share-link" data-share="baidu" data-title="Java并发编程：volatile关键字解析">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/13/Java并发编程：volatile关键字解析/" data-id="cj6ypn46u000sep738dv0i2vq" class="article-share-link" data-share="baidu" data-title="Java并发编程：volatile关键字解析">分享到</a>
       
 
 
@@ -513,7 +525,7 @@ doSomethingwithconfig(context);
       <ul>
         
           <li>
-            <a href="/2017/08/17/创业一段时间的总结和感悟/">创业感悟：</a>
+            <a href="/2017/08/17/创业一段时间的总结和感悟/">创业感悟</a>
           </li>
         
           <li>

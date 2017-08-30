@@ -15,7 +15,7 @@
 <meta property="og:url" content="http://yoursite.com/2016/12/03/Redis常见问题整理/index.html">
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="Redis常见问题整理">
-<meta property="og:updated_time" content="2017-08-25T07:52:40.000Z">
+<meta property="og:updated_time" content="2017-08-30T05:48:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis常见问题整理">
 <meta name="twitter:description" content="Redis常见问题整理">
@@ -90,10 +90,6 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>Redis常见问题整理<br><a id="more"></a></p>
-<p>整理自三篇博客：</p>
-<p><a href="https://www.52pojie.cn/thread-558953-1-1.html" target="_blank" rel="external">https://www.52pojie.cn/thread-558953-1-1.html</a></p>
-<p><a href="http://www.cnblogs.com/jiahaoJAVA/p/6244278.html" target="_blank" rel="external">http://www.cnblogs.com/jiahaoJAVA/p/6244278.html</a></p>
-<p><a href="http://blog.csdn.net/guchuanyun111/article/details/52064870" target="_blank" rel="external">http://blog.csdn.net/guchuanyun111/article/details/52064870</a></p>
 <h3 id="什么是redis"><a href="#什么是redis" class="headerlink" title="什么是redis?"></a>什么是redis?</h3><p>Redis 是一个基于内存的高性能key-value数据库。 (有空再补充，有理解错误或不足欢迎指正)</p>
 <h3 id="Reids的特点"><a href="#Reids的特点" class="headerlink" title="Reids的特点"></a>Reids的特点</h3><p>Redis本质上是一个Key-Value类型的内存数据库，很像memcached，整个数据库统统加载在内存当中进行操作，定期通过异步操作把数据库数据flush到硬盘上进行保存。因为是纯内存操作，Redis的性能非常出色，每秒可以处理超过 10万次读写操作，是已知性能最快的Key-Value DB。</p>
 <p>Redis的出色之处不仅仅是性能，Redis最大的魅力是支持保存多种数据结构，此外单个value的最大限制是1GB，不像 memcached只能保存1MB的数据，因此Redis可以用来实现很多有用的功能，比方说用他的List来做FIFO双向链表，实现一个轻量级的高性 能消息队列服务，用他的Set可以做高性能的tag系统等等。另外Redis也可以对存入的Key-Value设置expire时间，因此也可以被当作一 个功能加强版的memcached来用。</p>
@@ -175,12 +171,16 @@
 <p>（5）、发布/订阅</p>
 <p>最后（但肯定不是最不重要的）是Redis的发布/订阅功能。发布/订阅的使用场景确实非常多。我已看见人们在社交网络连接中使用，还可作为基于发布/订阅的脚本触发器，甚至用Redis的发布/订阅功能来建立聊天系统！（不，这是真的，你可以去核实）。</p>
 <p>Redis提供的所有特性中，我感觉这个是喜欢的人最少的一个，虽然它为用户提供如果此多功能。</p>
+<p>参考了三篇博客：</p>
+<p><a href="https://www.52pojie.cn/thread-558953-1-1.html" target="_blank" rel="external">https://www.52pojie.cn/thread-558953-1-1.html</a></p>
+<p><a href="http://www.cnblogs.com/jiahaoJAVA/p/6244278.html" target="_blank" rel="external">http://www.cnblogs.com/jiahaoJAVA/p/6244278.html</a></p>
+<p><a href="http://blog.csdn.net/guchuanyun111/article/details/52064870" target="_blank" rel="external">http://blog.csdn.net/guchuanyun111/article/details/52064870</a></p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/12/03/Redis常见问题整理/" data-id="cj6vs3iaz000pv2731s4utcf3" class="article-share-link" data-share="baidu" data-title="Redis常见问题整理">分享到</a>
+        <a data-url="http://yoursite.com/2016/12/03/Redis常见问题整理/" data-id="cj6ypn46y000yep73qi1f4lil" class="article-share-link" data-share="baidu" data-title="Redis常见问题整理">分享到</a>
       
 
 
@@ -194,19 +194,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2016/12/03/LinkedHashMap源码剖析/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/12/19/Redis集群部署与集成总结/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
       <div class="article-nav-title">
         
-          LinkedHashmap源码剖析
+          Redis集群部署与集成总结
         
       </div>
     </a>
   
   
-    <a href="/2016/12/03/synchronized关键字、ReentrantLock与原子类比较/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/12/03/TreeMap源码剖析/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">synchronized关键字、ReentrantLock与原子类比较</div>
+      <div class="article-nav-title">TreeMap源码剖析</div>
     </a>
   
 </nav>
@@ -259,7 +259,7 @@
       <ul>
         
           <li>
-            <a href="/2017/08/17/创业一段时间的总结和感悟/">创业感悟：</a>
+            <a href="/2017/08/17/创业一段时间的总结和感悟/">创业感悟</a>
           </li>
         
           <li>

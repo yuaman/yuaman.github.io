@@ -6,25 +6,25 @@
 <meta name="baidu-site-verification" content="LHYPl19xg9" />
 <meta name="google-site-verification" content="s5HGo7JQp9QFcl2HIOHaNDUdwj3_kdgi5nPkB5bfMHs" />
   
-  <title>数据库Sharding的基本思想和切分策略 | 无题</title>
+  <title>分库分表基本思想和实施策略 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="本文着重介绍sharding的基本思想和理论上的切分策略，关于更加细致的实施策略和参考事例请参考我的另一篇博文：数据库分库分表(sharding)系列(一) 拆分实施策略和示例演示  参考地址：http://blog.csdn.net/bluishglc/article/details/6161475 请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。">
+  <meta name="description" content="本文着重介绍sharding的基本思想和理论上的切分策略参考地址：http://blog.csdn.net/bluishglc/article/details/6161475">
 <meta name="keywords" content="高并发方案">
 <meta property="og:type" content="article">
-<meta property="og:title" content="数据库Sharding的基本思想和切分策略">
+<meta property="og:title" content="分库分表基本思想和实施策略">
 <meta property="og:url" content="http://yoursite.com/2016/04/03/数据库Sharding的基本思想和切分策略/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="本文着重介绍sharding的基本思想和理论上的切分策略，关于更加细致的实施策略和参考事例请参考我的另一篇博文：数据库分库分表(sharding)系列(一) 拆分实施策略和示例演示  参考地址：http://blog.csdn.net/bluishglc/article/details/6161475 请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。">
+<meta property="og:description" content="本文着重介绍sharding的基本思想和理论上的切分策略参考地址：http://blog.csdn.net/bluishglc/article/details/6161475">
 <meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/1">
 <meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/2">
 <meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/3">
 <meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/4">
 <meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/5">
 <meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/6">
-<meta property="og:updated_time" content="2017-08-18T09:25:39.000Z">
+<meta property="og:updated_time" content="2017-08-30T05:21:49.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="数据库Sharding的基本思想和切分策略">
-<meta name="twitter:description" content="本文着重介绍sharding的基本思想和理论上的切分策略，关于更加细致的实施策略和参考事例请参考我的另一篇博文：数据库分库分表(sharding)系列(一) 拆分实施策略和示例演示  参考地址：http://blog.csdn.net/bluishglc/article/details/6161475 请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。">
+<meta name="twitter:title" content="分库分表基本思想和实施策略">
+<meta name="twitter:description" content="本文着重介绍sharding的基本思想和理论上的切分策略参考地址：http://blog.csdn.net/bluishglc/article/details/6161475">
 <meta name="twitter:image" content="http://og287lnu0.bkt.clouddn.com/1">
   
   
@@ -88,7 +88,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      数据库Sharding的基本思想和切分策略
+      分库分表基本思想和实施策略
     </h1>
   
 
@@ -96,9 +96,12 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>本文着重介绍sharding的基本思想和理论上的切分策略，关于更加细致的实施策略和参考事例请参考我的另一篇博文：数据库分库分表(sharding)系列(一) 拆分实施策略和示例演示 </p>
-<h5 id="参考地址："><a href="#参考地址：" class="headerlink" title="参考地址："></a>参考地址：</h5><p><a href="http://blog.csdn.net/bluishglc/article/details/6161475" target="_blank" rel="external">http://blog.csdn.net/bluishglc/article/details/6161475</a></p>
-<h5 id="请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。"><a href="#请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。" class="headerlink" title="请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。"></a>请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。</h5><a id="more"></a>
+        <p>本文着重介绍sharding的基本思想和理论上的切分策略<br>参考地址：<a href="http://blog.csdn.net/bluishglc/article/details/6161475" target="_blank" rel="external">http://blog.csdn.net/bluishglc/article/details/6161475</a></p>
+<a id="more"></a>
+<h3 id="要点总结"><a href="#要点总结" class="headerlink" title="要点总结"></a>要点总结</h3><h4 id="基本思想："><a href="#基本思想：" class="headerlink" title="基本思想："></a>基本思想：</h4><p>把一个数据库切分成多个部分放到不同的数据库(server)上，从而缓解单一数据库的性能问题。<br>多数系统会将垂直切分和水平切分联合使用，先对系统做垂直切分，再针对每一小搓表的情况选择性地做水平切分。从而将整个数据库切分成一个分布式矩阵。</p>
+<h4 id="1-垂直切分："><a href="#1-垂直切分：" class="headerlink" title="1.垂直切分："></a>1.垂直切分：</h4><p>对于海量数据的数据库，如果是因为表多而数据多，这时候适合使用垂直切分，即把关系紧密（比如同一模块）的表切分出来放在一个server上。</p>
+<h4 id="2-水平切分"><a href="#2-水平切分" class="headerlink" title="2.水平切分"></a>2.水平切分</h4><p>如果表并不多，但每张表的数据非常多，这时候适合水平切分，即把表的数据按某种规则（比如按ID散列）切分到多个数据库(server)上。</p>
+<p>在垂直切分出的表聚集内，找出“根元素”（这里的“根元素”就是领域驱动设计里的“聚合根”），按“根元素”进行水平切分，也就是从“根元素”开始，把所有和它直接与间接关联的数据放入一个shard里。这样出现跨shard关联的可能性就非常的小。应用程序就不必打断既有的表间关联。比如：对于社交网站，几乎所有数据最终都会关联到某个用户上，基于用户进行切分就是最好的选择。</p>
 <h2 id="一、基本思想"><a href="#一、基本思想" class="headerlink" title="一、基本思想"></a>一、基本思想</h2><p>Sharding的基本思想就要把一个数据库切分成多个部分放到不同的数据库(server)上，从而缓解单一数据库的性能问题。不太严格的讲，对于海量数据的数据库，如果是因为表多而数据多，这时候适合使用垂直切分，即把关系紧密（比如同一模块）的表切分出来放在一个server上。如果表并不多，但每张表的数据非常多，这时候适合水平切分，即把表的数据按某种规则（比如按ID散列）切分到多个数据库(server)上。当然，现实中更多是这两种情况混杂在一起，这时候需要根据实际情况做出选择，也可能会综合使用垂直与水平切分，从而将原有数据库切分成类似矩阵一样可以无限扩充的数据库(server)阵列。下面分别详细地介绍一下垂直切分和水平切分.</p>
 <p>垂直切分的最大特点就是规则简单，实施也更为方便，尤其适合各业务之间的耦合度非<br>常低，相互影响很小，业务逻辑非常清晰的系统。在这种系统中，可以很容易做到将不同业<br>务模块所使用的表分拆到不同的数据库中。根据不同的表来进行拆分，对应用程序的影响也<br>更小，拆分规则也会比较简单清晰。（这也就是所谓的”share nothing”）。</p>
 <p><img src="http://og287lnu0.bkt.clouddn.com/1"></p>
@@ -117,7 +120,7 @@
 <p>图1.数据库分库分表(sharding)实施策略图解(点击查看大图)</p>
 <h3 id="1-准备阶段"><a href="#1-准备阶段" class="headerlink" title="1.准备阶段"></a>1.准备阶段</h3><p>对数据库进行分库分表(Sharding化)前，需要开发人员充分了解系统业务逻辑和数据库schema.一个好的建议是绘制一张数据库ER图或领域模型图，以这类图为基础划分shard,直观易行，可以确保开发人员始终保持清醒思路。对于是选择数据库ER图还是领域模型图要根据项目自身情况进行选择。如果项目使用数据驱动的开发方式，团队以数据库ER图作为业务交流的基础，则自然会选择数据库ER图，如果项目使用的是领域驱动的开发方式，并通过OR-Mapping构建了一个良好的领域模型，那么领域模型图无疑是最好的选择。就我个人来说，更加倾向使用领域模型图，因为进行切分时更多的是以业务为依据进行分析判断，领域模型无疑更加清晰和直观。</p>
 <h3 id="2-分析阶段"><a href="#2-分析阶段" class="headerlink" title="2.分析阶段"></a>2.分析阶段</h3><h4 id="1-垂直切分"><a href="#1-垂直切分" class="headerlink" title="1. 垂直切分"></a>1. 垂直切分</h4><p>垂直切分的依据原则是：将业务紧密，表间关联密切的表划分在一起，例如同一模块的表。结合已经准备好的数据库ER图或领域模型图，仿照活动图中的泳道概念，一个泳道代表一个shard，把所有表格划分到不同的泳道中。下面的分析示例会展示这种做法。当然，你也可以在打印出的ER图或模型图上直接用铅笔圈，一切取决于你自己的喜好。</p>
-<h4 id="2-水平切分"><a href="#2-水平切分" class="headerlink" title="2. 水平切分"></a>2. 水平切分</h4><p>垂直切分后，需要对shard内表格的数据量和增速进一步分析，以确定是否需要进行水平切分。</p>
+<h4 id="2-水平切分-1"><a href="#2-水平切分-1" class="headerlink" title="2. 水平切分"></a>2. 水平切分</h4><p>垂直切分后，需要对shard内表格的数据量和增速进一步分析，以确定是否需要进行水平切分。</p>
 <p>2.1若划分到一起的表格数据增长缓慢，在产品上线后可遇见的足够长的时期内均可以由单一数据库承载，则不需要进行水平切分，所有表格驻留同一shard,所有表间关联关系会得到最大限度的保留，同时保证了书写SQL的自由度，不易受join、group by、order by等子句限制。</p>
 <p>2.2 若划分到一起的表格数据量巨大，增速迅猛，需要进一步进行水平分割。进一步的水平分割就这样进行：</p>
 <p>2.2.1.结合业务逻辑和表间关系，将当前shard划分成多个更小的shard,通常情况下，这些更小的shard每一个都只包含一个主表（将以该表ID进行散列的表）和多个与其关联或间接关联的次表。这种一个shard一张主表多张次表的状况是水平切分的必然结果。这样切分下来，shard数量就会迅速增多。如果每一个shard代表一个独立的数据库，那么管理和维护数据库将会非常麻烦，而且这些小shard往往只有两三张表，为此而建立一个新库，利用率并不高，因此，在水平切分完成后可再进行一次“反向的Merge”,即：将业务上相近，并且具有相近数据增长速率（主表数据量在同一数量级上）的两个或多个shard放到同一个数据库上，在逻辑上它们依然是独立的shard，有各自的主表，并依据各自主表的ID进行散列，不同的只是它们的散列取模（即节点数量）必需是一致的。这样，每个数据库结点上的表格数量就相对平均了。</p>
@@ -139,7 +142,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/04/03/数据库Sharding的基本思想和切分策略/" data-id="cj6vs3ibz001yv273dkfwbmgh" class="article-share-link" data-share="baidu" data-title="数据库Sharding的基本思想和切分策略">分享到</a>
+        <a data-url="http://yoursite.com/2016/04/03/数据库Sharding的基本思想和切分策略/" data-id="cj6ypn47w0029ep73hzo6tugk" class="article-share-link" data-share="baidu" data-title="分库分表基本思想和实施策略">分享到</a>
       
 
 
@@ -218,7 +221,7 @@
       <ul>
         
           <li>
-            <a href="/2017/08/17/创业一段时间的总结和感悟/">创业感悟：</a>
+            <a href="/2017/08/17/创业一段时间的总结和感悟/">创业感悟</a>
           </li>
         
           <li>

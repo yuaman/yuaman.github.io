@@ -15,7 +15,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/08/10/悲观锁与乐观锁与事务/index.html">
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="参考地址：http://blog.csdn.net/hongchangfirst/article/details/26004335http://blog.csdn.net/zhangwj0101/article/details/50946054 请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。">
-<meta property="og:updated_time" content="2017-08-15T07:39:42.000Z">
+<meta property="og:updated_time" content="2017-08-30T02:35:08.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="悲观锁与乐观锁与事务">
 <meta name="twitter:description" content="参考地址：http://blog.csdn.net/hongchangfirst/article/details/26004335http://blog.csdn.net/zhangwj0101/article/details/50946054 请大家多多支持原作者，感谢原作者的认真和辛勤整理。因为没有看到联系方式，不能深入交流，非常遗憾。">
@@ -96,6 +96,7 @@
 <h3 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h3><p>两种锁各有优缺点，不可认为一种好于另一种，像乐观锁适用于写比较少的情况下，即冲突真的很少发生的时候，这样可以省去了锁的开销，加大了系统的整个吞吐量。但如果经常产生冲突，上层应用会不断的进行retry，这样反倒是降低了性能，所以这种情况下用悲观锁就比较合适。</p>
 <h3 id="锁与事务的关系"><a href="#锁与事务的关系" class="headerlink" title="锁与事务的关系"></a>锁与事务的关系</h3><p>数据库管理系统（DBMS）中的并发控制的任务是确保在多个事务同时存取数据库中同一数据时不破坏事务的隔离性和统一性以及数据库的统一性。</p>
 <p>乐观并发控制(乐观锁)和悲观并发控制（悲观锁）是并发控制主要采用的技术手段。</p>
+<p>个人观点：事务针对的是行为操作而锁针对的是对象和数据；<br>        事务是指执行行为操作的过程而锁是执行的手段。</p>
 <p>无论是悲观锁还是乐观锁，都是人们定义出来的概念，可以认为是一种思想。其实不仅仅是关系型数据库系统中有乐观锁和悲观锁的概念，像memcache、hibernate、tair等都有类似的概念。</p>
 <p>针对于不同的业务场景，应该选用不同的并发控制方式。所以，不要把乐观并发控制和悲观并发控制狭义的理解为DBMS中的概念，更不要把他们和数据中提供的锁机制（行锁、表锁、排他锁、共享锁）混为一谈。其实，在DBMS中，悲观锁正是利用数据库本身提供的锁机制来实现的。</p>
 
@@ -103,7 +104,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/10/悲观锁与乐观锁与事务/" data-id="cj6vs3ibx001vv27384rwmu3m" class="article-share-link" data-share="baidu" data-title="悲观锁与乐观锁与事务">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/10/悲观锁与乐观锁与事务/" data-id="cj6ypn47w0027ep73nw5alxjn" class="article-share-link" data-share="baidu" data-title="悲观锁与乐观锁与事务">分享到</a>
       
 
 
@@ -182,7 +183,7 @@
       <ul>
         
           <li>
-            <a href="/2017/08/17/创业一段时间的总结和感悟/">创业感悟：</a>
+            <a href="/2017/08/17/创业一段时间的总结和感悟/">创业感悟</a>
           </li>
         
           <li>

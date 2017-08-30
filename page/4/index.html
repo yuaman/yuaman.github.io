@@ -96,7 +96,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/10/06/Java多线程构件/" data-id="cj6vs3iak0008v273yjqyvr10" class="article-share-link" data-share="baidu" data-title="JAVA多线程构件（java.util.concurrent包下高级工具）">分享到</a>
+        <a data-url="http://yoursite.com/2016/10/06/Java多线程构件/" data-id="cj6ypn46o000iep73qz1g0rl3" class="article-share-link" data-share="baidu" data-title="JAVA多线程构件（java.util.concurrent包下高级工具）">分享到</a>
       
 
 
@@ -148,7 +148,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/09/17/深入理解JVM阅读笔记以及问题整理/" data-id="cj6vs3ic40028v273tknyi6id" class="article-share-link" data-share="baidu" data-title="《深入理解JVM》阅读笔记以及问题整理">分享到</a>
+        <a data-url="http://yoursite.com/2016/09/17/深入理解JVM阅读笔记以及问题整理/" data-id="cj6ypn47u0022ep736x350sq1" class="article-share-link" data-share="baidu" data-title="《深入理解JVM》阅读笔记以及问题整理">分享到</a>
       
 
 
@@ -200,7 +200,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/09/09/ThreadLocal详解/" data-id="cj6vs3ib5000vv2731yhcujhi" class="article-share-link" data-share="baidu" data-title="ThreadLocal详解">分享到</a>
+        <a data-url="http://yoursite.com/2016/09/09/ThreadLocal详解/" data-id="cj6ypn46r000qep73wmesi54l" class="article-share-link" data-share="baidu" data-title="ThreadLocal详解">分享到</a>
       
 
 
@@ -253,7 +253,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/07/11/电商项目物流接口集成总结与开源分享/" data-id="cj6vs3ic6002av273d8j3bq8j" class="article-share-link" data-share="baidu" data-title="电商项目物流接口集成总结与开源分享">分享到</a>
+        <a data-url="http://yoursite.com/2016/07/11/电商项目物流接口集成总结与开源分享/" data-id="cj6ypn482002hep737dc4tozn" class="article-share-link" data-share="baidu" data-title="电商项目物流接口集成总结与开源分享">分享到</a>
       
 
 
@@ -305,7 +305,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/06/09/消息队列两种模式：点对点与发布订阅/" data-id="cj6vs3ic20023v273vlbdsjqs" class="article-share-link" data-share="baidu" data-title="消息队列两种模式：点对点与发布订阅">分享到</a>
+        <a data-url="http://yoursite.com/2016/06/09/消息队列两种模式：点对点与发布订阅/" data-id="cj6ypn47q001xep73yztbllck" class="article-share-link" data-share="baidu" data-title="消息队列两种模式：点对点与发布订阅">分享到</a>
       
 
 
@@ -357,7 +357,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/06/04/读《罗马人物语-恺撒时代》/" data-id="cj6vs3icb002mv273glajwqpc" class="article-share-link" data-share="baidu" data-title="读《罗马人物语-恺撒时代》">分享到</a>
+        <a data-url="http://yoursite.com/2016/06/04/读《罗马人物语-恺撒时代》/" data-id="cj6ypn483002jep73dxhsmjgg" class="article-share-link" data-share="baidu" data-title="读《罗马人物语-恺撒时代》">分享到</a>
       
 
 
@@ -399,17 +399,155 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Spring Boot核心原理－自动配置<br>
-        
-          <p class="article-more-link">
-            <a href="/2016/05/23/SpringBoot核心原理——自动配置/#more">Read More</a>
-          </p>
-        
+        <a id="more"></a>
+<p>之前在公司内部推行spring boot时，有同事跟我提到过，感觉换到spring boot这个框架后，好处是小白也能迅速上手写业务代码了。但是呢，这种情况下新手很容易写得云里雾里的，因为完全不知道背后的原理是什么，相对比在学习spring时需要深刻理解ioc、搞一堆繁琐的配置来说，的确缺少了被迫跳出舒适区去学习一些原理的过程，那么今天就讲讲，为什么spring boot能够如此简单的让我们迅速上手。</p>
+<p>Spring由于其繁琐的配置，一度被人成为“配置地狱”，各种XML、Annotation配置，让人眼花缭乱，而且如果出错了也很难找出原因。Spring Boot项目就是为了解决配置繁琐的问题，最大化的实现convention over configuration(约定大于配置)。熟悉Ruby On Rails（ROR框架的程序员都知道，借助于ROR的脚手架工具只需简单的几步即可建立起一个Web应用程序。而Spring Boot就相当于Java平台上的ROR。</p>
+<p>Spring boot出现之后，得益于“习惯优于配置”这个理念，再也没有繁琐的配置、难以集成的内容（大多数流行第三方技术都被集成在内）。 那么背后实现的核心原理到底是什么呢？ 其实是spring 4.x提供的基于条件配置bean的能力。</p>
+<p>Spring boot关于自动配置的源码在spring-boot-autoconfigure-x.x.x.x.jar中，主要包含了如下图所示的配置（并未截全）：</p>
+<p>我们可以在这里看见所有spring boot为我们做的自动配置。通过在application.properties中设置属性：debug=true，可以通过控制台的输出观察自动配置启动的情况：(以下有删减，建议自己运行一下看看)</p>
+<pre><code>=========================AUTO-CONFIGURATION REPORT
+Positive matches:
+————————
+ - @ConditionalOnClass classes found: org.springframework.web.servlet.DispatcherServlet (OnClassCondition)  - found web application StandardServletEnvironment (OnWebApplicationCondition)
+ Negative matches:
+-----------------   ActiveMQAutoConfiguration did not match
+      - required @ConditionalOnClass classes not found: javax.jms.ConnectionFactory,org.apache.activemq.ActiveMQConnectionFactory (OnClassCondition)
+运行原理
+
+在第一次使用spring boot的时候，大家都会惊讶于@SpringBootApplication这个注解，有了它马上就能够让整个应用跑起来。实际上它只是一个组合注解，包含@Configuration、@EnableAutoConfiguration、@ComponentScan这三个注解。
+
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+@Configuration
+@EnableAutoConfiguration
+@ComponentScan
+public @interface SpringBootApplication {
+    Class&lt;?&gt;[] exclude() default {};
+    String[] excludeName() default {};
+    @AliasFor(
+        annotation = ComponentScan.class,
+        attribute = &quot;basePackages&quot;
+    )
+    String[] scanBasePackages() default {};
+    @AliasFor(
+        annotation = ComponentScan.class,
+        attribute = &quot;basePackageClasses&quot;
+    )
+    Class&lt;?&gt;[] scanBasePackageClasses() default {};
+}
+它的核心功能是由@EnableAutoConfiguration这个注解提供的，我们来看看@EnableAutoConfiguration的源代码：
+
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+@AutoConfigurationPackage
+@Import({EnableAutoConfigurationImportSelector.class})
+public @interface EnableAutoConfiguration {
+    Class&lt;?&gt;[] exclude() default {};
+    String[] excludeName() default {};
+}
+</code></pre><p>这里的关键功能是@Import注解导入的配置功能<br>EnableAutoConfigurationImportSelector使用SpringFactoriesLoader.loadFactoryNames方法来扫描具有META-INF/spring.factories文件的jar包，spring-boot-autoconfigure-x.x.x.x.jar里就有一个spring.factories文件，这个文件中声明了有哪些要自动配置。<br>下面我们来分析一下spring boot autoconfigure里面的MongoAutoConfiguration（MongoDB的自动配置），相信你就会明白这套自动配置机制到底是怎么一回事儿：</p>
+<pre><code>//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by Fernflower decompiler)
+//
+package org.springframework.boot.autoconfigure.mongo;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
+import java.net.UnknownHostException;
+import javax.annotation.PreDestroy;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.mongo.MongoProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+@Configuration
+@ConditionalOnClass({MongoClient.class})  
+@EnableConfigurationProperties({MongoProperties.class}) //开启属性注入。
+@ConditionalOnMissingBean(
+    type = {&quot;org.springframework.data.mongodb.MongoDbFactory&quot;}
+) 
+public class MongoAutoConfiguration {
+    @Autowired
+    private MongoProperties properties;
+    @Autowired(
+        required = false
+    )
+    private MongoClientOptions options;
+    @Autowired
+    private Environment environment;
+    private MongoClient mongo;
+    public MongoAutoConfiguration() {
+    }
+    @PreDestroy
+    public void close() {
+        if(this.mongo != null) {
+            this.mongo.close();
+        }
+    }
+    @Bean //使用java配置，当容器中没有这个bean的时候执行初始化
+    @ConditionalOnMissingBean
+    public MongoClient mongo() throws UnknownHostException {
+        this.mongo = this.properties.createMongoClient(this.options, this.environment);
+        return this.mongo;
+    }
+}
+</code></pre><p>首先这被@Configuration注解了，是一个配置类，当满足以下条件这个bean被装配：</p>
+<ul>
+<li><p>当MongoClient在类路径下。</p>
+</li>
+<li><p>当容器中没有org.springframework.data.mongodb.MongoDbFactory这类bean的时候。</p>
+</li>
+</ul>
+<p>此外，我们可以看一下通过@EnableConfigurationProperties({MongoProperties.class}) 自动注入的属性（这是习惯优于配置的最终落地点）：</p>
+<pre><code>@ConfigurationProperties(
+    prefix = &quot;spring.data.mongodb&quot;
+)
+public class MongoProperties {
+    public static final int DEFAULT_PORT = 27017;
+    private String host;
+    private Integer port = null;
+    private String uri = &quot;mongodb://localhost/test&quot;;
+    private String database;
+    private String authenticationDatabase;
+    private String gridFsDatabase;
+    private String username;
+    private char[] password;
+    private Class&lt;?&gt; fieldNamingStrategy;
+
+    ......
+}
+</code></pre><p>所以在我们什么都不干的情况下，只需要引入spring-data-mongodb这个依赖再加上默认的MongoDB server我们就能够快速集成MongoDB，用MongodbTemplate访问数据库。</p>
+<p>同时我们可以通过在application.yaml中修改spring.data.mongodb相关的参数就能够修改连接配置，如：</p>
+<pre><code>spring:
+    data:
+        mongodb:
+            host: localhost
+            port: 27017
+            username: chingzhu
+            password: test123
+            database: icekredit
+</code></pre><p>利用这套原理，我们也可以轻松地把目前spring boot还未集成的、我们自己要使用的第三方技术自动集成起来。</p>
+<p>现在，不知道你对spring boot的机制有一个清楚的认识了吗？</p>
+<p>附：常见org.springframework.boot.autoconfigure.condition包下的条件注解意思</p>
+<p>@ConditionalOnBean：当容器里有指定的bean的条件下。</p>
+<p>@ConditionalOnMissingBean：当容器里不存在指定bean的条件下。</p>
+<p>@ConditionalOnClass：当类路径下有指定类的条件下。</p>
+<p>@ConditionalOnMissingClass：当类路径下不存在指定类的条件下。</p>
+<p>@ConditionalOnProperty：指定的属性是否有指定的值，比如@ConditionalOnProperties(prefix=”xxx.xxx”, value=”enable”, matchIfMissing=true)，代表当xxx.xxx为enable时条件的布尔值为true，如果没有设置的情况下也为true。</p>
+<p>转载地址：<a href="http://blog.csdn.net/xiaobing_122613/article/details/54943448" target="_blank" rel="external">http://blog.csdn.net/xiaobing_122613/article/details/54943448</a></p>
+
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/05/23/SpringBoot核心原理——自动配置/" data-id="cj6vs3ib0000rv273dtw8h91h" class="article-share-link" data-share="baidu" data-title="Spring Boot核心原理－自动配置">分享到</a>
+        <a data-url="http://yoursite.com/2016/05/23/SpringBoot核心原理——自动配置/" data-id="cj6ypn46z0013ep73mqz09zrn" class="article-share-link" data-share="baidu" data-title="Spring Boot核心原理－自动配置">分享到</a>
       
 
 
@@ -461,7 +599,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/05/09/Java中equals与==的区别与使用场景分析/" data-id="cj6vs3iai0005v273h6mi421n" class="article-share-link" data-share="baidu" data-title="谈谈Java中equals和==的区别和使用场景">分享到</a>
+        <a data-url="http://yoursite.com/2016/05/09/Java中equals与==的区别与使用场景分析/" data-id="cj6ypn4680005ep73gzg5h8g9" class="article-share-link" data-share="baidu" data-title="谈谈Java中equals和==的区别和使用场景">分享到</a>
       
 
 
@@ -503,17 +641,30 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>ReenTrantLock可重入锁（和synchronized的区别）总结<br>
-        
-          <p class="article-more-link">
-            <a href="/2016/05/03/ReenTrantLock可重入锁（和synchronized的区别）总结/#more">Read More</a>
-          </p>
-        
+        <a id="more"></a>
+<p>可重入性：</p>
+<p>从名字上理解，ReenTrantLock的字面意思就是再进入的锁，其实synchronized关键字所使用的锁也是可重入的，两者关于这个的区别不大。两者都是同一个线程没进入一次，锁的计数器都自增1，所以要等到锁的计数器下降为0时才能释放锁。</p>
+<p>锁的实现：</p>
+<p>Synchronized是依赖于JVM实现的，而ReenTrantLock是JDK实现的，有什么区别，说白了就类似于操作系统来控制实现和用户自己敲代码实现的区别。前者的实现是比较难见到的，后者有直接的源码可供阅读。</p>
+<p>性能的区别：</p>
+<p>在Synchronized优化以前，synchronized的性能是比ReenTrantLock差很多的，但是自从Synchronized引入了偏向锁，轻量级锁（自旋锁）后，两者的性能就差不多了，在两种方法都可用的情况下，官方甚至建议使用synchronized，其实synchronized的优化我感觉就借鉴了ReenTrantLock中的CAS技术。都是试图在用户态就把加锁问题解决，避免进入内核态的线程阻塞。</p>
+<p>功能区别：</p>
+<p>便利性：很明显Synchronized的使用比较方便简洁，并且由编译器去保证锁的加锁和释放，而ReenTrantLock需要手工声明来加锁和释放锁，为了避免忘记手工释放锁造成死锁，所以最好在finally中声明释放锁。</p>
+<p>锁的细粒度和灵活度：很明显ReenTrantLock优于Synchronized</p>
+<p>ReenTrantLock独有的能力：</p>
+<p>1.ReenTrantLock可以指定是公平锁还是非公平锁。而synchronized只能是非公平锁。所谓的公平锁就是先等待的线程先获得锁。</p>
+<p>2.ReenTrantLock提供了一个Condition（条件）类，用来实现分组唤醒需要唤醒的线程们，而不是像synchronized要么随机唤醒一个线程要么唤醒全部线程。</p>
+<p>3.ReenTrantLock提供了一种能够中断等待锁的线程的机制，通过lock.lockInterruptibly()来实现这个机制。</p>
+<p>ReenTrantLock实现的原理：</p>
+<p>在网上看到相关的源码分析，本来这块应该是本文的核心，但是感觉比较复杂就不一一详解了，简单来说，ReenTrantLock的实现是一种自旋锁，通过循环调用CAS操作来实现加锁。它的性能比较好也是因为避免了使线程进入内核态的阻塞状态。想尽办法避免线程进入内核的阻塞状态是我们去分析和理解锁设计的关键钥匙。</p>
+<p>什么情况下使用ReenTrantLock：</p>
+<p>答案是，如果你需要实现ReenTrantLock的三个独有功能时。</p>
+
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/05/03/ReenTrantLock可重入锁（和synchronized的区别）总结/" data-id="cj6vs3iay000nv273gpjnrgqv" class="article-share-link" data-share="baidu" data-title="ReenTrantLock可重入锁（和synchronized的区别）总结">分享到</a>
+        <a data-url="http://yoursite.com/2016/05/03/ReenTrantLock可重入锁（和synchronized的区别）总结/" data-id="cj6ypn46l000cep73pxhr83jv" class="article-share-link" data-share="baidu" data-title="ReenTrantLock可重入锁（和synchronized的区别）总结">分享到</a>
       
 
 
@@ -555,7 +706,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Rabbitmq基本原理<br>
+        <p>Exchange类似于数据通信网络中的交换机，提供消息路由策略。rabbitmq中，producer不是通过信道直接将消息发送给queue，而是先发送给Exchange。一个Exchange可以和多个Queue进行绑定，producer在传递消息的时候，会传递一个ROUTING_KEY，Exchange会根据这个ROUTING_KEY按照特定的路由算法，将消息路由给指定的queue。和Queue一样，Exchange也可设置为持久化，临时或者自动删除。<br>queue采用轮询的方式从绑定的queue中取消息。<br>
         
           <p class="article-more-link">
             <a href="/2016/05/03/Rabbitmq基本原理/#more">Read More</a>
@@ -565,7 +716,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/05/03/Rabbitmq基本原理/" data-id="cj6vs3iav000iv273pfpl4p9c" class="article-share-link" data-share="baidu" data-title="Rabbitmq基本原理">分享到</a>
+        <a data-url="http://yoursite.com/2016/05/03/Rabbitmq基本原理/" data-id="cj6ypn46q000nep73s44lsd1o" class="article-share-link" data-share="baidu" data-title="Rabbitmq基本原理">分享到</a>
       
 
 
@@ -630,7 +781,7 @@
       <ul>
         
           <li>
-            <a href="/2017/08/17/创业一段时间的总结和感悟/">创业感悟：</a>
+            <a href="/2017/08/17/创业一段时间的总结和感悟/">创业感悟</a>
           </li>
         
           <li>

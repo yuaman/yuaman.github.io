@@ -8,17 +8,17 @@
   
   <title>线程安全与锁优化——深入理解JVM阅读笔记 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。这是原文的地址：http://www.cnblogs.com/pacoson/p/5351355.html">
+  <meta name="description" content="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。参考地址：http://www.cnblogs.com/pacoson/p/5351355.html">
 <meta name="keywords" content="JVM相关">
 <meta property="og:type" content="article">
 <meta property="og:title" content="线程安全与锁优化——深入理解JVM阅读笔记">
 <meta property="og:url" content="http://yoursite.com/2017/08/14/线程安全与锁优化/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。这是原文的地址：http://www.cnblogs.com/pacoson/p/5351355.html">
-<meta property="og:updated_time" content="2017-08-26T05:36:11.000Z">
+<meta property="og:description" content="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。参考地址：http://www.cnblogs.com/pacoson/p/5351355.html">
+<meta property="og:updated_time" content="2017-08-30T02:59:27.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="线程安全与锁优化——深入理解JVM阅读笔记">
-<meta name="twitter:description" content="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。这是原文的地址：http://www.cnblogs.com/pacoson/p/5351355.html">
+<meta name="twitter:description" content="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。参考地址：http://www.cnblogs.com/pacoson/p/5351355.html">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -89,33 +89,30 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h5 id="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。"><a href="#我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。" class="headerlink" title="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。"></a>我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。</h5><h5 id="这是原文的地址：http-www-cnblogs-com-pacoson-p-5351355-html"><a href="#这是原文的地址：http-www-cnblogs-com-pacoson-p-5351355-html" class="headerlink" title="这是原文的地址：http://www.cnblogs.com/pacoson/p/5351355.html"></a>这是原文的地址：<a href="http://www.cnblogs.com/pacoson/p/5351355.html" target="_blank" rel="external">http://www.cnblogs.com/pacoson/p/5351355.html</a></h5><a id="more"></a>
-<h2 id="要点"><a href="#要点" class="headerlink" title="要点"></a>要点</h2><p>1.线程安全的实现：<br>1）互斥同步（阻塞同步） 悲观的并发策略：sysncronised reentrantlock重入锁<br>2）非阻塞同步 基于冲突检测的乐观并发策略 实现了cas机制的原子类atomicInteger</p>
-<h4 id="线程安全定义："><a href="#线程安全定义：" class="headerlink" title="线程安全定义："></a>线程安全定义：</h4><p>当多个线程访问一个对象时，如果不用考虑这些线程在运行时环境下的调度和交替执行，也不需要进行额外的同步，或者在调用方进行任何其他的协调操作，调用这个对象的行为都可以获得正确的结果，那这个对象是线程安全的；（干货——线程安全定义）</p>
+        <h5 id="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。"><a href="#我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。" class="headerlink" title="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。"></a>我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。恳请原作者见谅。</h5><h5 id="参考地址：http-www-cnblogs-com-pacoson-p-5351355-html"><a href="#参考地址：http-www-cnblogs-com-pacoson-p-5351355-html" class="headerlink" title="参考地址：http://www.cnblogs.com/pacoson/p/5351355.html"></a>参考地址：<a href="http://www.cnblogs.com/pacoson/p/5351355.html" target="_blank" rel="external">http://www.cnblogs.com/pacoson/p/5351355.html</a></h5><a id="more"></a>
+<h2 id="要点"><a href="#要点" class="headerlink" title="要点"></a>要点</h2><h3 id="线程安全定义："><a href="#线程安全定义：" class="headerlink" title="线程安全定义："></a>线程安全定义：</h3><p>当多个线程访问一个对象时，如果不用考虑这些线程在运行时环境下的调度和交替执行，也不需要进行额外的同步，或者在调用方进行任何其他的协调操作，调用这个对象的行为都可以获得正确的结果，那这个对象是线程安全的；（干货——线程安全定义）</p>
+<h3 id="1-线程安全的实现："><a href="#1-线程安全的实现：" class="headerlink" title="1.线程安全的实现："></a>1.线程安全的实现：</h3><p>1）互斥同步（阻塞同步）（重量级锁）<br>使用操作系统互斥量来实现的传统锁；<br>采用悲观的并发策略：sysncronised reentrantlock重入锁</p>
+<p>2）非阻塞同步（乐观锁）（轻量级锁）<br>在没有多线程竞争的前提下，减少传统的重量级锁使用操作系统互斥量产生的性能消耗<br>基于冲突检测的乐观并发策略 并发包下实现了cas机制的原子类</p>
 <p>###【2】线程安全</p>
 <p>####【2.1】java 语言中的线程安全（干货——java中各种操作共享的数据分为以下5类）<br>0）java中各种操作共享的数据分为以下5类：不可变， 绝对线程安全， 相对线程安全，线程兼容，线程对立；</p>
-<p>###【2.2】线程安全的实现方法<br>1）互斥同步</p>
-<p>1.1）互斥同步：是常见的并发正确性保障手段；</p>
-<p>1.2）同步：是指在多个线程并发访问共享数据时，保证共享数据在同一个时刻被一个线程使用。</p>
-<p>1.3）互斥：互斥是实现同步的一种手段；临界区，互斥量和信号量都是主要的互斥实现方式。因此，在这4个字里面，互斥是因，同步是果；互斥是方法，同步是目的；</p>
-<p>1.4）最基本的互斥同步手段就是 synchronized关键字：synchronized关键字经过 编译之后，会在同步块的前后分别形成 monitorenter 和 monitorexit 这个两个字节码指令，这两个字节码都需要一个 reference类型的参数来指明要锁定和解锁的对象；如果java程序中的synchronized明确指定了对象参数，那就是这个对象的reference；如果没有明确指定，那就根据 synchronized修饰的实例方法还是类方法，去取对应的对象实例或Class 对象来作为锁对象；（干货——最基本的互斥同步手段就是 synchronized关键字）</p>
-<p>1.5）根据虚拟机规范的要求：在执行monitorenter指令时，如果这个对象没有锁定或当前线程已经拥有了那个对象的锁，锁的计数器加1，相应的，在执行 monitorexit 指令时会将锁计数器减1；当计数器为0时，锁就被释放了；（干货——执行monitorenter和monitorexit 指令）</p>
-<p>Attention）对于monitorenter 和 monitorexit 的行为描述中，有两点需要注意：<br>A1）synchronized同步块对同一条线程来说是可重入的， 不会出现自己把自己锁死的问题；<br>A2）同步块在已进入的线程执行完之前，会阻塞后面其他线程 的进入；</p>
-<p>1.6）除了synchronized之外，还可以使用 java.util.concurrent 包中的重入锁（ReentrantLock）来实现同步；（干货——引入重入锁进行同步）</p>
-<p>1.6.1）synchronized 和 ReentrantLock 的区别： 一个表现为 API 层面的互斥锁（lock() 和 unlock() 方法配合 try/finally 语句块来完成），另一个表现为 原生语法层面的互斥锁；</p>
-<p>1.6.2）ReentrantLock增加了一些高级功能：主要有3项：等待可中断，可实现公平锁， 以及锁可以绑定多个条件；（干货——ReentrantLock 增加了3项高级功能）</p>
-<p>case1）等待可中断：指当持有锁的线程长期不释放锁的时候，正在等待的线程可以选择放弃等待，改为处理其他事情，可中断特性对处理执行时间非常长的同步块很有帮助；</p>
-<p>case2）公平锁：指多个线程在等待同一个锁时，必须按照申请锁的时间顺序来依次获得锁；</p>
-<p>case3）锁绑定多个条件：指一个 ReentrantLock对象可以同时绑定多个 Condition对象，而在 synchronized中，锁对象的wait() 和 notify() 或 notifyAll() 方法可以实现一个隐含的条件，如果要和多于一个的条件关联的时候，就不得不额外地添加一个锁，而ReentrantLock 则无需这样做，只需要多次调用 newCondition() 方法即可；（干货——可重入锁ReentrantLock 和 synchronized 绑定多个条件的实现方式的区别）</p>
-<p>1.6.3）关于synchronized 和 ReentrantLock 性能的分析：</p>
-<p>对上图的分析（Analysis）：<br>A1）多线程环境下 synchronized的吞吐量下降得非常严重，而 ReentrantLock 则能基本保持在同一个比较稳定的水平上；与其说ReentrantLock性能好，还不如说 synchronized还有非常大的优化余地；</p>
+<p>###【2.2】线程安全的实现方法</p>
+<h2 id="1）互斥同步"><a href="#1）互斥同步" class="headerlink" title="1）互斥同步"></a>1）互斥同步</h2><h5 id="1-1）互斥同步：是常见的并发正确性保障手段；"><a href="#1-1）互斥同步：是常见的并发正确性保障手段；" class="headerlink" title="1.1）互斥同步：是常见的并发正确性保障手段；"></a>1.1）互斥同步：是常见的并发正确性保障手段；</h5><h5 id="1-2）同步：是指在多个线程并发访问共享数据时，保证共享数据在同一个时刻被一个线程使用。"><a href="#1-2）同步：是指在多个线程并发访问共享数据时，保证共享数据在同一个时刻被一个线程使用。" class="headerlink" title="1.2）同步：是指在多个线程并发访问共享数据时，保证共享数据在同一个时刻被一个线程使用。"></a>1.2）同步：是指在多个线程并发访问共享数据时，保证共享数据在同一个时刻被一个线程使用。</h5><h5 id="1-3）互斥：互斥是实现同步的一种手段；临界区，互斥量和信号量都是主要的互斥实现方式。因此，在这4个字里面，互斥是因，同步是果；互斥是方法，同步是目的；"><a href="#1-3）互斥：互斥是实现同步的一种手段；临界区，互斥量和信号量都是主要的互斥实现方式。因此，在这4个字里面，互斥是因，同步是果；互斥是方法，同步是目的；" class="headerlink" title="1.3）互斥：互斥是实现同步的一种手段；临界区，互斥量和信号量都是主要的互斥实现方式。因此，在这4个字里面，互斥是因，同步是果；互斥是方法，同步是目的；"></a>1.3）互斥：互斥是实现同步的一种手段；临界区，互斥量和信号量都是主要的互斥实现方式。因此，在这4个字里面，互斥是因，同步是果；互斥是方法，同步是目的；</h5><h3 id="1-4）synchronized关键字执行-原理："><a href="#1-4）synchronized关键字执行-原理：" class="headerlink" title="1.4）synchronized关键字执行 原理："></a>1.4）synchronized关键字执行 原理：</h3><p>最基本的互斥同步手段就是 synchronized关键字。<br> synchronized关键字经过 编译之后，会在同步块的前后分别形成 monitorenter 和 monitorexit 这个两个字节码指令，这两个字节码都需要一个 reference类型的参数来指明要锁定和解锁的对象；如果java程序中的synchronized明确指定了对象参数，那就是这个对象的reference；如果没有明确指定，那就根据 synchronized修饰的实例方法还是类方法，去取对应的对象实例或Class 对象来作为锁对象；（干货——最基本的互斥同步手段就是 synchronized关键字）</p>
+<h3 id="1-5）执行monitorenter和monitorexit-指令"><a href="#1-5）执行monitorenter和monitorexit-指令" class="headerlink" title="1.5）执行monitorenter和monitorexit 指令"></a>1.5）执行monitorenter和monitorexit 指令</h3><p>根据虚拟机规范的要求：在执行monitorenter指令时，如果这个对象没有锁定或当前线程已经拥有了那个对象的锁，锁的计数器加1，相应的，在执行 monitorexit 指令时会将锁计数器减1；当计数器为0时，锁就被释放了；（干货——执行monitorenter和monitorexit 指令）</p>
+<h5 id="Attention）对于monitorenter-和-monitorexit-的行为描述中，有两点需要注意："><a href="#Attention）对于monitorenter-和-monitorexit-的行为描述中，有两点需要注意：" class="headerlink" title="Attention）对于monitorenter 和 monitorexit 的行为描述中，有两点需要注意："></a>Attention）对于monitorenter 和 monitorexit 的行为描述中，有两点需要注意：</h5><p>A1）synchronized同步块对同一条线程来说是可重入的， 不会出现自己把自己锁死的问题；</p>
+<p>A2）同步块在已进入的线程执行完之前，会阻塞后面其他线程 的进入；</p>
+<h3 id="1-6）除了synchronized之外，还可以使用-java-util-concurrent-包中的重入锁（ReentrantLock）来实现同步；（干货——引入重入锁进行同步）"><a href="#1-6）除了synchronized之外，还可以使用-java-util-concurrent-包中的重入锁（ReentrantLock）来实现同步；（干货——引入重入锁进行同步）" class="headerlink" title="1.6）除了synchronized之外，还可以使用 java.util.concurrent 包中的重入锁（ReentrantLock）来实现同步；（干货——引入重入锁进行同步）"></a>1.6）除了synchronized之外，还可以使用 java.util.concurrent 包中的重入锁（ReentrantLock）来实现同步；（干货——引入重入锁进行同步）</h3><h4 id="1-6-1）synchronized-和-ReentrantLock-的区别："><a href="#1-6-1）synchronized-和-ReentrantLock-的区别：" class="headerlink" title="1.6.1）synchronized 和 ReentrantLock 的区别："></a>1.6.1）synchronized 和 ReentrantLock 的区别：</h4><p>一个表现为 API 层面的互斥锁（lock() 和 unlock() 方法配合 try/finally 语句块来完成），另一个表现为 原生语法层面（JVM层面编译阶段加入字节码指令）的互斥锁；</p>
+<h4 id="1-6-2）ReentrantLock增加了一些高级功能："><a href="#1-6-2）ReentrantLock增加了一些高级功能：" class="headerlink" title="1.6.2）ReentrantLock增加了一些高级功能："></a>1.6.2）ReentrantLock增加了一些高级功能：</h4><p>主要有3项：等待可中断，可实现公平锁， 以及锁可以绑定多个条件；</p>
+<h5 id="case1）等待可中断："><a href="#case1）等待可中断：" class="headerlink" title="case1）等待可中断："></a>case1）等待可中断：</h5><p>指当持有锁的线程长期不释放锁的时候，正在等待的线程可以选择放弃等待，改为处理其他事情，可中断特性对处理执行时间非常长的同步块很有帮助；</p>
+<h5 id="case2）公平锁："><a href="#case2）公平锁：" class="headerlink" title="case2）公平锁："></a>case2）公平锁：</h5><p>指多个线程在等待同一个锁时，必须按照申请锁的时间顺序来依次获得锁；</p>
+<h5 id="case3）锁绑定多个条件："><a href="#case3）锁绑定多个条件：" class="headerlink" title="case3）锁绑定多个条件："></a>case3）锁绑定多个条件：</h5><p>指一个 ReentrantLock对象可以同时绑定多个 Condition对象，而在 synchronized中，锁对象的wait() 和 notify() 或 notifyAll() 方法可以实现一个隐含的条件，如果要和多于一个的条件关联的时候，就不得不额外地添加一个锁，而ReentrantLock 则无需这样做，只需要多次调用 newCondition() 方法即可；（干货——可重入锁ReentrantLock 和 synchronized 绑定多个条件的实现方式的区别）</p>
+<h3 id="1-6-3）关于synchronized-和-ReentrantLock-性能的分析："><a href="#1-6-3）关于synchronized-和-ReentrantLock-性能的分析：" class="headerlink" title="1.6.3）关于synchronized 和 ReentrantLock 性能的分析："></a>1.6.3）关于synchronized 和 ReentrantLock 性能的分析：</h3><p>A1）多线程环境下 synchronized的吞吐量下降得非常严重，而 ReentrantLock 则能基本保持在同一个比较稳定的水平上；与其说ReentrantLock性能好，还不如说 synchronized还有非常大的优化余地；</p>
 <p>A2）虚拟机在未来的性能改进中肯定也会更加偏向于原生的 synchronized，所以还是提倡在 synchronized能实现需求的情况下，优先考虑使用 synchronized 来进行同步；（干货——同步方式推荐使用synchronized）</p>
-<p>2）非阻塞同步<br>2.1）阻塞同步（互斥同步）的问题：就是进行线程阻塞和唤醒所带来的性能问题，互斥同步属于一种悲观的并发策略，无论共享数据是否真的会出现竞争，它都要进行加锁，用户态核心态转换，维护锁计数器和检查是否有被阻塞的线程需要唤醒等操作；（干货——阻塞同步（互斥同步）的问题）</p>
-<p>2.2）非阻塞同步定义：基于冲突检测的乐观并发策略，通俗的说，就是先进行操作，如果没有其他线程争用共享数据，那操作就成功了；如果共享数据有争用，产生了冲突，那就再采用其他的补偿措施，这种乐观的并发策略的许多实现都不需要把线程挂起，因此这种同步操作称为 非阻塞同步；（干货——非阻塞同步定义）</p>
-<p>2.3）为什么作者要说使用乐观并发策略需要“硬件指令集的发展”才能进行呢？因为 我们需要操作和冲突检测这两个步骤具备原子性，靠什么来保证呢？<br>2.3.1）硬件：保证一个从语义上看起来需要多次操作的行为只通过一次处理器指令就能完成，这类指令常用的有：（instructions）<br>i1）测试并设置（Test-and-Set）；<br>i2）获取并增加（Fetch-and-Increment）；<br>i3）交换（Swap）；<br>i4）比较并交换（Compare-and-Swap，下文简称 CAS）；<br>i5）加载链接/ 条件存储（Load-Linked/Store-Conditional，下文简称 LL/SC）；</p>
-<p>2.4）如何使用CAS 操作来避免阻塞同步，看个荔枝：（测试incrementAndGet 方法的原子性）</p>
-<p>// Atomic 变量自增运算测试(incrementAndGet 方法的原子性)</p>
-<pre><code>public class AtomicTest {
+<h2 id="2）非阻塞同步"><a href="#2）非阻塞同步" class="headerlink" title="2）非阻塞同步"></a>2）非阻塞同步</h2><h3 id="2-1）阻塞同步（互斥同步）的问题："><a href="#2-1）阻塞同步（互斥同步）的问题：" class="headerlink" title="2.1）阻塞同步（互斥同步）的问题："></a>2.1）阻塞同步（互斥同步）的问题：</h3><p>就是进行线程阻塞和唤醒所带来的性能问题，互斥同步属于一种悲观的并发策略，无论共享数据是否真的会出现竞争，它都要进行加锁，用户态核心态转换，维护锁计数器和检查是否有被阻塞的线程需要唤醒等操作；（干货——阻塞同步（互斥同步）的问题）</p>
+<h3 id="2-2）非阻塞同步定义："><a href="#2-2）非阻塞同步定义：" class="headerlink" title="2.2）非阻塞同步定义："></a>2.2）非阻塞同步定义：</h3><p>基于冲突检测的乐观并发策略，通俗的说，就是先进行操作，如果没有其他线程争用共享数据，那操作就成功了；如果共享数据有争用，产生了冲突，那就再采用其他的补偿措施，这种乐观的并发策略的许多实现都不需要把线程挂起，因此这种同步操作称为 非阻塞同步；（干货——非阻塞同步定义）</p>
+<h3 id="2-3）为什么作者要说使用乐观并发策略需要“硬件指令集的发展”才能进行呢？因为-我们需要操作和冲突检测这两个步骤具备原子性，靠什么来保证呢？"><a href="#2-3）为什么作者要说使用乐观并发策略需要“硬件指令集的发展”才能进行呢？因为-我们需要操作和冲突检测这两个步骤具备原子性，靠什么来保证呢？" class="headerlink" title="2.3）为什么作者要说使用乐观并发策略需要“硬件指令集的发展”才能进行呢？因为 我们需要操作和冲突检测这两个步骤具备原子性，靠什么来保证呢？"></a>2.3）为什么作者要说使用乐观并发策略需要“硬件指令集的发展”才能进行呢？因为 我们需要操作和冲突检测这两个步骤具备原子性，靠什么来保证呢？</h3><p>2.3.1）硬件：保证一个从语义上看起来需要多次操作的行为只通过一次处理器指令就能完成，这类指令常用的有：（instructions）：<br>i1）测试并设置（Test-and-Set）；<br>i2）获取并增加（Fetch-and-Increment）；<br>i3）交换（Swap）；<br>i4）比较并交换（Compare-and-Swap，下文简称 CAS）；<br>i5）加载链接/ 条件存储（Load-Linked/Store-Conditional，下文简称 LL/SC）；</p>
+<h3 id="2-4）如何使用CAS-操作来避免阻塞同步（测试incrementAndGet-方法的原子性）"><a href="#2-4）如何使用CAS-操作来避免阻塞同步（测试incrementAndGet-方法的原子性）" class="headerlink" title="2.4）如何使用CAS 操作来避免阻塞同步（测试incrementAndGet 方法的原子性）"></a>2.4）如何使用CAS 操作来避免阻塞同步（测试incrementAndGet 方法的原子性）</h3><pre><code>// Atomic 变量自增运算测试(incrementAndGet 方法的原子性)
+
+public class AtomicTest {
 public static AtomicInteger race = new AtomicInteger(0);
 
 public static void increase() {
@@ -161,15 +158,14 @@ public final int incrementAndGet() {
     }
 }
 </code></pre><p>}</p>
-<p>2.5）CAS操作（比较并交换操作）的ABA问题：如果一个变量V初次读取的时候是A值，并且在准备赋值的时候检查到它仍然是A值，那我们就说它的值没有被其他线程改变过了吗？ 如果在这段期间它的值曾经被改为了B，之后又改回了A，那CAS操作就会误认为它从来没有被改变过，这个漏洞称为 CAS操作的 ABA问题；</p>
-<p>2.6）解决方法：J.U.C 包为了解决这个问题，提供了一个带有标记的原子引用类“AtomicStampedReference”，它可以通过控制变量值的version 来保证CAS的正确性。不过目前来说这个类比较鸡肋， 大部分cases 下 ABA问题 不会影响程序并发的正确性，如果需要解决ABA问题，改用传统的互斥同步可能会比原子类更高效；（干货——CAS操作（比较并交换操作）的ABA问题及其解决方法） </p>
-<p>【3.4】轻量级锁<br>1）重量级锁定义：使用操作系统互斥量来实现的传统锁；<br>2）轻量级锁的目的：是在没有多线程竞争的前提下，减少传统的重量级锁使用操作系统互斥量产生的性能消耗；（干货——轻量级锁的作用）</p>
+<h3 id="2-5）CAS操作（比较并交换操作）的ABA问题："><a href="#2-5）CAS操作（比较并交换操作）的ABA问题：" class="headerlink" title="2.5）CAS操作（比较并交换操作）的ABA问题："></a>2.5）CAS操作（比较并交换操作）的ABA问题：</h3><p>如果一个变量V初次读取的时候是A值，并且在准备赋值的时候检查到它仍然是A值，那我们就说它的值没有被其他线程改变过了吗？ 如果在这段期间它的值曾经被改为了B，之后又改回了A，那CAS操作就会误认为它从来没有被改变过，这个漏洞称为 CAS操作的 ABA问题；</p>
+<p>解决方法：J.U.C 包为了解决这个问题，提供了一个带有标记的原子引用类“AtomicStampedReference”，它可以通过控制变量值的version 来保证CAS的正确性。不过目前来说这个类比较鸡肋， 大部分cases 下 ABA问题 不会影响程序并发的正确性，如果需要解决ABA问题，改用传统的互斥同步可能会比原子类更高效；（干货——CAS操作（比较并交换操作）的ABA问题及其解决方法） </p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/14/线程安全与锁优化/" data-id="cj6vs3ic9002fv273cejnubjr" class="article-share-link" data-share="baidu" data-title="线程安全与锁优化——深入理解JVM阅读笔记">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/14/线程安全与锁优化/" data-id="cj6ypn484002oep73qv8q26yg" class="article-share-link" data-share="baidu" data-title="线程安全与锁优化——深入理解JVM阅读笔记">分享到</a>
       
 
 
@@ -187,7 +183,7 @@ public final int incrementAndGet() {
       <strong class="article-nav-caption">下一篇</strong>
       <div class="article-nav-title">
         
-          创业感悟：
+          创业感悟
         
       </div>
     </a>
@@ -248,7 +244,7 @@ public final int incrementAndGet() {
       <ul>
         
           <li>
-            <a href="/2017/08/17/创业一段时间的总结和感悟/">创业感悟：</a>
+            <a href="/2017/08/17/创业一段时间的总结和感悟/">创业感悟</a>
           </li>
         
           <li>
