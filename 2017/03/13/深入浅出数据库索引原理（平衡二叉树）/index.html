@@ -8,17 +8,17 @@
   
   <title>深入浅出数据库索引原理（平衡二叉树） | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="转载地址：http://www.cnblogs.com/aspwebchh/p/6652855.html 由于探究mongo索引的原理所以引申到索引的实现平衡二叉树的探究">
+  <meta name="description" content="由于探究mongo索引的原理所以引申到索引的实现平衡二叉树的探究转载地址：http://www.cnblogs.com/aspwebchh/p/6652855.html">
 <meta name="keywords" content="分布式缓存">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深入浅出数据库索引原理（平衡二叉树）">
 <meta property="og:url" content="http://yoursite.com/2017/03/13/深入浅出数据库索引原理（平衡二叉树）/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="转载地址：http://www.cnblogs.com/aspwebchh/p/6652855.html 由于探究mongo索引的原理所以引申到索引的实现平衡二叉树的探究">
-<meta property="og:updated_time" content="2017-08-18T07:05:56.000Z">
+<meta property="og:description" content="由于探究mongo索引的原理所以引申到索引的实现平衡二叉树的探究转载地址：http://www.cnblogs.com/aspwebchh/p/6652855.html">
+<meta property="og:updated_time" content="2017-08-30T07:47:16.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入浅出数据库索引原理（平衡二叉树）">
-<meta name="twitter:description" content="转载地址：http://www.cnblogs.com/aspwebchh/p/6652855.html 由于探究mongo索引的原理所以引申到索引的实现平衡二叉树的探究">
+<meta name="twitter:description" content="由于探究mongo索引的原理所以引申到索引的实现平衡二叉树的探究转载地址：http://www.cnblogs.com/aspwebchh/p/6652855.html">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -89,8 +89,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>转载地址：<a href="http://www.cnblogs.com/aspwebchh/p/6652855.html" target="_blank" rel="external">http://www.cnblogs.com/aspwebchh/p/6652855.html</a></p>
-<h5 id="由于探究mongo索引的原理所以引申到索引的实现平衡二叉树的探究"><a href="#由于探究mongo索引的原理所以引申到索引的实现平衡二叉树的探究" class="headerlink" title="由于探究mongo索引的原理所以引申到索引的实现平衡二叉树的探究"></a>由于探究mongo索引的原理所以引申到索引的实现平衡二叉树的探究</h5><a id="more"></a>
+        <h5 id="由于探究mongo索引的原理所以引申到索引的实现平衡二叉树的探究"><a href="#由于探究mongo索引的原理所以引申到索引的实现平衡二叉树的探究" class="headerlink" title="由于探究mongo索引的原理所以引申到索引的实现平衡二叉树的探究"></a>由于探究mongo索引的原理所以引申到索引的实现平衡二叉树的探究</h5><p>转载地址：<a href="http://www.cnblogs.com/aspwebchh/p/6652855.html" target="_blank" rel="external">http://www.cnblogs.com/aspwebchh/p/6652855.html</a></p>
+<a id="more"></a>
 <p>前段时间，公司一个新上线的网站出现页面响应速度缓慢的问题， 一位负责这个项目的但并不是搞技术的妹子找到我，让我想办法提升网站的访问速度 ，因为已经有很多用户来投诉了。我第一反应觉的是数据库上的问题，假装思索了一下，摆着一副深沉炫酷的模样说：“是不是数据库查询上出问题了， 给表加上索引吧”，然后妹子来了一句：“现在我们网站访问量太大，加索引有可能导致写入数据时性能下降，影响用户使用的”。当时我就楞了一下， 有种强行装逼被拆穿的感觉，在自己的专业领域居然被非专业的同学教育， 面子上真有点挂不住。</p>
 <p>其实， 我说这个例子并不是为展现我们公司的同事们专业能力的强大、做的产品棒、安全性高、性能牛逼， 连非技术的同事也懂得技术上的细节。事实上我只是想说明，「数据库」和「数据库索引」这两个东西是在服务器端开发领域应用最为广泛的两个概念，熟练使用数据库和数据库索引是开发人员在行业内生存的必备技能，而整天和技术人员打交道的非技术人员们，由于耳濡目染久了，自然也就能讲个头头是道了。</p>
 <p>使用索引很简单，只要能写创建表的语句，就肯定能写创建索引的语句，要知道这个世界上是不存在不会创建表的服务器端程序员的。然而， 会使用索引是一回事， 而深入理解索引原理又能恰到好处使用索引又是另一回事，这完全是两个天差地别的境界（我自己也还没有达到这层境界）。很大一部份程序员对索引的了解仅限于到“加索引能使查询变快”这个概念为止。</p>
@@ -140,7 +140,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/03/13/深入浅出数据库索引原理（平衡二叉树）/" data-id="cj6ypn47v0024ep73h7jei2bt" class="article-share-link" data-share="baidu" data-title="深入浅出数据库索引原理（平衡二叉树）">分享到</a>
+        <a data-url="http://yoursite.com/2017/03/13/深入浅出数据库索引原理（平衡二叉树）/" data-id="cj6yq1pri0026ua7315bw04xv" class="article-share-link" data-share="baidu" data-title="深入浅出数据库索引原理（平衡二叉树）">分享到</a>
       
 
 

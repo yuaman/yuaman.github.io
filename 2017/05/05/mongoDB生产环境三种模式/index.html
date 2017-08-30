@@ -8,17 +8,17 @@
   
   <title>mongoDB生产环境三种模式 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="MongoDb在用于生产环境的三种模式，master/slaves（主从模式）;replcation副本集;auto shard 分片模式 找不到原作了，并且我在文末对分片模式进行了一下补充">
+  <meta name="description" content="MongoDb在用于生产环境的三种模式，master/slaves（主从模式）;replcation副本集;auto shard 分片模式">
 <meta name="keywords" content="分布式缓存">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mongoDB生产环境三种模式">
 <meta property="og:url" content="http://yoursite.com/2017/05/05/mongoDB生产环境三种模式/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="MongoDb在用于生产环境的三种模式，master/slaves（主从模式）;replcation副本集;auto shard 分片模式 找不到原作了，并且我在文末对分片模式进行了一下补充">
-<meta property="og:updated_time" content="2017-08-18T07:01:11.000Z">
+<meta property="og:description" content="MongoDb在用于生产环境的三种模式，master/slaves（主从模式）;replcation副本集;auto shard 分片模式">
+<meta property="og:updated_time" content="2017-08-30T07:46:47.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mongoDB生产环境三种模式">
-<meta name="twitter:description" content="MongoDb在用于生产环境的三种模式，master/slaves（主从模式）;replcation副本集;auto shard 分片模式 找不到原作了，并且我在文末对分片模式进行了一下补充">
+<meta name="twitter:description" content="MongoDb在用于生产环境的三种模式，master/slaves（主从模式）;replcation副本集;auto shard 分片模式">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -90,7 +90,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>MongoDb在用于生产环境的三种模式，master/slaves（主从模式）;replcation副本集;auto shard 分片模式</p>
-<h5 id="找不到原作了，并且我在文末对分片模式进行了一下补充"><a href="#找不到原作了，并且我在文末对分片模式进行了一下补充" class="headerlink" title="找不到原作了，并且我在文末对分片模式进行了一下补充"></a>找不到原作了，并且我在文末对分片模式进行了一下补充</h5><a id="more"></a>
+<a id="more"></a>
 <h2 id="1-主从复制"><a href="#1-主从复制" class="headerlink" title="1.主从复制"></a>1.主从复制</h2><p>   在早期的系统设计中，主从模式是比较流行的，将读写分离，在不同的DB上操作，可以有效降低数据库的压力，而且还能实现数据的备份，但是在master节点故障的时候，不能及时的自动的切换到slaves节点，需要手动干预，这个是硬伤</p>
 <h2 id="2-副本集"><a href="#2-副本集" class="headerlink" title="2.副本集"></a>2.副本集</h2><p>   目前在Mongodb的官方说法中已经不推荐使用master/slave/模式，推荐使用副本集模式，应为该模式不但实现了主从模式的读写分离，而且有自己的一套选举机制，能通过自己的算法，选举出当前最优的节点作为活跃节点，一旦活跃节点宕机，选举出来的新的节点将成为活跃节点对外提供服务，其他节点则继续作为复制节点，当原先的活跃节点恢复，会自动作为非活跃节点（备份节点）存在。</p>
 <p> 这种模式的最大优点在于Mongodb的自动选举活跃节点的机制，不需要手动干预便可以实现活跃与非活跃的切换，但是它由于数据没有shard，每个节点都是一个完成的备份，则不能使用MongoDb的分布式计算功能，当然，也可以通过程序自己来实现（成本很高），所以就有了Auto shard模式</p>
@@ -106,7 +106,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/05/05/mongoDB生产环境三种模式/" data-id="cj6ypn478001bep734boutj69" class="article-share-link" data-share="baidu" data-title="mongoDB生产环境三种模式">分享到</a>
+        <a data-url="http://yoursite.com/2017/05/05/mongoDB生产环境三种模式/" data-id="cj6yq1pqx001aua739q117xas" class="article-share-link" data-share="baidu" data-title="mongoDB生产环境三种模式">分享到</a>
       
 
 

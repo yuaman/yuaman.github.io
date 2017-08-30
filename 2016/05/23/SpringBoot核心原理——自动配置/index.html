@@ -8,17 +8,17 @@
   
   <title>Spring Boot核心原理－自动配置 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="之前在公司内部推行spring boot时，有同事跟我提到过，感觉换到spring boot这个框架后，好处是小白也能迅速上手写业务代码了。但是呢，这种情况下新手很容易写得云里雾里的，因为完全不知道背后的原理是什么，相对比在学习spring时需要深刻理解ioc、搞一堆繁琐的配置来说，的确缺少了被迫跳出舒适区去学习一些原理的过程，那么今天就讲讲，为什么spring boot能够如此简单的让我们迅速">
+  <meta name="description" content="为什么spring boot能够如此简单的让我们迅速上手。">
 <meta name="keywords" content="框架相关">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring Boot核心原理－自动配置">
 <meta property="og:url" content="http://yoursite.com/2016/05/23/SpringBoot核心原理——自动配置/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="之前在公司内部推行spring boot时，有同事跟我提到过，感觉换到spring boot这个框架后，好处是小白也能迅速上手写业务代码了。但是呢，这种情况下新手很容易写得云里雾里的，因为完全不知道背后的原理是什么，相对比在学习spring时需要深刻理解ioc、搞一堆繁琐的配置来说，的确缺少了被迫跳出舒适区去学习一些原理的过程，那么今天就讲讲，为什么spring boot能够如此简单的让我们迅速">
-<meta property="og:updated_time" content="2017-08-30T05:50:06.000Z">
+<meta property="og:description" content="为什么spring boot能够如此简单的让我们迅速上手。">
+<meta property="og:updated_time" content="2017-08-30T07:49:24.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring Boot核心原理－自动配置">
-<meta name="twitter:description" content="之前在公司内部推行spring boot时，有同事跟我提到过，感觉换到spring boot这个框架后，好处是小白也能迅速上手写业务代码了。但是呢，这种情况下新手很容易写得云里雾里的，因为完全不知道背后的原理是什么，相对比在学习spring时需要深刻理解ioc、搞一堆繁琐的配置来说，的确缺少了被迫跳出舒适区去学习一些原理的过程，那么今天就讲讲，为什么spring boot能够如此简单的让我们迅速">
+<meta name="twitter:description" content="为什么spring boot能够如此简单的让我们迅速上手。">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -89,8 +89,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <a id="more"></a>
-<p>之前在公司内部推行spring boot时，有同事跟我提到过，感觉换到spring boot这个框架后，好处是小白也能迅速上手写业务代码了。但是呢，这种情况下新手很容易写得云里雾里的，因为完全不知道背后的原理是什么，相对比在学习spring时需要深刻理解ioc、搞一堆繁琐的配置来说，的确缺少了被迫跳出舒适区去学习一些原理的过程，那么今天就讲讲，为什么spring boot能够如此简单的让我们迅速上手。</p>
+        <p>为什么spring boot能够如此简单的让我们迅速上手。<br><a id="more"></a><br>之前在公司内部推行spring boot时，有同事跟我提到过，感觉换到spring boot这个框架后，好处是小白也能迅速上手写业务代码了。但是呢，这种情况下新手很容易写得云里雾里的，因为完全不知道背后的原理是什么，相对比在学习spring时需要深刻理解ioc、搞一堆繁琐的配置来说，的确缺少了被迫跳出舒适区去学习一些原理的过程，那么今天就讲讲，为什么spring boot能够如此简单的让我们迅速上手。</p>
 <p>Spring由于其繁琐的配置，一度被人成为“配置地狱”，各种XML、Annotation配置，让人眼花缭乱，而且如果出错了也很难找出原因。Spring Boot项目就是为了解决配置繁琐的问题，最大化的实现convention over configuration(约定大于配置)。熟悉Ruby On Rails（ROR框架的程序员都知道，借助于ROR的脚手架工具只需简单的几步即可建立起一个Web应用程序。而Spring Boot就相当于Java平台上的ROR。</p>
 <p>Spring boot出现之后，得益于“习惯优于配置”这个理念，再也没有繁琐的配置、难以集成的内容（大多数流行第三方技术都被集成在内）。 那么背后实现的核心原理到底是什么呢？ 其实是spring 4.x提供的基于条件配置bean的能力。</p>
 <p>Spring boot关于自动配置的源码在spring-boot-autoconfigure-x.x.x.x.jar中，主要包含了如下图所示的配置（并未截全）：</p>
@@ -237,7 +236,7 @@ public class MongoProperties {
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/05/23/SpringBoot核心原理——自动配置/" data-id="cj6ypn46z0013ep73mqz09zrn" class="article-share-link" data-share="baidu" data-title="Spring Boot核心原理－自动配置">分享到</a>
+        <a data-url="http://yoursite.com/2016/05/23/SpringBoot核心原理——自动配置/" data-id="cj6yq1pqk000uua73wu1vjc6r" class="article-share-link" data-share="baidu" data-title="Spring Boot核心原理－自动配置">分享到</a>
       
 
 

@@ -8,17 +8,17 @@
   
   <title>Java并发编程：volatile关键字解析 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="我将一些最关键的要点和结论先做一下总结。如果要做细致的理解，通读全文还是很有必要的。 主要参考地址：http://www.cnblogs.com/dolphin0520/p/3920373.html">
+  <meta name="description" content="我将一些最关键的要点和结论先做一下总结。如果要做细致的理解，通读全文还是很有必要的。">
 <meta name="keywords" content="JVM相关">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java并发编程：volatile关键字解析">
 <meta property="og:url" content="http://yoursite.com/2017/08/13/Java并发编程：volatile关键字解析/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="我将一些最关键的要点和结论先做一下总结。如果要做细致的理解，通读全文还是很有必要的。 主要参考地址：http://www.cnblogs.com/dolphin0520/p/3920373.html">
-<meta property="og:updated_time" content="2017-08-30T03:05:06.000Z">
+<meta property="og:description" content="我将一些最关键的要点和结论先做一下总结。如果要做细致的理解，通读全文还是很有必要的。">
+<meta property="og:updated_time" content="2017-08-30T07:44:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java并发编程：volatile关键字解析">
-<meta name="twitter:description" content="我将一些最关键的要点和结论先做一下总结。如果要做细致的理解，通读全文还是很有必要的。 主要参考地址：http://www.cnblogs.com/dolphin0520/p/3920373.html">
+<meta name="twitter:description" content="我将一些最关键的要点和结论先做一下总结。如果要做细致的理解，通读全文还是很有必要的。">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -90,7 +90,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>我将一些最关键的要点和结论先做一下总结。如果要做细致的理解，通读全文还是很有必要的。</p>
-<h5 id="主要参考地址：http-www-cnblogs-com-dolphin0520-p-3920373-html"><a href="#主要参考地址：http-www-cnblogs-com-dolphin0520-p-3920373-html" class="headerlink" title="主要参考地址：http://www.cnblogs.com/dolphin0520/p/3920373.html"></a>主要参考地址：<a href="http://www.cnblogs.com/dolphin0520/p/3920373.html" target="_blank" rel="external">http://www.cnblogs.com/dolphin0520/p/3920373.html</a></h5><a id="more"></a>
+<a id="more"></a>
 <h4 id="1-并发编程中三个原则："><a href="#1-并发编程中三个原则：" class="headerlink" title="1.并发编程中三个原则："></a>1.并发编程中三个原则：</h4><p> 原子性，可见性，有序性</p>
 <h4 id="2-先行发生原则："><a href="#2-先行发生原则：" class="headerlink" title="2.先行发生原则："></a>2.先行发生原则：</h4><p> 保证程序在单线程中执行结果的正确性，但无法保证程序在多线程中执行的正确性。</p>
 <h4 id="3-volatile关键字两层语义："><a href="#3-volatile关键字两层语义：" class="headerlink" title="3.volatile关键字两层语义："></a>3.volatile关键字两层语义：</h4><p>1）保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的。（满足可见性要求）<br>　<br>2）禁止进行指令重排序。（一定程度上满足有序性要求）</p>
@@ -441,12 +441,12 @@ doSomethingwithconfig(context);
         return instance;
     }
 }
-</code></pre>
+</code></pre><h5 id="主要参考地址：http-www-cnblogs-com-dolphin0520-p-3920373-html"><a href="#主要参考地址：http-www-cnblogs-com-dolphin0520-p-3920373-html" class="headerlink" title="主要参考地址：http://www.cnblogs.com/dolphin0520/p/3920373.html"></a>主要参考地址：<a href="http://www.cnblogs.com/dolphin0520/p/3920373.html" target="_blank" rel="external">http://www.cnblogs.com/dolphin0520/p/3920373.html</a></h5>
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/13/Java并发编程：volatile关键字解析/" data-id="cj6ypn46u000sep738dv0i2vq" class="article-share-link" data-share="baidu" data-title="Java并发编程：volatile关键字解析">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/13/Java并发编程：volatile关键字解析/" data-id="cj6yq1pq5000cua734cnfgt5a" class="article-share-link" data-share="baidu" data-title="Java并发编程：volatile关键字解析">分享到</a>
       
 
 

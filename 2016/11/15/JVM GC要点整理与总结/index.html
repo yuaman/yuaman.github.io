@@ -8,19 +8,19 @@
   
   <title>JVM GC要点整理与总结 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="做一个备忘和参考，或许以后也会在这个基础之上进行补充。主要参考地址：http://blog.csdn.net/shaozengwei/article/details/39670509http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk">
+  <meta name="description" content="做一个备忘和参考，或许以后也会在这个基础之上进行补充。">
 <meta name="keywords" content="JVM相关">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JVM GC要点整理与总结">
 <meta property="og:url" content="http://yoursite.com/2016/11/15/JVM GC要点整理与总结/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="做一个备忘和参考，或许以后也会在这个基础之上进行补充。主要参考地址：http://blog.csdn.net/shaozengwei/article/details/39670509http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk">
+<meta property="og:description" content="做一个备忘和参考，或许以后也会在这个基础之上进行补充。">
 <meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/20141007114631796.png">
 <meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/591d52e2ab64412be90016a5">
-<meta property="og:updated_time" content="2017-08-30T03:48:10.000Z">
+<meta property="og:updated_time" content="2017-08-30T07:45:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM GC要点整理与总结">
-<meta name="twitter:description" content="做一个备忘和参考，或许以后也会在这个基础之上进行补充。主要参考地址：http://blog.csdn.net/shaozengwei/article/details/39670509http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk">
+<meta name="twitter:description" content="做一个备忘和参考，或许以后也会在这个基础之上进行补充。">
 <meta name="twitter:image" content="http://og287lnu0.bkt.clouddn.com/20141007114631796.png">
   
   
@@ -92,8 +92,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h5 id="做一个备忘和参考，或许以后也会在这个基础之上进行补充。"><a href="#做一个备忘和参考，或许以后也会在这个基础之上进行补充。" class="headerlink" title="做一个备忘和参考，或许以后也会在这个基础之上进行补充。"></a>做一个备忘和参考，或许以后也会在这个基础之上进行补充。</h5><p>主要参考地址：<br><a href="http://blog.csdn.net/shaozengwei/article/details/39670509" target="_blank" rel="external">http://blog.csdn.net/shaozengwei/article/details/39670509</a><br><a href="http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk" target="_blank" rel="external">http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk</a></p>
-<a id="more"></a>
+        <h5 id="做一个备忘和参考，或许以后也会在这个基础之上进行补充。"><a href="#做一个备忘和参考，或许以后也会在这个基础之上进行补充。" class="headerlink" title="做一个备忘和参考，或许以后也会在这个基础之上进行补充。"></a>做一个备忘和参考，或许以后也会在这个基础之上进行补充。</h5><a id="more"></a>
 <p><img src="http://og287lnu0.bkt.clouddn.com/20141007114631796.png"></p>
 <h2 id="要点总结："><a href="#要点总结：" class="headerlink" title="要点总结："></a>要点总结：</h2><h3 id="先来解释一下对象存活？？"><a href="#先来解释一下对象存活？？" class="headerlink" title="先来解释一下对象存活？？"></a>先来解释一下对象存活？？</h3><p>什么样的对象是已经死了的对象，需要垃圾回收器进行回收，这个概念至关重要，因为它影响到垃圾回收器对于哪一个对象进行回收。<br>一般来说，可以从GCRoot访问到的对象是存活的对象，那么以外的对象就是已死的对象。目前虚拟机一般采用可达性分析算法来判断对象生死，可达性分析算法通过gc root节点一层层向下寻找，最终能够被gc root访问到并建立联系的就是存活的对象。判断对象生死还有一种引用计数算法现在一般也不用。</p>
 <h4 id="四种GCRoot："><a href="#四种GCRoot：" class="headerlink" title="四种GCRoot："></a>四种GCRoot：</h4><p> 1）Java虚拟机栈中存放的reference指针指向的对象<br> 2）本地方法栈中reference指向的对象<br> 3）方法区中的常量引用对象<br> 4）方法区中静态类属性引用的对象</p>
@@ -173,12 +172,13 @@
 <li>空间整合，G1回收内存时，是将某个或多个区域的存活对象拷贝至其他空区域，同时释放被拷贝的内存区域，这种方式在整体上看是标记-整理，在局部看（两个 Region 之间）是复制算法，所以不会产生内存碎片</li>
 <li>可预测的停顿时间</li>
 </ol>
+<p>主要参考地址：<br><a href="http://blog.csdn.net/shaozengwei/article/details/39670509" target="_blank" rel="external">http://blog.csdn.net/shaozengwei/article/details/39670509</a><br><a href="http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk" target="_blank" rel="external">http://blog.leanote.com/post/shiwei/Java-GC?spm=5176.100239.blogcont91017.9.3Qo1pk</a></p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/11/15/JVM GC要点整理与总结/" data-id="cj6ypn45y0001ep735re5fk9r" class="article-share-link" data-share="baidu" data-title="JVM GC要点整理与总结">分享到</a>
+        <a data-url="http://yoursite.com/2016/11/15/JVM GC要点整理与总结/" data-id="cj6yq1pps0004ua730vwzgn0v" class="article-share-link" data-share="baidu" data-title="JVM GC要点整理与总结">分享到</a>
       
 
 

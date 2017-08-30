@@ -8,17 +8,17 @@
   
   <title>ReenTrantLock可重入锁（和synchronized的区别）总结 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="可重入性： 从名字上理解，ReenTrantLock的字面意思就是再进入的锁，其实synchronized关键字所使用的锁也是可重入的，两者关于这个的区别不大。两者都是同一个线程没进入一次，锁的计数器都自增1，所以要等到锁的计数器下降为0时才能释放锁。 锁的实现： Synchronized是依赖于JVM实现的，而ReenTrantLock是JDK实现的，有什么区别，说白了就类似于操作系统来控制实">
+  <meta name="description" content="ReenTrantLock可重入锁（和synchronized的区别）总结">
 <meta name="keywords" content="并发相关">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ReenTrantLock可重入锁（和synchronized的区别）总结">
 <meta property="og:url" content="http://yoursite.com/2016/05/03/ReenTrantLock可重入锁（和synchronized的区别）总结/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="可重入性： 从名字上理解，ReenTrantLock的字面意思就是再进入的锁，其实synchronized关键字所使用的锁也是可重入的，两者关于这个的区别不大。两者都是同一个线程没进入一次，锁的计数器都自增1，所以要等到锁的计数器下降为0时才能释放锁。 锁的实现： Synchronized是依赖于JVM实现的，而ReenTrantLock是JDK实现的，有什么区别，说白了就类似于操作系统来控制实">
-<meta property="og:updated_time" content="2017-08-30T05:50:35.000Z">
+<meta property="og:description" content="ReenTrantLock可重入锁（和synchronized的区别）总结">
+<meta property="og:updated_time" content="2017-08-30T07:42:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ReenTrantLock可重入锁（和synchronized的区别）总结">
-<meta name="twitter:description" content="可重入性： 从名字上理解，ReenTrantLock的字面意思就是再进入的锁，其实synchronized关键字所使用的锁也是可重入的，两者关于这个的区别不大。两者都是同一个线程没进入一次，锁的计数器都自增1，所以要等到锁的计数器下降为0时才能释放锁。 锁的实现： Synchronized是依赖于JVM实现的，而ReenTrantLock是JDK实现的，有什么区别，说白了就类似于操作系统来控制实">
+<meta name="twitter:description" content="ReenTrantLock可重入锁（和synchronized的区别）总结">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -89,7 +89,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <a id="more"></a>
+        <p>ReenTrantLock可重入锁（和synchronized的区别）总结<br><a id="more"></a></p>
 <p>可重入性：</p>
 <p>从名字上理解，ReenTrantLock的字面意思就是再进入的锁，其实synchronized关键字所使用的锁也是可重入的，两者关于这个的区别不大。两者都是同一个线程没进入一次，锁的计数器都自增1，所以要等到锁的计数器下降为0时才能释放锁。</p>
 <p>锁的实现：</p>
@@ -112,7 +112,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/05/03/ReenTrantLock可重入锁（和synchronized的区别）总结/" data-id="cj6ypn46l000cep73pxhr83jv" class="article-share-link" data-share="baidu" data-title="ReenTrantLock可重入锁（和synchronized的区别）总结">分享到</a>
+        <a data-url="http://yoursite.com/2016/05/03/ReenTrantLock可重入锁（和synchronized的区别）总结/" data-id="cj6yq1pqh000sua73jlopb20x" class="article-share-link" data-share="baidu" data-title="ReenTrantLock可重入锁（和synchronized的区别）总结">分享到</a>
       
 
 
