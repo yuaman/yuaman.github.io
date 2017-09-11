@@ -15,10 +15,12 @@
 <meta property="og:url" content="http://yoursite.com/2017/08/01/秒杀系统解决方案/index.html">
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="我看了二十篇左右的秒杀系统设计及解决方案的文章，从架构、产品、前端、后端四个层面分别总结了一些解决方案。">
-<meta property="og:updated_time" content="2017-08-30T05:32:06.000Z">
+<meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/UNADJUSTEDNONRAW_thumb_8c6.jpg">
+<meta property="og:updated_time" content="2017-09-11T04:34:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="秒杀系统解决方案">
 <meta name="twitter:description" content="我看了二十篇左右的秒杀系统设计及解决方案的文章，从架构、产品、前端、后端四个层面分别总结了一些解决方案。">
+<meta name="twitter:image" content="http://og287lnu0.bkt.clouddn.com/UNADJUSTEDNONRAW_thumb_8c6.jpg">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -117,12 +119,16 @@
 <h4 id="4-后端层面："><a href="#4-后端层面：" class="headerlink" title="4.后端层面："></a>4.后端层面：</h4><h5 id="1-加入缓存redis："><a href="#1-加入缓存redis：" class="headerlink" title="1.加入缓存redis："></a>1.加入缓存redis：</h5><p>因为秒杀是典型的读多写少的场景，适合操作内存而非操作硬盘；缓存工具redis本身的操作是保证原子性的，所以可以保证请求了redis的写的操作的线程安全性。</p>
 <h5 id="2-加入消息队列，利用队列进行削峰："><a href="#2-加入消息队列，利用队列进行削峰：" class="headerlink" title="2.加入消息队列，利用队列进行削峰："></a>2.加入消息队列，利用队列进行削峰：</h5><p>将用户请求放置于一个或多个队列中，队列中元素总和等于该商品库存总和，未进入队列的请求均失败。利用多线程轮询分别从一个或多个队列中取出用户请求。操作redis进行减库存操作，成功减库存之后返回成功，并将用户信息与商品信息存入另一个队列当中，进行生成订单的操作。利用两个队列异步处理业务减轻秒杀高峰时期服务器负载。</p>
 <h5 id="3-程序计数器："><a href="#3-程序计数器：" class="headerlink" title="3.程序计数器："></a>3.程序计数器：</h5><p>队列与缓存为了保证请求redis的次数不超过总的库存量，利用一个程序计数器来这一点。程序计数器用JUC包下原子类可以实现。</p>
+<h5 id="4-分布式锁"><a href="#4-分布式锁" class="headerlink" title="4.分布式锁"></a>4.分布式锁</h5><p>分布式情况下可以利用分布式锁来解决任务每次只能由一次服务来执行且不能重复执行。<br>分布式锁的实现：zk、redis<br>分布式锁的优化：先考虑是否可以去锁，然后考虑尽可能多用乐观锁，少用悲观锁。这里有一个问题，乐观锁如果每一次都会有并发冲突的话性能反而不如悲观锁，那么难道真的多用乐观锁性能会比悲观锁高吗？选举考虑ha，比如心跳检测。</p>
+<h5 id="5-分布式去锁-方案"><a href="#5-分布式去锁-方案" class="headerlink" title="5.分布式去锁 方案"></a>5.分布式去锁 方案</h5><p>利用集群并发加入队列，选举队列处理服务单点执行，这样可以保证并发实现和加锁一样的并发量但不会影响性能。    </p>
+<p>###可以加微信进行技术交流，期待结识新的朋友</p>
+<p><img src="http://og287lnu0.bkt.clouddn.com/UNADJUSTEDNONRAW_thumb_8c6.jpg" style="width:250px;height:350px;"></p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/01/秒杀系统解决方案/" data-id="cj6yq1prn002dua73j4d35z1v" class="article-share-link" data-share="baidu" data-title="秒杀系统解决方案">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/01/秒杀系统解决方案/" data-id="cj7fodcsh002h3673ciucohrw" class="article-share-link" data-share="baidu" data-title="秒杀系统解决方案">分享到</a>
       
 
 
@@ -171,7 +177,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器相关/">Java容器相关</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式消息/">分布式消息</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发相关/">并发相关</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架相关/">框架相关</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器相关/">Java容器相关</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式消息/">分布式消息</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发相关/">并发相关</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架相关/">框架相关</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -180,7 +186,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/JVM相关/" style="font-size: 18.33px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 11.67px;">Java基础</a> <a href="/tags/Java容器相关/" style="font-size: 16.67px;">Java容器相关</a> <a href="/tags/个人开源项目/" style="font-size: 10px;">个人开源项目</a> <a href="/tags/分布式消息/" style="font-size: 10px;">分布式消息</a> <a href="/tags/分布式缓存/" style="font-size: 20px;">分布式缓存</a> <a href="/tags/并发相关/" style="font-size: 15px;">并发相关</a> <a href="/tags/操作记录/" style="font-size: 11.67px;">操作记录</a> <a href="/tags/框架相关/" style="font-size: 11.67px;">框架相关</a> <a href="/tags/随笔/" style="font-size: 13.33px;">随笔</a> <a href="/tags/高并发方案/" style="font-size: 10px;">高并发方案</a>
+      <a href="/tags/JVM相关/" style="font-size: 18.33px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 11.67px;">Java基础</a> <a href="/tags/Java容器相关/" style="font-size: 16.67px;">Java容器相关</a> <a href="/tags/个人开源项目/" style="font-size: 10px;">个人开源项目</a> <a href="/tags/分布式消息/" style="font-size: 10px;">分布式消息</a> <a href="/tags/分布式缓存/" style="font-size: 20px;">分布式缓存</a> <a href="/tags/并发相关/" style="font-size: 15px;">并发相关</a> <a href="/tags/操作记录/" style="font-size: 11.67px;">操作记录</a> <a href="/tags/框架相关/" style="font-size: 11.67px;">框架相关</a> <a href="/tags/随笔/" style="font-size: 15px;">随笔</a> <a href="/tags/高并发方案/" style="font-size: 13.33px;">高并发方案</a>
     </div>
   </div>
 
@@ -189,7 +195,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">3</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -199,6 +205,10 @@
     <h3 class="widget-title">近期文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/08/30/果核儿网项目简介（架构层面）/">果核儿网电商平台简介（架构层面）</a>
+          </li>
         
           <li>
             <a href="/2017/08/17/创业一段时间的总结和感悟/">创业感悟</a>
@@ -214,10 +224,6 @@
         
           <li>
             <a href="/2017/08/12/我为什么离开学校——十六岁那一年/">我为什么离开学校——记十六岁那一年</a>
-          </li>
-        
-          <li>
-            <a href="/2017/08/11/事务的四大特性以及事务的四种隔离级别/">事务的四大特性以及事务的四种隔离级别</a>
           </li>
         
       </ul>
