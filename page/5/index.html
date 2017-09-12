@@ -64,58 +64,6 @@
     <div class="outer">
       <section id="main">
   
-    <article id="post-Rabbitmq基本原理" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/05/03/Rabbitmq基本原理/" class="article-date">
-  <time datetime="2016-05-03T09:37:31.000Z" itemprop="datePublished">2016-05-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/03/Rabbitmq基本原理/">Rabbitmq基本原理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Exchange类似于数据通信网络中的交换机，提供消息路由策略。rabbitmq中，producer不是通过信道直接将消息发送给queue，而是先发送给Exchange。一个Exchange可以和多个Queue进行绑定，producer在传递消息的时候，会传递一个ROUTING_KEY，Exchange会根据这个ROUTING_KEY按照特定的路由算法，将消息路由给指定的queue。和Queue一样，Exchange也可设置为持久化，临时或者自动删除。<br>queue采用轮询的方式从绑定的queue中取消息。<br>
-        
-          <p class="article-more-link">
-            <a href="/2016/05/03/Rabbitmq基本原理/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2016/05/03/Rabbitmq基本原理/" data-id="cj7gutdth000nio732hcw01tz" class="article-share-link" data-share="baidu" data-title="Rabbitmq基本原理">分享到</a>
-      
-
-
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式消息/">分布式消息</a></li></ul>
-
-    </footer>
-  </div>
-  
-
-
-
-</article>
-
-
-
-
-  
     <article id="post-ReenTrantLock可重入锁（和synchronized的区别）总结" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/05/03/ReenTrantLock可重入锁（和synchronized的区别）总结/" class="article-date">
@@ -148,13 +96,65 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/05/03/ReenTrantLock可重入锁（和synchronized的区别）总结/" data-id="cj7gutdtj000sio73i5ua87nq" class="article-share-link" data-share="baidu" data-title="ReenTrantLock可重入锁（和synchronized的区别）总结">分享到</a>
+        <a data-url="http://yoursite.com/2016/05/03/ReenTrantLock可重入锁（和synchronized的区别）总结/" data-id="cj7guv2um000rjl73v8cjna41" class="article-share-link" data-share="baidu" data-title="ReenTrantLock可重入锁（和synchronized的区别）总结">分享到</a>
       
 
 
 
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发相关/">并发相关</a></li></ul>
+
+    </footer>
+  </div>
+  
+
+
+
+</article>
+
+
+
+
+  
+    <article id="post-Rabbitmq基本原理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/05/03/Rabbitmq基本原理/" class="article-date">
+  <time datetime="2016-05-03T09:37:31.000Z" itemprop="datePublished">2016-05-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/03/Rabbitmq基本原理/">Rabbitmq基本原理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Exchange类似于数据通信网络中的交换机，提供消息路由策略。rabbitmq中，producer不是通过信道直接将消息发送给queue，而是先发送给Exchange。一个Exchange可以和多个Queue进行绑定，producer在传递消息的时候，会传递一个ROUTING_KEY，Exchange会根据这个ROUTING_KEY按照特定的路由算法，将消息路由给指定的queue。和Queue一样，Exchange也可设置为持久化，临时或者自动删除。<br>queue采用轮询的方式从绑定的queue中取消息。<br>
+        
+          <p class="article-more-link">
+            <a href="/2016/05/03/Rabbitmq基本原理/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2016/05/03/Rabbitmq基本原理/" data-id="cj7guv2ui000ijl73no9td0e9" class="article-share-link" data-share="baidu" data-title="Rabbitmq基本原理">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式消息/">分布式消息</a></li></ul>
 
     </footer>
   </div>
@@ -200,7 +200,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/04/20/HashMap的底层数据结构解析以及与其他容器对比/" data-id="cj7gutdsz0004io73m1v4vzd5" class="article-share-link" data-share="baidu" data-title="HashMap的底层数据结构解析以及与其他容器对比">分享到</a>
+        <a data-url="http://yoursite.com/2016/04/20/HashMap的底层数据结构解析以及与其他容器对比/" data-id="cj7guv2u30005jl731lm6zkxy" class="article-share-link" data-share="baidu" data-title="HashMap的底层数据结构解析以及与其他容器对比">分享到</a>
       
 
 
@@ -252,7 +252,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/04/03/数据库Sharding的基本思想和切分策略/" data-id="cj7gutduh002aio732l6mke9d" class="article-share-link" data-share="baidu" data-title="分库分表基本思想和实施策略">分享到</a>
+        <a data-url="http://yoursite.com/2016/04/03/数据库Sharding的基本思想和切分策略/" data-id="cj7guv2vk0025jl736qurk7jr" class="article-share-link" data-share="baidu" data-title="分库分表基本思想和实施策略">分享到</a>
       
 
 
@@ -304,7 +304,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/03/23/mac下hexo搭建操作记录/" data-id="cj7gutdtz001cio73rhl9ipd9" class="article-share-link" data-share="baidu" data-title="mac下hexo搭建相关记录">分享到</a>
+        <a data-url="http://yoursite.com/2016/03/23/mac下hexo搭建操作记录/" data-id="cj7guv2uw0016jl73g2zxofl9" class="article-share-link" data-share="baidu" data-title="mac下hexo搭建相关记录">分享到</a>
       
 
 
@@ -356,7 +356,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/03/03/HashMap实现原理解析/" data-id="cj7gutdsv0002io73vtb0wroj" class="article-share-link" data-share="baidu" data-title="HashMap实现原理解析">分享到</a>
+        <a data-url="http://yoursite.com/2016/03/03/HashMap实现原理解析/" data-id="cj7guv2tt0001jl73lv2kcpl2" class="article-share-link" data-share="baidu" data-title="HashMap实现原理解析">分享到</a>
       
 
 
@@ -408,7 +408,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/03/01/缘起/" data-id="cj7gutdul002hio73erwpkei6" class="article-share-link" data-share="baidu" data-title="缘起">分享到</a>
+        <a data-url="http://yoursite.com/2016/03/01/缘起/" data-id="cj7guv2vt002mjl73wkuoew0s" class="article-share-link" data-share="baidu" data-title="缘起">分享到</a>
       
 
 
