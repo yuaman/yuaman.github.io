@@ -64,10 +64,10 @@
     <div class="outer">
       <section id="main">
   
-    <article id="post-Java中equals与==的区别与使用场景分析" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Rabbitmq基本原理" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/05/09/Java中equals与==的区别与使用场景分析/" class="article-date">
-  <time datetime="2016-05-09T04:44:54.000Z" itemprop="datePublished">2016-05-09</time>
+    <a href="/2016/05/03/Rabbitmq基本原理/" class="article-date">
+  <time datetime="2016-05-03T09:37:31.000Z" itemprop="datePublished">2016-05-03</time>
 </a>
     
   </div>
@@ -78,7 +78,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/09/Java中equals与==的区别与使用场景分析/">谈谈Java中equals和==的区别和使用场景</a>
+      <a class="article-title" href="/2016/05/03/Rabbitmq基本原理/">Rabbitmq基本原理</a>
     </h1>
   
 
@@ -86,23 +86,23 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>讨论一下Java中equals和==的区别，这个问题看似浅显，还是有不少情况需要注意。阅览了网上一些文章，都比较片面。在此做一下详细的整理。<br>
+        <p>Exchange类似于数据通信网络中的交换机，提供消息路由策略。rabbitmq中，producer不是通过信道直接将消息发送给queue，而是先发送给Exchange。一个Exchange可以和多个Queue进行绑定，producer在传递消息的时候，会传递一个ROUTING_KEY，Exchange会根据这个ROUTING_KEY按照特定的路由算法，将消息路由给指定的queue。和Queue一样，Exchange也可设置为持久化，临时或者自动删除。<br>queue采用轮询的方式从绑定的queue中取消息。<br>
         
           <p class="article-more-link">
-            <a href="/2016/05/09/Java中equals与==的区别与使用场景分析/#more">Read More</a>
+            <a href="/2016/05/03/Rabbitmq基本原理/#more">Read More</a>
           </p>
         
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/05/09/Java中equals与==的区别与使用场景分析/" data-id="cj7fodcqh00053673t4p5cgui" class="article-share-link" data-share="baidu" data-title="谈谈Java中equals和==的区别和使用场景">分享到</a>
+        <a data-url="http://yoursite.com/2016/05/03/Rabbitmq基本原理/" data-id="cj7gutdth000nio732hcw01tz" class="article-share-link" data-share="baidu" data-title="Rabbitmq基本原理">分享到</a>
       
 
 
 
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java基础/">Java基础</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式消息/">分布式消息</a></li></ul>
 
     </footer>
   </div>
@@ -148,65 +148,13 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/05/03/ReenTrantLock可重入锁（和synchronized的区别）总结/" data-id="cj7fodcr8000t36732tfzto7y" class="article-share-link" data-share="baidu" data-title="ReenTrantLock可重入锁（和synchronized的区别）总结">分享到</a>
+        <a data-url="http://yoursite.com/2016/05/03/ReenTrantLock可重入锁（和synchronized的区别）总结/" data-id="cj7gutdtj000sio73i5ua87nq" class="article-share-link" data-share="baidu" data-title="ReenTrantLock可重入锁（和synchronized的区别）总结">分享到</a>
       
 
 
 
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发相关/">并发相关</a></li></ul>
-
-    </footer>
-  </div>
-  
-
-
-
-</article>
-
-
-
-
-  
-    <article id="post-Rabbitmq基本原理" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/05/03/Rabbitmq基本原理/" class="article-date">
-  <time datetime="2016-05-03T09:37:31.000Z" itemprop="datePublished">2016-05-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/03/Rabbitmq基本原理/">Rabbitmq基本原理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Exchange类似于数据通信网络中的交换机，提供消息路由策略。rabbitmq中，producer不是通过信道直接将消息发送给queue，而是先发送给Exchange。一个Exchange可以和多个Queue进行绑定，producer在传递消息的时候，会传递一个ROUTING_KEY，Exchange会根据这个ROUTING_KEY按照特定的路由算法，将消息路由给指定的queue。和Queue一样，Exchange也可设置为持久化，临时或者自动删除。<br>queue采用轮询的方式从绑定的queue中取消息。<br>
-        
-          <p class="article-more-link">
-            <a href="/2016/05/03/Rabbitmq基本原理/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2016/05/03/Rabbitmq基本原理/" data-id="cj7fodcr2000o3673fx7j9ynt" class="article-share-link" data-share="baidu" data-title="Rabbitmq基本原理">分享到</a>
-      
-
-
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式消息/">分布式消息</a></li></ul>
 
     </footer>
   </div>
@@ -252,7 +200,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/04/20/HashMap的底层数据结构解析以及与其他容器对比/" data-id="cj7fodcqd00033673gh074n89" class="article-share-link" data-share="baidu" data-title="HashMap的底层数据结构解析以及与其他容器对比">分享到</a>
+        <a data-url="http://yoursite.com/2016/04/20/HashMap的底层数据结构解析以及与其他容器对比/" data-id="cj7gutdsz0004io73m1v4vzd5" class="article-share-link" data-share="baidu" data-title="HashMap的底层数据结构解析以及与其他容器对比">分享到</a>
       
 
 
@@ -304,7 +252,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/04/03/数据库Sharding的基本思想和切分策略/" data-id="cj7fodcs900263673e9qkjk5c" class="article-share-link" data-share="baidu" data-title="分库分表基本思想和实施策略">分享到</a>
+        <a data-url="http://yoursite.com/2016/04/03/数据库Sharding的基本思想和切分策略/" data-id="cj7gutduh002aio732l6mke9d" class="article-share-link" data-share="baidu" data-title="分库分表基本思想和实施策略">分享到</a>
       
 
 
@@ -356,7 +304,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/03/23/mac下hexo搭建操作记录/" data-id="cj7fodcrq001b36739qpidpcj" class="article-share-link" data-share="baidu" data-title="mac下hexo搭建相关记录">分享到</a>
+        <a data-url="http://yoursite.com/2016/03/23/mac下hexo搭建操作记录/" data-id="cj7gutdtz001cio73rhl9ipd9" class="article-share-link" data-share="baidu" data-title="mac下hexo搭建相关记录">分享到</a>
       
 
 
@@ -408,7 +356,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/03/03/HashMap实现原理解析/" data-id="cj7fodcq800013673mrdtspit" class="article-share-link" data-share="baidu" data-title="HashMap实现原理解析">分享到</a>
+        <a data-url="http://yoursite.com/2016/03/03/HashMap实现原理解析/" data-id="cj7gutdsv0002io73vtb0wroj" class="article-share-link" data-share="baidu" data-title="HashMap实现原理解析">分享到</a>
       
 
 
@@ -460,7 +408,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/03/01/缘起/" data-id="cj7fodcsj002n3673g2n8x4r7" class="article-share-link" data-share="baidu" data-title="缘起">分享到</a>
+        <a data-url="http://yoursite.com/2016/03/01/缘起/" data-id="cj7gutdul002hio73erwpkei6" class="article-share-link" data-share="baidu" data-title="缘起">分享到</a>
       
 
 
@@ -495,7 +443,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器相关/">Java容器相关</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式消息/">分布式消息</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发相关/">并发相关</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架相关/">框架相关</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">4</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器相关/">Java容器相关</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式消息/">分布式消息</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发相关/">并发相关</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架相关/">框架相关</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -504,7 +452,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/JVM相关/" style="font-size: 18.33px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 11.67px;">Java基础</a> <a href="/tags/Java容器相关/" style="font-size: 16.67px;">Java容器相关</a> <a href="/tags/个人开源项目/" style="font-size: 10px;">个人开源项目</a> <a href="/tags/分布式消息/" style="font-size: 10px;">分布式消息</a> <a href="/tags/分布式缓存/" style="font-size: 20px;">分布式缓存</a> <a href="/tags/并发相关/" style="font-size: 15px;">并发相关</a> <a href="/tags/操作记录/" style="font-size: 11.67px;">操作记录</a> <a href="/tags/框架相关/" style="font-size: 11.67px;">框架相关</a> <a href="/tags/随笔/" style="font-size: 15px;">随笔</a> <a href="/tags/高并发方案/" style="font-size: 13.33px;">高并发方案</a>
+      <a href="/tags/JVM相关/" style="font-size: 18.33px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 11.67px;">Java基础</a> <a href="/tags/Java容器相关/" style="font-size: 16.67px;">Java容器相关</a> <a href="/tags/个人开源项目/" style="font-size: 10px;">个人开源项目</a> <a href="/tags/分布式消息/" style="font-size: 10px;">分布式消息</a> <a href="/tags/分布式缓存/" style="font-size: 20px;">分布式缓存</a> <a href="/tags/并发相关/" style="font-size: 15px;">并发相关</a> <a href="/tags/操作记录/" style="font-size: 11.67px;">操作记录</a> <a href="/tags/框架相关/" style="font-size: 11.67px;">框架相关</a> <a href="/tags/随笔/" style="font-size: 13.33px;">随笔</a> <a href="/tags/高并发方案/" style="font-size: 13.33px;">高并发方案</a>
     </div>
   </div>
 
@@ -513,7 +461,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">3</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -523,10 +471,6 @@
     <h3 class="widget-title">近期文章</h3>
     <div class="widget">
       <ul>
-        
-          <li>
-            <a href="/2017/08/30/果核儿网项目简介（架构层面）/">果核儿网电商平台简介（架构层面）</a>
-          </li>
         
           <li>
             <a href="/2017/08/17/创业一段时间的总结和感悟/">创业感悟</a>
@@ -542,6 +486,10 @@
         
           <li>
             <a href="/2017/08/12/我为什么离开学校——十六岁那一年/">我为什么离开学校——记十六岁那一年</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/11/事务的四大特性以及事务的四种隔离级别/">事务的四大特性以及事务的四种隔离级别</a>
           </li>
         
       </ul>
