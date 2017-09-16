@@ -6,19 +6,19 @@
 <meta name="baidu-site-verification" content="LHYPl19xg9" />
 <meta name="google-site-verification" content="s5HGo7JQp9QFcl2HIOHaNDUdwj3_kdgi5nPkB5bfMHs" />
   
-  <title>synchronized关键字、ReentrantLock与原子类比较 | 无题</title>
+  <title>synchronized、ReentrantLock与原子类 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="synchronized关键字、ReentrantLock与原子类比较">
+  <meta name="description" content="synchronized关键字、ReentrantLock与原子类">
 <meta name="keywords" content="并发相关">
 <meta property="og:type" content="article">
-<meta property="og:title" content="synchronized关键字、ReentrantLock与原子类比较">
+<meta property="og:title" content="synchronized、ReentrantLock与原子类">
 <meta property="og:url" content="http://yoursite.com/2016/12/03/synchronized关键字、ReentrantLock与原子类比较/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="synchronized关键字、ReentrantLock与原子类比较">
-<meta property="og:updated_time" content="2017-08-25T10:20:20.000Z">
+<meta property="og:description" content="synchronized关键字、ReentrantLock与原子类">
+<meta property="og:updated_time" content="2017-09-16T03:12:31.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="synchronized关键字、ReentrantLock与原子类比较">
-<meta name="twitter:description" content="synchronized关键字、ReentrantLock与原子类比较">
+<meta name="twitter:title" content="synchronized、ReentrantLock与原子类">
+<meta name="twitter:description" content="synchronized关键字、ReentrantLock与原子类">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -81,7 +81,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      synchronized关键字、ReentrantLock与原子类比较
+      synchronized、ReentrantLock与原子类
     </h1>
   
 
@@ -89,15 +89,23 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>synchronized关键字、ReentrantLock与原子类比较<br><a id="more"></a><br>我们先比较ReentrantLock与synchronized的用法</p>
-<p>1、ReentrantLock拥有synchronized相同的并发性和内存语义，此外还多了锁投票，定时锁等候和中断等候。线程A和B都要获取对象O的锁定，假设A获取了对象O锁，B将等待A释放对O的锁定。</p>
-<p>使用synchronized时，如果A不释放，B将一直等待下去，无法中断。</p>
-<p>使用ReentrantLock时，如果A不释放，B可以在等待足够长时间后，停止等待，继续执行其他事务。</p>
-<p>ReentrantLock获取锁定的三种方式：<br>lock()，如果获取了锁立即返回，如果别的线程持有锁，当前线程则一直处于休眠状态，直至获取锁。<br>tryLock()，如果获取了锁立即返回true，如果别的线程下持有，立即返回false;<br>tryLock(long timeout, TimeUnit unit)，如果获取了锁定立即返回true，如果别的线程正持有锁，将等待参数给定的时间，在等待的过程中，如果获取了锁定，返回true，如果等待超时，返回false，所以lock()方法相当trylock传递个无限大的时间参数;<br>lockInteruptibly，如果获取了锁定立即返回，反之，当前线程处理休眠，直至获取锁，或者当前线程线程被其他线程中断。</p>
-<p>2、synchronized是在JVM层面实现，不但可以通过一些监控工具监控锁定，而且在代码执行出现异常，JVM自动释放锁定;<br>Lock是通过代码实现，为了保证锁定一定会被释放，一般会将unLock()放到flyinal{}中。</p>
-<p>3、在资源竞争不激烈的情况下，synchronized的性能要优于ReentrantLock，但在资源竞争很激烈的情况下，synchronized的性能会下降几十倍，但是ReentrantLock的性能能维持常态。</p>
-<pre><code>ReentrantLock例子如下：
-[java] view plain copy 
+        <p>synchronized关键字、ReentrantLock与原子类<br><a id="more"></a></p>
+<p>###1.ReenTrantLock和synchronized对比<br>ReentrantLock拥有synchronized相同的并发性和内存语义，此外还多了锁投票，定时锁等候和中断等候。</p>
+<h4 id="1-1-可重入性："><a href="#1-1-可重入性：" class="headerlink" title="1.1 可重入性："></a>1.1 可重入性：</h4><p>从名字上理解，ReenTrantLock的字面意思就是再进入的锁，其实synchronized关键字所使用的锁也是可重入的，两者关于这个的区别不大。两者都是同一个线程没进入一次，锁的计数器都自增1，所以要等到锁的计数器下降为0时才能释放锁。</p>
+<h4 id="1-2-锁的实现："><a href="#1-2-锁的实现：" class="headerlink" title="1.2 锁的实现："></a>1.2 锁的实现：</h4><p>Synchronized是依赖于JVM实现的，而ReenTrantLock是JDK实现的，有什么区别，说白了就类似于操作系统来控制实现和用户自己敲代码实现的区别。前者的实现是比较难见到的，后者有直接的源码可供阅读。<br>synchronized在JVM层面实现，不但可以通过一些监控工具监控锁定，而且在代码执行出现异常，JVM自动释放锁定;<br>Lock是通过代码实现，为了保证锁定一定会被释放，一般会将unLock()放到flyinal{}中。</p>
+<h4 id="1-3-性能的区别："><a href="#1-3-性能的区别：" class="headerlink" title="1.3 性能的区别："></a>1.3 性能的区别：</h4><p>在资源竞争不激烈的情况下，synchronized的性能要优于ReentrantLock，但在资源竞争很激烈的情况下，synchronized的性能会下降几十倍，但是ReentrantLock的性能能维持常态。</p>
+<p>在Synchronized优化以前，synchronized的性能是比ReenTrantLock差很多的，但是自从Synchronized引入了偏向锁，轻量级锁（自旋锁）后，两者的性能就差不多了，在两种方法都可用的情况下，官方甚至建议使用synchronized，其实synchronized的优化我感觉就借鉴了ReenTrantLock中的CAS技术。都是试图在用户态就把加锁问题解决，避免进入内核态的线程阻塞。</p>
+<h4 id="1-4-功能区别："><a href="#1-4-功能区别：" class="headerlink" title="1.4 功能区别："></a>1.4 功能区别：</h4><p>便利性：很明显Synchronized的使用比较方便简洁，并且由编译器去保证锁的加锁和释放，而ReenTrantLock需要手工声明来加锁和释放锁，为了避免忘记手工释放锁造成死锁，所以最好在finally中声明释放锁。</p>
+<p>锁的细粒度和灵活度：很明显ReenTrantLock优于Synchronized</p>
+<h3 id="2-ReenTrantLock独有的能力："><a href="#2-ReenTrantLock独有的能力：" class="headerlink" title="2. ReenTrantLock独有的能力："></a>2. ReenTrantLock独有的能力：</h3><h4 id="2-1-指定公平锁"><a href="#2-1-指定公平锁" class="headerlink" title="2.1 指定公平锁"></a>2.1 指定公平锁</h4><p>ReenTrantLock可以指定是公平锁还是非公平锁。而synchronized只能是非公平锁。所谓的公平锁就是先等待的线程先获得锁。</p>
+<h4 id="2-2-利用Condition条件类实现对线程的分组的唤醒"><a href="#2-2-利用Condition条件类实现对线程的分组的唤醒" class="headerlink" title="2.2 利用Condition条件类实现对线程的分组的唤醒"></a>2.2 利用Condition条件类实现对线程的分组的唤醒</h4><p> ReenTrantLock提供了一个Condition（条件）类，用来实现分组唤醒需要唤醒的线程们，而不是像synchronized要么随机唤醒一个线程要么唤醒全部线程。</p>
+<h4 id="2-3-锁等待"><a href="#2-3-锁等待" class="headerlink" title="2.3 锁等待"></a>2.3 锁等待</h4><p>tryLock(long timeout, TimeUnit unit)，如果获取了锁定立即返回true，如果别的线程正持有锁，将等待参数给定的时间，在等待的过程中，如果获取了锁定，返回true，如果等待超时，返回false，所以lock()方法相当trylock传递个无限大的时间参数;</p>
+<h4 id="2-4-中断锁等待"><a href="#2-4-中断锁等待" class="headerlink" title="2.4 中断锁等待"></a>2.4 中断锁等待</h4><p>ReenTrantLock提供了一种能够中断等待锁的线程的机制，通过lock.lockInterruptibly()来实现这个机制。<br>lockInteruptibly，如果获取了锁定立即返回，反之，当前线程处理休眠，直至获取锁，或者当前线程线程被其他线程中断。</p>
+<h4 id="2-5-尝试获取锁"><a href="#2-5-尝试获取锁" class="headerlink" title="2.5 尝试获取锁"></a>2.5 尝试获取锁</h4><p>tryLock()，如果获取了锁立即返回true，如果别的线程下持有，立即返回false;</p>
+<p>使用synchronized时，如果A不释放，B将一直等待下去，无法中断。<br>使用ReentrantLock时，如果A不释放，B可以在等待足够长时间后，停止等待，继续执行其他事务。</p>
+<p>一般情况下，只有在我们需要实现特定的功能时，会使用ReentrantLock。</p>
+<h3 id="3-ReenTrantLock实现的原理："><a href="#3-ReenTrantLock实现的原理：" class="headerlink" title="3. ReenTrantLock实现的原理："></a>3. ReenTrantLock实现的原理：</h3><p>简单来说，ReenTrantLock的实现是一种自旋锁，通过循环调用CAS操作来实现加锁。它的性能比较好也是因为避免了使线程进入内核态的阻塞状态。想尽办法避免线程进入内核的阻塞状态是我们去分析和理解锁设计的关键钥匙。</p>
+<h4 id="ReentrantLock使用示例："><a href="#ReentrantLock使用示例：" class="headerlink" title="ReentrantLock使用示例："></a>ReentrantLock使用示例：</h4><pre><code>[java] view plain copy 
 1. package test.lock;  
 2.   
 3. import java.util.concurrent.locks.Lock;  
@@ -130,9 +138,8 @@
 30.         }  
 31.     }  
 32. }  
-</code></pre><p>下面讨论原子类：<br>synchronized关键字、Lock可以控制程序片段的同步，原子类只能保证单个变量的同步。线程竞争不激烈时，原子类性能比synchronized略低，当竞争激烈时，也能维持常态。</p>
-<p>下面是一个多线程共同计数的代码代码。</p>
-<pre><code>[java] view plain copy 
+</code></pre><h3 id="原子类："><a href="#原子类：" class="headerlink" title="原子类："></a>原子类：</h3><p>synchronized关键字、Lock可以控制程序片段的同步，原子类只能保证单个变量的同步。<br>线程竞争不激烈时，原子类性能比synchronized略低，当竞争激烈时，也能维持常态。</p>
+<h4 id="下面是一个多线程共同计数的代码代码。"><a href="#下面是一个多线程共同计数的代码代码。" class="headerlink" title="下面是一个多线程共同计数的代码代码。"></a>下面是一个多线程共同计数的代码代码。</h4><pre><code>[java] view plain copy 
 1. package test.lock;  
 2.   
 3.   
@@ -196,13 +203,13 @@
 29.         }  
 30.     }  
 31. }  
-</code></pre><p>转载地址：<a href="http://blog.csdn.net/lanxiangru/article/details/53384767" target="_blank" rel="external">http://blog.csdn.net/lanxiangru/article/details/53384767</a></p>
+</code></pre><p>参考地址：<a href="http://blog.csdn.net/lanxiangru/article/details/53384767" target="_blank" rel="external">http://blog.csdn.net/lanxiangru/article/details/53384767</a></p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/12/03/synchronized关键字、ReentrantLock与原子类比较/" data-id="cj7guyimb001pkl73yj18z914" class="article-share-link" data-share="baidu" data-title="synchronized关键字、ReentrantLock与原子类比较">分享到</a>
+        <a data-url="http://yoursite.com/2016/12/03/synchronized关键字、ReentrantLock与原子类比较/" data-id="cj7mzwsul001tj273td6eq88g" class="article-share-link" data-share="baidu" data-title="synchronized、ReentrantLock与原子类">分享到</a>
       
 
 
@@ -216,19 +223,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2016/12/03/Redis常见问题整理/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/12/19/Redis集群部署与集成总结/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
       <div class="article-nav-title">
         
-          Redis常见问题整理
+          Redis集群部署与集成总结
         
       </div>
     </a>
   
   
-    <a href="/2016/12/03/LinkedHashMap源码剖析/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/12/03/TreeMap源码剖析/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">LinkedHashmap源码剖析</div>
+      <div class="article-nav-title">TreeMap源码剖析</div>
     </a>
   
 </nav>
@@ -251,7 +258,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器相关/">Java容器相关</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式消息/">分布式消息</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发相关/">并发相关</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架相关/">框架相关</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">4</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器相关/">Java容器相关</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式消息/">分布式消息</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发相关/">并发相关</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架相关/">框架相关</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -260,7 +267,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/JVM相关/" style="font-size: 18.33px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 11.67px;">Java基础</a> <a href="/tags/Java容器相关/" style="font-size: 16.67px;">Java容器相关</a> <a href="/tags/个人开源项目/" style="font-size: 10px;">个人开源项目</a> <a href="/tags/分布式消息/" style="font-size: 10px;">分布式消息</a> <a href="/tags/分布式缓存/" style="font-size: 20px;">分布式缓存</a> <a href="/tags/并发相关/" style="font-size: 15px;">并发相关</a> <a href="/tags/操作记录/" style="font-size: 11.67px;">操作记录</a> <a href="/tags/框架相关/" style="font-size: 11.67px;">框架相关</a> <a href="/tags/随笔/" style="font-size: 11.67px;">随笔</a> <a href="/tags/高并发方案/" style="font-size: 13.33px;">高并发方案</a>
+      <a href="/tags/JVM相关/" style="font-size: 18.33px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 11.67px;">Java基础</a> <a href="/tags/Java容器相关/" style="font-size: 16.67px;">Java容器相关</a> <a href="/tags/个人开源项目/" style="font-size: 10px;">个人开源项目</a> <a href="/tags/分布式消息/" style="font-size: 10px;">分布式消息</a> <a href="/tags/分布式缓存/" style="font-size: 20px;">分布式缓存</a> <a href="/tags/并发相关/" style="font-size: 13.33px;">并发相关</a> <a href="/tags/操作记录/" style="font-size: 11.67px;">操作记录</a> <a href="/tags/框架相关/" style="font-size: 11.67px;">框架相关</a> <a href="/tags/随笔/" style="font-size: 15px;">随笔</a> <a href="/tags/高并发方案/" style="font-size: 13.33px;">高并发方案</a>
     </div>
   </div>
 
@@ -269,7 +276,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">3</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -279,6 +286,10 @@
     <h3 class="widget-title">近期文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/08/30/果核儿网项目简介（架构层面）/">果核儿网电商平台简介（架构层面）</a>
+          </li>
         
           <li>
             <a href="/2017/08/17/创业一段时间的总结和感悟/">创业感悟</a>
@@ -293,11 +304,7 @@
           </li>
         
           <li>
-            <a href="/2017/08/11/事务的四大特性以及事务的四种隔离级别/">事务的四大特性以及事务的四种隔离级别</a>
-          </li>
-        
-          <li>
-            <a href="/2017/08/10/悲观锁与乐观锁与事务/">悲观锁与乐观锁与事务</a>
+            <a href="/2017/08/12/我为什么离开学校——十六岁那一年/">我为什么离开学校——记十六岁那一年</a>
           </li>
         
       </ul>
