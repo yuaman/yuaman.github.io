@@ -1,0 +1,296 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<meta name="baidu-site-verification" content="LHYPl19xg9" />
+<meta name="google-site-verification" content="s5HGo7JQp9QFcl2HIOHaNDUdwj3_kdgi5nPkB5bfMHs" />
+  
+  <title>Java实现动态代理与Spring的动态代理 | 无题</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Java实现动态代理的大致步骤如下： 1.定义一个委托类和公共接口1234567891011//公共接口public interface IHello &amp;#123;  void sayHello();&amp;#125;//委托类class Hello implements IHello &amp;#123;  public void sayHello() &amp;#123;      System.out.print">
+<meta name="keywords" content="JDK探究">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java实现动态代理与Spring的动态代理">
+<meta property="og:url" content="http://yoursite.com/2017/07/11/Java实现动态代理与Spring的动态代理/index.html">
+<meta property="og:site_name" content="无题">
+<meta property="og:description" content="Java实现动态代理的大致步骤如下： 1.定义一个委托类和公共接口1234567891011//公共接口public interface IHello &amp;#123;  void sayHello();&amp;#125;//委托类class Hello implements IHello &amp;#123;  public void sayHello() &amp;#123;      System.out.print">
+<meta property="og:updated_time" content="2018-01-26T16:46:34.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java实现动态代理与Spring的动态代理">
+<meta name="twitter:description" content="Java实现动态代理的大致步骤如下： 1.定义一个委托类和公共接口1234567891011//公共接口public interface IHello &amp;#123;  void sayHello();&amp;#125;//委托类class Hello implements IHello &amp;#123;  public void sayHello() &amp;#123;      System.out.print">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">无题</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">天南地北问乾坤</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="yoursite.com">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-Java实现动态代理与Spring的动态代理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/07/11/Java实现动态代理与Spring的动态代理/" class="article-date">
+  <time datetime="2017-07-11T02:05:54.000Z" itemprop="datePublished">2017-07-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java实现动态代理与Spring的动态代理
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Java实现动态代理的大致步骤如下：</p>
+<p>1.定义一个委托类和公共接口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">//公共接口</div><div class="line">public interface IHello &#123;</div><div class="line">  void sayHello();</div><div class="line">&#125;</div><div class="line"></div><div class="line">//委托类</div><div class="line">class Hello implements IHello &#123;</div><div class="line">  public void sayHello() &#123;</div><div class="line">      System.out.println(&quot;Hello world!!&quot;);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>2.通过实现InvocationHandler接口来自定义自己的InvocationHandler，指定运行时将生成的代理类需要完成的具体任务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">//自定义InvocationHandler</div><div class="line">public class HWInvocationHandler implements InvocationHandler &#123;</div><div class="line">  // 目标对象</div><div class="line">  private Object target;</div><div class="line"></div><div class="line">  public HWInvocationHandler(Object target) &#123;</div><div class="line">      this.target = target;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  public Object invoke(Object proxy, Method method, Object[] args) &gt;throws Throwable &#123;</div><div class="line">      System.out.println(&quot;------插入前置通知代码-------------&quot;);</div><div class="line">      // 执行相应的目标方法</div><div class="line">      Object rs = method.invoke(target, args);</div><div class="line">      System.out.println(&quot;------插入后置处理代码-------------&quot;);</div><div class="line">      return rs;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>3.生成代理对象，这个可以分为四步：<br>    （1）通过Proxy.getProxyClass获得动态代理类<br>    （2）通过反射机制获得代理类的构造方法，方法签名为getConstructor(InvocationHandler.class)<br>    （3）通过构造函数获得代理对象并将自定义的InvocationHandler实例对象传为参数传入<br>    （4）通过代理对象调用目标方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public class Client &#123;</div><div class="line">  public static void main(String[] args)</div><div class="line">          throws NoSuchMethodException, IllegalAccessException, &gt;InvocationTargetException, InstantiationException &#123;</div><div class="line">      // 生成Proxy的class文件</div><div class="line">      System.getProperties().put(&quot;sun.misc.ProxyGenerator.saveGeneratedFiles&quot;, &quot;true&quot;);</div><div class="line">      // 获取动态代理类</div><div class="line">      Class&lt;?&gt; proxyClazz = Proxy.getProxyClass(IHello.class.getClassLoader(), IHello.class);</div><div class="line">      // 获得代理类的构造函数，并传入参数类型InvocationHandler.class</div><div class="line">      Constructor&lt;?&gt; constructor = proxyClazz.getConstructor(InvocationHandler.class);</div><div class="line">      // 通过构造函数来创建动态代理对象，将自定义的InvocationHandler实例传入</div><div class="line">      IHello iHello = (IHello) constructor.newInstance(new  HWInvocationHandler(new Hello()));</div><div class="line">      // 通过代理对象调用目标方法</div><div class="line">      iHello.sayHello();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Proxy类中还有个将2~4步骤封装好的简便方法来创建动态代理对象，其方法签名为：newProxyInstance(ClassLoader loader,Class&lt;?&gt;[] instance, InvocationHandler h)，如下例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public class Client2 &#123;</div><div class="line">  public static void main(String[] args) throws NoSuchMethodException,IllegalAccessException, InvocationTargetException, InstantiationException &#123;</div><div class="line">         //生成$Proxy0的class文件</div><div class="line">         System.getProperties().put(&quot;sun.misc.ProxyGenerator.saveGeneratedFiles&quot;, &quot;true&quot;);</div><div class="line">         IHello  ihello = (IHello) &gt;Proxy.newProxyInstance(IHello.class.getClassLoader(),  //加载接口的类加载器</div><div class="line">                 new Class[]&#123;IHello.class&#125;,      //一组接口</div><div class="line">                 new HWInvocationHandler(new Hello())); //自定义的&gt;InvocationHandler</div><div class="line">         ihello.sayHello();</div><div class="line">     &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个静态函数的第一个参数是类加载器对象（即哪个类加载器来加载这个代理类到 JVM 的方法区），第二个参数是接口（表明你这个代理类需要实现哪些接口），第三个参数是调用处理器类实例（指定代理类中具体要干什么）</p>
+<p>参考链接：<a href="https://www.jianshu.com/p/fa339e474c7a" target="_blank" rel="external">https://www.jianshu.com/p/fa339e474c7a</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2017/07/11/Java实现动态代理与Spring的动态代理/" data-id="cjcw5u12l00031gjd191vpna4" class="article-share-link" data-share="baidu" data-title="Java实现动态代理与Spring的动态代理">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JDK探究/">JDK探究</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/07/15/mongoDB常见问题整理/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          mongoDB常见问题整理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/07/10/Sprign 动态代理机制/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">Sprign 动态代理机制</div>
+    </a>
+  
+</nav>
+
+  
+
+
+
+</article>
+
+
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JDK探究/">JDK探究</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器相关/">Java容器相关</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring探究/">Spring探究</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式消息/">分布式消息</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发相关/">并发相关</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/感悟/">感悟</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架相关/">框架相关</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JDK探究/" style="font-size: 10px;">JDK探究</a> <a href="/tags/JVM相关/" style="font-size: 18.33px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 13.33px;">Java基础</a> <a href="/tags/Java容器相关/" style="font-size: 16.67px;">Java容器相关</a> <a href="/tags/Spring探究/" style="font-size: 10px;">Spring探究</a> <a href="/tags/个人开源项目/" style="font-size: 11.67px;">个人开源项目</a> <a href="/tags/分布式消息/" style="font-size: 11.67px;">分布式消息</a> <a href="/tags/分布式缓存/" style="font-size: 20px;">分布式缓存</a> <a href="/tags/并发相关/" style="font-size: 15px;">并发相关</a> <a href="/tags/感悟/" style="font-size: 10px;">感悟</a> <a href="/tags/操作记录/" style="font-size: 13.33px;">操作记录</a> <a href="/tags/框架相关/" style="font-size: 13.33px;">框架相关</a> <a href="/tags/读书笔记/" style="font-size: 15px;">读书笔记</a> <a href="/tags/随笔/" style="font-size: 13.33px;">随笔</a> <a href="/tags/高并发方案/" style="font-size: 15px;">高并发方案</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/09/19/读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地/">读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/18/一个97年的IT人创业历程中的总结和感悟/">一个97年的IT人创业历程中的总结和感悟</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/18/读内藤树作品《青年们，读马克思吧》/">读内藤树作品《青年们，读马克思吧》</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/18/分布式事务通用解决方案/">分布式事务通用解决方案</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/17/创业一段时间的总结和感悟/">创业感悟</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/yuaman" target="_blank">我的git同性交友主页</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+
+
+
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 yutinglin<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+
+
+
+</footer>
+
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+
+
+
+
+
+
+
+
+</div>
+</body>
+</html>
