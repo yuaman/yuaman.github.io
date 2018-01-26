@@ -96,7 +96,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/08/ JAVA中Object类中的方法以及finalize函数作用/" data-id="cjcw6234d000088jd7ecbw692" class="article-share-link" data-share="baidu" data-title="JAVA中Object类中的方法以及finalize函数作用">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/08/ JAVA中Object类中的方法以及finalize函数作用/" data-id="cjcw6571500008njdl9ij1dnj" class="article-share-link" data-share="baidu" data-title="JAVA中Object类中的方法以及finalize函数作用">分享到</a>
       
 
 
@@ -148,7 +148,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/05/各RDB与Nosql性能与特点总结/" data-id="cjcw6236c002988jde9htmxk2" class="article-share-link" data-share="baidu" data-title="各RDB与Nosql性能与特点总结">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/05/各RDB与Nosql性能与特点总结/" data-id="cjcw6572z00218njdjyr2pnvp" class="article-share-link" data-share="baidu" data-title="各RDB与Nosql性能与特点总结">分享到</a>
       
 
 
@@ -200,7 +200,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/05/Java容器各实现类的底层实现原理/" data-id="cjcw62351000c88jdsykj9ak0" class="article-share-link" data-share="baidu" data-title="Java容器各实现类的底层实现原理概述">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/05/Java容器各实现类的底层实现原理/" data-id="cjcw6571n000a8njd61ze3sg0" class="article-share-link" data-share="baidu" data-title="Java容器各实现类的底层实现原理概述">分享到</a>
       
 
 
@@ -252,7 +252,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/01/秒杀系统解决方案/" data-id="cjcw6236n002q88jd2lhc60qj" class="article-share-link" data-share="baidu" data-title="秒杀系统解决方案">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/01/秒杀系统解决方案/" data-id="cjcw6573b002l8njdovkp1jmj" class="article-share-link" data-share="baidu" data-title="秒杀系统解决方案">分享到</a>
       
 
 
@@ -304,7 +304,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/07/25/Java类加载机制原理解析/" data-id="cjcw62374003a88jd4aovih6o" class="article-share-link" data-share="baidu" data-title="Java类加载机制原理解析">分享到</a>
+        <a data-url="http://yoursite.com/2017/07/25/Java类加载机制原理解析/" data-id="cjcw6573p00388njdff4nz963" class="article-share-link" data-share="baidu" data-title="Java类加载机制原理解析">分享到</a>
       
 
 
@@ -356,69 +356,13 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/07/20/Java类加载机制常见问题/" data-id="cjcw62352000e88jdw5heea99" class="article-share-link" data-share="baidu" data-title="Java类加载机制常见问题">分享到</a>
+        <a data-url="http://yoursite.com/2017/07/20/Java类加载机制常见问题/" data-id="cjcw6571r000c8njdmbmuc58y" class="article-share-link" data-share="baidu" data-title="Java类加载机制常见问题">分享到</a>
       
 
 
 
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM相关/">JVM相关</a></li></ul>
-
-    </footer>
-  </div>
-  
-
-
-
-</article>
-
-
-
-
-  
-    <article id="post-分布式缓存一致性Hash算法" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/07/18/分布式缓存一致性Hash算法/" class="article-date">
-  <time datetime="2017-07-18T02:05:54.000Z" itemprop="datePublished">2017-07-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/18/分布式缓存一致性Hash算法/">分布式缓存一致性hash算法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>当服务器不多，并且不考虑扩容的时候，可直接使用简单的路由算法，用服务器数除缓存数据KEY的hash值，余数作为服务器下标即可。</p>
-<p>但是当业务发展，网站缓存服务需要扩容时就会出现问题，比如3台缓存服务器要扩容到4台，就会导致75%的数据无法命中，当100台服务器中增加一台，不命中率会到达99%（n/（n+1））,这显然是不能接受的。</p>
-<p>在设计分布式缓存集群的时候，需要考虑集群的伸缩性，也就是当向集群中增加服务器的时候，要尽量减小对集群的影响，而一致性hash算法就是用来解决集群伸缩性。</p>
-<p>一致性hash算法通过构造一个长度为2^32的整数环，根据节点名的hash值将缓存服务器节点放置在这个环上，然后计算要缓存的数据的key的hash值，顺时针找到最近的服务器节点，将数据放到该服务器上。</p>
-<p> <img src="https://images2015.cnblogs.com/blog/1142924/201704/1142924-20170419222407649-1722046559.png" alt=""><br>有Node0,Node1,Node2三个节点，假设Node0的hash值是1024,key1的hash值是500，key1在环上顺时针查找，最近的节点就是Node0。<br>当服务器集群又开始扩容，新增了Node3节点，从三个节点扩容到了四个节点。<br><img src="https://images2015.cnblogs.com/blog/1142924/201704/1142924-20170419222955759-356675425.png" alt=""></p>
-<p>Node3加到了Node2和Node1之间，除了Node2到Node3之间原本是Node1的数据无法再命中，其它的数据不受影响，3台扩容到4台可命中率高达75%，<br>而且集群越大，影响越小，100台服务器增加一台，命中率可达到99%。</p>
-<p>查找不小于查找树的最小值是用的二叉查找树实现的。<br>但是这样子还是会存在一个问题，就是负载不均衡的问题，当Node3加到Node2和Node1之间时，原本会访问Node1的缓存数据有50%的概率会缓存到Node3上了，这样Node0和Node2的负载会是Node1和Node3的两倍。</p>
-<p>要解决一致性hash算法带来的负载不均衡问题，可通过将每台物理服务器虚拟成一组虚拟缓存服务器，将虚拟服务器的hash值放置在hash环上，KEY在环上先找到虚拟服务器节点，然后再映射到实际的服务器上。</p>
-<p> <img src="https://images2015.cnblogs.com/blog/1142924/201704/1142924-20170419225054337-11861583.png" alt=""><br>这样在Node0,1,2虚拟节点都已存在的情况下，将Node3的多个虚拟节点分散到它们中间，多个虚拟的Node3节点会影响到其它的多个虚拟节点，而不是只影响其中一个，这样将命中率不会有变化，但是负载却更加均衡了而且虚拟节点越多越均衡。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2017/07/18/分布式缓存一致性Hash算法/" data-id="cjcw62368002288jd817or5qi" class="article-share-link" data-share="baidu" data-title="分布式缓存一致性hash算法">分享到</a>
-      
-
-
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式缓存/">分布式缓存</a></li></ul>
 
     </footer>
   </div>
@@ -464,7 +408,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/07/15/mongoDB常见问题整理/" data-id="cjcw6235q001e88jdnxgs04cc" class="article-share-link" data-share="baidu" data-title="mongoDB常见问题整理">分享到</a>
+        <a data-url="http://yoursite.com/2017/07/15/mongoDB常见问题整理/" data-id="cjcw6572d00188njdlhftgcmu" class="article-share-link" data-share="baidu" data-title="mongoDB常见问题整理">分享到</a>
       
 
 
@@ -484,10 +428,10 @@
 
 
   
-    <article id="post-Java实现动态代理与Spring的动态代理" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-mongoDB底层运作原理" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/07/11/Java实现动态代理与Spring的动态代理/" class="article-date">
-  <time datetime="2017-07-11T02:05:54.000Z" itemprop="datePublished">2017-07-11</time>
+    <a href="/2017/07/05/mongoDB底层运作原理/" class="article-date">
+  <time datetime="2017-07-05T09:37:31.000Z" itemprop="datePublished">2017-07-05</time>
 </a>
     
   </div>
@@ -498,7 +442,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/11/Java实现动态代理与Spring的动态代理/">Java实现动态代理与Spring的动态代理</a>
+      <a class="article-title" href="/2017/07/05/mongoDB底层运作原理/">mongoDB运作原理与分片实现</a>
     </h1>
   
 
@@ -506,20 +450,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Java实现动态代理的大致步骤如下：</p>
-<p>1.定义一个委托类和公共接口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">//公共接口</div><div class="line">public interface IHello &#123;</div><div class="line">  void sayHello();</div><div class="line">&#125;</div><div class="line"></div><div class="line">//委托类</div><div class="line">class Hello implements IHello &#123;</div><div class="line">  public void sayHello() &#123;</div><div class="line">      System.out.println(&quot;Hello world!!&quot;);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>2.通过实现InvocationHandler接口来自定义自己的InvocationHandler，指定运行时将生成的代理类需要完成的具体任务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">//自定义InvocationHandler</div><div class="line">public class HWInvocationHandler implements InvocationHandler &#123;</div><div class="line">  // 目标对象</div><div class="line">  private Object target;</div><div class="line"></div><div class="line">  public HWInvocationHandler(Object target) &#123;</div><div class="line">      this.target = target;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  public Object invoke(Object proxy, Method method, Object[] args) &gt;throws Throwable &#123;</div><div class="line">      System.out.println(&quot;------插入前置通知代码-------------&quot;);</div><div class="line">      // 执行相应的目标方法</div><div class="line">      Object rs = method.invoke(target, args);</div><div class="line">      System.out.println(&quot;------插入后置处理代码-------------&quot;);</div><div class="line">      return rs;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>3.生成代理对象，这个可以分为四步：<br>    （1）通过Proxy.getProxyClass获得动态代理类<br>    （2）通过反射机制获得代理类的构造方法，方法签名为getConstructor(InvocationHandler.class)<br>    （3）通过构造函数获得代理对象并将自定义的InvocationHandler实例对象传为参数传入<br>    （4）通过代理对象调用目标方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public class Client &#123;</div><div class="line">  public static void main(String[] args)</div><div class="line">          throws NoSuchMethodException, IllegalAccessException, &gt;InvocationTargetException, InstantiationException &#123;</div><div class="line">      // 生成Proxy的class文件</div><div class="line">      System.getProperties().put(&quot;sun.misc.ProxyGenerator.saveGeneratedFiles&quot;, &quot;true&quot;);</div><div class="line">      // 获取动态代理类</div><div class="line">      Class&lt;?&gt; proxyClazz = Proxy.getProxyClass(IHello.class.getClassLoader(), IHello.class);</div><div class="line">      // 获得代理类的构造函数，并传入参数类型InvocationHandler.class</div><div class="line">      Constructor&lt;?&gt; constructor = proxyClazz.getConstructor(InvocationHandler.class);</div><div class="line">      // 通过构造函数来创建动态代理对象，将自定义的InvocationHandler实例传入</div><div class="line">      IHello iHello = (IHello) constructor.newInstance(new  HWInvocationHandler(new Hello()));</div><div class="line">      // 通过代理对象调用目标方法</div><div class="line">      iHello.sayHello();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>Proxy类中还有个将2~4步骤封装好的简便方法来创建动态代理对象，其方法签名为：newProxyInstance(ClassLoader loader,Class&lt;?&gt;[] instance, InvocationHandler h)，如下例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public class Client2 &#123;</div><div class="line">  public static void main(String[] args) throws NoSuchMethodException,IllegalAccessException, InvocationTargetException, InstantiationException &#123;</div><div class="line">         //生成$Proxy0的class文件</div><div class="line">         System.getProperties().put(&quot;sun.misc.ProxyGenerator.saveGeneratedFiles&quot;, &quot;true&quot;);</div><div class="line">         IHello  ihello = (IHello) &gt;Proxy.newProxyInstance(IHello.class.getClassLoader(),  //加载接口的类加载器</div><div class="line">                 new Class[]&#123;IHello.class&#125;,      //一组接口</div><div class="line">                 new HWInvocationHandler(new Hello())); //自定义的&gt;InvocationHandler</div><div class="line">         ihello.sayHello();</div><div class="line">     &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这个静态函数的第一个参数是类加载器对象（即哪个类加载器来加载这个代理类到 JVM 的方法区），第二个参数是接口（表明你这个代理类需要实现哪些接口），第三个参数是调用处理器类实例（指定代理类中具体要干什么）</p>
-<p>参考链接：<a href="https://www.jianshu.com/p/fa339e474c7a" target="_blank" rel="external">https://www.jianshu.com/p/fa339e474c7a</a></p>
-
+        <h5 id="觉得这一篇整理比较好，主要在于通俗易懂，逻辑清晰。但是网上转载的人太多了，我实在找不到原作者了。"><a href="#觉得这一篇整理比较好，主要在于通俗易懂，逻辑清晰。但是网上转载的人太多了，我实在找不到原作者了。" class="headerlink" title="觉得这一篇整理比较好，主要在于通俗易懂，逻辑清晰。但是网上转载的人太多了，我实在找不到原作者了。"></a>觉得这一篇整理比较好，主要在于通俗易懂，逻辑清晰。但是网上转载的人太多了，我实在找不到原作者了。</h5>
+        
+          <p class="article-more-link">
+            <a href="/2017/07/05/mongoDB底层运作原理/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/07/11/Java实现动态代理与Spring的动态代理/" data-id="cjcw6234u000888jd1eub6i5v" class="article-share-link" data-share="baidu" data-title="Java实现动态代理与Spring的动态代理">分享到</a>
+        <a data-url="http://yoursite.com/2017/07/05/mongoDB底层运作原理/" data-id="cjcw6572g001a8njde86bm1mm" class="article-share-link" data-share="baidu" data-title="mongoDB运作原理与分片实现">分享到</a>
       
 
 
@@ -539,10 +480,10 @@
 
 
   
-    <article id="post-Sprign 动态代理机制" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-shiro权限框架整合开源分享" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/07/10/Sprign 动态代理机制/" class="article-date">
-  <time datetime="2017-07-10T02:05:54.000Z" itemprop="datePublished">2017-07-10</time>
+    <a href="/2017/06/12/shiro权限框架整合开源分享/" class="article-date">
+  <time datetime="2017-06-12T09:52:54.000Z" itemprop="datePublished">2017-06-12</time>
 </a>
     
   </div>
@@ -553,7 +494,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/10/Sprign 动态代理机制/">Sprign 动态代理机制</a>
+      <a class="article-title" href="/2017/06/12/shiro权限框架整合开源分享/">Shiro权限框架整合总结与开源分享</a>
     </h1>
   
 
@@ -561,37 +502,75 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Spirng的AOP的动态代理实现机制有两种，分别是:</p>
-<p><strong>1）JDK动态代理：</strong></p>
-<p><strong>具体实现原理：</strong></p>
-<p>1、通**过实现InvocationHandlet接口创建自己的调用处理器</p>
-<p>2、通过为Proxy类指定ClassLoader对象和一组interface来创建动态代理</p>
-<p>3、通过反射机制获取动态代理类的构造函数，其唯一参数类型就是调用处理器接口类型</p>
-<p>4、通过构造函数创建动态代理类实例，构造时调用处理器对象作为参数参入</p>
-<p>JDK动态代理是面向接口的代理模式，如果被代理目标没有接口那么Spring也无能为力，<br>Spring通过java的反射机制生产被代理接口的新的匿名实现类，重写了其中AOP的增强方法。</p>
-<p><strong>2、CGLib动态代理</strong></p>
-<p><strong>CGLib是一个强大、高性能的Code生产类库，可以实现运行期动态扩展java类，Spring在运行期间通过CGlib继承要被动态代理的类，重写父类的方法，实现AOP面向切面编程呢。</strong></p>
-<p><strong>两者对比：</strong></p>
-<p>JDK动态代理是面向接口，在创建代理实现类时比CGLib要快，创建代理速度快。</p>
-<p>CGLib动态代理是通过字节码底层继承要代理类来实现（如果被代理类被final关键字所修饰，那么抱歉会失败），在创建代理这一块没有JDK动态代理快，但是运行速度比JDK动态代理要快。</p>
-<p><strong>使用注意：</strong></p>
-<p>如果要被代理的对象是个实现类，那么Spring会使用JDK动态代理来完成操作（Spirng默认采用JDK动态代理实现机制）</p>
-<p>如果要被代理的对象不是个实现类那么，Spring会强制使用CGLib来实现动态代理。</p>
-<p><strong>那么如何选择的使用代理机制了？</strong></p>
-<p><strong><img src="http://img.blog.csdn.net/20170222115622781" alt=""></strong></p>
-<p>通过配置Spring的中<aop:config>标签来显示的指定使用动态代理机制 proxy-target-class=true表示使用CGLib代理，如果为false就是默认使用JDK动态代理</aop:config></p>
-
+        <p>2017年年初在供应链项目正式应用shiro权限框架，当时对一些问题做了一些记录。此次做全面总结。<br>
+        
+          <p class="article-more-link">
+            <a href="/2017/06/12/shiro权限框架整合开源分享/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/07/10/Sprign 动态代理机制/" data-id="cjcw6235g000v88jdnq403vyd" class="article-share-link" data-share="baidu" data-title="Sprign 动态代理机制">分享到</a>
+        <a data-url="http://yoursite.com/2017/06/12/shiro权限框架整合开源分享/" data-id="cjcw6572j001h8njd305kpmoi" class="article-share-link" data-share="baidu" data-title="Shiro权限框架整合总结与开源分享">分享到</a>
       
 
 
 
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式缓存/">分布式缓存</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/个人开源项目/">个人开源项目</a></li></ul>
+
+    </footer>
+  </div>
+  
+
+
+
+</article>
+
+
+
+
+  
+    <article id="post-mac下IntelliJ使用记录" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/06/07/mac下IntelliJ使用记录/" class="article-date">
+  <time datetime="2017-06-07T03:17:54.000Z" itemprop="datePublished">2017-06-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/06/07/mac下IntelliJ使用记录/">mac下IntelliJ使用记录</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>遇坑总结</strong><br>
+        
+          <p class="article-more-link">
+            <a href="/2017/06/07/mac下IntelliJ使用记录/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2017/06/07/mac下IntelliJ使用记录/" data-id="cjcw6572b00138njdkzb245rk" class="article-share-link" data-share="baidu" data-title="mac下IntelliJ使用记录">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作记录/">操作记录</a></li></ul>
 
     </footer>
   </div>
@@ -608,7 +587,7 @@
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/">&laquo; 上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/">下一页 &raquo;</a>
+    <a class="extend prev" rel="prev" href="/">&laquo; 上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">下一页 &raquo;</a>
   </nav>
 </section>
       
@@ -620,7 +599,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器相关/">Java容器相关</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式消息/">分布式消息</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发相关/">并发相关</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/感悟/">感悟</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架相关/">框架相关</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">4</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器相关/">Java容器相关</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式消息/">分布式消息</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发相关/">并发相关</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/感悟/">感悟</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架相关/">框架相关</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -638,7 +617,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">3</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">3</span></li></ul>
     </div>
   </div>
 
