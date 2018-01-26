@@ -8,18 +8,18 @@
   
   <title>秒杀系统解决方案 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="我看了二十篇左右的秒杀系统设计及解决方案的文章，从架构、产品、前端、后端四个层面分别总结了一些解决方案。">
+  <meta name="description" content="从架构、产品、前端、后端四个层面针对秒杀场景（可以扩展到所有高并发场景）分别总结了一些解决方案。">
 <meta name="keywords" content="高并发方案">
 <meta property="og:type" content="article">
 <meta property="og:title" content="秒杀系统解决方案">
 <meta property="og:url" content="http://yoursite.com/2017/08/01/秒杀系统解决方案/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="我看了二十篇左右的秒杀系统设计及解决方案的文章，从架构、产品、前端、后端四个层面分别总结了一些解决方案。">
+<meta property="og:description" content="从架构、产品、前端、后端四个层面针对秒杀场景（可以扩展到所有高并发场景）分别总结了一些解决方案。">
 <meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/UNADJUSTEDNONRAW_thumb_8c6.jpg">
-<meta property="og:updated_time" content="2017-09-11T04:34:52.000Z">
+<meta property="og:updated_time" content="2017-09-19T07:08:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="秒杀系统解决方案">
-<meta name="twitter:description" content="我看了二十篇左右的秒杀系统设计及解决方案的文章，从架构、产品、前端、后端四个层面分别总结了一些解决方案。">
+<meta name="twitter:description" content="从架构、产品、前端、后端四个层面针对秒杀场景（可以扩展到所有高并发场景）分别总结了一些解决方案。">
 <meta name="twitter:image" content="http://og287lnu0.bkt.clouddn.com/UNADJUSTEDNONRAW_thumb_8c6.jpg">
   
   
@@ -91,11 +91,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>我看了二十篇左右的秒杀系统设计及解决方案的文章，从架构、产品、前端、后端四个层面分别总结了一些解决方案。<br><a id="more"></a></p>
+        <p>从架构、产品、前端、后端四个层面针对秒杀场景（可以扩展到所有高并发场景）分别总结了一些解决方案。<br><a id="more"></a></p>
 <h3 id="要点总结："><a href="#要点总结：" class="headerlink" title="要点总结："></a>要点总结：</h3><p>1.架构：扩容，业务分离，数据分离</p>
 <p>2.产品：下单按钮控制，秒杀答题削峰，简化页面设计</p>
 <p>3.前端：限流（反作弊）   静态化</p>
-<p>4.后端：内存 队列</p>
+<p>4.后端：内存 队列 程序计数器 分布式锁</p>
 <h4 id="一、秒杀一般会带来2个问题："><a href="#一、秒杀一般会带来2个问题：" class="headerlink" title="一、秒杀一般会带来2个问题："></a>一、秒杀一般会带来2个问题：</h4><h5 id="1、高并发"><a href="#1、高并发" class="headerlink" title="1、高并发"></a>1、高并发</h5><p>比较火热的秒杀在线人数都是10w起的，如此之高的在线人数对于网站架构从前到后都是一种考验。</p>
 <h5 id="2、超卖"><a href="#2、超卖" class="headerlink" title="2、超卖"></a>2、超卖</h5><p>任何商品都会有数量上限，如何避免成功下订单买到商品的人数不超过商品数量的上限，这是每个抢购活动都要面临的难题。</p>
 <p>实际上超卖问题是高并发带来的一个子问题，但是因为这个问题太过致命，所以我们把他的解决方案单独拿出来说。</p>
@@ -121,14 +121,13 @@
 <h5 id="3-程序计数器："><a href="#3-程序计数器：" class="headerlink" title="3.程序计数器："></a>3.程序计数器：</h5><p>队列与缓存为了保证请求redis的次数不超过总的库存量，利用一个程序计数器来这一点。程序计数器用JUC包下原子类可以实现。</p>
 <h5 id="4-分布式锁"><a href="#4-分布式锁" class="headerlink" title="4.分布式锁"></a>4.分布式锁</h5><p>分布式情况下可以利用分布式锁来解决任务每次只能由一次服务来执行且不能重复执行。<br>分布式锁的实现：zk、redis<br>分布式锁的优化：先考虑是否可以去锁，然后考虑尽可能多用乐观锁，少用悲观锁。这里有一个问题，乐观锁如果每一次都会有并发冲突的话性能反而不如悲观锁，那么难道真的多用乐观锁性能会比悲观锁高吗？选举考虑ha，比如心跳检测。</p>
 <h5 id="5-分布式去锁-方案"><a href="#5-分布式去锁-方案" class="headerlink" title="5.分布式去锁 方案"></a>5.分布式去锁 方案</h5><p>利用集群并发加入队列，选举队列处理服务单点执行，这样可以保证并发实现和加锁一样的并发量但不会影响性能。    </p>
-<p>###可以加微信进行技术交流，期待结识新的朋友</p>
 <p><img src="http://og287lnu0.bkt.clouddn.com/UNADJUSTEDNONRAW_thumb_8c6.jpg" style="width:250px;height:350px;"></p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/01/秒杀系统解决方案/" data-id="cj7r6ifvj0029x0734crfvrt9" class="article-share-link" data-share="baidu" data-title="秒杀系统解决方案">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/01/秒杀系统解决方案/" data-id="cjcw11cox002jdv73choy2lxi" class="article-share-link" data-share="baidu" data-title="秒杀系统解决方案">分享到</a>
       
 
 
@@ -177,7 +176,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器相关/">Java容器相关</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式消息/">分布式消息</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发相关/">并发相关</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架相关/">框架相关</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">4</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器相关/">Java容器相关</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式消息/">分布式消息</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发相关/">并发相关</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架相关/">框架相关</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -186,7 +185,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/JVM相关/" style="font-size: 18px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 12px;">Java基础</a> <a href="/tags/Java容器相关/" style="font-size: 16px;">Java容器相关</a> <a href="/tags/个人开源项目/" style="font-size: 10px;">个人开源项目</a> <a href="/tags/分布式消息/" style="font-size: 10px;">分布式消息</a> <a href="/tags/分布式缓存/" style="font-size: 20px;">分布式缓存</a> <a href="/tags/并发相关/" style="font-size: 14px;">并发相关</a> <a href="/tags/操作记录/" style="font-size: 12px;">操作记录</a> <a href="/tags/框架相关/" style="font-size: 12px;">框架相关</a> <a href="/tags/读书笔记/" style="font-size: 12px;">读书笔记</a> <a href="/tags/随笔/" style="font-size: 12px;">随笔</a> <a href="/tags/高并发方案/" style="font-size: 14px;">高并发方案</a>
+      <a href="/tags/JVM相关/" style="font-size: 18px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 12px;">Java基础</a> <a href="/tags/Java容器相关/" style="font-size: 16px;">Java容器相关</a> <a href="/tags/个人开源项目/" style="font-size: 10px;">个人开源项目</a> <a href="/tags/分布式消息/" style="font-size: 10px;">分布式消息</a> <a href="/tags/分布式缓存/" style="font-size: 20px;">分布式缓存</a> <a href="/tags/并发相关/" style="font-size: 14px;">并发相关</a> <a href="/tags/操作记录/" style="font-size: 12px;">操作记录</a> <a href="/tags/框架相关/" style="font-size: 12px;">框架相关</a> <a href="/tags/读书笔记/" style="font-size: 14px;">读书笔记</a> <a href="/tags/随笔/" style="font-size: 12px;">随笔</a> <a href="/tags/高并发方案/" style="font-size: 14px;">高并发方案</a>
     </div>
   </div>
 
@@ -195,7 +194,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">3</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -207,6 +206,10 @@
       <ul>
         
           <li>
+            <a href="/2017/09/29/一个97年的IT人创业历程中的总结和感悟/">(no title)</a>
+          </li>
+        
+          <li>
             <a href="/2017/09/19/读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地/">读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地</a>
           </li>
         
@@ -215,15 +218,11 @@
           </li>
         
           <li>
+            <a href="/2017/09/18/分布式事务通用解决方案/">分布式事务通用解决方案</a>
+          </li>
+        
+          <li>
             <a href="/2017/08/17/创业一段时间的总结和感悟/">创业感悟</a>
-          </li>
-        
-          <li>
-            <a href="/2017/08/14/线程安全与锁优化/">线程安全与锁优化——深入理解JVM阅读笔记</a>
-          </li>
-        
-          <li>
-            <a href="/2017/08/13/Java并发编程：volatile关键字解析/">Java并发编程：volatile关键字解析</a>
           </li>
         
       </ul>
@@ -256,7 +255,7 @@
 
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2017 yutinglin<br>
+      &copy; 2018 yutinglin<br>
       Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
       .
       Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>

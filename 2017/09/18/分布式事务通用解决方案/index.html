@@ -1,0 +1,404 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<meta name="baidu-site-verification" content="LHYPl19xg9" />
+<meta name="google-site-verification" content="s5HGo7JQp9QFcl2HIOHaNDUdwj3_kdgi5nPkB5bfMHs" />
+  
+  <title>分布式事务通用解决方案 | 无题</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="先上结论, 再分别介绍分布式事务的各种实现方式. • 如果业务场景需要强一致性, 那么尽量避免将它们放在不同服务中, 也就是尽量使用本地事务, 避免使用强一致性的分布式事务. • 如果业务场景能够接受最终一致性, 那么最好是使用基于消息的最终一致性的方案(异步确保型)来解决. • 如果业务场景需要强一致性, 并且只能够进行分布式服务部署, 那么最好是使用TCC方案而不是2PC方案来解决. 选择的建">
+<meta name="keywords" content="读书笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式事务通用解决方案">
+<meta property="og:url" content="http://yoursite.com/2017/09/18/分布式事务通用解决方案/index.html">
+<meta property="og:site_name" content="无题">
+<meta property="og:description" content="先上结论, 再分别介绍分布式事务的各种实现方式. • 如果业务场景需要强一致性, 那么尽量避免将它们放在不同服务中, 也就是尽量使用本地事务, 避免使用强一致性的分布式事务. • 如果业务场景能够接受最终一致性, 那么最好是使用基于消息的最终一致性的方案(异步确保型)来解决. • 如果业务场景需要强一致性, 并且只能够进行分布式服务部署, 那么最好是使用TCC方案而不是2PC方案来解决. 选择的建">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-8bb62ba9e7ce9f35199da032e17f9bb7_hd.jpg">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/250417/201710/250417-20171016132145537-970496141.png">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-7ea8177dfcba150206b93e376f6e6d08_hd.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-48e3f206b2b0a8ce1bae05409651ccd8_hd.jpg">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/250417/201710/250417-20171016141237443-2074834323.png">
+<meta property="og:updated_time" content="2018-01-26T14:18:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="分布式事务通用解决方案">
+<meta name="twitter:description" content="先上结论, 再分别介绍分布式事务的各种实现方式. • 如果业务场景需要强一致性, 那么尽量避免将它们放在不同服务中, 也就是尽量使用本地事务, 避免使用强一致性的分布式事务. • 如果业务场景能够接受最终一致性, 那么最好是使用基于消息的最终一致性的方案(异步确保型)来解决. • 如果业务场景需要强一致性, 并且只能够进行分布式服务部署, 那么最好是使用TCC方案而不是2PC方案来解决. 选择的建">
+<meta name="twitter:image" content="https://pic1.zhimg.com/80/v2-8bb62ba9e7ce9f35199da032e17f9bb7_hd.jpg">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">无题</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">天南地北问乾坤</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="yoursite.com">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-分布式事务通用解决方案" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/09/18/分布式事务通用解决方案/" class="article-date">
+  <time datetime="2017-09-18T02:05:54.000Z" itemprop="datePublished">2017-09-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      分布式事务通用解决方案
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>先上结论, 再分别介绍分布式事务的各种实现方式.</p>
+<pre><code>• 如果业务场景需要强一致性, 那么尽量避免将它们放在不同服务中, 也就是尽量使用本地事务, 避免使用强一致性的分布式事务.
+• 如果业务场景能够接受最终一致性, 那么最好是使用基于消息的最终一致性的方案(异步确保型)来解决.
+• 如果业务场景需要强一致性, 并且只能够进行分布式服务部署, 那么最好是使用TCC方案而不是2PC方案来解决.
+</code></pre><h3 id="选择的建议"><a href="#选择的建议" class="headerlink" title="选择的建议"></a>选择的建议</h3><p>在面临数据一致性问题的时候，首先要从业务需求的角度出发，确定我们对于3 种一致性模型的接受程度，再通过具体场景来决定解决方案。</p>
+<p>从应用角度看，分布式事务的现实场景常常无法规避，在有能力给出其他解决方案前，2PC也是一个不错的选择。</p>
+<p>对购物转账等电商和金融业务，中间件层的2PC最大问题在于业务不可见，一旦出现不可抗力或意想不到的一致性破坏，如数据节点永久性宕机，业务难以根据2PC的日志进行补偿。金融场景下，数据一致性是命根，业务需要对数据有百分之百的掌控力，建议使用TCC这类分布式事务模型，或基于消息队列的柔性事务框架，这两种方案都在业务层实现，业务开发者具有足够掌控力，可以结合SOA框架来架构，包括Dubbo、Spring Cloud等（题主的标签写了Dubbo）。</p>
+<a id="more"></a>
+<p>在说分布式事务之前，我们先从数据库事务说起。<br> 数据库事务可能大家都很熟悉，在开发过程中也会经常使用到。但是即使如此，可能对于一些细节问题，很多人仍然不清楚。比如很多人都知道数据库事务的几个特性：原子性(Atomicity )、一致性( Consistency )、隔离性或独立性( Isolation)和持久性(Durabilily)，简称就是ACID。但是再往下比如问到隔离性指的是什么的时候可能就不知道了，或者是知道隔离性是什么但是再问到数据库实现隔离的都有哪些级别，或者是每个级别他们有什么区别的时候可能就不知道了。</p>
+<p>本文并不打算介绍这些数据库事务的这些东西，有兴趣可以搜索一下相关资料。不过有一个知识点我们需要了解，就是假如数据库在提交事务的时候突然断电，那么它是怎么样恢复的呢？ 为什么要提到这个知识点呢？ 因为分布式系统的核心就是处理各种异常情况，这也是分布式系统复杂的地方，因为分布式的网络环境很复杂，这种“断电”故障要比单机多很多，所以我们在做分布式系统的时候，最先考虑的就是这种情况。这些异常可能有 机器宕机、网络异常、消息丢失、消息乱序、数据错误、不可靠的TCP、存储数据丢失、其他异常等等…</p>
+<p>我们接着说本地事务数据库断电的这种情况，它是怎么保证数据一致性的呢？我们使用SQL Server来举例，我们知道我们在使用 SQL Server 数据库是由两个文件组成的，一个数据库文件和一个日志文件，通常情况下，日志文件都要比数据库文件大很多。数据库进行任何写入操作的时候都是要先写日志的，同样的道理，我们在执行事务的时候数据库首先会记录下这个事务的redo操作日志，然后才开始真正操作数据库，在操作之前首先会把日志文件写入磁盘，那么当突然断电的时候，即使操作没有完成，在重新启动数据库时候，数据库会根据当前数据的情况进行undo回滚或者是redo前滚，这样就保证了数据的强一致性。</p>
+<p>接着，我们就说一下分布式事务。</p>
+<p>##分布式的几个理论</p>
+<p>当我们的单个数据库的性能产生瓶颈的时候，我们可能会对数据库进行分区，这里所说的分区指的是物理分区，分区之后可能不同的库就处于不同的服务器上了，这个时候单个数据库的ACID已经不能适应这种情况了，而在这种ACID的集群环境下，再想保证集群的ACID几乎是很难达到，或者即使能达到那么效率和性能会大幅下降，最为关键的是再很难扩展新的分区了，这个时候如果再追求集群的ACID会导致我们的系统变得很差，这时我们就需要引入一个新的理论原则来适应这种集群的情况，就是 CAP 原则或者叫CAP定理，那么CAP定理指的是什么呢？</p>
+<p>###CAP定理<br>CAP定理是由加州大学伯克利分校Eric Brewer教授提出来的，他指出WEB服务无法同时满足一下3个属性：</p>
+<p><img src="https://pic1.zhimg.com/80/v2-8bb62ba9e7ce9f35199da032e17f9bb7_hd.jpg" alt=""></p>
+<ul>
+<li>· 一致性(Consistency) ： 客户端知道一系列的操作都会同时发生(生效)</li>
+<li>· 可用性(Availability) ： 每个操作都必须以可预期的响应结束</li>
+<li>· 分区容错性(Partition tolerance) ： 即使出现单个组件无法可用,操作依然可以完成</li>
+</ul>
+<p>具体地讲在分布式系统中，在任何数据库设计中，一个Web应用至多只能同时支持上面的两个属性。显然，任何横向扩展策略都要依赖于数据分区。因此，设计人员必须在一致性与可用性之间做出选择。</p>
+<p>这个定理在迄今为止的分布式系统中都是适用的！ 为什么这么说呢？<br>这个时候有同学可能会把数据库的2PC（两阶段提交）搬出来说话了。OK，我们就来看一下数据库的两阶段提交。</p>
+<p>对数据库分布式事务有了解的同学一定知道数据库支持的2PC，又叫做 XA Transactions。<br>MySQL从5.5版本开始支持，SQL Server 2005 开始支持，Oracle 7 开始支持。<br>其中，XA 是一个两阶段提交协议，该协议分为以下两个阶段：</p>
+<ul>
+<li>· 第一阶段：事务协调器要求每个涉及到事务的数据库预提交(precommit)此操作，并反映是否可以提交.</li>
+<li>· 第二阶段：事务协调器要求每个数据库提交数据。</li>
+</ul>
+<p>其中，如果有任何一个数据库否决此次提交，那么所有数据库都会被要求回滚它们在此事务中的那部分信息。这样做的缺陷是什么呢? 咋看之下我们可以在数据库分区之间获得一致性。<br>如果CAP 定理是对的，那么它一定会影响到可用性。</p>
+<p>如果说系统的可用性代表的是执行某项操作相关所有组件的可用性的和。那么在两阶段提交的过程中，可用性就代表了涉及到的每一个数据库中可用性的和。我们假设两阶段提交的过程中每一个数据库都具有99.9%的可用性，那么如果两阶段提交涉及到两个数据库，这个结果就是99.8%。根据系统可用性计算公式，假设每个月43200分钟，99.9%的可用性就是43157分钟, 99.8%的可用性就是43114分钟，相当于每个月的宕机时间增加了43分钟。</p>
+<p>以上，可以验证出来，CAP定理从理论上来讲是正确的，CAP我们先看到这里，等会再接着说。</p>
+<h3 id="事务补偿机制"><a href="#事务补偿机制" class="headerlink" title="事务补偿机制:"></a>事务补偿机制:</h3><p> 在事务链中的任何一个正向事务操作, 都必须存在一个完全符合回滚规则的可逆事务.</p>
+<h3 id="幂等性"><a href="#幂等性" class="headerlink" title="幂等性:"></a>幂等性:</h3><p>简单的说, 业务操作支持重试, 不会产生不利影响. 常见的实现方式: 为消息额外增加唯一ID.</p>
+<h3 id="BASE理论"><a href="#BASE理论" class="headerlink" title="BASE理论"></a>BASE理论</h3><p>在分布式系统中，我们往往追求的是可用性，它的重要程序比一致性要高，那么如何实现高可用性呢？ 前人已经给我们提出来了另外一个理论，就是BASE理论，它是用来对CAP定理进行进一步扩充的。</p>
+<p>BASE理论指的是：</p>
+<ul>
+<li>· Basically Available（基本可用）</li>
+<li>· Soft state（软状态）</li>
+<li>· Eventually consistent（最终一致性）</li>
+</ul>
+<p>BASE理论是对CAP中的一致性和可用性进行一个权衡的结果，理论的核心思想就是：我们无法做到强一致，但每个应用都可以根据自身的业务特点，采用适当的方式来使系统达到最终一致性（Eventual consistency）。</p>
+<h3 id="一致性模型"><a href="#一致性模型" class="headerlink" title="一致性模型"></a>一致性模型</h3><p>数据的一致性模型可以分成以下 3 类：</p>
+<pre><code>1. 强一致性：数据更新成功后，任意时刻所有副本中的数据都是一致的，一般采用同步的方式实现。
+2. 弱一致性：数据更新成功后，系统不承诺立即可以读到最新写入的值，也不承诺具体多久之后可以读到。
+3. 最终一致性：弱一致性的一种形式，数据更新成功后，系统不承诺立即可以返回最新写入的值，但是保证最终会返回上一次更新操作的值。
+</code></pre><p>分布式系统数据的强一致性、弱一致性和最终一致性可以通过Quorum NRW算法分析。</p>
+<h4 id="缓存数据最终一致性"><a href="#缓存数据最终一致性" class="headerlink" title="缓存数据最终一致性"></a>缓存数据最终一致性</h4><p>在我们的业务系统中，缓存（Redis 或者Memcached）通常被用在数据库前面，作为数据读取的缓冲，使得I/O 操作不至于直接落在数据库上。以商品详情页为例，假如卖家修改了商品信息，并写回到数据库，但是这时候用户从商品详情页看到的信息还是从缓存中拿到的过时数据，这就出现了缓存系统和数据库系统中的数据不一致的现象。<br>要解决该场景下缓存和数据库数据不一致的问题我们有以下两种解决方案：</p>
+<pre><code>1. 为缓存数据设置过期时间。当缓存中数据过期后，业务系统会从数据库中获取数据，并将新值放入缓存。这个过期时间就是系统可以达到最终一致的容忍时间。
+2. 更新数据库数据后同时清除缓存数据。数据库数据更新后，同步删除缓存中数据，使得下次对商品详情的获取直接从数据库中获取，并同步到缓存。
+</code></pre><h3 id="柔性事务-vs-刚性事务"><a href="#柔性事务-vs-刚性事务" class="headerlink" title="柔性事务 vs. 刚性事务"></a>柔性事务 vs. 刚性事务</h3><p>刚性事务是指严格遵循ACID原则的事务, 例如单机环境下的数据库事务.<br>柔性事务是指遵循BASE理论的事务, 通常用在分布式环境中, 常见的实现方式有: 两阶段提交(2PC), TCC补偿型提交, 基于消息的异步确保型, 最大努力通知型.<br>通常对本地事务采用刚性事务, 分布式事务使用柔性事务.</p>
+<p>有了以上理论之后，我们来看一下分布式事务的问题。</p>
+<h2 id="分布式事务的几种解决方案"><a href="#分布式事务的几种解决方案" class="headerlink" title="分布式事务的几种解决方案"></a>分布式事务的几种解决方案</h2><p>在分布式系统中，要实现分布式事务，无外乎那几种解决方案。</p>
+<h3 id="一、两阶段提交（2PC）"><a href="#一、两阶段提交（2PC）" class="headerlink" title="一、两阶段提交（2PC）"></a>一、两阶段提交（2PC）</h3><p>和上一节中提到的数据库XA事务一样，两阶段提交就是使用XA协议的原理，我们可以从下面这个图的流程来很容易的看出中间的一些比如commit和abort的细节。<br><img src="https://images2017.cnblogs.com/blog/250417/201710/250417-20171016132145537-970496141.png" alt=""></p>
+<p>两阶段提交这种解决方案属于牺牲了一部分可用性来换取的一致性。</p>
+<p>2PC的核心原理是通过提交分阶段和记日志的方式，记录下事务提交所处的阶段状态，在组件宕机重启后，可通过日志恢复事务提交的阶段状态，并在这个状态节点重试;</p>
+<p>如Coordinator重启后，通过日志可以确定提交处于Prepare还是PrepareAll状态，若是前者，说明有节点可能没有Prepare成功，或所有节点Prepare成功但还没有下发Commit，状态恢复后给所有节点下发RollBack；若是PrepareAll状态，需要给所有节点下发Commit，数据库节点需要保证Commit幂等。</p>
+<p>优点： 尽量保证了数据的强一致，适合对数据强一致要求很高的关键领域。（其实也不能100%保证强一致）</p>
+<p>缺点： 实现复杂，牺牲了可用性，对性能影响较大，不适合高并发高性能场景</p>
+<h3 id="二、三段式提交"><a href="#二、三段式提交" class="headerlink" title="二、三段式提交"></a>二、三段式提交</h3><p>显然，三段式提交协议是基于两段式提交而生的，为了解决两段式提交带来的阻塞等待问题，三段式提交引入TIMEOUT机制，可在超时后自动释放资源。</p>
+<p>和两段式提交一样，三段式提交协议有两类角色，协调者(Coordinator)和参与者(Participants)，由三个阶段构成。询问阶段、预提交阶段、正式提交阶段，在预提交阶段协调者就做出了决定并发送给参与者，在第三阶段正式执行；</p>
+<p>第一个阶段：询问阶段。协调者询问每个参与者是否可以进行提交，这时候会出现多种情况。参与者明确自己是否能提交，可以给出“YES or NO”的准确回答，也有可能因为各种因素，导致不能确定，直到此次询问超时，返回“NO”。</p>
+<p>第二个阶段：预提交阶段。根据上阶段得到的应答，协调者决定事务Commit or Abort，将投票最终结果发送给各个参与者，参与者收到此决定后再继续下面的操作，只不过到了此阶段，双方都有超时机制了。协调者也有可能因为各种原因不能及时做出决定，超时后就自动给出了Abort决定，与此同时，参与者收到了协调者的决定，需要回传ACK信息以确定，如果没有在规定的时间窗口内确认，协调者认为事务应该Abort。</p>
+<p>第三个阶段：正式提交阶段。在上一个阶段，各个参与者已经收到了事务Commit or Abort的确认信息，其实这个阶段可以认为是一个二次确认阶段，协调者会发送一个DoCommit指令，参与者才真正开始进行事务的操作，并给协调者回复一个ACK。如果此时协调者接收ACK超时，协调者也会Abort整个事务。值得注意的是，如果协调者本身发送DoCommit就超时了，参与者也不会直接Abort事务，而是按照第二个阶段的结果执行。</p>
+<p>下面附上两段式提交与三段式提交的框架图：<br><img src="https://pic4.zhimg.com/80/v2-7ea8177dfcba150206b93e376f6e6d08_hd.jpg" alt=""></p>
+<h3 id="三、补偿事务（TCC）"><a href="#三、补偿事务（TCC）" class="headerlink" title="三、补偿事务（TCC）"></a>三、补偿事务（TCC）</h3><p>TCC 其实就是采用的补偿机制，其核心思想是：针对每个操作，都要注册一个与其对应的确认和补偿（撤销）操作。TCC的概念属于国产，因为支付宝的技术布道而广为人知。<br>其实，TCC算是一种编程模型，通常被理解为是一种柔性事务解决方案。<br><img src="https://pic1.zhimg.com/80/v2-48e3f206b2b0a8ce1bae05409651ccd8_hd.jpg" alt=""></p>
+<p>它分为三个阶段：</p>
+<ul>
+<li>· Try 阶段主要是对业务系统做检测及资源预留</li>
+<li>· Confirm 阶段主要是对业务系统做确认提交，Try阶段执行成功并开始执行 Confirm阶段时，默认 Confirm阶段是不会出错的。即：只要Try成功，Confirm一定成功。</li>
+<li>· Cancel 阶段主要是在业务执行错误，需要回滚的状态下执行的业务取消，预留资源释放。</li>
+</ul>
+<p>举个例子，假如 Bob 要向 Smith 转账，思路大概是：<br>我们有一个本地方法，里面依次调用</p>
+<ul>
+<li>1、首先在 Try 阶段，要先调用远程接口把 Smith 和 Bob 的钱给冻结起来。</li>
+<li>2、在 Confirm 阶段，执行远程调用的转账的操作，转账成功进行解冻。</li>
+<li>3、如果第2步执行成功，那么转账成功，如果第二步执行失败，则调用远程冻结接口对应的解冻方法 (Cancel)。</li>
+</ul>
+<p>如果在Try阶段，任何一个服务失败，将会调用这些服务对应的cancel方法；<br>如果Try阶段正常完成，则进入Confirm阶段</p>
+<p>优点： 跟2PC比起来，实现以及流程相对简单了一些，但数据的一致性比2PC也要差一些</p>
+<p>缺点： 缺点还是比较明显的，在2,3步中都有可能失败。TCC属于应用层的一种补偿方式，所以需要程序员在实现的时候多写很多补偿的代码，在一些场景中，一些业务流程可能用TCC不太好定义及处理。</p>
+<h3 id="四、本地消息表（eBay-事件队列方案——保证最终一致性—异步确保）"><a href="#四、本地消息表（eBay-事件队列方案——保证最终一致性—异步确保）" class="headerlink" title="四、本地消息表（eBay 事件队列方案——保证最终一致性—异步确保）"></a>四、本地消息表（eBay 事件队列方案——保证最终一致性—异步确保）</h3><p>本地消息表这种实现方式应该是业界使用最多的，其核心思想是将分布式事务拆分成本地事务进行处理，这种思路是来源于ebay。我们可以从下面的流程图中看出其中的一些细节：<br><img src="https://images2017.cnblogs.com/blog/250417/201710/250417-20171016141237443-2074834323.png" alt=""></p>
+<p>基本思路就是：<br>消息生产方，需要额外建一个消息表，并记录消息发送状态。消息表和业务数据要在一个事务里提交，也就是说他们要在一个数据库里面。然后消息会经过MQ发送到消息的消费方。如果消息发送失败，会进行重试发送。</p>
+<p>消息消费方，需要处理这个消息，并完成自己的业务逻辑。此时如果本地事务处理成功，表明已经处理成功了，如果处理失败，那么就会重试执行。如果是业务上面的失败，可以给生产方发送一个业务补偿消息，通知生产方进行回滚等操作。</p>
+<p>生产方和消费方定时扫描本地消息表，把还没处理完成的消息或者失败的消息再发送一遍。如果有靠谱的自动对账补账逻辑，这种方案还是非常实用的。</p>
+<p>这种方案遵循BASE理论，采用的是最终一致性，笔者认为是这几种方案里面比较适合实际业务场景的，即不会出现像2PC那样复杂的实现(当调用链很长的时候，2PC的可用性是非常低的)，也不会像TCC那样可能出现确认或者回滚不了的情况。</p>
+<p>优点： 一种非常经典的实现，避免了分布式事务，实现了最终一致性。<br>缺点： 消息表会耦合到业务系统中，如果没有封装好的解决方案，会有很多杂活需要处理。</p>
+<h3 id="五、MQ-事务消息"><a href="#五、MQ-事务消息" class="headerlink" title="五、MQ 事务消息"></a>五、MQ 事务消息</h3><p>有一些第三方的MQ是支持事务消息的，比如RocketMQ，他们支持事务消息的方式也是类似于采用的二阶段提交，但是市面上一些主流的MQ都是不支持事务消息的，比如 RabbitMQ 和 Kafka 都不支持。</p>
+<p>以阿里的 RocketMQ 中间件为例，其思路大致为：</p>
+<p>第一阶段Prepared消息，会拿到消息的地址。<br>第二阶段执行本地事务，第三阶段通过第一阶段拿到的地址去访问消息，并修改状态。</p>
+<p>也就是说在业务方法内要想消息队列提交两次请求，一次发送消息和一次确认消息。如果确认消息发送失败了RocketMQ会定期扫描消息集群中的事务消息，这时候发现了Prepared消息，它会向消息发送者确认，所以生产方需要实现一个check接口，RocketMQ会根据发送端设置的策略来决定是回滚还是继续发送确认消息。这样就保证了消息发送与本地事务同时成功或同时失败。</p>
+<p>遗憾的是，RocketMQ并没有<br>优点： 实现了最终一致性，不需要依赖本地数据库事务。<br>缺点： 实现难度大，主流MQ不支持</p>
+<h3 id="六、Sagas-事务模型"><a href="#六、Sagas-事务模型" class="headerlink" title="六、Sagas 事务模型"></a>六、Sagas 事务模型</h3><p>Saga事务模型又叫做长时间运行的事务（Long-running-transaction）, 它是由普林斯顿大学的H.Garcia-Molina等人提出，它描述的是另外一种在没有两阶段提交的的情况下解决分布式系统中复杂的业务事务问题。你可以在这里看到 Sagas 相关论文。</p>
+<p>我们这里说的是一种基于 Sagas 机制的工作流事务模型，这个模型的相关理论目前来说还是比较新的，以至于百度上几乎没有什么相关资料。</p>
+<p>该模型其核心思想就是拆分分布式系统中的长事务为多个短事务，或者叫多个本地事务，然后由 Sagas 工作流引擎负责协调，如果整个流程正常结束，那么就算是业务成功完成，如果在这过程中实现失败，那么Sagas工作流引擎就会以相反的顺序调用补偿操作，重新进行业务回滚。</p>
+<p>比如我们一次关于购买旅游套餐业务操作涉及到三个操作，他们分别是预定车辆，预定宾馆，预定机票，他们分别属于三个不同的远程接口。可能从我们程序的角度来说他们不属于一个事务，但是从业务角度来说是属于同一个事务的。</p>
+<p>他们的执行顺序如上图所示，所以当发生失败时，会依次进行取消的补偿操作。<br>因为长事务被拆分了很多个业务流，所以 Sagas 事务模型最重要的一个部件就是工作流或者你也可以叫流程管理器（Process Manager），工作流引擎和Process Manager虽然不是同一个东西，但是在这里，他们的职责是相同的。在选择工作流引擎之后，最终的代码也许看起来是这样的</p>
+<pre><code>SagaBuilder saga = SagaBuilder.newSaga(&quot;trip&quot;)
+.activity(&quot;Reserve car&quot;, ReserveCarAdapter.class) 
+.compensationActivity(&quot;Cancel car&quot;, CancelCarAdapter.class) 
+.activity(&quot;Book hotel&quot;, BookHotelAdapter.class) 
+.compensationActivity(&quot;Cancel hotel&quot;, CancelHotelAdapter.class) 
+.activity(&quot;Book flight&quot;, BookFlightAdapter.class) 
+.compensationActivity(&quot;Cancel flight&quot;, CancelFlightAdapter.class) 
+.end()
+.triggerCompensationOnAnyError();
+
+camunda.getRepositoryService().createDeployment() 
+.addModelInstance(saga.getModel()) 
+.deploy();
+</code></pre><p>优缺点这里我们就不说了，因为这个理论比较新，目前市面上还没有什么解决方案</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2017/09/18/分布式事务通用解决方案/" data-id="cjcw11cok001ydv73mtapzrqn" class="article-share-link" data-share="baidu" data-title="分布式事务通用解决方案">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/09/18/读内藤树作品《青年们，读马克思吧》/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          读内藤树作品《青年们，读马克思吧》
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/08/17/创业一段时间的总结和感悟/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">创业感悟</div>
+    </a>
+  
+</nav>
+
+  
+
+
+
+</article>
+
+
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器相关/">Java容器相关</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式消息/">分布式消息</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发相关/">并发相关</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架相关/">框架相关</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JVM相关/" style="font-size: 18px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 12px;">Java基础</a> <a href="/tags/Java容器相关/" style="font-size: 16px;">Java容器相关</a> <a href="/tags/个人开源项目/" style="font-size: 10px;">个人开源项目</a> <a href="/tags/分布式消息/" style="font-size: 10px;">分布式消息</a> <a href="/tags/分布式缓存/" style="font-size: 20px;">分布式缓存</a> <a href="/tags/并发相关/" style="font-size: 14px;">并发相关</a> <a href="/tags/操作记录/" style="font-size: 12px;">操作记录</a> <a href="/tags/框架相关/" style="font-size: 12px;">框架相关</a> <a href="/tags/读书笔记/" style="font-size: 14px;">读书笔记</a> <a href="/tags/随笔/" style="font-size: 12px;">随笔</a> <a href="/tags/高并发方案/" style="font-size: 14px;">高并发方案</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/09/29/一个97年的IT人创业历程中的总结和感悟/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/19/读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地/">读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/18/读内藤树作品《青年们，读马克思吧》/">读内藤树作品《青年们，读马克思吧》</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/18/分布式事务通用解决方案/">分布式事务通用解决方案</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/17/创业一段时间的总结和感悟/">创业感悟</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/yuaman" target="_blank">我的git同性交友主页</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+
+
+
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 yutinglin<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+
+
+
+</footer>
+
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+
+
+
+
+
+
+
+
+</div>
+</body>
+</html>
