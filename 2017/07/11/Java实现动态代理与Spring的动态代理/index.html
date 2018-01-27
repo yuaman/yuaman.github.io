@@ -6,19 +6,19 @@
 <meta name="baidu-site-verification" content="LHYPl19xg9" />
 <meta name="google-site-verification" content="s5HGo7JQp9QFcl2HIOHaNDUdwj3_kdgi5nPkB5bfMHs" />
   
-  <title>Java实现动态代理与Spring的动态代理 | 无题</title>
+  <title>Java实现动态代理 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Java实现动态代理的大致步骤如下： 1.定义一个委托类和公共接口1234567891011//公共接口public interface IHello &amp;#123;  void sayHello();&amp;#125;//委托类class Hello implements IHello &amp;#123;  public void sayHello() &amp;#123;      System.out.print">
-<meta name="keywords" content="分布式缓存">
+  <meta name="description" content="Java实现动态代理的大致步骤如下： 1.定义一个委托类和公共接口1234567891011//公共接口public interface IHello &amp;#123;  void sayHello();&amp;#125;//委托类class Hello implements IHello &amp;#123;  public void sayHello() &amp;#123;      System.out.prin">
+<meta name="keywords" content="JDK探究">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java实现动态代理与Spring的动态代理">
+<meta property="og:title" content="Java实现动态代理">
 <meta property="og:url" content="http://yoursite.com/2017/07/11/Java实现动态代理与Spring的动态代理/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="Java实现动态代理的大致步骤如下： 1.定义一个委托类和公共接口1234567891011//公共接口public interface IHello &amp;#123;  void sayHello();&amp;#125;//委托类class Hello implements IHello &amp;#123;  public void sayHello() &amp;#123;      System.out.print">
-<meta property="og:updated_time" content="2018-01-26T16:51:41.000Z">
+<meta property="og:description" content="Java实现动态代理的大致步骤如下： 1.定义一个委托类和公共接口1234567891011//公共接口public interface IHello &amp;#123;  void sayHello();&amp;#125;//委托类class Hello implements IHello &amp;#123;  public void sayHello() &amp;#123;      System.out.prin">
+<meta property="og:updated_time" content="2018-01-27T09:51:51.269Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java实现动态代理与Spring的动态代理">
-<meta name="twitter:description" content="Java实现动态代理的大致步骤如下： 1.定义一个委托类和公共接口1234567891011//公共接口public interface IHello &amp;#123;  void sayHello();&amp;#125;//委托类class Hello implements IHello &amp;#123;  public void sayHello() &amp;#123;      System.out.print">
+<meta name="twitter:title" content="Java实现动态代理">
+<meta name="twitter:description" content="Java实现动态代理的大致步骤如下： 1.定义一个委托类和公共接口1234567891011//公共接口public interface IHello &amp;#123;  void sayHello();&amp;#125;//委托类class Hello implements IHello &amp;#123;  public void sayHello() &amp;#123;      System.out.prin">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -81,7 +81,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Java实现动态代理与Spring的动态代理
+      Java实现动态代理
     </h1>
   
 
@@ -89,7 +89,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Java实现动态代理的大致步骤如下：</p>
+        <a id="more"></a>
+<p>Java实现动态代理的大致步骤如下：</p>
 <p>1.定义一个委托类和公共接口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">//公共接口</div><div class="line">public interface IHello &#123;</div><div class="line">  void sayHello();</div><div class="line">&#125;</div><div class="line"></div><div class="line">//委托类</div><div class="line">class Hello implements IHello &#123;</div><div class="line">  public void sayHello() &#123;</div><div class="line">      System.out.println(&quot;Hello world!!&quot;);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>2.通过实现InvocationHandler接口来自定义自己的InvocationHandler，指定运行时将生成的代理类需要完成的具体任务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">//自定义InvocationHandler</div><div class="line">public class HWInvocationHandler implements InvocationHandler &#123;</div><div class="line">  // 目标对象</div><div class="line">  private Object target;</div><div class="line"></div><div class="line">  public HWInvocationHandler(Object target) &#123;</div><div class="line">      this.target = target;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  public Object invoke(Object proxy, Method method, Object[] args) &gt;throws Throwable &#123;</div><div class="line">      System.out.println(&quot;------插入前置通知代码-------------&quot;);</div><div class="line">      // 执行相应的目标方法</div><div class="line">      Object rs = method.invoke(target, args);</div><div class="line">      System.out.println(&quot;------插入后置处理代码-------------&quot;);</div><div class="line">      return rs;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>3.生成代理对象，这个可以分为四步：<br>    （1）通过Proxy.getProxyClass获得动态代理类<br>    （2）通过反射机制获得代理类的构造方法，方法签名为getConstructor(InvocationHandler.class)<br>    （3）通过构造函数获得代理对象并将自定义的InvocationHandler实例对象传为参数传入<br>    （4）通过代理对象调用目标方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public class Client &#123;</div><div class="line">  public static void main(String[] args)</div><div class="line">          throws NoSuchMethodException, IllegalAccessException, &gt;InvocationTargetException, InstantiationException &#123;</div><div class="line">      // 生成Proxy的class文件</div><div class="line">      System.getProperties().put(&quot;sun.misc.ProxyGenerator.saveGeneratedFiles&quot;, &quot;true&quot;);</div><div class="line">      // 获取动态代理类</div><div class="line">      Class&lt;?&gt; proxyClazz = Proxy.getProxyClass(IHello.class.getClassLoader(), IHello.class);</div><div class="line">      // 获得代理类的构造函数，并传入参数类型InvocationHandler.class</div><div class="line">      Constructor&lt;?&gt; constructor = proxyClazz.getConstructor(InvocationHandler.class);</div><div class="line">      // 通过构造函数来创建动态代理对象，将自定义的InvocationHandler实例传入</div><div class="line">      IHello iHello = (IHello) constructor.newInstance(new  HWInvocationHandler(new Hello()));</div><div class="line">      // 通过代理对象调用目标方法</div><div class="line">      iHello.sayHello();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
@@ -102,13 +103,13 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/07/11/Java实现动态代理与Spring的动态代理/" data-id="cjcx5xscr0005kxjdwl3g90as" class="article-share-link" data-share="baidu" data-title="Java实现动态代理与Spring的动态代理">分享到</a>
+        <a data-url="http://yoursite.com/2017/07/11/Java实现动态代理与Spring的动态代理/" data-id="cjcx6qbwz0008npjdre991ejr" class="article-share-link" data-share="baidu" data-title="Java实现动态代理">分享到</a>
       
 
 
 
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式缓存/">分布式缓存</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JDK探究/">JDK探究</a></li></ul>
 
     </footer>
   </div>
@@ -151,7 +152,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器相关/">Java容器相关</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式消息/">分布式消息</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发相关/">并发相关</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/感悟/">感悟</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架相关/">框架相关</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">4</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JDK探究/">JDK探究</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring探究/">Spring探究</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式系统/">分布式系统</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -160,7 +161,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/JVM相关/" style="font-size: 18.33px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 13.33px;">Java基础</a> <a href="/tags/Java容器相关/" style="font-size: 16.67px;">Java容器相关</a> <a href="/tags/个人开源项目/" style="font-size: 11.67px;">个人开源项目</a> <a href="/tags/分布式消息/" style="font-size: 11.67px;">分布式消息</a> <a href="/tags/分布式缓存/" style="font-size: 20px;">分布式缓存</a> <a href="/tags/并发相关/" style="font-size: 15px;">并发相关</a> <a href="/tags/感悟/" style="font-size: 10px;">感悟</a> <a href="/tags/操作记录/" style="font-size: 13.33px;">操作记录</a> <a href="/tags/框架相关/" style="font-size: 13.33px;">框架相关</a> <a href="/tags/读书笔记/" style="font-size: 15px;">读书笔记</a> <a href="/tags/随笔/" style="font-size: 13.33px;">随笔</a> <a href="/tags/高并发方案/" style="font-size: 15px;">高并发方案</a>
+      <a href="/tags/JDK探究/" style="font-size: 20px;">JDK探究</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/Spring探究/" style="font-size: 14px;">Spring探究</a> <a href="/tags/个人开源项目/" style="font-size: 12px;">个人开源项目</a> <a href="/tags/分布式系统/" style="font-size: 18px;">分布式系统</a> <a href="/tags/分布式缓存/" style="font-size: 12px;">分布式缓存</a> <a href="/tags/操作记录/" style="font-size: 12px;">操作记录</a> <a href="/tags/读书笔记/" style="font-size: 14px;">读书笔记</a> <a href="/tags/随笔/" style="font-size: 16px;">随笔</a> <a href="/tags/高并发方案/" style="font-size: 10px;">高并发方案</a>
     </div>
   </div>
 
@@ -189,7 +190,7 @@
           </li>
         
           <li>
-            <a href="/2017/09/18/一个97年的IT人创业历程中的总结和感悟/">一个97年的IT人创业历程中的总结和感悟</a>
+            <a href="/2017/09/18/一个97年的IT人创业历程中的总结和感悟/">创业历程中的总结和感悟</a>
           </li>
         
           <li>

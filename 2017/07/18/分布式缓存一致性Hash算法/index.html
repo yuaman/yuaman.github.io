@@ -8,20 +8,20 @@
   
   <title>分布式缓存一致性hash算法 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="当服务器不多，并且不考虑扩容的时候，可直接使用简单的路由算法，用服务器数除缓存数据KEY的hash值，余数作为服务器下标即可。 但是当业务发展，网站缓存服务需要扩容时就会出现问题，比如3台缓存服务器要扩容到4台，就会导致75%的数据无法命中，当100台服务器中增加一台，不命中率会到达99%（n/（n+1））,这显然是不能接受的。 在设计分布式缓存集群的时候，需要考虑集群的伸缩性，也就是当向集群中增">
-<meta name="keywords" content="分布式缓存">
+  <meta name="description" content="当服务器不多，并且不考虑扩容的时候，可直接使用简单的路由算法，用服务器数除缓存数据KEY的hash值，余数作为服务器下标即可。 但是当业务发展，网站缓存服务需要扩容时就会出现问题，比如3台缓存服务器要扩容到4台，就会导致75%的数据无法命中，当100台服务器中增加一台，不命中率会到达99%（n/（n+1））,这显然是不能接受的。 在设计分布式缓存集群的时候，需要考虑集群的伸缩性，也就是当向集群中">
+<meta name="keywords" content="分布式系统">
 <meta property="og:type" content="article">
 <meta property="og:title" content="分布式缓存一致性hash算法">
 <meta property="og:url" content="http://yoursite.com/2017/07/18/分布式缓存一致性Hash算法/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="当服务器不多，并且不考虑扩容的时候，可直接使用简单的路由算法，用服务器数除缓存数据KEY的hash值，余数作为服务器下标即可。 但是当业务发展，网站缓存服务需要扩容时就会出现问题，比如3台缓存服务器要扩容到4台，就会导致75%的数据无法命中，当100台服务器中增加一台，不命中率会到达99%（n/（n+1））,这显然是不能接受的。 在设计分布式缓存集群的时候，需要考虑集群的伸缩性，也就是当向集群中增">
+<meta property="og:description" content="当服务器不多，并且不考虑扩容的时候，可直接使用简单的路由算法，用服务器数除缓存数据KEY的hash值，余数作为服务器下标即可。 但是当业务发展，网站缓存服务需要扩容时就会出现问题，比如3台缓存服务器要扩容到4台，就会导致75%的数据无法命中，当100台服务器中增加一台，不命中率会到达99%（n/（n+1））,这显然是不能接受的。 在设计分布式缓存集群的时候，需要考虑集群的伸缩性，也就是当向集群中">
 <meta property="og:image" content="https://images2015.cnblogs.com/blog/1142924/201704/1142924-20170419222407649-1722046559.png">
 <meta property="og:image" content="https://images2015.cnblogs.com/blog/1142924/201704/1142924-20170419222955759-356675425.png">
 <meta property="og:image" content="https://images2015.cnblogs.com/blog/1142924/201704/1142924-20170419225054337-11861583.png">
-<meta property="og:updated_time" content="2018-01-26T16:50:37.000Z">
+<meta property="og:updated_time" content="2018-01-27T09:57:47.096Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分布式缓存一致性hash算法">
-<meta name="twitter:description" content="当服务器不多，并且不考虑扩容的时候，可直接使用简单的路由算法，用服务器数除缓存数据KEY的hash值，余数作为服务器下标即可。 但是当业务发展，网站缓存服务需要扩容时就会出现问题，比如3台缓存服务器要扩容到4台，就会导致75%的数据无法命中，当100台服务器中增加一台，不命中率会到达99%（n/（n+1））,这显然是不能接受的。 在设计分布式缓存集群的时候，需要考虑集群的伸缩性，也就是当向集群中增">
+<meta name="twitter:description" content="当服务器不多，并且不考虑扩容的时候，可直接使用简单的路由算法，用服务器数除缓存数据KEY的hash值，余数作为服务器下标即可。 但是当业务发展，网站缓存服务需要扩容时就会出现问题，比如3台缓存服务器要扩容到4台，就会导致75%的数据无法命中，当100台服务器中增加一台，不命中率会到达99%（n/（n+1））,这显然是不能接受的。 在设计分布式缓存集群的时候，需要考虑集群的伸缩性，也就是当向集群中">
 <meta name="twitter:image" content="https://images2015.cnblogs.com/blog/1142924/201704/1142924-20170419222407649-1722046559.png">
   
   
@@ -93,7 +93,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>当服务器不多，并且不考虑扩容的时候，可直接使用简单的路由算法，用服务器数除缓存数据KEY的hash值，余数作为服务器下标即可。</p>
+        <a id="more"></a>
+<p>当服务器不多，并且不考虑扩容的时候，可直接使用简单的路由算法，用服务器数除缓存数据KEY的hash值，余数作为服务器下标即可。</p>
 <p>但是当业务发展，网站缓存服务需要扩容时就会出现问题，比如3台缓存服务器要扩容到4台，就会导致75%的数据无法命中，当100台服务器中增加一台，不命中率会到达99%（n/（n+1））,这显然是不能接受的。</p>
 <p>在设计分布式缓存集群的时候，需要考虑集群的伸缩性，也就是当向集群中增加服务器的时候，要尽量减小对集群的影响，而一致性hash算法就是用来解决集群伸缩性。</p>
 <p>一致性hash算法通过构造一个长度为2^32的整数环，根据节点名的hash值将缓存服务器节点放置在这个环上，然后计算要缓存的数据的key的hash值，顺时针找到最近的服务器节点，将数据放到该服务器上。</p>
@@ -107,13 +108,13 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/07/18/分布式缓存一致性Hash算法/" data-id="cjcx5xseb001vkxjd9mebuzpm" class="article-share-link" data-share="baidu" data-title="分布式缓存一致性hash算法">分享到</a>
+        <a data-url="http://yoursite.com/2017/07/18/分布式缓存一致性Hash算法/" data-id="cjcx6qbyl001ynpjdixrwyane" class="article-share-link" data-share="baidu" data-title="分布式缓存一致性hash算法">分享到</a>
       
 
 
 
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式缓存/">分布式缓存</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式系统/">分布式系统</a></li></ul>
 
     </footer>
   </div>
@@ -156,7 +157,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器相关/">Java容器相关</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式消息/">分布式消息</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发相关/">并发相关</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/感悟/">感悟</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架相关/">框架相关</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">4</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JDK探究/">JDK探究</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring探究/">Spring探究</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式系统/">分布式系统</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -165,7 +166,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/JVM相关/" style="font-size: 18.33px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 13.33px;">Java基础</a> <a href="/tags/Java容器相关/" style="font-size: 16.67px;">Java容器相关</a> <a href="/tags/个人开源项目/" style="font-size: 11.67px;">个人开源项目</a> <a href="/tags/分布式消息/" style="font-size: 11.67px;">分布式消息</a> <a href="/tags/分布式缓存/" style="font-size: 20px;">分布式缓存</a> <a href="/tags/并发相关/" style="font-size: 15px;">并发相关</a> <a href="/tags/感悟/" style="font-size: 10px;">感悟</a> <a href="/tags/操作记录/" style="font-size: 13.33px;">操作记录</a> <a href="/tags/框架相关/" style="font-size: 13.33px;">框架相关</a> <a href="/tags/读书笔记/" style="font-size: 15px;">读书笔记</a> <a href="/tags/随笔/" style="font-size: 13.33px;">随笔</a> <a href="/tags/高并发方案/" style="font-size: 15px;">高并发方案</a>
+      <a href="/tags/JDK探究/" style="font-size: 20px;">JDK探究</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/Spring探究/" style="font-size: 14px;">Spring探究</a> <a href="/tags/个人开源项目/" style="font-size: 12px;">个人开源项目</a> <a href="/tags/分布式系统/" style="font-size: 18px;">分布式系统</a> <a href="/tags/分布式缓存/" style="font-size: 12px;">分布式缓存</a> <a href="/tags/操作记录/" style="font-size: 12px;">操作记录</a> <a href="/tags/读书笔记/" style="font-size: 14px;">读书笔记</a> <a href="/tags/随笔/" style="font-size: 16px;">随笔</a> <a href="/tags/高并发方案/" style="font-size: 10px;">高并发方案</a>
     </div>
   </div>
 
@@ -194,7 +195,7 @@
           </li>
         
           <li>
-            <a href="/2017/09/18/一个97年的IT人创业历程中的总结和感悟/">一个97年的IT人创业历程中的总结和感悟</a>
+            <a href="/2017/09/18/一个97年的IT人创业历程中的总结和感悟/">创业历程中的总结和感悟</a>
           </li>
         
           <li>

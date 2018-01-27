@@ -9,7 +9,7 @@
   <title>分布式锁通用解决方案 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="分布式锁的解决方式：基于数据库：    基于数据库表做乐观锁，用于分布式锁。（version）    基于数据库表做悲观锁（InnoDB，for update）    基于数据库表数据记录做唯一约束（表中记录方法名称）  基于缓存：  常用方案：使用redis的setnx()用于分布式锁。（setNx，直接设置值为当前时间+超时时间，保持操作原子性） 使用memcached的add()方法，用于分">
-<meta name="keywords" content="分布式缓存">
+<meta name="keywords" content="分布式系统">
 <meta property="og:type" content="article">
 <meta property="og:title" content="分布式锁通用解决方案">
 <meta property="og:url" content="http://yoursite.com/2017/07/18/分布式锁通用解决方案/index.html">
@@ -19,7 +19,7 @@
 <meta property="og:image" content="https://images2017.cnblogs.com/blog/883340/201712/883340-20171215162325324-1574794414.png">
 <meta property="og:image" content="https://images2017.cnblogs.com/blog/883340/201712/883340-20171215162408918-407807720.png">
 <meta property="og:image" content="https://images2017.cnblogs.com/blog/883340/201712/883340-20171215162608496-32637486.png">
-<meta property="og:updated_time" content="2018-01-27T09:37:29.311Z">
+<meta property="og:updated_time" content="2018-01-27T09:50:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分布式锁通用解决方案">
 <meta name="twitter:description" content="分布式锁的解决方式：基于数据库：    基于数据库表做乐观锁，用于分布式锁。（version）    基于数据库表做悲观锁（InnoDB，for update）    基于数据库表数据记录做唯一约束（表中记录方法名称）  基于缓存：  常用方案：使用redis的setnx()用于分布式锁。（setNx，直接设置值为当前时间+超时时间，保持操作原子性） 使用memcached的add()方法，用于分">
@@ -107,7 +107,7 @@
 <h3 id="基于Zookeeper："><a href="#基于Zookeeper：" class="headerlink" title="基于Zookeeper："></a>基于Zookeeper：</h3><blockquote>
 <p>每个客户端对某个方法加锁时，在zookeeper上的与该方法对应的指定节点的目录下，生成一个唯一的瞬时有序节点。 判断是否获取锁只需要判断有序节点中序号最小的一个。 当释放锁的时候，只需将这个瞬时节点删除即可。</p>
 </blockquote>
-<p>&lt;–more–&gt;</p>
+<a id="more"></a>
 <p>首先明确一点，有人可能会问是否可以考虑采用ReentrantLock来实现，但是实际上去实现的时候是有问题的，ReentrantLock的lock和unlock要求必须是在同一线程进行，而分布式应用中，lock和unlock是两次不相关的请求，因此肯定不是同一线程，因此导致无法使用ReentrantLock。</p>
 <h2 id="基于数据库实现分布式锁"><a href="#基于数据库实现分布式锁" class="headerlink" title="基于数据库实现分布式锁"></a>基于数据库实现分布式锁</h2><h3 id="基于数据库表数据记录做唯一约束（表中记录方法名称）"><a href="#基于数据库表数据记录做唯一约束（表中记录方法名称）" class="headerlink" title="基于数据库表数据记录做唯一约束（表中记录方法名称）"></a>基于数据库表数据记录做唯一约束（表中记录方法名称）</h3><p>要实现分布式锁，最简单的方式可能就是直接创建一张锁表，然后通过操作该表中的数据来实现了。</p>
 <p>当我们要锁住某个方法或资源时，我们就在该表中增加一条记录，想要释放锁的时候就删除这条记录。<br>创建这样一张数据库表：<br><img src="https://images2017.cnblogs.com/blog/883340/201712/883340-20171215162247105-1526668607.png" alt=""></p>
@@ -315,13 +315,13 @@ throw new IllegalMonitorStateException(&quot;没有获取到锁的线程无法�
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/07/18/分布式锁通用解决方案/" data-id="cjcx5xsed001xkxjd1z5n9jj2" class="article-share-link" data-share="baidu" data-title="分布式锁通用解决方案">分享到</a>
+        <a data-url="http://yoursite.com/2017/07/18/分布式锁通用解决方案/" data-id="cjcx6qbyp0023npjd2y693ej4" class="article-share-link" data-share="baidu" data-title="分布式锁通用解决方案">分享到</a>
       
 
 
 
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式缓存/">分布式缓存</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式系统/">分布式系统</a></li></ul>
 
     </footer>
   </div>
@@ -364,7 +364,7 @@ throw new IllegalMonitorStateException(&quot;没有获取到锁的线程无法�
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM相关/">JVM相关</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java容器相关/">Java容器相关</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式消息/">分布式消息</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发相关/">并发相关</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/感悟/">感悟</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架相关/">框架相关</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">4</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JDK探究/">JDK探究</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring探究/">Spring探究</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式系统/">分布式系统</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -373,7 +373,7 @@ throw new IllegalMonitorStateException(&quot;没有获取到锁的线程无法�
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/JVM相关/" style="font-size: 18.33px;">JVM相关</a> <a href="/tags/Java基础/" style="font-size: 13.33px;">Java基础</a> <a href="/tags/Java容器相关/" style="font-size: 16.67px;">Java容器相关</a> <a href="/tags/个人开源项目/" style="font-size: 11.67px;">个人开源项目</a> <a href="/tags/分布式消息/" style="font-size: 11.67px;">分布式消息</a> <a href="/tags/分布式缓存/" style="font-size: 20px;">分布式缓存</a> <a href="/tags/并发相关/" style="font-size: 15px;">并发相关</a> <a href="/tags/感悟/" style="font-size: 10px;">感悟</a> <a href="/tags/操作记录/" style="font-size: 13.33px;">操作记录</a> <a href="/tags/框架相关/" style="font-size: 13.33px;">框架相关</a> <a href="/tags/读书笔记/" style="font-size: 15px;">读书笔记</a> <a href="/tags/随笔/" style="font-size: 13.33px;">随笔</a> <a href="/tags/高并发方案/" style="font-size: 15px;">高并发方案</a>
+      <a href="/tags/JDK探究/" style="font-size: 20px;">JDK探究</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/Spring探究/" style="font-size: 14px;">Spring探究</a> <a href="/tags/个人开源项目/" style="font-size: 12px;">个人开源项目</a> <a href="/tags/分布式系统/" style="font-size: 18px;">分布式系统</a> <a href="/tags/分布式缓存/" style="font-size: 12px;">分布式缓存</a> <a href="/tags/操作记录/" style="font-size: 12px;">操作记录</a> <a href="/tags/读书笔记/" style="font-size: 14px;">读书笔记</a> <a href="/tags/随笔/" style="font-size: 16px;">随笔</a> <a href="/tags/高并发方案/" style="font-size: 10px;">高并发方案</a>
     </div>
   </div>
 
@@ -402,7 +402,7 @@ throw new IllegalMonitorStateException(&quot;没有获取到锁的线程无法�
           </li>
         
           <li>
-            <a href="/2017/09/18/一个97年的IT人创业历程中的总结和感悟/">一个97年的IT人创业历程中的总结和感悟</a>
+            <a href="/2017/09/18/一个97年的IT人创业历程中的总结和感悟/">创业历程中的总结和感悟</a>
           </li>
         
           <li>
