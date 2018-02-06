@@ -64,9 +64,9 @@
     <div class="outer">
       <section id="main">
   
-    <article id="post-分布式缓存一致性Hash算法" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-分布式锁通用解决方案" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/07/18/分布式缓存一致性Hash算法/" class="article-date">
+    <a href="/2017/07/18/分布式锁通用解决方案/" class="article-date">
   <time datetime="2017-07-18T02:05:54.000Z" itemprop="datePublished">2017-07-18</time>
 </a>
     
@@ -78,7 +78,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/18/分布式缓存一致性Hash算法/">分布式缓存一致性hash算法</a>
+      <a class="article-title" href="/2017/07/18/分布式锁通用解决方案/">分布式锁通用解决方案</a>
     </h1>
   
 
@@ -86,22 +86,29 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <a id="more"></a>
-<p>当服务器不多，并且不考虑扩容的时候，可直接使用简单的路由算法，用服务器数除缓存数据KEY的hash值，余数作为服务器下标即可。</p>
-<p>但是当业务发展，网站缓存服务需要扩容时就会出现问题，比如3台缓存服务器要扩容到4台，就会导致75%的数据无法命中，当100台服务器中增加一台，不命中率会到达99%（n/（n+1））,这显然是不能接受的。</p>
-<p>在设计分布式缓存集群的时候，需要考虑集群的伸缩性，也就是当向集群中增加服务器的时候，要尽量减小对集群的影响，而一致性hash算法就是用来解决集群伸缩性。</p>
-<p>一致性hash算法通过构造一个长度为2^32的整数环，根据节点名的hash值将缓存服务器节点放置在这个环上，然后计算要缓存的数据的key的hash值，顺时针找到最近的服务器节点，将数据放到该服务器上。</p>
-<p> <img src="https://images2015.cnblogs.com/blog/1142924/201704/1142924-20170419222407649-1722046559.png" alt=""><br>有Node0,Node1,Node2三个节点，假设Node0的hash值是1024,key1的hash值是500，key1在环上顺时针查找，最近的节点就是Node0。<br>当服务器集群又开始扩容，新增了Node3节点，从三个节点扩容到了四个节点。<br><img src="https://images2015.cnblogs.com/blog/1142924/201704/1142924-20170419222955759-356675425.png" alt=""></p>
-<p>Node3加到了Node2和Node1之间，除了Node2到Node3之间原本是Node1的数据无法再命中，其它的数据不受影响，3台扩容到4台可命中率高达75%，<br>而且集群越大，影响越小，100台服务器增加一台，命中率可达到99%。</p>
-<p>查找不小于查找树的最小值是用的二叉查找树实现的。<br>但是这样子还是会存在一个问题，就是负载不均衡的问题，当Node3加到Node2和Node1之间时，原本会访问Node1的缓存数据有50%的概率会缓存到Node3上了，这样Node0和Node2的负载会是Node1和Node3的两倍。</p>
-<p>要解决一致性hash算法带来的负载不均衡问题，可通过将每台物理服务器虚拟成一组虚拟缓存服务器，将虚拟服务器的hash值放置在hash环上，KEY在环上先找到虚拟服务器节点，然后再映射到实际的服务器上。</p>
-<p> <img src="https://images2015.cnblogs.com/blog/1142924/201704/1142924-20170419225054337-11861583.png" alt=""><br>这样在Node0,1,2虚拟节点都已存在的情况下，将Node3的多个虚拟节点分散到它们中间，多个虚拟的Node3节点会影响到其它的多个虚拟节点，而不是只影响其中一个，这样将命中率不会有变化，但是负载却更加均衡了而且虚拟节点越多越均衡。</p>
-
+        <h3 id="分布式锁的解决方式："><a href="#分布式锁的解决方式：" class="headerlink" title="分布式锁的解决方式："></a>分布式锁的解决方式：</h3><h3 id="基于数据库："><a href="#基于数据库：" class="headerlink" title="基于数据库："></a>基于数据库：</h3><blockquote>
+<p>   基于数据库表做乐观锁，用于分布式锁。（version）</p>
+<p>   基于数据库表做悲观锁（InnoDB，for update）</p>
+<p>   基于数据库表数据记录做唯一约束（表中记录方法名称）</p>
+</blockquote>
+<h3 id="基于缓存："><a href="#基于缓存：" class="headerlink" title="基于缓存："></a>基于缓存：</h3><blockquote>
+<p> 常用方案：使用redis的setnx()用于分布式锁。（setNx，直接设置值为当前时间+超时时间，保持操作原子性）</p>
+<p>使用memcached的add()方法，用于分布式锁。</p>
+<p>使用Tair的put()方法，用于分布式锁。</p>
+</blockquote>
+<h3 id="基于Zookeeper："><a href="#基于Zookeeper：" class="headerlink" title="基于Zookeeper："></a>基于Zookeeper：</h3><blockquote>
+<p>每个客户端对某个方法加锁时，在zookeeper上的与该方法对应的指定节点的目录下，生成一个唯一的瞬时有序节点。 判断是否获取锁只需要判断有序节点中序号最小的一个。 当释放锁的时候，只需将这个瞬时节点删除即可。</p>
+</blockquote>
+        
+          <p class="article-more-link">
+            <a href="/2017/07/18/分布式锁通用解决方案/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/07/18/分布式缓存一致性Hash算法/" data-id="cjdbqqfbm002634jdb1xpv6wm" class="article-share-link" data-share="baidu" data-title="分布式缓存一致性hash算法">分享到</a>
+        <a data-url="http://yoursite.com/2017/07/18/分布式锁通用解决方案/" data-id="cjdbqtvjv00298gjdr3snvpv7" class="article-share-link" data-share="baidu" data-title="分布式锁通用解决方案">分享到</a>
       
 
 
@@ -153,7 +160,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/07/15/mongoDB常见问题整理/" data-id="cjdbqqfas001c34jdv2s7bjeg" class="article-share-link" data-share="baidu" data-title="mongoDB常见问题整理">分享到</a>
+        <a data-url="http://yoursite.com/2017/07/15/mongoDB常见问题整理/" data-id="cjdbqtvj7001d8gjd6qva543j" class="article-share-link" data-share="baidu" data-title="mongoDB常见问题整理">分享到</a>
       
 
 
@@ -209,7 +216,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/07/11/Java实现动态代理与Spring的动态代理/" data-id="cjdbqqf9p000a34jdqxl5v3ly" class="article-share-link" data-share="baidu" data-title="Java实现动态代理">分享到</a>
+        <a data-url="http://yoursite.com/2017/07/11/Java实现动态代理与Spring的动态代理/" data-id="cjdbqtvi6000d8gjdafn6fsc0" class="article-share-link" data-share="baidu" data-title="Java实现动态代理">分享到</a>
       
 
 
@@ -275,7 +282,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/07/10/Sprign 动态代理机制/" data-id="cjdbqqfaa000u34jdv82h424x" class="article-share-link" data-share="baidu" data-title="Sprign 动态代理机制">分享到</a>
+        <a data-url="http://yoursite.com/2017/07/10/Sprign 动态代理机制/" data-id="cjdbqtviq000v8gjdzyv3n2lz" class="article-share-link" data-share="baidu" data-title="Sprign 动态代理机制">分享到</a>
       
 
 
@@ -327,7 +334,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/07/05/mongoDB底层运作原理/" data-id="cjdbqqfav001f34jd45a3dgfr" class="article-share-link" data-share="baidu" data-title="mongoDB运作原理与分片实现">分享到</a>
+        <a data-url="http://yoursite.com/2017/07/05/mongoDB底层运作原理/" data-id="cjdbqtvj9001f8gjdppes3zij" class="article-share-link" data-share="baidu" data-title="mongoDB运作原理与分片实现">分享到</a>
       
 
 
@@ -379,7 +386,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/06/12/shiro权限框架整合开源分享/" data-id="cjdbqqfb2001m34jds20rouaq" class="article-share-link" data-share="baidu" data-title="Shiro权限框架整合总结与开源分享">分享到</a>
+        <a data-url="http://yoursite.com/2017/06/12/shiro权限框架整合开源分享/" data-id="cjdbqtvjd001k8gjdty1zhj99" class="article-share-link" data-share="baidu" data-title="Shiro权限框架整合总结与开源分享">分享到</a>
       
 
 
@@ -431,7 +438,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/06/07/mac下IntelliJ使用记录/" data-id="cjdbqqfal001734jdwngg97h5" class="article-share-link" data-share="baidu" data-title="mac下IntelliJ使用记录">分享到</a>
+        <a data-url="http://yoursite.com/2017/06/07/mac下IntelliJ使用记录/" data-id="cjdbqtviz00188gjdyt05dko2" class="article-share-link" data-share="baidu" data-title="mac下IntelliJ使用记录">分享到</a>
       
 
 
@@ -483,7 +490,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/05/05/mongoDB生产环境三种模式/" data-id="cjdbqqfax001h34jdy3zitxew" class="article-share-link" data-share="baidu" data-title="mongoDB生产环境三种模式">分享到</a>
+        <a data-url="http://yoursite.com/2017/05/05/mongoDB生产环境三种模式/" data-id="cjdbqtvjb001i8gjd8av0mi2y" class="article-share-link" data-share="baidu" data-title="mongoDB生产环境三种模式">分享到</a>
       
 
 
@@ -535,7 +542,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/04/05/MongoDB 进阶——大文件存储(GridFS)/" data-id="cjdbqqfa3000n34jdk0tjmw3k" class="article-share-link" data-share="baidu" data-title="MongoDB 进阶——大文件存储(GridFS)">分享到</a>
+        <a data-url="http://yoursite.com/2017/04/05/MongoDB 进阶——大文件存储(GridFS)/" data-id="cjdbqtvi9000h8gjd0w2j47b2" class="article-share-link" data-share="baidu" data-title="MongoDB 进阶——大文件存储(GridFS)">分享到</a>
       
 
 
@@ -587,7 +594,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/03/13/深入浅出数据库索引原理（平衡二叉树）/" data-id="cjdbqqfcb002s34jdhkj897tk" class="article-share-link" data-share="baidu" data-title="深入浅出数据库索引原理（平衡二叉树）">分享到</a>
+        <a data-url="http://yoursite.com/2017/03/13/深入浅出数据库索引原理（平衡二叉树）/" data-id="cjdbqtvke002x8gjd5i2zfk5m" class="article-share-link" data-share="baidu" data-title="深入浅出数据库索引原理（平衡二叉树）">分享到</a>
       
 
 
@@ -664,11 +671,11 @@
           </li>
         
           <li>
-            <a href="/2017/09/18/一个97年的IT人创业历程中的总结和感悟/">创业历程中的总结和感悟</a>
+            <a href="/2017/09/18/读内藤树作品《青年们，读马克思吧》/">读内藤树作品《青年们，读马克思吧》</a>
           </li>
         
           <li>
-            <a href="/2017/09/18/读内藤树作品《青年们，读马克思吧》/">读内藤树作品《青年们，读马克思吧》</a>
+            <a href="/2017/09/18/一个97年的IT人创业历程中的总结和感悟/">创业历程中的总结和感悟</a>
           </li>
         
       </ul>
