@@ -1,0 +1,357 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<meta name="baidu-site-verification" content="LHYPl19xg9" />
+<meta name="google-site-verification" content="s5HGo7JQp9QFcl2HIOHaNDUdwj3_kdgi5nPkB5bfMHs" />
+  
+  <title>多机的Sequence问题与处理 | 无题</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="背景数据库拆分之后，会引入诸多新的问题，其中之一就是，以MySQL为例，原先单表的时候， 可以通过MySQL自带的aut_increment实现自增不重复id，现在用不了了。数据库层面 做不了必须引入中间件去解决。 id的特点  唯一性(刚需或者说是硬性要求) 连续性  分布式系统中可以使用一个独立的ID生成器，服务有以下问题需要解决  性能问题？ 每次远程取id都会有损耗。   改进方案 一次取">
+<meta name="keywords" content="分布式系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多机的Sequence问题与处理">
+<meta property="og:url" content="http://yoursite.com/2017/08/01/多机的Sequence问题与处理/index.html">
+<meta property="og:site_name" content="无题">
+<meta property="og:description" content="背景数据库拆分之后，会引入诸多新的问题，其中之一就是，以MySQL为例，原先单表的时候， 可以通过MySQL自带的aut_increment实现自增不重复id，现在用不了了。数据库层面 做不了必须引入中间件去解决。 id的特点  唯一性(刚需或者说是硬性要求) 连续性  分布式系统中可以使用一个独立的ID生成器，服务有以下问题需要解决  性能问题？ 每次远程取id都会有损耗。   改进方案 一次取">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/67a6a651gw1dujgqcx9ncj.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/08/01/多机的Sequence问题与处理/_image/2018-01-28-22-32-24.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/08/01/多机的Sequence问题与处理/_image/2018-01-28-22-33-11.jpg">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4324380-218f5e6218923bf4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+<meta property="og:updated_time" content="2018-01-28T14:33:43.015Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="多机的Sequence问题与处理">
+<meta name="twitter:description" content="背景数据库拆分之后，会引入诸多新的问题，其中之一就是，以MySQL为例，原先单表的时候， 可以通过MySQL自带的aut_increment实现自增不重复id，现在用不了了。数据库层面 做不了必须引入中间件去解决。 id的特点  唯一性(刚需或者说是硬性要求) 连续性  分布式系统中可以使用一个独立的ID生成器，服务有以下问题需要解决  性能问题？ 每次远程取id都会有损耗。   改进方案 一次取">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/67a6a651gw1dujgqcx9ncj.jpg">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">无题</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">天南地北问乾坤</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="yoursite.com">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-多机的Sequence问题与处理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/08/01/多机的Sequence问题与处理/" class="article-date">
+  <time datetime="2017-08-01T02:56:31.000Z" itemprop="datePublished">2017-08-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      多机的Sequence问题与处理
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>背景<br>数据库拆分之后，会引入诸多新的问题，其中之一就是，以MySQL为例，原先单表的时候， 可以通过MySQL自带的aut_increment实现自增不重复id，现在用不了了。数据库层面 做不了必须引入中间件去解决。</p>
+<p>id的特点</p>
+<ul>
+<li>唯一性(刚需或者说是硬性要求)</li>
+<li>连续性</li>
+</ul>
+<p>分布式系统中可以使用一个独立的ID生成器，服务有以下问题需要解决</p>
+<ul>
+<li>性能问题？ 每次远程取id都会有损耗。</li>
+</ul>
+<ul>
+<li>改进方案 一次取一段id，然后缓存在本地，缺点是，万一应用宕机，整段id浪费。</li>
+</ul>
+<ul>
+<li><p>生成器的稳定性， 其实生成器的稳定性可以依赖于业务库的稳定性，不要求（4个9?）的稳定性，因为万一业务库挂了，生成器可用也是没卵用的。作为一个无状态的集群存在，可用性要靠整个集群来保证。</p>
+</li>
+<li><p>存储的问题。</p>
+</li>
+</ul>
+<h2 id="Flicker方案："><a href="#Flicker方案：" class="headerlink" title="Flicker方案："></a>Flicker方案：</h2><p>flickr开发团队在2010年撰文介绍了flickr使用的一种主键生成测策略，同时表示该方案在flickr上的实际运行效果也非常令人满意，原文连接：<a href="http://code.flickr.com/blog/2010/02/08/ticket-servers-distributed-unique-primary-keys-on-the-cheap/" target="_blank" rel="external">Ticket Servers: Distributed Unique Primary Keys on the Cheap </a>这个方案是我目前知道的最好的方案，它与一般Sequence表方案有些类似，但却很好地解决了性能瓶颈和单点问题，是一种非常可靠而高效的全局主键生成方案。</p>
+<p><img src="http://ww1.sinaimg.cn/large/67a6a651gw1dujgqcx9ncj.jpg" alt=""></p>
+<p>flickr这一方案的整体思想是：建立两台以上的数据库ID生成服务器，每个服务器都有一张记录各表当前ID的Sequence表，但是Sequence中ID增长的步长是服务器的数量，起始值依次错开，这样相当于把ID的生成散列到了每个服务器节点上。</p>
+<p>例如：如果我们设置两台数据库ID生成服务器，那么就让一台的Sequence表的ID起始值为1,每次增长步长为2,另一台的Sequence表的ID起始值为2,每次增长步长也为2，那么结果就是奇数的ID都将从第一台服务器上生成，偶数的ID都从第二台服务器上生成，这样就将生成ID的压力均匀分散到两台服务器上，同时配合应用程序的控制，当一个服务器失效后，系统能自动切换到另一个服务器上获取ID，从而保证了系统的容错。</p>
+<p>关于这个方案，有几点细节这里再说明一下：</p>
+<ol>
+<li><p>flickr的数据库ID生成服务器是专用服务器，服务器上只有一个数据库，数据库中表都是用于生成Sequence的，这也是因为auto-increment-offset和auto-increment-increment这两个数据库变量是数据库实例级别的变量。</p>
+</li>
+<li><p>flickr的方案中表格中的stub字段只是一个char(1) NOT NULL存根字段，并非表名，因此，一般来说，一个Sequence表只有一条纪录，可以同时为多张表生成ID，如果需要表的ID是有连续的，需要为该表单独建立Sequence表。</p>
+</li>
+<li><p>方案使用了mysql的LAST_INSERT_ID()函数，这也决定了Sequence表只能有一条记录。</p>
+</li>
+<li><p>使用REPLACE INTO插入数据，这是很讨巧的作法，主要是希望利用mysql自身的机制生成ID,不仅是因为这样简单，更是因为我们需要ID按照我们设定的方式(初值和步长)来生成。</p>
+</li>
+<li><p>SELECT LAST_INSERT_ID()必须要于REPLACE INTO语句在同一个数据库连接下才能得到刚刚插入的新ID，否则返回的值总是0</p>
+</li>
+<li><p>该方案中Sequence表使用的是MyISAM引擎，以获取更高的性能，注意：MyISAM引擎使用的是表级别的锁，MyISAM对表的读写是串行的，因此不必担心在并发时两次读取会得到同一个ID(另外，应该程序也不需要同步，每个请求的线程都会得到一个新的connection,不存在需要同步的共享资源)。经过实际对比测试，使用一样的Sequence表进行ID生成，MyISAM引擎要比InnoDB表现高出很多！</p>
+</li>
+<li><p>可使用纯JDBC实现对Sequence表的操作，以便获得更高的效率，实验表明，即使只使用Spring JDBC性能也不及纯JDBC来得快！</p>
+</li>
+</ol>
+<p>实现该方案，应用程序同样需要做一些处理，主要是两方面的工作：</p>
+<ol>
+<li><p>自动均衡数据库ID生成服务器的访问</p>
+</li>
+<li><p>确保在某个数据库ID生成服务器失效的情况下，能将请求转发到其他服务器上执行。</p>
+</li>
+</ol>
+<h2 id="Twitter方案"><a href="#Twitter方案" class="headerlink" title="Twitter方案"></a>Twitter方案</h2><h4 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h4><p>Twitter-Snowflake算法产生的背景相当简单，为了满足Twitter每秒上万条消息的请求，每条消息都必须分配一条唯一的id，这些id还需要一些大致的顺序（方便客户端排序），并且在分布式系统中不同机器产生的id必须不同。</p>
+<h4 id="2、Snowflake算法核心"><a href="#2、Snowflake算法核心" class="headerlink" title="2、Snowflake算法核心"></a>2、Snowflake算法核心</h4><p>把<strong>时间戳，工作机器id，序列号</strong>组合在一起。</p>
+<p><img src="./_image/2018-01-28-22-32-24.jpg" alt=""></p>
+<p>除了最高位bit标记为不可用以外，其余三组bit占位均可浮动，看具体的业务需求而定。默认情况下41bit的时间戳可以支持该算法使用到2082年，10bit的工作机器id可以支持1023台机器，序列号支持1毫秒产生4095个自增序列id。下文会具体分析。</p>
+<h5 id="2-1-Snowflake-–-时间戳"><a href="#2-1-Snowflake-–-时间戳" class="headerlink" title="2.1 Snowflake – 时间戳"></a>2.1 Snowflake – 时间戳</h5><p>这里时间戳的细度是毫秒级，具体代码如下，建议使用64位linux系统机器，因为有<a href="https://link.jianshu.com?t=http://man7.org/linux/man-pages/man7/vdso.7.html" target="_blank" rel="external">vdso</a>，gettimeofday()在用户态就可以完成操作，减少了进入内核态的损耗。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">uint64_t generateStamp()</div><div class="line">&#123;</div><div class="line">timeval tv;</div><div class="line">gettimeofday(&amp;tv, 0);</div><div class="line">return (uint64_t)tv.tv_sec * 1000 + (uint64_t)tv.tv_usec / 1000;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>默认情况下有41个bit可以供使用，那么一共有T（1llu &lt;&lt; 41）毫秒供你使用分配，年份 = T / (3600 <em> 24 </em> 365 * 1000) = 69.7年。如果你只给时间戳分配39个bit使用，那么根据同样的算法最后年份 = 17.4年。</p>
+<h5 id="2-2-Snowflake-–-工作机器id"><a href="#2-2-Snowflake-–-工作机器id" class="headerlink" title="2. 2 Snowflake – 工作机器id"></a>2. 2 Snowflake – 工作机器id</h5><p><img src="./_image/2018-01-28-22-33-11.jpg" alt=""></p>
+<p>严格意义上来说这个bit段的使用可以是进程级，机器级的话你可以使用MAC地址来唯一标示工作机器，工作进程级可以使用IP+Path来区分工作进程。如果工作机器比较少，可以使用配置文件来设置这个id是一个不错的选择，如果机器过多配置文件的维护是一个灾难性的事情。</p>
+<p>这里的解决方案是需要一个工作id分配的进程，可以使用自己编写一个简单进程来记录分配id，或者利用Mysql auto_increment机制也可以达到效果。</p>
+<p><img src="//upload-images.jianshu.io/upload_images/4324380-218f5e6218923bf4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt=""></p>
+<p>工作进程与工作id分配器只是在工作进程启动的时候交互一次，然后工作进程可以自行将分配的id数据落文件，下一次启动直接读取文件里的id使用。</p>
+<p><strong>PS：这个工作机器id的bit段也可以进一步拆分，比如用前5个bit标记进程id，后5个bit标记线程id之类:D</strong></p>
+<h5 id="2-3-Snowflake-–-序列号"><a href="#2-3-Snowflake-–-序列号" class="headerlink" title="2.3 Snowflake – 序列号"></a>2.3 Snowflake – 序列号</h5><p>序列号就是一系列的自增id（多线程建议使用atomic），为了处理在同一毫秒内需要给多条消息分配id，若同一毫秒把序列号用完了，则“等待至下一毫秒”。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">uint64_t waitNextMs(uint64_t lastStamp)</div><div class="line">&#123;</div><div class="line">    uint64_t cur = 0;</div><div class="line">    do &#123;</div><div class="line">        cur = generateStamp();</div><div class="line">    &#125; while (cur &lt;= lastStamp);</div><div class="line">    return cur;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>总体来说，是一个很高效很方便的GUID产生算法，一个int64_t字段就可以胜任，不像现在主流128bit的GUID算法，即使无法保证严格的id序列性，但是对于特定的业务，比如用做游戏服务器端的GUID产生会很方便。另外，在多线程的环境下，序列号使用atomic可以在代码实现上有效减少锁的密度。</p>
+<h4 id="3、Snowflake-算法实现（Java）"><a href="#3、Snowflake-算法实现（Java）" class="headerlink" title="3、Snowflake - 算法实现（Java）"></a>3、Snowflake - 算法实现（Java）</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div></pre></td><td class="code"><pre><div class="line">public class IdWorker &#123;</div><div class="line">    private final long twepoch = 1288834974657L;</div><div class="line">    private final long workerIdBits = 5L;</div><div class="line">    private final long datacenterIdBits = 5L;</div><div class="line">    private final long maxWorkerId = -1L ^ (-1L &lt;&lt; workerIdBits);</div><div class="line">    private final long maxDatacenterId = -1L ^ (-1L &lt;&lt; datacenterIdBits);</div><div class="line">    private final long sequenceBits = 12L;</div><div class="line">    private final long workerIdShift = sequenceBits;</div><div class="line">    private final long datacenterIdShift = sequenceBits + workerIdBits;</div><div class="line">    private final long timestampLeftShift = sequenceBits + workerIdBits + datacenterIdBits;</div><div class="line">    private final long sequenceMask = -1L ^ (-1L &lt;&lt; sequenceBits);</div><div class="line"></div><div class="line">    private long workerId;</div><div class="line">    private long datacenterId;</div><div class="line">    private long sequence = 0L;</div><div class="line">    private long lastTimestamp = -1L;</div><div class="line"></div><div class="line">    public IdWorker(long workerId, long datacenterId) &#123;</div><div class="line">        if (workerId &gt; maxWorkerId || workerId &lt; 0) &#123;</div><div class="line">            throw new IllegalArgumentException(String.format(&quot;worker Id can&apos;t be greater than %d or less than 0&quot;, maxWorkerId));</div><div class="line">        &#125;</div><div class="line">        if (datacenterId &gt; maxDatacenterId || datacenterId &lt; 0) &#123;</div><div class="line">            throw new IllegalArgumentException(String.format(&quot;datacenter Id can&apos;t be greater than %d or less than 0&quot;, maxDatacenterId));</div><div class="line">        &#125;</div><div class="line">        this.workerId = workerId;</div><div class="line">        this.datacenterId = datacenterId;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public synchronized long nextId() &#123;</div><div class="line">        long timestamp = timeGen();</div><div class="line">        if (timestamp &lt; lastTimestamp) &#123;</div><div class="line">            throw new RuntimeException(String.format(&quot;Clock moved backwards.  Refusing to generate id for %d milliseconds&quot;, lastTimestamp - timestamp));</div><div class="line">        &#125;</div><div class="line">        if (lastTimestamp == timestamp) &#123;</div><div class="line">            sequence = (sequence + 1) &amp; sequenceMask;</div><div class="line">            if (sequence == 0) &#123;</div><div class="line">                timestamp = tilNextMillis(lastTimestamp);</div><div class="line">            &#125;</div><div class="line">        &#125; else &#123;</div><div class="line">            sequence = 0L;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        lastTimestamp = timestamp;</div><div class="line"></div><div class="line">        return ((timestamp - twepoch) &lt;&lt; timestampLeftShift) | (datacenterId &lt;&lt; datacenterIdShift) | (workerId &lt;&lt; workerIdShift) | sequence;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    protected long tilNextMillis(long lastTimestamp) &#123;</div><div class="line">        long timestamp = timeGen();</div><div class="line">        while (timestamp &lt;= lastTimestamp) &#123;</div><div class="line">            timestamp = timeGen();</div><div class="line">        &#125;</div><div class="line">        return timestamp;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    protected long timeGen() &#123;</div><div class="line">        return System.currentTimeMillis();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public static void main(String[] args) &#123;</div><div class="line">        IdWorker idWorker = new IdWorker(0, 0);</div><div class="line">        for (int i = 0; i &lt; 100; i++) &#123;</div><div class="line">            long id = idWorker.nextId();</div><div class="line">            System.out.println(id);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2017/08/01/多机的Sequence问题与处理/" data-id="cjdbqqfbz002g34jdd3uru8db" class="article-share-link" data-share="baidu" data-title="多机的Sequence问题与处理">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式系统/">分布式系统</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/08/01/秒杀系统解决方案/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          秒杀系统解决方案
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/07/25/Java类加载机制原理解析/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">Java类加载机制原理解析</div>
+    </a>
+  
+</nav>
+
+  
+
+
+
+</article>
+
+
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JDK探究/">JDK探究</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring探究/">Spring探究</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式系统/">分布式系统</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JDK探究/" style="font-size: 20px;">JDK探究</a> <a href="/tags/Spring探究/" style="font-size: 15px;">Spring探究</a> <a href="/tags/个人开源项目/" style="font-size: 10px;">个人开源项目</a> <a href="/tags/分布式系统/" style="font-size: 20px;">分布式系统</a> <a href="/tags/分布式缓存/" style="font-size: 10px;">分布式缓存</a> <a href="/tags/操作记录/" style="font-size: 10px;">操作记录</a> <a href="/tags/读书笔记/" style="font-size: 15px;">读书笔记</a> <a href="/tags/随笔/" style="font-size: 15px;">随笔</a> <a href="/tags/高并发方案/" style="font-size: 10px;">高并发方案</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/01/25/消息中间件的设计与实现/">消息中间件的设计与实践</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/11/分布式系统幂等性解决方案/">分布式系统幂等性解决方案</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/19/读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地/">读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/18/一个97年的IT人创业历程中的总结和感悟/">创业历程中的总结和感悟</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/18/读内藤树作品《青年们，读马克思吧》/">读内藤树作品《青年们，读马克思吧》</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/yuaman" target="_blank">我的git同性交友主页</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+
+
+
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 yutinglin<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+
+
+
+</footer>
+
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+
+
+
+
+
+
+
+
+</div>
+</body>
+</html>

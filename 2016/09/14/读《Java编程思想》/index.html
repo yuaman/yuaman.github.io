@@ -1,0 +1,323 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<meta name="baidu-site-verification" content="LHYPl19xg9" />
+<meta name="google-site-verification" content="s5HGo7JQp9QFcl2HIOHaNDUdwj3_kdgi5nPkB5bfMHs" />
+  
+  <title>TPS与QPS概念 | 无题</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="2016-09-14Java编程思想是一本对于初级程序员来说较高端的入门书。他有两个特点：  在容器以及并发编程方面不深入，对于一些技术点，只是浅尝辄止的提及而没有深入的探究。  比如：在容器中，只是解释了hashmap的执行原理，对于容器涉及到的其他数据结构例如链表，哈希表+链表，红黑树，没有尽兴深入的探究。在并发章节中也有类似的问题，对于一些重要的类没有深入的谈论，基本上只有一个demo。">
+<meta name="keywords" content="高并发方案">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TPS与QPS概念">
+<meta property="og:url" content="http://yoursite.com/2016/09/14/读《Java编程思想》/index.html">
+<meta property="og:site_name" content="无题">
+<meta property="og:description" content="2016-09-14Java编程思想是一本对于初级程序员来说较高端的入门书。他有两个特点：  在容器以及并发编程方面不深入，对于一些技术点，只是浅尝辄止的提及而没有深入的探究。  比如：在容器中，只是解释了hashmap的执行原理，对于容器涉及到的其他数据结构例如链表，哈希表+链表，红黑树，没有尽兴深入的探究。在并发章节中也有类似的问题，对于一些重要的类没有深入的谈论，基本上只有一个demo。">
+<meta property="og:image" content="http://yoursite.com/2016/09/14/读《Java编程思想》/_image/2018-01-27-18-43-32.jpg">
+<meta property="og:updated_time" content="2018-01-27T10:43:44.552Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TPS与QPS概念">
+<meta name="twitter:description" content="2016-09-14Java编程思想是一本对于初级程序员来说较高端的入门书。他有两个特点：  在容器以及并发编程方面不深入，对于一些技术点，只是浅尝辄止的提及而没有深入的探究。  比如：在容器中，只是解释了hashmap的执行原理，对于容器涉及到的其他数据结构例如链表，哈希表+链表，红黑树，没有尽兴深入的探究。在并发章节中也有类似的问题，对于一些重要的类没有深入的谈论，基本上只有一个demo。">
+<meta name="twitter:image" content="http://yoursite.com/2016/09/14/读《Java编程思想》/_image/2018-01-27-18-43-32.jpg">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">无题</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">天南地北问乾坤</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="yoursite.com">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-读《Java编程思想》" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/09/14/读《Java编程思想》/" class="article-date">
+  <time datetime="2016-09-14T09:37:31.000Z" itemprop="datePublished">2016-09-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      TPS与QPS概念
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="2016-09-14"><a href="#2016-09-14" class="headerlink" title="2016-09-14"></a>2016-09-14</h3><p>Java编程思想是一本对于初级程序员来说较高端的入门书。<br>他有两个特点：</p>
+<ol>
+<li>在容器以及并发编程方面不深入，对于一些技术点，只是浅尝辄止的提及而没有深入的探究。</li>
+</ol>
+<p>比如：在容器中，只是解释了hashmap的执行原理，对于容器涉及到的其他数据结构例如链表，哈希表+链表，红黑树，没有尽兴深入的探究。在并发章节中也有类似的问题，对于一些重要的类没有深入的谈论，基本上只有一个demo。</p>
+<ol>
+<li><p>代码风格上，java编程思想的示例代码用户体验相当不好，又臭又长。</p>
+</li>
+<li><p>翻译差劲，有些地方觉得不理解事实上不是我们能力不行，而是翻译太垃圾。所以在这些地方会非常耽误时间。</p>
+</li>
+</ol>
+<p>综上所述，我认为Java编程思想是一本入门书，在Java语言高级部分的涉猎相当一般。有不少人说Java编程思想适合年轻javaer反复阅读，每次都会有收获，实际上目前来讲我很存疑。如果真要追求收获，为什么不去针对Java语言四个高级部分分别做深入的探究呢。在这本书中所谓的收获无非是浅尝辄止的提及一些概念，谁要是读完这本书说对容器类以及并发有了深入的了解，那是不可能的。</p>
+<p>另一方面，这本书也确实老旧了。目前我们读到的第四版是07年出版的，是针对Java1.5的。目前已经差了好多。</p>
+<h3 id="2017-09-19"><a href="#2017-09-19" class="headerlink" title="2017-09-19"></a>2017-09-19</h3><p>和一位前辈探讨了关于这本书的意义。</p>
+<p>于是近日在读这本书的前面一部分，也就是基础这一部分。当初在学习基础的时候不成体系，很多东西穿不起来。但是说实话，对我之后的实际开发有什么影响吗？可能影响的地方还真不太多。前辈说《Java编程思想》是他们学习的时候对他们影响很大的一本书（估计是那时候没有什么别的好的教材），主要是在面向对象的思想方面可以给初学者建立一个很好的概念。</p>
+<p>近几天挤出每天晚上的时间把《Java编程思想》前五个章节给读了一下，在有些地方还是解决我一直以来的疑惑，有些地方也对原有的概念的做了梳理。只是篇幅太长，每天读一章很困难。</p>
+<p>读《Java编程思想》不能用PDF，体验太差，而且容易生气烦躁，影响学习的效果。</p>
+<h3 id="2017-09-20"><a href="#2017-09-20" class="headerlink" title="2017-09-20"></a>2017-09-20</h3><ol>
+<li>读书并不可怕，关键是要建立一种信心。</li>
+</ol>
+<p>《Java编程思想》这本书太厚了，一共七百多页。我估计一定会让现在的初学者和一两年经验的人望而却步。事实上，一开始我也没有读这本书也是这样的心理。我也开始时直接到了并发章节和容器章节，后来才看了基础部分。而实际上，这本书的每一个章节基本上在三十页左右。对其进行有效的分解，很重要。毛主席提过一个概念“攻书”；就是一定要想办法把这本书给啃下来。项目忙时每天读一个章节，项目不忙以及周末时每天读两到三个章节，（之多三个，再多估计就会恶心）。循序渐进，对于有一定经验的程序员来说在一个月之内搞定它不成问题。</p>
+<ol>
+<li>一定要找一个阳光充足的地方来读书。</li>
+</ol>
+<p>这个我体会太深了，我在家里（房间采光不是很好，暗不啦叽的。）读效果就不是很好，在一个办公室内也不是很好，直到我到另一个会议室内，阅读效果大不一样。</p>
+<ol>
+<li>在复用类章节的末尾，作者的结论和我产生了共鸣。</li>
+</ol>
+<p>![当 你 开 始 设 计 一 个 系 统 时 ， 应 该 认 识 到 程 序 开 发 是 一 种 增 量 过 程 ， 犹 如 人 类 的 学 习 一<br>这 一 点 很 重 要 。 程 序 开 发 依 赖 于 实 验 ， 你 可 以 尽 己 所 能 去 分 析 ， 但 当 你 开 始 执 行 一 个 项 目<br>你 仍 然 无 法 知 道 所 有 的 答 案 。 如 果 将 项 目 视 作 是 一 种 有 机 的 、 进 化 着 的 生 命 体 而 去 培 养 ，<br>是 打 算 像 盖 摩 天 大 楼 一 样 快 速 见 效 ， 就 会 获 得 更 多 的 成 功 和 更 迅 速 的 回 馈 。 继 承 与 组 合 正<br>面 向 对 象 程 序 设 计 中 使 得 你 可 以 执 行 这 种 实 验 的 最 基 本 的 两 个 工 具 。<br><img src="./_image/2018-01-27-18-43-32.jpg" alt=""></p>
+<p>从前我做项目，总是急功近利，结果总是欲速则不达。焦躁急切，从做传统工程的角度去考虑。</p>
+<h3 id="2017-09-21"><a href="#2017-09-21" class="headerlink" title="2017-09-21"></a>2017-09-21</h3><p>不要把自己搞的太累，得不偿失。</p>
+<p>昨天晚上接了个电话，聊了一个小时。然后看书，毛选看了五十页，看到《Java编程思想》的一个章节，太长了。想着看完，结果搞到两三点，第二天状态特别不好。看什么书都看不进去。好在把事情安排到位，依靠团队的力量把任务完成。</p>
+<h3 id="2017-10-10"><a href="#2017-10-10" class="headerlink" title="2017-10-10"></a>2017-10-10</h3><p>赶在十一之前读完了这本书。目前利用晚上的时间读《Effective Java》，这一页算是翻过了。坦白讲，读完这本700多页书，记住了什么？现在想想没记住什么。或许都在这个过程中融到骨血里了吧。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2016/09/14/读《Java编程思想》/" data-id="cjdbqqfch003434jdwa9o7a9w" class="article-share-link" data-share="baidu" data-title="TPS与QPS概念">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/高并发方案/">高并发方案</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/09/17/深入理解JVM阅读笔记以及问题整理/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          《深入理解JVM》阅读笔记以及问题整理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/09/09/ThreadLocal详解/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">ThreadLocal详解</div>
+    </a>
+  
+</nav>
+
+  
+
+
+
+</article>
+
+
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JDK探究/">JDK探究</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring探究/">Spring探究</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式系统/">分布式系统</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JDK探究/" style="font-size: 20px;">JDK探究</a> <a href="/tags/Spring探究/" style="font-size: 15px;">Spring探究</a> <a href="/tags/个人开源项目/" style="font-size: 10px;">个人开源项目</a> <a href="/tags/分布式系统/" style="font-size: 20px;">分布式系统</a> <a href="/tags/分布式缓存/" style="font-size: 10px;">分布式缓存</a> <a href="/tags/操作记录/" style="font-size: 10px;">操作记录</a> <a href="/tags/读书笔记/" style="font-size: 15px;">读书笔记</a> <a href="/tags/随笔/" style="font-size: 15px;">随笔</a> <a href="/tags/高并发方案/" style="font-size: 10px;">高并发方案</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/01/25/消息中间件的设计与实现/">消息中间件的设计与实践</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/11/分布式系统幂等性解决方案/">分布式系统幂等性解决方案</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/19/读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地/">读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/18/一个97年的IT人创业历程中的总结和感悟/">创业历程中的总结和感悟</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/18/读内藤树作品《青年们，读马克思吧》/">读内藤树作品《青年们，读马克思吧》</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/yuaman" target="_blank">我的git同性交友主页</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+
+
+
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 yutinglin<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+
+
+
+</footer>
+
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+
+
+
+
+
+
+
+
+</div>
+</body>
+</html>
