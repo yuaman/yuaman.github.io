@@ -8,21 +8,21 @@
   
   <title>多机的Sequence问题与处理 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="背景数据库拆分之后，会引入诸多新的问题，其中之一就是，以MySQL为例，原先单表的时候， 可以通过MySQL自带的aut_increment实现自增不重复id，现在用不了了。数据库层面 做不了必须引入中间件去解决。 id的特点  唯一性(刚需或者说是硬性要求) 连续性  分布式系统中可以使用一个独立的ID生成器，服务有以下问题需要解决  性能问题？ 每次远程取id都会有损耗。   改进方案 一次取">
+  <meta name="description" content="数据库拆分之后，会引入诸多新的问题，其中之一就是，以MySQL为例，原先单表的时候， 可以通过MySQL自带的aut_increment实现自增不重复id，现在用不了了。数据库层面 做不了必须引入中间件去解决。">
 <meta name="keywords" content="分布式系统">
 <meta property="og:type" content="article">
 <meta property="og:title" content="多机的Sequence问题与处理">
 <meta property="og:url" content="http://yoursite.com/2017/08/01/多机的Sequence问题与处理/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="背景数据库拆分之后，会引入诸多新的问题，其中之一就是，以MySQL为例，原先单表的时候， 可以通过MySQL自带的aut_increment实现自增不重复id，现在用不了了。数据库层面 做不了必须引入中间件去解决。 id的特点  唯一性(刚需或者说是硬性要求) 连续性  分布式系统中可以使用一个独立的ID生成器，服务有以下问题需要解决  性能问题？ 每次远程取id都会有损耗。   改进方案 一次取">
+<meta property="og:description" content="数据库拆分之后，会引入诸多新的问题，其中之一就是，以MySQL为例，原先单表的时候， 可以通过MySQL自带的aut_increment实现自增不重复id，现在用不了了。数据库层面 做不了必须引入中间件去解决。">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/67a6a651gw1dujgqcx9ncj.jpg">
 <meta property="og:image" content="http://yoursite.com/2017/08/01/多机的Sequence问题与处理/_image/2018-01-28-22-32-24.jpg">
 <meta property="og:image" content="http://yoursite.com/2017/08/01/多机的Sequence问题与处理/_image/2018-01-28-22-33-11.jpg">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4324380-218f5e6218923bf4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
-<meta property="og:updated_time" content="2018-01-28T14:33:43.015Z">
+<meta property="og:updated_time" content="2018-02-07T14:09:00.499Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="多机的Sequence问题与处理">
-<meta name="twitter:description" content="背景数据库拆分之后，会引入诸多新的问题，其中之一就是，以MySQL为例，原先单表的时候， 可以通过MySQL自带的aut_increment实现自增不重复id，现在用不了了。数据库层面 做不了必须引入中间件去解决。 id的特点  唯一性(刚需或者说是硬性要求) 连续性  分布式系统中可以使用一个独立的ID生成器，服务有以下问题需要解决  性能问题？ 每次远程取id都会有损耗。   改进方案 一次取">
+<meta name="twitter:description" content="数据库拆分之后，会引入诸多新的问题，其中之一就是，以MySQL为例，原先单表的时候， 可以通过MySQL自带的aut_increment实现自增不重复id，现在用不了了。数据库层面 做不了必须引入中间件去解决。">
 <meta name="twitter:image" content="http://ww1.sinaimg.cn/large/67a6a651gw1dujgqcx9ncj.jpg">
   
   
@@ -94,7 +94,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>背景<br>数据库拆分之后，会引入诸多新的问题，其中之一就是，以MySQL为例，原先单表的时候， 可以通过MySQL自带的aut_increment实现自增不重复id，现在用不了了。数据库层面 做不了必须引入中间件去解决。</p>
+        <p>数据库拆分之后，会引入诸多新的问题，其中之一就是，以MySQL为例，原先单表的时候， 可以通过MySQL自带的aut_increment实现自增不重复id，现在用不了了。数据库层面 做不了必须引入中间件去解决。<br><a id="more"></a><br>背景<br>数据库拆分之后，会引入诸多新的问题，其中之一就是，以MySQL为例，原先单表的时候， 可以通过MySQL自带的aut_increment实现自增不重复id，现在用不了了。数据库层面 做不了必须引入中间件去解决。</p>
 <p>id的特点</p>
 <ul>
 <li>唯一性(刚需或者说是硬性要求)</li>
@@ -163,7 +163,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/01/多机的Sequence问题与处理/" data-id="cjdd53x3c002gfdjda4nm0rog" class="article-share-link" data-share="baidu" data-title="多机的Sequence问题与处理">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/01/多机的Sequence问题与处理/" data-id="cjdd644vs002gq5jdsn5n2uce" class="article-share-link" data-share="baidu" data-title="多机的Sequence问题与处理">分享到</a>
       
 
 
