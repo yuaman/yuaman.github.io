@@ -64,6 +64,250 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-服务框架设计与实现的原理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/07/22/服务框架设计与实现的原理/" class="article-date">
+  <time datetime="2017-07-22T02:05:54.000Z" itemprop="datePublished">2017-07-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/22/服务框架设计与实现的原理/">服务框架的设计与实现</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <a id="more"></a>
+<h2 id="1-RPC概述"><a href="#1-RPC概述" class="headerlink" title="1.RPC概述"></a>1.RPC概述</h2><p>RPC(Remote Procedure Call)即远程过程调用，允许一台计算机调用另一台计算机上的程序得到结果，而代码中不需要做额外的编程，就像在本地调用一样。</p>
+<p>现在互联网应用的量级越来越大，单台计算机的能力有限，需要借助可扩展的计算机集群来完成，分布式的应用可以借助RPC来完成机器之间的调用。</p>
+<h2 id="2-RPC框架原理"><a href="#2-RPC框架原理" class="headerlink" title="2.RPC框架原理"></a>2.RPC框架原理</h2><p>在RPC框架中主要有三个角色：Provider、Consumer和Registry。如下图所示：</p>
+<p><img src="./_image/2018-01-30-10-40-19.jpg" alt=""><br> 节点角色说明：</p>
+<ul>
+<li>Server: 暴露服务的服务提供方。</li>
+<li>Client: 调用远程服务的服务消费方。</li>
+<li>Registry: 服务注册与发现的注册中心。<h2 id="3-涉及到的Java编程知识"><a href="#3-涉及到的Java编程知识" class="headerlink" title="3.涉及到的Java编程知识"></a>3.涉及到的Java编程知识</h2><h3 id="3-1-动态代理"><a href="#3-1-动态代理" class="headerlink" title="3.1 动态代理"></a>3.1 动态代理</h3>生成 client stub和server stub需要用到 <strong>Java 动态代理技术 </strong>，我们可以使用JDK原生的动态代理机制，可以使用一些开源字节码工具框架 如：CgLib、Javassist等。</li>
+</ul>
+<h3 id="3-2-序列化"><a href="#3-2-序列化" class="headerlink" title="3.2 序列化"></a>3.2 序列化</h3><p>为了能在网络上传输和接收 Java对象，我们需要对它进行 序列化和反序列化操作。</p>
+<p>序列化：将Java对象转换成byte[]的过程，也就是编码的过程；</p>
+<p>反序列化：将byte[]转换成Java对象的过程；</p>
+<p>可以使用Java原生的序列化机制，但是效率非常低，推荐使用一些开源的、成熟的序列化技术，例如：protobuf、Thrift、hessian、Kryo、Msgpack</p>
+<p>关于序列化工具性能比较可以参考：<a href="https://link.jianshu.com?t=https%3A%2F%2Fgithub.com%2Feishay%2Fjvm-serializers" target="_blank" rel="external">jvm-serializers</a></p>
+<h3 id="3-3-反射"><a href="#3-3-反射" class="headerlink" title="3.3 反射"></a>3.3 反射</h3><p>服务发布端收到调用端的请求后，根据服务唯一标识可以获得该接口的实现类信息，通过反射创建实现类实例，进行方法的调用；</p>
+<h3 id="3-4-NIO"><a href="#3-4-NIO" class="headerlink" title="3.4 NIO"></a>3.4 NIO</h3><p>当前很多RPC框架都直接基于netty这一IO通信框架，比如阿里巴巴的HSF、dubbo，Hadoop Avro，推荐使用Netty 作为底层通信框架。</p>
+<h3 id="3-5-服务注册中心"><a href="#3-5-服务注册中心" class="headerlink" title="3.5 服务注册中心"></a>3.5 服务注册中心</h3><p>可选技术：</p>
+<p>Redis</p>
+<p>Zookeeper</p>
+<p>Consul</p>
+<p>Etcd</p>
+<h2 id="4-客户端与服务端工作原理"><a href="#4-客户端与服务端工作原理" class="headerlink" title="4. 客户端与服务端工作原理"></a>4. 客户端与服务端工作原理</h2><p>从服务调用者以及服务提供者的角度，分别说明该服务框架的基本工作原理。如下图所示： </p>
+<p><img src="file:///C:\Users\WB-YTL~1\AppData\Local\Temp\msohtmlclip1\02\clip_image002.png" alt="这里写图片描述"></p>
+<p>（看不清可以访问：<a href="https://www.processon.com/chart_image/58d720fbe4b03eea782c81df.png" target="_blank" rel="external">远程调用框架工作原理</a>） </p>
+<p>对于服务调用者来说： </p>
+<ul>
+<li><p>（1）服务框架获得服务调用者提供的服务信息（服务唯一标识：接口全限定名＋版本号；方法；调用参数）； </p>
+</li>
+<li><p>（2）框架根据服务信息通过服务注册查找中心查找到该服务提供者的地址列表； </p>
+</li>
+<li><p>（3）可根据（服务、接口、方法、参数）进行路由，确定服务提供者的地址； </p>
+</li>
+<li><p>（4）拼装请求参数对象Request，并序列化成二进制流； </p>
+</li>
+<li><p>（5）与服务端建立连接，发送序列化二进制结果； </p>
+</li>
+<li><p>（6）得到服务端响应，反序列化，得到最终调用结果</p>
+</li>
+</ul>
+<p>对于服务提供者来说： </p>
+<ul>
+<li><p>（1）发布服务，监听端口； </p>
+</li>
+<li><p>（2）服务发布成功后，将服务信息（服务唯一标识：接口全限定名＋版本号；服务实现类全限定名）注册到服务注册查找中心； </p>
+</li>
+<li><p>（3）接收客户端请求，将请求数据反序列化为Request对象； </p>
+</li>
+<li><p>（4）解析Request对象，根据服务标识从服务注册查找中心获取该服务信息，例如服务接口的实现类； </p>
+</li>
+<li><p>（5）利用反射创建类实例对象，调用方法（多采用线程池的方式）； </p>
+</li>
+<li><p>（6）将调用结果序列化成二进制数据； </p>
+</li>
+</ul>
+<p>-（7）发送响应数据到客户端；</p>
+<p>注意：服务发布者需要提供给服务调用者一个二方包，包中函数接口所有方法调用的参数以及返回类型类。其实这个二方包最大的用处应该体现在：让用户像本地调用一样使用服务框架完成远程调用，但是第一个版本我们先不实现这个功能，后面可以进行优化。</p>
+<h2 id="5-优化及特殊场景下的处理"><a href="#5-优化及特殊场景下的处理" class="headerlink" title="5. 优化及特殊场景下的处理"></a>5. 优化及特殊场景下的处理</h2><h3 id="5-1-路由方案"><a href="#5-1-路由方案" class="headerlink" title="5.1 路由方案"></a>5.1 路由方案</h3><h3 id="5-2-1-可用服务列表"><a href="#5-2-1-可用服务列表" class="headerlink" title="5.2.1 可用服务列表"></a>5.2.1 可用服务列表</h3><p>服务注册查找中心对于调用者来说只是提供可用的服务提供者列表。出于效率考虑，实际上也并不是每次每次调用远程服务的时候都会去注册查找中心查找可用地址，而是把地址缓存在调用者本地，当有变化时服务注册查找中心主动发起通知，告诉调用者，可用的服务提供者列表发生了变化，让调用者重新发起查询动作。</p>
+<p>当获取到可提供服务的地址列表后，就是选择一个地址去请求服务。</p>
+<h4 id="5-2-2-路由机制"><a href="#5-2-2-路由机制" class="headerlink" title="5.2.2  路由机制"></a>5.2.2  路由机制</h4><p>这里的选择路由机制就可以参考负载均衡的实现，使用随机、轮询、权重等方式。</p>
+<p>通常集群机器能力对等的情况下我们会使用随机与轮询，及其能力不对等我们会采用权重，机器能力可以根据响应时间来判断。</p>
+<p>调用端对路由选择的考虑点有很多，为了考虑服务提供端集群的压力均衡，基于接口、方法、参数的路由，可以把路由选择的粒度足够小到参数的划分上。根据不同粒度划分可以将响应慢的服务调用与响应快的服务调用隔离开来。</p>
+<h3 id="5-2-3-多机房场景"><a href="#5-2-3-多机房场景" class="headerlink" title="5.2.3 多机房场景"></a>5.2.3 多机房场景</h3><p>先不考虑异地的场景，只考虑同城的情况。一般来说，同城有两三个机房是很正常的，而正常情况下我们希望provider，consumer，registry在同一个机房中，节省网络资源；但也要考虑到不正常的情况如：每个机房的服务提供者处理能力不对等，同机房的服务提供者大面积瘫痪的情况；<br>综合以上情况，可以有以下两种方案选择：<br>1.利用机房网段进行路由，优先选择同机房服务，如果该机房综合处理能力不够，则扩展到其他机房<br>2.扩展物理机房为逻辑机房<br>在这里个人不建议在查询可用服务列表时就对provider根据规则进行过滤，这样会减小后续对provider集群处理能力判断的空间；建议查出全部可用列表之后根据及其能力以及可用率综合判断，进行选择；</p>
+<h3 id="5-2-流量控制"><a href="#5-2-流量控制" class="headerlink" title="5.2 流量控制"></a>5.2 流量控制</h3><p>秒杀场景有流量控制的说法，rpc框架为了整体服务的可用性，也应该进行consumer与provider之间的流量控制。<br>两个方案：<br>1.根据请求目标控制，目标服务的函数的请求次数，超过次数则拒绝访问<br>2.根据来源控制，来自同一个机器的请求次数不得超过某个限定，超过则直接拒绝访问</p>
+<h3 id="5-4-服务提供者的设计与实现"><a href="#5-4-服务提供者的设计与实现" class="headerlink" title="5.4 服务提供者的设计与实现"></a>5.4 服务提供者的设计与实现</h3><p>的实现、发布、部署、升级、治理</p>
+<h4 id="5-4-1-服务实现"><a href="#5-4-1-服务实现" class="headerlink" title="5.4.1 服务实现"></a>5.4.1 服务实现</h4><p>服务提供端的工作线程是一个线程池，路由到provider的请求会被放到线程池中执行，工作线程有多个，根据服务以及方法签名确定调用的线程池，实现隔离，不会出现争抢资源的情况。</p>
+<h4 id="5-4-2-暴露远程服务给调用者"><a href="#5-4-2-暴露远程服务给调用者" class="headerlink" title="5.4.2 暴露远程服务给调用者"></a>5.4.2 暴露远程服务给调用者</h4><p>服务端的工作有两个：<br>（1）将本地提供的服务注册到 服务注册查找中心(zookeeper)；</p>
+<p>（2）根据进来的请求定位服务并执行。</p>
+<p>下面给出一个服务提供端的配置示例：</p>
+<p><img src="./_image/2018-01-30-11-35-20.jpg" alt=""></p>
+<p>这里写图片描述</p>
+<p>这个和请求调用端的bean的配置非常类似，但是也有区别：<br>（1）服务提供端使用的是ProviderBean对象，而客户端使用的是ConsumerBean对象。</p>
+<p>（2）服务端指定了一个target属性，表明要具体执行服务的bean，在下面的bean中也定义了。但是ProviderBean并不执行具体的服务，只是起到调用端代码存根的作用。</p>
+<p>（3）ProviderBean的职能是：服务需要注册到服务注册查找中心之后才能被服务调用者发现，所以ProviderBean需要将自己所代表的服务注册到服务注册查找中心。</p>
+<p>服务的发布是按照Spring Bean注入的方式，在spring配置文件中显式声明注入一个providerBean，同时声明多个property，用这种方式非常有利于之后服务属性的扩展，通常需要配置的属性有服务名称（interfaceName），服务版本号（version），服务机器所在群组（group）;也有需要声明secret的情况；</p>
+<h4 id="5-4-3-服务部署"><a href="#5-4-3-服务部署" class="headerlink" title="5.4.3 服务部署"></a>5.4.3 服务部署</h4><p>服务框架的部署有两个方式，一个是把服务框架作为应用的一个依赖包与应用一起打包；或者打成一个sar包与容器一起启动，比如将公用vm包打成一个sar包；</p>
+<p>服务Jar包冲突：<br>将服务框架的类与应用自身的类各自控制在user-defined classloader级别，这样实现相互隔离。</p>
+<h4 id="5-4-4-服务升级"><a href="#5-4-4-服务升级" class="headerlink" title="5.4.4 服务升级"></a>5.4.4 服务升级</h4><p>每次改动发布更新版本号，进行冒烟以及灰度发布。</p>
+<h4 id="5-4-5-服务治理"><a href="#5-4-5-服务治理" class="headerlink" title="5.4.5 服务治理"></a>5.4.5 服务治理</h4><h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>懂得了原理，再看dubbo和eureka的实现，太简单了。所有RPC框架的原理都是一样的，包括HSF，Dubbo等；</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2017/07/22/服务框架设计与实现的原理/" data-id="cjdd53x3e002kfdjdqujn9sj4" class="article-share-link" data-share="baidu" data-title="服务框架的设计与实现">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式系统/">分布式系统</a></li></ul>
+
+    </footer>
+  </div>
+  
+
+
+
+</article>
+
+
+
+
+  
+    <article id="post-Java类加载机制常见问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/07/20/Java类加载机制常见问题/" class="article-date">
+  <time datetime="2017-07-20T06:43:54.000Z" itemprop="datePublished">2017-07-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/20/Java类加载机制常见问题/">Java类加载机制常见问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Java类加载机制常见问题梳理<br>
+        
+          <p class="article-more-link">
+            <a href="/2017/07/20/Java类加载机制常见问题/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2017/07/20/Java类加载机制常见问题/" data-id="cjdd53x1l000ffdjd5iup7w01" class="article-share-link" data-share="baidu" data-title="Java类加载机制常见问题">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JDK探究/">JDK探究</a></li></ul>
+
+    </footer>
+  </div>
+  
+
+
+
+</article>
+
+
+
+
+  
+    <article id="post-读《Effecttive Java》" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/07/18/读《Effecttive Java》/" class="article-date">
+  <time datetime="2017-07-18T02:05:54.000Z" itemprop="datePublished">2017-07-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/18/读《Effecttive Java》/">读《Effecttive Java》</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <a id="more"></a>
+<h3 id="2019-09-15"><a href="#2019-09-15" class="headerlink" title="2019-09-15"></a>2019-09-15</h3><p>“读完一本《Effecttive Java》，才算是一个中级Java程序员”，这是一个前辈说的话。最近在读这本书，和其他基本书一起，还没有全部读完。</p>
+<p>在第一遍看的过程当中，有很多地方看不懂。即使是在已经很熟悉的操作当中例如并发和equals，hashcode等条目中也有这种 情况。</p>
+<p>作者参与了sun和google的Java设计，参与了并发包的设计，所以主要的问题在于很多他认为习以为常的概念我们并不懂。也因为翻译的问题，导致我们看很不流畅。例如有些地方讲到回收机制，只是蜻蜓点水的一提，但是如果没有对垃圾回收做过了解的会自然而然的略过去，因为不知道他说的是啥。</p>
+<h3 id="2019-09-14"><a href="#2019-09-14" class="headerlink" title="2019-09-14"></a>2019-09-14</h3><p><img src="./_image/2018-01-29-18-03-05.jpg" alt=""></p>
+<p><img src="./_image/2018-01-29-18-02-27.jpg" alt=""></p>
+<p>原文：Java语言规范保证读或者写一个变量是原子的，除非这个变量的类型为long或double。多个线程在没有同步的情况下也是如此。</p>
+<p>（刚开始看到这句话不太理解）</p>
+<p>看到后来，明白了。</p>
+<p>互斥：是对对象的锁定</p>
+<p>同步：被锁定的对象与其他任务之间的通信效果</p>
+<p>重量级锁实现了互斥还实现了同步</p>
+<p>轻量级锁volatile实现了同步（可见性）并没有实现互斥（以及一定程度的有序性）</p>
+<p>例如经典的volatile是否可以解决i++问题。</p>
+<p>首先要明白一点，i++本身不是一个原子操作。</p>
+<p>volatile的两层语义是可以保证对象的可见性以及一定程度的有序性，但不能保证操作的原子性，所以volatile的两个使用条件的终极含义就是要保证操作的原子性。</p>
+<p>所以volatile在并发情况下保证不了i++的线程安全，解决不了这个问题。</p>
+<p>而为什么i++不是一个原子操作呢？</p>
+<p>因为它是先读取（获得i），再写入（i+1）。并发情况下如果第二个线程在第一个线程的读取和写入操作之间进行i的读取，那么就会看到同一个值，返回相同的结果，造成程序错误。（安全性失败）</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2017/07/18/读《Effecttive Java》/" data-id="cjdd53x3m0032fdjdkuhvt7sv" class="article-share-link" data-share="baidu" data-title="读《Effecttive Java》">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+
+
+
+</article>
+
+
+
+
+  
     <article id="post-分布式缓存一致性Hash算法" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/07/18/分布式缓存一致性Hash算法/" class="article-date">
@@ -101,7 +345,71 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/07/18/分布式缓存一致性Hash算法/" data-id="cjdbqyizp00259djdafwe1rac" class="article-share-link" data-share="baidu" data-title="分布式缓存一致性hash算法">分享到</a>
+        <a data-url="http://yoursite.com/2017/07/18/分布式缓存一致性Hash算法/" data-id="cjdd53x2s001yfdjdy918lov7" class="article-share-link" data-share="baidu" data-title="分布式缓存一致性hash算法">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式系统/">分布式系统</a></li></ul>
+
+    </footer>
+  </div>
+  
+
+
+
+</article>
+
+
+
+
+  
+    <article id="post-分布式锁通用解决方案" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/07/18/分布式锁通用解决方案/" class="article-date">
+  <time datetime="2017-07-18T02:05:54.000Z" itemprop="datePublished">2017-07-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/18/分布式锁通用解决方案/">分布式锁通用解决方案</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="分布式锁的解决方式："><a href="#分布式锁的解决方式：" class="headerlink" title="分布式锁的解决方式："></a>分布式锁的解决方式：</h3><h3 id="基于数据库："><a href="#基于数据库：" class="headerlink" title="基于数据库："></a>基于数据库：</h3><blockquote>
+<p>   基于数据库表做乐观锁，用于分布式锁。（version）</p>
+<p>   基于数据库表做悲观锁（InnoDB，for update）</p>
+<p>   基于数据库表数据记录做唯一约束（表中记录方法名称）</p>
+</blockquote>
+<h3 id="基于缓存："><a href="#基于缓存：" class="headerlink" title="基于缓存："></a>基于缓存：</h3><blockquote>
+<p> 常用方案：使用redis的setnx()用于分布式锁。（setNx，直接设置值为当前时间+超时时间，保持操作原子性）</p>
+<p>使用memcached的add()方法，用于分布式锁。</p>
+<p>使用Tair的put()方法，用于分布式锁。</p>
+</blockquote>
+<h3 id="基于Zookeeper："><a href="#基于Zookeeper：" class="headerlink" title="基于Zookeeper："></a>基于Zookeeper：</h3><blockquote>
+<p>每个客户端对某个方法加锁时，在zookeeper上的与该方法对应的指定节点的目录下，生成一个唯一的瞬时有序节点。 判断是否获取锁只需要判断有序节点中序号最小的一个。 当释放锁的时候，只需将这个瞬时节点删除即可。</p>
+</blockquote>
+        
+          <p class="article-more-link">
+            <a href="/2017/07/18/分布式锁通用解决方案/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2017/07/18/分布式锁通用解决方案/" data-id="cjdd53x310029fdjdsth8cdn2" class="article-share-link" data-share="baidu" data-title="分布式锁通用解决方案">分享到</a>
       
 
 
@@ -153,7 +461,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/07/15/mongoDB常见问题整理/" data-id="cjdbqyiyx001b9djddg3ttnk1" class="article-share-link" data-share="baidu" data-title="mongoDB常见问题整理">分享到</a>
+        <a data-url="http://yoursite.com/2017/07/15/mongoDB常见问题整理/" data-id="cjdd53x2c001cfdjd087gsrpm" class="article-share-link" data-share="baidu" data-title="mongoDB常见问题整理">分享到</a>
       
 
 
@@ -209,7 +517,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/07/11/Java实现动态代理与Spring的动态代理/" data-id="cjdbqyixz000a9djdrc9w9s35" class="article-share-link" data-share="baidu" data-title="Java实现动态代理">分享到</a>
+        <a data-url="http://yoursite.com/2017/07/11/Java实现动态代理与Spring的动态代理/" data-id="cjdd53x1n000hfdjdavpc9c40" class="article-share-link" data-share="baidu" data-title="Java实现动态代理">分享到</a>
       
 
 
@@ -275,7 +583,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/07/10/Sprign 动态代理机制/" data-id="cjdbqyiyk000u9djdnauom08o" class="article-share-link" data-share="baidu" data-title="Sprign 动态代理机制">分享到</a>
+        <a data-url="http://yoursite.com/2017/07/10/Sprign 动态代理机制/" data-id="cjdd53x20000sfdjd07vled8b" class="article-share-link" data-share="baidu" data-title="Sprign 动态代理机制">分享到</a>
       
 
 
@@ -327,7 +635,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/07/05/mongoDB底层运作原理/" data-id="cjdbqyiz8001e9djdv2thi1qz" class="article-share-link" data-share="baidu" data-title="mongoDB运作原理与分片实现">分享到</a>
+        <a data-url="http://yoursite.com/2017/07/05/mongoDB底层运作原理/" data-id="cjdd53x2j001mfdjdwxdzi88s" class="article-share-link" data-share="baidu" data-title="mongoDB运作原理与分片实现">分享到</a>
       
 
 
@@ -347,10 +655,10 @@
 
 
   
-    <article id="post-shiro权限框架整合开源分享" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-读曾宪杰《大型网站系统与Java中间件实践》" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/06/12/shiro权限框架整合开源分享/" class="article-date">
-  <time datetime="2017-06-12T09:52:54.000Z" itemprop="datePublished">2017-06-12</time>
+    <a href="/2017/06/20/读曾宪杰《大型网站系统与Java中间件实践》/" class="article-date">
+  <time datetime="2017-06-20T02:05:54.000Z" itemprop="datePublished">2017-06-20</time>
 </a>
     
   </div>
@@ -361,7 +669,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/12/shiro权限框架整合开源分享/">Shiro权限框架整合总结与开源分享</a>
+      <a class="article-title" href="/2017/06/20/读曾宪杰《大型网站系统与Java中间件实践》/">读曾宪杰《大型网站系统与Java中间件实践》</a>
     </h1>
   
 
@@ -369,231 +677,70 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>2017年年初在供应链项目正式应用shiro权限框架，当时对一些问题做了一些记录。此次做全面总结。<br>
-        
-          <p class="article-more-link">
-            <a href="/2017/06/12/shiro权限框架整合开源分享/#more">Read More</a>
-          </p>
-        
+        <a id="more"></a>
+<p>1.分布式系统相对集中式而言，是指多台计算机互相通过消息通信进行协作而对外提供服务；可解决大型机的伸缩性和单点等问题；</p>
+<p>2.网络i/o有bio/nio，还有aio，aio是指线程拿到消息后并不自己处理或等处理结束之后再响应，而是将消息投递之后继续后面的处理，只将回调传递给被调用方，消息处理完成之后自动由被调用方完成回调，也就是异步io，java7支持aio；</p>
+<p>3.分布式系统有几个难点：缺乏全局时钟（可以把时间序号获取交给单独集群来做）；面对故障的独立性（要考虑其它模块可靠与不可靠的情况）；单点故障处理（能拆分的拆分，能换集群的换集群，不能拆分到最细的做到备份以备自动恢复）；事务的挑战（两阶段提交协议，最终一致性等）；</p>
+<p>4.单机应用演化过程：</p>
+<p>1）单机负载告警后，数据库与应用服务器做分享；</p>
+<p>2）应用服务器负载告警后应用服务器做集群，涉及负载均衡设备，涉及session问题可将session存cookie或session拷贝或统一session服务管理中心；</p>
+<p>3）数据库压力变大，读写分离，涉及数据复制问题和应用对数据源的选择问题，读库前面也可再加缓存，数据实时要求不高还可采用搜索引擎作为读；</p>
+<p>4）缓存除了可用来缓存数据，还可用来缓存页面，缓存一切对实时性要求不高的内容；</p>
+<p>5）引入分布式存储（文件/kv）系统缓解数据库的存取；</p>
+<p>6）读写分离后数据库仍有瓶颈，采用专库专用，数据库的垂直拆分；</p>
+<p>7）数据库垂直拆分后再遇到数据库单机瓶颈，考虑水平拆分；此时引入数据存取中间件；</p>
+<p>8）数据库问题解决后，新的挑战时采用应用拆分服务化方式；此时引入消息中间件的服务框架中间件；</p>
+<p>5.Java中间件主要有三类：服务框架中间件，消息中间件和数据访问中间件；</p>
+<p>6.votatile和synchronized的区别：volatile表示每次读写都直接读写主存，不会拷贝到线程存储中，也就是所有线程操作的都是同一份，这并不表示只有一个线程能同时操作；sychronized是表示加锁，保持数据的一致性；</p>
+<p>7.Java的Atomics包中的类是一些支持原子性操作的类，它们的性能会有明显的提升是因为Java使用了硬件特性来支持；</p>
+<p>8.CountDownLatch是等待线程调用latch.await，等待latch减少到0就能往下走了，而释放线程则使用latch.countDown来每次调用释放1；</p>
+<p>9.CyclicBarrier是指所有调用barrier.await的线程都要等到其它线程都执行到这一条语句之后才往后执行，barrier还可以预设一个线程在满足条件后运行；</p>
+<p>10.Exchanger是指两个线程都执行到这条语句时互换一个信号，然后各自继续执行；</p>
+<p>11.Future是指获取这个结果的线程调用是异步的，代码可以先往下执行，等到要真正要使用这个返回值时如果仍未返回才会停下来，FutureTask是其实现类。</p>
+<p>12.并发容器如果有合适场景尽量使用Java提供的，不要自己基于锁去实现；</p>
+<p>13.动态代理，是指把类和接口，接口Handler等名称传递进去给Proxy.newProxyInstance方法来动态创建代理的方式，可在方法触发前后甚至触发时进行对应处理，这在服务调用框架之类的客户端或服务端，一些能用Bean可以让用户配置接口，从而生成代理，由代理来处理来自外部的调用，而在调用前后进行替换。</p>
+<p>14.服务框架大致是这样实现的：</p>
+<p>1）调用端：通过bean配置方式来配置远程服务，服务提供方地址一般通过一个配置中心来给出，动态代理在接口调用时通过服务框架的方法来获取远程对应服务提供方地址，接装请求参数等来进行序列化进行Socket直连（采用bio/nio等），得到响应结果后反序列化为对应的对象返回给上层调用方；超时等问题的处理可通过Future来实现，还可以实现多个调用之间的合并优化，即发起多个类似异步调用，在使用到它们结果时才会卡住；</p>
+<p>2）服务方：通过bean配置方式来配置远程服务提供者，启动后注册到对应的配置中心，启动若干个线程（池，用来处理流控）来监听某一个端口的请求，当连接到来时调用具体实现类之前做一些返序列化工具，调用之后再进行一些序列化操作返回给远程调用者；应用本身与框架的jar包冲突问题通过ClassLoader来解决；</p>
+<p>3）服务注册中心：主要用来管理注册来上的调用者和服务提供方，同时可兼具路由管理，信息查看等功能；路由可细化到类或方法，还可通过分组来把同一机房的提供者标识出来；服务升级一般是采用版本号的方式来，即先将服务升级，新老并存，老的调用方全升级后再下线老服务；</p>
+<p>15.服务框架实战中的优化，即服务治理需要的内容：服务信息管理，服务质量管理评估，服务容量评估，服务依赖展示，服务分布展示，服务统计，服务报表，服务元数据等；服务管理还有服务的限流，上下线，降级，路由，服务授权管理等等；</p>
+<p>16.服务框架与ESB异同，都是面向服务化，服务框架主要考虑同构系统不考虑异构，ESB会考虑不同厂商的实现；</p>
+<p>17.数据库水平/垂直拆分的困难：</p>
+<p>1）单机的事务机制被打破，要考虑分布式事务的控制；</p>
+<p>2）一些单库操作需要到多个库中操作，表连接需要用应用方式来实现；</p>
+<p>3）外键约束需要程序来保证而非数据库；</p>
+<p>4）依靠单库的自增序列方式要改变；</p>
+<p>18.分布式事务有两阶段提交协议，但对大型网站来说还是太复杂而且会有性能问题，比之更轻量的有Paxos协议，其核心原则是少数服务多数；一般能不引入分布式事务就不要引入，如果一定要引入也不追求强一致性而只要求最终一致性，即通过重试的方式把未完成的做完而不回滚；</p>
+<p>19.大型网站一致性理论：CAP，即一致性，响应/可用性，部分出问题时仍能工作（Partition-Tolerance），这几个属性之间是互斥的，因此更多是放弃完全一致性，只追求最终一致性即可；</p>
+<p>20.跨库查询且要排序是最难处理的问题，等于要将所有分库的数据查出来再运算，应该尽量避免这种情况，尤其是分页到后面数据量更在，如果数据量巨大的，可考虑使用搜索引擎；</p>
+<p>21.数据访问中间件的设计一般是在jdbc/orm框架之下加一层用来处理路由，sql分析等；一般会有一堆的数据源需要处理，包括数据的划分规则（取模不易于扩展，考虑一致性哈希，有人退出时旁边的接管之，可以将一个物理结点虚出多个虚拟结点方式缓解任务过于集中的问题），而数据层需要进行如下转换：sql解析，规则处理，sql改写（在各库中表名可能不一样），数据源选择，sql执行，结果集返回合并处理这些步骤。</p>
+<p>22.数据访问中间件可以在应用中以jar包方式引入，也可以考虑单独部署一个应用，业务应用只与这个应用打交道，而各种规则由这个应用来解析与执行。</p>
+<p>23.读写分享等的数据同步，主要由otter来完成，基于数据库日志解析的，国际站可做到秒级延时，国内可做到ms级，阿里内部现在在做单元化，多地多活等方案，也需要这些同步技术。</p>
+<p>24.平滑数据迁移其实是先全量迁移，然后再将这一过程中老库的变更记录在新库执行，这个递归过程会越来越短，当需要迁移的增量很少时，暂停对这部分数据的写操作，然后快速完成处理，切换路由到新库。</p>
+<p>25.消息中间件可解耦应用之间的依赖，而且一般用业解决异步调用等实时性要求不高的问题，比如登录后发短信或是数据同步，记录日志这些。</p>
+<p>26.消息投递与业务处理的一致性问题很长时候都需要保证，一些可让用户随意重复的除外，因此需要引入事务类似的方式，但分布式事务成本太高，所以一个相对折中的方案是：</p>
+<p>1）发送消息给消息中间件；</p>
+<p>2）消息中间件入库消息；</p>
+<p>3）消息中间件返回结果；</p>
+<p>4）业务操作；</p>
+<p>5）发送业务操作结果给消息中间件；</p>
+<p>6）更改存储中的消息状态；</p>
+<p>这个方案只有第5第6步可能引发不一致性问题，但这种情况下消息都可以通过消息中间件的未处理消息状态来问消息发送源进行反查。</p>
+<p>27.消息中间件一般有topic和queue两种，有不同的应用场景，有时候还需要级联的方式来处理。</p>
+<p>28.消息发送端及发送过程的可靠性是通过本地存储+重试的方式来保证，对于失败的消息会保留下来并在消息中心恢复之后重新发送；而对于存储端则一般可采用数据库来存储消息，还可以采用双机内存的方式来加快速度，使存储只在内存中运转并两台机器之间相互备份，一旦一台挂掉则另一台落磁盘存储并接管消息。</p>
+<p>29.消息处理端一般都需要保证消息处理操作的等幂性以防止消息投递出错有重复的消息产生；</p>
+
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/06/12/shiro权限框架整合开源分享/" data-id="cjdbqyizd001l9djdn0amd7pf" class="article-share-link" data-share="baidu" data-title="Shiro权限框架整合总结与开源分享">分享到</a>
+        <a data-url="http://yoursite.com/2017/06/20/读曾宪杰《大型网站系统与Java中间件实践》/" data-id="cjdd53x3x003jfdjd4wsq6yi6" class="article-share-link" data-share="baidu" data-title="读曾宪杰《大型网站系统与Java中间件实践》">分享到</a>
       
 
 
 
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/个人开源项目/">个人开源项目</a></li></ul>
-
-    </footer>
-  </div>
-  
-
-
-
-</article>
-
-
-
-
-  
-    <article id="post-mac下IntelliJ使用记录" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/06/07/mac下IntelliJ使用记录/" class="article-date">
-  <time datetime="2017-06-07T03:17:54.000Z" itemprop="datePublished">2017-06-07</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/07/mac下IntelliJ使用记录/">mac下IntelliJ使用记录</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>遇坑总结</strong><br>
-        
-          <p class="article-more-link">
-            <a href="/2017/06/07/mac下IntelliJ使用记录/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2017/06/07/mac下IntelliJ使用记录/" data-id="cjdbqyiyw00199djdu9kapkr9" class="article-share-link" data-share="baidu" data-title="mac下IntelliJ使用记录">分享到</a>
-      
-
-
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作记录/">操作记录</a></li></ul>
-
-    </footer>
-  </div>
-  
-
-
-
-</article>
-
-
-
-
-  
-    <article id="post-mongoDB生产环境三种模式" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/05/05/mongoDB生产环境三种模式/" class="article-date">
-  <time datetime="2017-05-05T09:37:31.000Z" itemprop="datePublished">2017-05-05</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/05/05/mongoDB生产环境三种模式/">mongoDB生产环境三种模式</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>MongoDb在用于生产环境的三种模式，master/slaves（主从模式）;replcation副本集;auto shard 分片模式</p>
-        
-          <p class="article-more-link">
-            <a href="/2017/05/05/mongoDB生产环境三种模式/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2017/05/05/mongoDB生产环境三种模式/" data-id="cjdbqyiza001g9djdzsnx7bdy" class="article-share-link" data-share="baidu" data-title="mongoDB生产环境三种模式">分享到</a>
-      
-
-
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式系统/">分布式系统</a></li></ul>
-
-    </footer>
-  </div>
-  
-
-
-
-</article>
-
-
-
-
-  
-    <article id="post-MongoDB 进阶——大文件存储(GridFS)" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/04/05/MongoDB 进阶——大文件存储(GridFS)/" class="article-date">
-  <time datetime="2017-04-05T09:37:31.000Z" itemprop="datePublished">2017-04-05</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/05/MongoDB 进阶——大文件存储(GridFS)/">MongoDB 进阶——大文件存储(GridFS)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>GridFS是一种在MongoDB中存储大二进制文件的机制。<br>
-        
-          <p class="article-more-link">
-            <a href="/2017/04/05/MongoDB 进阶——大文件存储(GridFS)/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2017/04/05/MongoDB 进阶——大文件存储(GridFS)/" data-id="cjdbqyiy9000l9djdectvzvpy" class="article-share-link" data-share="baidu" data-title="MongoDB 进阶——大文件存储(GridFS)">分享到</a>
-      
-
-
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式缓存/">分布式缓存</a></li></ul>
-
-    </footer>
-  </div>
-  
-
-
-
-</article>
-
-
-
-
-  
-    <article id="post-深入浅出数据库索引原理（平衡二叉树）" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/03/13/深入浅出数据库索引原理（平衡二叉树）/" class="article-date">
-  <time datetime="2017-03-13T09:37:31.000Z" itemprop="datePublished">2017-03-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/13/深入浅出数据库索引原理（平衡二叉树）/">深入浅出数据库索引原理（平衡二叉树）</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h5 id="由于探究mongo索引的原理所以引申到索引的实现平衡二叉树的探究"><a href="#由于探究mongo索引的原理所以引申到索引的实现平衡二叉树的探究" class="headerlink" title="由于探究mongo索引的原理所以引申到索引的实现平衡二叉树的探究"></a>由于探究mongo索引的原理所以引申到索引的实现平衡二叉树的探究</h5><p>转载地址：<a href="http://www.cnblogs.com/aspwebchh/p/6652855.html" target="_blank" rel="external">http://www.cnblogs.com/aspwebchh/p/6652855.html</a></p>
-        
-          <p class="article-more-link">
-            <a href="/2017/03/13/深入浅出数据库索引原理（平衡二叉树）/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2017/03/13/深入浅出数据库索引原理（平衡二叉树）/" data-id="cjdbqyj07002s9djdq7hfdc1v" class="article-share-link" data-share="baidu" data-title="深入浅出数据库索引原理（平衡二叉树）">分享到</a>
-      
-
-
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式系统/">分布式系统</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
 
     </footer>
   </div>
@@ -610,7 +757,7 @@
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/page/2/">&laquo; 上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/">下一页 &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo; 上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/">下一页 &raquo;</a>
   </nav>
 </section>
       
@@ -622,7 +769,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JDK探究/">JDK探究</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring探究/">Spring探究</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式系统/">分布式系统</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JDK探究/">JDK探究</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring探究/">Spring探究</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式系统/">分布式系统</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -631,7 +778,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/JDK探究/" style="font-size: 20px;">JDK探究</a> <a href="/tags/Spring探究/" style="font-size: 15px;">Spring探究</a> <a href="/tags/个人开源项目/" style="font-size: 10px;">个人开源项目</a> <a href="/tags/分布式系统/" style="font-size: 20px;">分布式系统</a> <a href="/tags/分布式缓存/" style="font-size: 10px;">分布式缓存</a> <a href="/tags/操作记录/" style="font-size: 10px;">操作记录</a> <a href="/tags/读书笔记/" style="font-size: 15px;">读书笔记</a> <a href="/tags/随笔/" style="font-size: 15px;">随笔</a> <a href="/tags/高并发方案/" style="font-size: 10px;">高并发方案</a>
+      <a href="/tags/JDK探究/" style="font-size: 18px;">JDK探究</a> <a href="/tags/Spring探究/" style="font-size: 14px;">Spring探究</a> <a href="/tags/个人开源项目/" style="font-size: 12px;">个人开源项目</a> <a href="/tags/分布式系统/" style="font-size: 20px;">分布式系统</a> <a href="/tags/分布式缓存/" style="font-size: 12px;">分布式缓存</a> <a href="/tags/操作记录/" style="font-size: 12px;">操作记录</a> <a href="/tags/读书笔记/" style="font-size: 16px;">读书笔记</a> <a href="/tags/随笔/" style="font-size: 14px;">随笔</a> <a href="/tags/高并发方案/" style="font-size: 10px;">高并发方案</a>
     </div>
   </div>
 
@@ -640,7 +787,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -652,6 +799,14 @@
       <ul>
         
           <li>
+            <a href="/2018/02/07/软负载中心与集中配置管理/">软负载中心与集中配置管理</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/25/消息中间件的设计与实践/">消息中间件的设计与实践</a>
+          </li>
+        
+          <li>
             <a href="/2018/01/25/消息中间件的设计与实现/">消息中间件的设计与实践</a>
           </li>
         
@@ -661,14 +816,6 @@
         
           <li>
             <a href="/2017/09/19/读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地/">读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地</a>
-          </li>
-        
-          <li>
-            <a href="/2017/09/18/一个97年的IT人创业历程中的总结和感悟/">创业历程中的总结和感悟</a>
-          </li>
-        
-          <li>
-            <a href="/2017/09/18/读内藤树作品《青年们，读马克思吧》/">读内藤树作品《青年们，读马克思吧》</a>
           </li>
         
       </ul>

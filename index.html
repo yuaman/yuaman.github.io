@@ -64,6 +64,390 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-软负载中心与集中配置管理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/02/07/软负载中心与集中配置管理/" class="article-date">
+  <time datetime="2018-02-07T02:05:54.000Z" itemprop="datePublished">2018-02-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/02/07/软负载中心与集中配置管理/">软负载中心与集中配置管理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <a id="more"></a>
+<ul>
+<li><p>软负载中心两个最基础的职责</p>
+<ul>
+<li>聚合地址信息</li>
+<li>生命周期感知-&gt;需要能对服务的上下线自动感知，并且根据这个变化去更新服务地址数据</li>
+</ul>
+</li>
+<li><p>软负载中心的结构</p>
+<ul>
+<li>软负载中心的服务端-&gt;负责感知提供服务的机器是否在线，聚合提供者的机器信息并负责把数据传给使用数据的应用</li>
+<li><p>软负载中心的客户端</p>
+<ul>
+<li>服务提供者-&gt;把服务器提供者提供服务的具体信息主动传给服务端-&gt;并且随着提供服务的变化去更新数据</li>
+<li>服务器使用者-&gt;向服务端告知自己所需要的数据并负责去更新数据，还要进行本地的数据缓存</li>
+</ul>
+</li>
+<li><p>软负载中心三部分重要的数据-&gt;聚合数据、订阅关系、连接数据</p>
+</li>
+</ul>
+</li>
+<li><p>内容聚合功能的设计</p>
+<ul>
+<li>保证数据正确性</li>
+<li>高效聚合数据<ul>
+<li>并发下的数据正确性的保证</li>
+<li>数据更新、删除的[顺序]保证</li>
+<li>大量数据同时插入、更新时的性能保证<ul>
+<li>根据key进行分线程的处理-&gt;保证同样key的数据是在同一个线程中处理-&gt;顺序任务队列</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>解决服务上下线的感知</p>
+<ul>
+<li><p>通过客户端与服务端的连接感知</p>
+<ul>
+<li>长连接的心跳或数据的发布来判断服务发布者是否还在线-&gt;如果很久没有心跳或数据的发布，则判定为不在线；那么就取出这个发布者发布的数据-&gt;而对于新上线的发布者，通过连接建立和数据发布就实现了上线的通知</li>
+<li>当负载中心的自身的负载很高时，可能产生误判，如软负载中心压力很大，处理请求变慢，心跳数据来不及处理-&gt;会以为心跳超时而判断服务不在线,认为服务不可用并且把信息通知给服务调用者，这会导致原本可用的服务被下线了</li>
+<li>另外的问题，如果服务发布者到软负载中心的网络链路有问题而服务发布者到服务使用者的链路没问题，也会造成感知的问题-&gt;因为软负载中心属于旁路<ul>
+<li>解决:软负载中心客户端增加逻辑，当收到软负载中心通知的应用下线数据时，需要服务调用者进行验证才能接收这个通知</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>通过对于发布数据中提供的地址端口进行连接的检查</p>
+<ul>
+<li>需要服务调用者进行最终确认，因为在系统中进行的实际业务调用通信是在服务调用者和服务提供者之间</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>软负载中心的数据分发的特点和设计</p>
+<ul>
+<li><p>数据分发与消息订阅的区别</p>
+<ul>
+<li>消息中间件需要保证消息不丢失-&gt;每条消息都应该送到相关订阅者-&gt;而软负载中心只需要保证最新数据送到相关的订阅者-&gt;不需要保证每次的数据变化都能让最终订阅者感知</li>
+<li>消息中间件中同一个集群中的不同机器是分享所有消息的，因为该消息只要同一集群中的一台机器去处理了就行-&gt;而软负载中心则不同，因为其维护的是大家都需要用的服务数据-&gt;所以需要把这数据分发给所有的机器</li>
+</ul>
+</li>
+<li><p>提升数据分发性能需要注意的问题</p>
+<ul>
+<li>数据压缩-&gt;CPU换带宽</li>
+<li>全量与增量的选择-&gt;建议刚开始的实现中采用简单的方式，即传送全量数据，当全量数据很大时就需要考虑采用增量传送的方式实现.</li>
+</ul>
+</li>
+<li><p>针对服务化的特性支持</p>
+<ul>
+<li><p>软负载数据分组</p>
+<ul>
+<li>根据环境进行划分</li>
+<li>分优先级的隔离</li>
+</ul>
+</li>
+<li><p>提供自动感知以外的上下线开关</p>
+<ul>
+<li><p>优雅的停止应用</p>
+<ul>
+<li>我们应该先从服务列表中去掉这个机器-&gt;等待当时正在执行的服务器结束，然后再停止应用-&gt;通过指令直接从软负载中心使机器下线</li>
+</ul>
+</li>
+<li><p>保持应用场景,用于排错</p>
+<ul>
+<li>遇到服务的问题时，可以把出问题的服务留下一台进行故障定位和场景分析-&gt;此时需要把这台机器从服务列表中拿下来，以免有新的请求进来造成服务的失败,这也是需要软负载中心直接使服务下线的一个场景.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>维护管理路由规则</p>
+<ul>
+<li>对不同特性的数据进行拆分</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>从单机到集群</p>
+<ul>
+<li>数据管理问题/连接管理问题</li>
+<li>数据统一管理<ul>
+<li>数据聚合放在一个地方-&gt;软负载中心集群,无状态-&gt;对于数据发布者和订阅者来说，选择软负载中心集群中的任何一个机器连接皆可</li>
+<li>把软负载中心集群中的机器的职责分开，即把聚合数据的任务和推送数据的任务分到专门的机器上处理-&gt;将软负载中心集群中有一台机器为软负载中心数据聚合，另一台机器为软负载中心数据推送-&gt;发布者和订阅者的连接是分开管理的-&gt;为了提升性能，在软负载中心负责数据推送的机器上是可以对聚合数据做缓存</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>* 数据对等管理方案
+    + 将数据分散在各个软负载中心的节点上并且把自己节点管理的数据分发到其他节点上，从而保证每个节点都有整个集群的全部数据并且这些节点的角色是对等的-&gt;使用软负载中心的数据发布者和数据订阅者只需要去连接软负载中心集群中的任何一台机器就可以-&gt;软负载中心集群内部，各个节点之间会进行数据的同步
+        - 批量处理同步-&gt;合并变化，同步一次
+        - 如果节点较多，同步量会较大-&gt;对集群内的节点进行指责划分
+        - 如果集群管理的总体数据很多，超过了单机限制-&gt;则需要对数据进行分组处理-&gt;让每个节点管理一部分数据-&gt;即用UI规则对数据进行类似分库分表的操作-&gt;则数据订阅者可能就需要连接多个数据分发节点了
+</code></pre><ul>
+<li>集中配置管理中心<ul>
+<li>集中配置管理中心结构<ul>
+<li>准备的持久存储来保存持久数据(Master-Slave)-&gt;一般采用关系型数据库-&gt;通过两个节点的主备来解决持久数据安全的问题.</li>
+<li>集中配置管理中心集群这层由多个集中配置管理中心节点组成-&gt;对等-&gt;都可以提供数据给应用端等-&gt;互不依赖</li>
+<li>集中配置管理中心的单个节点-&gt;部署了一个nginx和一个web应用-&gt;其中web应用主要负责完成相关的程序逻辑如数据库的相关操作以及根据ip等的分组操作,即整个应用的逻辑放在了web应用中；单机的本地文件Local File则是为了容灾和提升性能，客户端进行数据获取的时候，最后都是从nginx直接获取本地文件并把数据返回给请求端</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>* 集中配置管理中心的使用分为了以下两部分
+    + 提供给应用使用的客户端-&gt;主要是业务应用通过客户端去获取配置信息和数据，用于数据的读取
+    + 为控制台或者控制脚本提供管理SDK
+        - 包括了对数据的读写，通过管理SDK可以进行配置数据的更改
+
+* 客户端实现和容灾策略
+    + 客户端通过http协议与集中配置管理中心进行通信
+        - 通过轮询获取最新数据\_普通轮询
+        - 改进使用长轮询，Long Polling-&gt;如果没有数据，长轮询会等待；如果等待数据，立刻返回；如果一直没有数据则等到超时后返回，继续建立连接，而普通轮询就直接返回了-&gt;是HTTP普通轮询和Socket长连接方式的折中-
+    + 容灾
+        - 数据缓存
+        - 数据快照
+        - 本地配置
+        - 文件格式-&gt;如果是二进制数据格式，那么就没有对应的工具是无法对配置进行修改-&gt;如果客户端容灾退化到一个单机应用就会需要直接修改配置内容和数据-&gt;那么文本格式的限制就非常重要和关键了
+
+* 服务端实现和容灾策略
+    + Nginx+Web应用-&gt;和逻辑相关的部分在Web应用上实现，Nginx用于请求的处理和最后结果的返回，而供返回的数据的都在本地文件系统中
+    + 和数据库的数据同步
+
+* 数据库策略
+    + 数据库在设计时需要支持配置的版本管理，即随着配置内容的更改，老的版本是需要保留的，为了方便进行配置变更的对比和回滚-&gt;而数据库本身需要主备进行数据的容灾考虑
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2018/02/07/软负载中心与集中配置管理/" data-id="cjdd53x3x003lfdjdtooo6xzx" class="article-share-link" data-share="baidu" data-title="软负载中心与集中配置管理">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+
+
+
+</article>
+
+
+
+
+  
+    <article id="post-消息中间件的设计与实践" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/25/消息中间件的设计与实践/" class="article-date">
+  <time datetime="2018-01-25T02:05:54.000Z" itemprop="datePublished">2018-01-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/25/消息中间件的设计与实践/">消息中间件的设计与实践</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <a id="more"></a>
+<h3 id="消息中间件对应用的解耦"><a href="#消息中间件对应用的解耦" class="headerlink" title="消息中间件对应用的解耦"></a>消息中间件对应用的解耦</h3><ul>
+<li>如登陆系统负责向消息中间件发送消息，而其他的系统则向消息中间件来订阅这个消息，然后完成自己的工作.</li>
+<li>通过消息中间件解耦，登陆系统就不用关心到底有多少个系统需要知晓登陆成功这件事了，而不用关心如何通知它们，只需要把登陆成功这件事转化为一个消息发送到消息中间件就可以了</li>
+<li>landon:和事件解耦一样，如游戏中玩家升级抛出一个事件，其他子系统只需要监听该事件即可，而不必升级直接调用各个子系统</li>
+<li>登陆成功时需要向消息中间件发送一个消息，那么[必须保证这个消息发送到了消息中间件]，否则依赖这个消息的系统就无法工作了<br>互联网时代的消息中间件</li>
+<li>JMS:Java Message Service-&gt;规范-&gt;Hornetq,ActiveMQ等产品是这个规范的实现<h3 id="1-如何解决消息发送一致性"><a href="#1-如何解决消息发送一致性" class="headerlink" title="1.如何解决消息发送一致性"></a>1.如何解决消息发送一致性</h3></li>
+<li>消息发送一致性的定义:产生消息的业务动作与消息发送的一致，即如果业务操作成功了，那么由这个操作产生的消息一定要发送出去，否则就丢失消息了；而另一方面，如果这个业务行为没有发生或者失败，那么就不应该把消息发出去.</li>
+<li>JMS消息模型-Queue/Topic_支持XA协议(两阶段提交)-&gt;会引入分布式事务-&gt;存在一些限制且成本相对较高<h4 id="1-1一致性方案的正向流程"><a href="#1-1一致性方案的正向流程" class="headerlink" title="1.1一致性方案的正向流程"></a>1.1一致性方案的正向流程</h4></li>
+<li>(1) 业务处理应用首先把消息发给消息中间件，标记消息的状态为待处理.</li>
+<li>(2) 消息中间件收到消息后，把消息存储在消息存储中，并不投递该消息.</li>
+<li>(3)消息中间件返回消息处理的结果，仅是入库的结果，结果是成功或者失败.</li>
+<li>(4)业务方收到消息中间件返回的结果并进行处理:<br>a) 如果收到的结果是失败，那么就放弃业务处理，结束<br>b) 如果收到的结果是成功，则进行业务自身的操作</li>
+<li></li>
+<li>(5)业务操作完成，把业务操作的结果发送给消息中间件</li>
+<li><p>(6)消息中间件收到业务操作结果，根据结果进行处理<br>a) 如果业务失败，则删除消息存储中的消息，结束<br>b)如果业务成功，则更新消息存储中的消息状态为可发送，并且进行调度，进行消息的投递</p>
+</li>
+<li><p>需要注意各种步骤中可能出现的异常情况</p>
+</li>
+</ul>
+<h4 id="1-2-最终一致性方案的补偿流程"><a href="#1-2-最终一致性方案的补偿流程" class="headerlink" title="1.2 最终一致性方案的补偿流程:"></a>1.2 最终一致性方案的补偿流程:</h4><ul>
+<li>(1)消息中间件询问状态为待处理的消息对应业务操作结果</li>
+<li>(2)应用即消息发布者对业务操作检查操作结果</li>
+<li>(3)发送业务处理结果给消息中间件</li>
+<li>4)消息中间件更新消息状态，业务成功，消息状态为待发送；业务失败则消息删除</li>
+</ul>
+<h3 id="2-如何解决消息中间件与使用者的强依赖问题"><a href="#2-如何解决消息中间件与使用者的强依赖问题" class="headerlink" title="2. 如何解决消息中间件与使用者的强依赖问题"></a>2. 如何解决消息中间件与使用者的强依赖问题</h3><ul>
+<li>把消息中间件所需要的消息表与业务数据表放到同一个业务数据库-&gt;业务操作和写入消息作为一个本地事务完成，然后再通知消息中间件有消息可以发送-&gt;解决一致性-&gt;也可以消息中间件定时去轮询业务数据库找到需要发送的消息，取出内容后进行发送</li>
+<li>需要业务自己的数据库承载消息数据/需要让消息中间件去访问业务数据库/需要业务操作的对象是一个数据库</li>
+<li>消息中间件不再直接与业务数据库打交道-&gt;将业务操作、写入消息，轮询消息等全部放到业务应用</li>
+<li>加一个本地磁盘作为一个消息存储</li>
+</ul>
+<h3 id="3-消息模型对消息接收的影响"><a href="#3-消息模型对消息接收的影响" class="headerlink" title="3.消息模型对消息接收的影响"></a>3.消息模型对消息接收的影响</h3><h4 id="3-1-JMS-Queue模型"><a href="#3-1-JMS-Queue模型" class="headerlink" title="3.1 JMS Queue模型:"></a>3.1 JMS Queue模型:</h4><ul>
+<li>应用1和应用2发送消息到JMS服务器，这些消息根据到达的顺序形成一个队列-&gt;应用3和应用4进行消息的消费;如果Queue里面的消息被一个应用处理了，那么连接到JMS Queue上的另一个应用是收不到这个消息的-&gt;即连接到这个JMS Queue上的应用共同消费了所有的消息-&gt;消息从发送端发送出来时不能确定最终会被哪个应用消费，但是可以明确的是只有一个应用会去消费这条消息-&gt;Peer To Peer方式(PTP)<h4 id="3-2-JMS-Topic模型"><a href="#3-2-JMS-Topic模型" class="headerlink" title="3.2 JMS Topic模型:"></a>3.2 JMS Topic模型:</h4></li>
+<li>和Queue模型的最大区别在于消息接收的部分，在该模型中，接收消息的应用3和应用4是可以独立收到所有到达Topic的消息的-&gt;Pub/Sub方式</li>
+<li>JMS中客户端连接的处理和带来的限制</li>
+<li>JMS中每个Connection都有一个唯一的clientId，用于标识连接的唯一性</li>
+<li>应用3和JMS服务器建立了两个连接，应用4和JMS服务器建立了一个连接-&gt;可以看到这三个连接所接收的消息是完全不同，每个连接收到的消息条数以及收到消息的顺序则不是固定的.-&gt;另外每个连接都会收到所有发送到Topic的消息.<h4 id="3-3-我们需要什么样的消息模型"><a href="#3-3-我们需要什么样的消息模型" class="headerlink" title="3.3 我们需要什么样的消息模型"></a>3.3 我们需要什么样的消息模型</h4></li>
+<li>消息发送方和接收方都是集群/同一个消息的接收方可能有多个集群进行消息的处理/不同集群对于同一条消息的处理不能相互干扰</li>
+<li>如8条消息和两个集群，每个集群恰好有两台机器-&gt;那么需要这两个集群的机器分别处理掉所有8条消息-&gt;不能遗漏也不能重复</li>
+<li>引入ClusterId，用这个Id来标识不同的集群，而集群内的各个应用实例的连接使用同样的ClusterId-&gt;把Topic模型和Queue模型的特点结合起来使用<h3 id="4-消息订阅者订阅消息的方式"><a href="#4-消息订阅者订阅消息的方式" class="headerlink" title="4. 消息订阅者订阅消息的方式"></a>4. 消息订阅者订阅消息的方式</h3></li>
+<li>作为消息中间件，提供对于消息的可靠保证是非常重要的事情-&gt;一些场景中一些下游系统完全通过消息中间件进行自身任务的驱动</li>
+<li>持久订阅、非持久订阅</li>
+<li>非持久订阅:消息接收者应用启动时，就建立了订阅关系-&gt;可以收到消息-&gt;如果消息接收者应用结束了，那么消息订阅关系也就不存在了-&gt;这时的消息是不会为消息接收者保留的.</li>
+<li>持久订阅:消息订阅关系一旦建立除非应用显示地取消订阅关系否则这个订阅关系将一直存在即使消息接收者应用停止-&gt;这个消息也会保留,等待下次应用启动后再投递给消息接收者.</li>
+</ul>
+<h3 id="5-保证消息可靠性"><a href="#5-保证消息可靠性" class="headerlink" title="5. 保证消息可靠性"></a>5. 保证消息可靠性</h3><ul>
+<li>消息从发送端应用到接收端应用，中间有三个阶段需要保证可靠，分别是:[消息发送者把消息发送到消息中间件];[消息中间件把消息存入消息存储];[消息中间件把消息投递给消息接收者]</li>
+<li>要保证这三个阶段都可靠，才能保证最终消息的可靠</li>
+<li>消息发送端可靠的保证-&gt;注意异对异常的处理-&gt;可能出现的问题是在不注意的情况下吃掉了异常-&gt;从而导致错误的判断结果</li>
+<li>消息存储的可靠性保证</li>
+<li>持久存储部分的代码完全自主实现</li>
+<li>利用现有的存储系统实现</li>
+<li>实现基于文件的消息存储</li>
+<li>采用数据库作为消息存储</li>
+<li>基于双机内存的消息存储</li>
+<li>消息中间件自身扩容</li>
+<li>让消息的发送者和消息的订阅者能够感知到有新的消息中间件机器加入到了机器-&gt;软负载中心</li>
+<li>消息存储的扩容处理</li>
+<li>服务端主动调度安排投递</li>
+<li>消息投递的可靠性保证</li>
+<li>消息接收者在处理消息的过程中对于异常的处理-&gt;千万不要吃掉异常后确认消息处理成功</li>
+<li>投递处理优化:</li>
+<li>投递是一定要采用多线程处理</li>
+<li>单机多订阅者共享连接-&gt;消息只发送一次</li>
+<li>订阅者视角的消息重复的产生和应对</li>
+<li>分布式事务，复杂</li>
+<li>幂等操作-&gt;对于消息接收端-&gt;采用同样的输入多次调用处理函数会得到同样的结果</li>
+<li>JMS的消息确认方式与消息重复的关系</li>
+<li>AUTOACKNOWLEDGE/CLIENTACKNOWLEDGE/DUPSOKACKNOWLEDGE<h3 id="消息投递的其他属性支持"><a href="#消息投递的其他属性支持" class="headerlink" title="消息投递的其他属性支持"></a>消息投递的其他属性支持</h3></li>
+<li>消息优先级</li>
+<li>订阅者消息处理顺序和分级订阅</li>
+<li>自定义属性</li>
+<li>局部顺序</li>
+<li>保证顺序的消息队列设计</li>
+<li>接收端的设计从原来的Push模式变为了Pull模式</li>
+</ul>
+<h3 id="5-保证消息可靠性："><a href="#5-保证消息可靠性：" class="headerlink" title="5. 保证消息可靠性："></a>5. 保证消息可靠性：</h3><p>消息从发送端应用到接收端应用，中间有三个阶段需要保证可靠，分别是:[消息发送者把消息发送到消息中间件];[消息中间件把消息存入消息存储];[消息中间件把消息投递给消息接收者]</p>
+<h4 id="5-1-消息发送的可靠性保证"><a href="#5-1-消息发送的可靠性保证" class="headerlink" title="5.1 消息发送的可靠性保证"></a>5.1 消息发送的可靠性保证</h4><ul>
+<li>持久订阅 不会因消费者或MQ的宕机，导致消息订阅无效</li>
+<li>消息发送端可靠性保证 当且仅当MQ及时、明确返回成功，消息发送端才认为消息发送成功；<br>其他情况，如返回错误、异常、超时等，均视为发送失败，需要重发。<h4 id="5-2-MQ消息存储可靠性保证-必须存储在磁盘上"><a href="#5-2-MQ消息存储可靠性保证-必须存储在磁盘上" class="headerlink" title="5.2 MQ消息存储可靠性保证 必须存储在磁盘上"></a>5.2 MQ消息存储可靠性保证 必须存储在磁盘上</h4><ul>
+<li>基于文件 自建引擎 or 开源引擎</li>
+<li>基于关系数据库 </li>
+<li>库表设计 [消息表 + 投递表]<pre><code>缺点：投递消息表的数据量与[消息数 * 订阅者]成比例，数据量过大。
+</code></pre></li>
+<li>库表设计 [消息表 + 投递字段]<pre><code>缺点: 无法方便地从订阅者维度对投递状态进行更新。投递字段长度限制。
+</code></pre></li>
+<li>存储容灾 多机Replication，延迟问题。</li>
+<li>存储容灾 双写，复杂性。</li>
+<li>基于双机内存 并非完全安全，但性能高<br>扩容<br> 消息存储独立 存储扩容、调度器扩容（无状态，更易扩容）<br> 消息调度存储一体 趋势 RocketMQ、Kafka<h4 id="5-3-消息投递的可靠性保证"><a href="#5-3-消息投递的可靠性保证" class="headerlink" title="5.3 消息投递的可靠性保证"></a>5.3 消息投递的可靠性保证</h4></li>
+<li>当且仅当消费端明确返回成功，MQ才认为消息接收成功。</li>
+<li>消费者不应该在消息的业务处理完成前返回接收成功响应。<br>消息投递通常是多线程的，具体到单个投递线程，其实现方式有：</li>
+</ul>
+<ol>
+<li>阻塞式 投递后阻塞等待消费端返回</li>
+<li>非阻塞式 投递后不等待消费端返回，直接投递其他消息；启用单独的[投递状态更新线程]异步[及时/定时批量]更新。<br>其实和IO模型类似。<br>单应用存在多个订阅者订阅相同topic的优化：</li>
+<li>共享socket连接。</li>
+<li>消息只发送一次，消费端增加一个dispatcher，负责将消息分发给不同订阅者。</li>
+</ol>
+</li>
+</ul>
+<h3 id="6-消息重复的产生和应对"><a href="#6-消息重复的产生和应对" class="headerlink" title="6. 消息重复的产生和应对:"></a>6. 消息重复的产生和应对:</h3><h4 id="6-1-生成端重试"><a href="#6-1-生成端重试" class="headerlink" title="6.1 生成端重试"></a>6.1 生成端重试</h4><ul>
+<li>生成端发送到MQ后，MQ正常存储，随后MQ出现问题，没有响应给生成端。</li>
+<li>MQ负载过高，导致没能及时给生成端发送响应，导致超时。</li>
+<li>MQ存储消息后，网络问题导致没能发送响应，生成端重试时，网络又恢复。</li>
+</ul>
+<p>解决方案：</p>
+<ul>
+<li>消费端重发时使用相同ID，即消息ID不在MQ生成，由客户端生成。</li>
+<li>分布式事务，在高可用、高并发的互联网应用没法实行。可以直接PASS。</li>
+<li>消息消费者对消息的处理操作保持幂等性。<h4 id="6-2-MQ重复投递"><a href="#6-2-MQ重复投递" class="headerlink" title="6.2 MQ重复投递"></a>6.2 MQ重复投递</h4></li>
+<li>消费端接收消息，成功处理后，应用出现问题，没有给MQ发送响应</li>
+<li>消费端接收消息，成功处理后，网络出现问题，没有给MQ发送响应</li>
+<li>消费端接收消息，处理时间较长后，导致MQ等待响应超时</li>
+<li>消费端接收消息，成功处理后，发送响应给MQ，但此时MQ出现问题，没能处理响应</li>
+<li>消费端接收消息，成功处理后，发送响应给MQ，但此时消息存储错误，没有更新消息处理状态</li>
+</ul>
+<p>解决方案：</p>
+<ul>
+<li>分布式事务，在高可用、高并发的互联网应用没法实行。可以直接PASS。</li>
+<li>消息消费者对消息的处理操作保持幂等性。</li>
+<li>消费端保存消息消费状态，并保证状态更新操作与消息处理操作是一个本地事务。</li>
+</ul>
+<p>应对思路：<br>    消除重发行为（如生成端重试和MQ重复投递）<br>      总的思路： [消息唯一ID] + [消息(投递或消费)状态表] + [多个本地事务]<br>    消除重复行为的副作用，即保持消息处理方的操作幂等性。</p>
+<ul>
+<li>操作幂等性</li>
+</ul>
+<h3 id="7-1-MQ单机多队列（topic）的优化："><a href="#7-1-MQ单机多队列（topic）的优化：" class="headerlink" title="7.1 MQ单机多队列（topic）的优化："></a>7.1 MQ单机多队列（topic）的优化：</h3><p>MQ单机中的物理队列过多会导致“随机写”，性能急剧下降。<br>解决方式：<br>将队列分为“物理队列”和“逻辑队列”，其中物理队列“顺序写”实际的消息，而逻辑队列是“被订阅的队列”。逻辑队列相当于是一个“数据（存储在物理队列）索引队列”。但这种方法，会导致另外的问题：</p>
+<ol>
+<li>读消息时，会先读逻辑队列，再读物理队列，多了一次开销。</li>
+<li>编程复杂性</li>
+<li>读变成了完全随机读</li>
+</ol>
+<p>对上述三个问题，可以进行如下优化：</p>
+<ol>
+<li>增大内存，尽量让读命中Page Cache</li>
+<li>系统IO调度方式设置为NOOP，会在一定程度上将随机读转换为顺序跳读。</li>
+<li>物理队列中保存元信息，即使逻辑队列丢失，仍然可以通过物理队列恢复。</li>
+</ol>
+<h3 id="8-MQ的PUSH和PULL模式"><a href="#8-MQ的PUSH和PULL模式" class="headerlink" title="8. MQ的PUSH和PULL模式"></a>8. MQ的PUSH和PULL模式</h3><p><strong>问：MQ怎么改能缓冲流量？</strong><br>答：由MQ-server推模式，升级为MQ-client拉模式。<br><img src="http://mmbiz.qpic.cn/mmbiz_png/YrezxckhYOy4CdvUIeBiaaLF7W2xvXvP2ToLlLSveer5urmNibk8U9lrvOcKzFxGx2NUlEbLRfxFVibqJwTjBdOyQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""><br>MQ-client根据自己的处理能力，每隔一定时间，或者每次拉取若干条消息，实施<strong>流控</strong>，达到保护自身的效果。并且这是MQ提供的通用功能，无需上下游修改代码。<br><strong>问：如果上游发送流量过大，MQ提供拉模式确实可以起到下游自我保护的作用，会不会导致消息在MQ中堆积？</strong><br>答：下游MQ-client拉取消息，消息接收方能够批量获取消息，需要下游消息接收方进行优化，方能够提升整体吞吐量，例如：批量写。<br><strong>结论</strong></p>
+<p>1）MQ-client提供拉模式，定时或者批量拉取，可以起到削平流量，下游自我保护的作用（MQ需要做的）</p>
+<p>2）要想提升整体吞吐量，需要下游优化，例如批量处理等方式（消息接收方需要做的）</p>
+<p>58到家架构优化具备<strong>整体性</strong>，需要通用服务和业务方一起优化升级。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2018/01/25/消息中间件的设计与实践/" data-id="cjdd53x3i002qfdjd3h8x2r82" class="article-share-link" data-share="baidu" data-title="消息中间件的设计与实践">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式系统/">分布式系统</a></li></ul>
+
+    </footer>
+  </div>
+  
+
+
+
+</article>
+
+
+
+
+  
     <article id="post-消息中间件的设计与实现" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/01/25/消息中间件的设计与实现/" class="article-date">
@@ -86,7 +470,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="消息中间件对应用的解耦"><a href="#消息中间件对应用的解耦" class="headerlink" title="消息中间件对应用的解耦"></a>消息中间件对应用的解耦</h3><ul>
+        <a id="more"></a>
+<h3 id="消息中间件对应用的解耦"><a href="#消息中间件对应用的解耦" class="headerlink" title="消息中间件对应用的解耦"></a>消息中间件对应用的解耦</h3><ul>
 <li>如登陆系统负责向消息中间件发送消息，而其他的系统则向消息中间件来订阅这个消息，然后完成自己的工作.</li>
 <li>通过消息中间件解耦，登陆系统就不用关心到底有多少个系统需要知晓登陆成功这件事了，而不用关心如何通知它们，只需要把登陆成功这件事转化为一个消息发送到消息中间件就可以了</li>
 <li>landon:和事件解耦一样，如游戏中玩家升级抛出一个事件，其他子系统只需要监听该事件即可，而不必升级直接调用各个子系统</li>
@@ -209,14 +594,17 @@
 <ol>
 <li>增大内存，尽量让读命中Page Cache</li>
 <li>系统IO调度方式设置为NOOP，会在一定程度上将随机读转换为顺序跳读。</li>
-<li>物理队列中保存元信息，即使逻辑队列丢失，仍然可以通过物理队列恢复。</li>
+<li>物理队列中保存元信息，即使逻辑队列丢失，仍然可以通过物理队列恢复。<h3 id="8-MQ的PUSH和PULL模式"><a href="#8-MQ的PUSH和PULL模式" class="headerlink" title="8. MQ的PUSH和PULL模式"></a>8. MQ的PUSH和PULL模式</h3><strong>问：MQ怎么改能缓冲流量？</strong><br>答：由MQ-server推模式，升级为MQ-client拉模式。<br><img src="http://mmbiz.qpic.cn/mmbiz_png/YrezxckhYOy4CdvUIeBiaaLF7W2xvXvP2ToLlLSveer5urmNibk8U9lrvOcKzFxGx2NUlEbLRfxFVibqJwTjBdOyQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""><br>MQ-client根据自己的处理能力，每隔一定时间，或者每次拉取若干条消息，实施<strong>流控</strong>，达到保护自身的效果。并且这是MQ提供的通用功能，无需上下游修改代码。<br><strong>问：如果上游发送流量过大，MQ提供拉模式确实可以起到下游自我保护的作用，会不会导致消息在MQ中堆积？</strong><br>答：下游MQ-client拉取消息，消息接收方能够批量获取消息，需要下游消息接收方进行优化，方能够提升整体吞吐量，例如：批量写。<br><strong>结论</strong></li>
 </ol>
+<p>1）MQ-client提供拉模式，定时或者批量拉取，可以起到削平流量，下游自我保护的作用（MQ需要做的）</p>
+<p>2）要想提升整体吞吐量，需要下游优化，例如批量处理等方式（消息接收方需要做的）</p>
+<p>58到家架构优化具备<strong>整体性</strong>，需要通用服务和业务方一起优化升级。</p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2018/01/25/消息中间件的设计与实现/" data-id="cjdbqyj02002o9djdk7gdzh2q" class="article-share-link" data-share="baidu" data-title="消息中间件的设计与实践">分享到</a>
+        <a data-url="http://yoursite.com/2018/01/25/消息中间件的设计与实现/" data-id="cjdd53x3f002mfdjdh1i3ibwp" class="article-share-link" data-share="baidu" data-title="消息中间件的设计与实践">分享到</a>
       
 
 
@@ -357,7 +745,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2018/01/11/分布式系统幂等性解决方案/" data-id="cjdbqyizo00229djdde96hxyr" class="article-share-link" data-share="baidu" data-title="分布式系统幂等性解决方案">分享到</a>
+        <a data-url="http://yoursite.com/2018/01/11/分布式系统幂等性解决方案/" data-id="cjdd53x2t0021fdjdbzzpecr3" class="article-share-link" data-share="baidu" data-title="分布式系统幂等性解决方案">分享到</a>
       
 
 
@@ -409,7 +797,59 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/09/19/读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地/" data-id="cjdbqyj0i00389djdtzvbbo9j" class="article-share-link" data-share="baidu" data-title="读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地">分享到</a>
+        <a data-url="http://yoursite.com/2017/09/19/读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地/" data-id="cjdd53x3s0039fdjd73oqosiv" class="article-share-link" data-share="baidu" data-title="读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+
+
+
+</article>
+
+
+
+
+  
+    <article id="post-读内藤树作品《青年们，读马克思吧》" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/09/18/读内藤树作品《青年们，读马克思吧》/" class="article-date">
+  <time datetime="2017-09-18T02:05:54.000Z" itemprop="datePublished">2017-09-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/18/读内藤树作品《青年们，读马克思吧》/">读内藤树作品《青年们，读马克思吧》</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这是我一六年秋天某个晚上写的一篇文章，现在看来很多观点可以用更成熟的论证方法来论证。<br>
+        
+          <p class="article-more-link">
+            <a href="/2017/09/18/读内藤树作品《青年们，读马克思吧》/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2017/09/18/读内藤树作品《青年们，读马克思吧》/" data-id="cjdd53x44003rfdjdajug25lb" class="article-share-link" data-share="baidu" data-title="读内藤树作品《青年们，读马克思吧》">分享到</a>
       
 
 
@@ -461,65 +901,13 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/09/18/一个97年的IT人创业历程中的总结和感悟/" data-id="cjdbqyizh001t9djdwvclwp5t" class="article-share-link" data-share="baidu" data-title="创业历程中的总结和感悟">分享到</a>
+        <a data-url="http://yoursite.com/2017/09/18/一个97年的IT人创业历程中的总结和感悟/" data-id="cjdd53x2y0027fdjdhshs0fi1" class="article-share-link" data-share="baidu" data-title="创业历程中的总结和感悟">分享到</a>
       
 
 
 
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
-
-    </footer>
-  </div>
-  
-
-
-
-</article>
-
-
-
-
-  
-    <article id="post-读内藤树作品《青年们，读马克思吧》" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/09/18/读内藤树作品《青年们，读马克思吧》/" class="article-date">
-  <time datetime="2017-09-18T02:05:54.000Z" itemprop="datePublished">2017-09-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/18/读内藤树作品《青年们，读马克思吧》/">读内藤树作品《青年们，读马克思吧》</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>这是我一六年秋天某个晚上写的一篇文章，现在看来很多观点可以用更成熟的论证方法来论证。<br>
-        
-          <p class="article-more-link">
-            <a href="/2017/09/18/读内藤树作品《青年们，读马克思吧》/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2017/09/18/读内藤树作品《青年们，读马克思吧》/" data-id="cjdbqyj0k003d9djdui8s8ei8" class="article-share-link" data-share="baidu" data-title="读内藤树作品《青年们，读马克思吧》">分享到</a>
-      
-
-
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
 
     </footer>
   </div>
@@ -569,7 +957,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/18/分布式事务通用解决方案/" data-id="cjdbqyizm00209djds8oh8t29" class="article-share-link" data-share="baidu" data-title="分布式事务通用解决方案">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/18/分布式事务通用解决方案/" data-id="cjdd53x2q001wfdjdumc6kjd9" class="article-share-link" data-share="baidu" data-title="分布式事务通用解决方案">分享到</a>
       
 
 
@@ -621,7 +1009,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/17/创业一段时间的总结和感悟/" data-id="cjdbqyizu002a9djdei4ez9ci" class="article-share-link" data-share="baidu" data-title="创业感悟">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/17/创业一段时间的总结和感悟/" data-id="cjdd53x3d002ifdjdylovwkhr" class="article-share-link" data-share="baidu" data-title="创业感悟">分享到</a>
       
 
 
@@ -673,118 +1061,13 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/08/14/线程安全与锁优化/" data-id="cjdbqyj0c00329djdj2q1h6k1" class="article-share-link" data-share="baidu" data-title="线程安全与锁优化——深入理解JVM阅读笔记">分享到</a>
+        <a data-url="http://yoursite.com/2017/08/14/线程安全与锁优化/" data-id="cjdd53x3t003bfdjdo0eim2yo" class="article-share-link" data-share="baidu" data-title="线程安全与锁优化——深入理解JVM阅读笔记">分享到</a>
       
 
 
 
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JDK探究/">JDK探究</a></li></ul>
-
-    </footer>
-  </div>
-  
-
-
-
-</article>
-
-
-
-
-  
-    <article id="post-Java并发编程：volatile关键字解析" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/08/13/Java并发编程：volatile关键字解析/" class="article-date">
-  <time datetime="2017-08-13T02:56:31.000Z" itemprop="datePublished">2017-08-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/13/Java并发编程：volatile关键字解析/">Java并发编程：volatile关键字解析</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>我将一些最关键的要点和结论先做一下总结。如果要做细致的理解，通读全文还是很有必要的。</p>
-        
-          <p class="article-more-link">
-            <a href="/2017/08/13/Java并发编程：volatile关键字解析/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2017/08/13/Java并发编程：volatile关键字解析/" data-id="cjdbqyiy5000f9djd9h7aydgj" class="article-share-link" data-share="baidu" data-title="Java并发编程：volatile关键字解析">分享到</a>
-      
-
-
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JDK探究/">JDK探究</a></li></ul>
-
-    </footer>
-  </div>
-  
-
-
-
-</article>
-
-
-
-
-  
-    <article id="post-我为什么离开学校——十六岁那一年" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/08/12/我为什么离开学校——十六岁那一年/" class="article-date">
-  <time datetime="2017-08-12T03:45:54.000Z" itemprop="datePublished">2017-08-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/12/我为什么离开学校——十六岁那一年/">我为什么离开学校——记十六岁那一年</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>最近有人问我的经历，问为什么，我才想起好像好多人都问我，我却都没有好好回答。我不愿意谈论我自己，因为许多普通的群众听不懂我说话。我不引用道德经的原话了。以前一无所有的时候谈论 自己显得 很可笑，现在多少有点进步了，想给多少听得懂的人们一个大致的答案，不至于让他们太过疑惑。</p>
-<p>我的故事说来话长，但是我尽量长话短说。</p>
-        
-          <p class="article-more-link">
-            <a href="/2017/08/12/我为什么离开学校——十六岁那一年/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2017/08/12/我为什么离开学校——十六岁那一年/" data-id="cjdbqyj00002k9djdif3pgok8" class="article-share-link" data-share="baidu" data-title="我为什么离开学校——记十六岁那一年">分享到</a>
-      
-
-
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
 
     </footer>
   </div>
@@ -801,7 +1084,7 @@
 
 
   <nav id="page-nav">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
   </nav>
 </section>
       
@@ -813,7 +1096,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JDK探究/">JDK探究</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring探究/">Spring探究</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式系统/">分布式系统</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JDK探究/">JDK探究</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring探究/">Spring探究</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式系统/">分布式系统</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -822,7 +1105,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/JDK探究/" style="font-size: 20px;">JDK探究</a> <a href="/tags/Spring探究/" style="font-size: 15px;">Spring探究</a> <a href="/tags/个人开源项目/" style="font-size: 10px;">个人开源项目</a> <a href="/tags/分布式系统/" style="font-size: 20px;">分布式系统</a> <a href="/tags/分布式缓存/" style="font-size: 10px;">分布式缓存</a> <a href="/tags/操作记录/" style="font-size: 10px;">操作记录</a> <a href="/tags/读书笔记/" style="font-size: 15px;">读书笔记</a> <a href="/tags/随笔/" style="font-size: 15px;">随笔</a> <a href="/tags/高并发方案/" style="font-size: 10px;">高并发方案</a>
+      <a href="/tags/JDK探究/" style="font-size: 18px;">JDK探究</a> <a href="/tags/Spring探究/" style="font-size: 14px;">Spring探究</a> <a href="/tags/个人开源项目/" style="font-size: 12px;">个人开源项目</a> <a href="/tags/分布式系统/" style="font-size: 20px;">分布式系统</a> <a href="/tags/分布式缓存/" style="font-size: 12px;">分布式缓存</a> <a href="/tags/操作记录/" style="font-size: 12px;">操作记录</a> <a href="/tags/读书笔记/" style="font-size: 16px;">读书笔记</a> <a href="/tags/随笔/" style="font-size: 14px;">随笔</a> <a href="/tags/高并发方案/" style="font-size: 10px;">高并发方案</a>
     </div>
   </div>
 
@@ -831,7 +1114,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -843,6 +1126,14 @@
       <ul>
         
           <li>
+            <a href="/2018/02/07/软负载中心与集中配置管理/">软负载中心与集中配置管理</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/25/消息中间件的设计与实践/">消息中间件的设计与实践</a>
+          </li>
+        
+          <li>
             <a href="/2018/01/25/消息中间件的设计与实现/">消息中间件的设计与实践</a>
           </li>
         
@@ -852,14 +1143,6 @@
         
           <li>
             <a href="/2017/09/19/读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地/">读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地</a>
-          </li>
-        
-          <li>
-            <a href="/2017/09/18/一个97年的IT人创业历程中的总结和感悟/">创业历程中的总结和感悟</a>
-          </li>
-        
-          <li>
-            <a href="/2017/09/18/读内藤树作品《青年们，读马克思吧》/">读内藤树作品《青年们，读马克思吧》</a>
           </li>
         
       </ul>

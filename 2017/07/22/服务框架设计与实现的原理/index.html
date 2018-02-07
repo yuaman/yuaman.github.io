@@ -1,0 +1,371 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<meta name="baidu-site-verification" content="LHYPl19xg9" />
+<meta name="google-site-verification" content="s5HGo7JQp9QFcl2HIOHaNDUdwj3_kdgi5nPkB5bfMHs" />
+  
+  <title>服务框架的设计与实现 | 无题</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1.RPC概述RPC(Remote Procedure Call)即远程过程调用，允许一台计算机调用另一台计算机上的程序得到结果，而代码中不需要做额外的编程，就像在本地调用一样。 现在互联网应用的量级越来越大，单台计算机的能力有限，需要借助可扩展的计算机集群来完成，分布式的应用可以借助RPC来完成机器之间的调用。 2.RPC框架原理在RPC框架中主要有三个角色：Provider、Consumer">
+<meta name="keywords" content="分布式系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="服务框架的设计与实现">
+<meta property="og:url" content="http://yoursite.com/2017/07/22/服务框架设计与实现的原理/index.html">
+<meta property="og:site_name" content="无题">
+<meta property="og:description" content="1.RPC概述RPC(Remote Procedure Call)即远程过程调用，允许一台计算机调用另一台计算机上的程序得到结果，而代码中不需要做额外的编程，就像在本地调用一样。 现在互联网应用的量级越来越大，单台计算机的能力有限，需要借助可扩展的计算机集群来完成，分布式的应用可以借助RPC来完成机器之间的调用。 2.RPC框架原理在RPC框架中主要有三个角色：Provider、Consumer">
+<meta property="og:image" content="http://yoursite.com/2017/07/22/服务框架设计与实现的原理/_image/2018-01-30-10-40-19.jpg">
+<meta property="og:image" content="file:///C:/Users/WB-YTL~1/AppData/Local/Temp/msohtmlclip1/02/clip_image002.png">
+<meta property="og:image" content="http://yoursite.com/2017/07/22/服务框架设计与实现的原理/_image/2018-01-30-11-35-20.jpg">
+<meta property="og:updated_time" content="2018-02-07T13:58:24.981Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="服务框架的设计与实现">
+<meta name="twitter:description" content="1.RPC概述RPC(Remote Procedure Call)即远程过程调用，允许一台计算机调用另一台计算机上的程序得到结果，而代码中不需要做额外的编程，就像在本地调用一样。 现在互联网应用的量级越来越大，单台计算机的能力有限，需要借助可扩展的计算机集群来完成，分布式的应用可以借助RPC来完成机器之间的调用。 2.RPC框架原理在RPC框架中主要有三个角色：Provider、Consumer">
+<meta name="twitter:image" content="http://yoursite.com/2017/07/22/服务框架设计与实现的原理/_image/2018-01-30-10-40-19.jpg">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">无题</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">天南地北问乾坤</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="yoursite.com">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-服务框架设计与实现的原理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/07/22/服务框架设计与实现的原理/" class="article-date">
+  <time datetime="2017-07-22T02:05:54.000Z" itemprop="datePublished">2017-07-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      服务框架的设计与实现
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <a id="more"></a>
+<h2 id="1-RPC概述"><a href="#1-RPC概述" class="headerlink" title="1.RPC概述"></a>1.RPC概述</h2><p>RPC(Remote Procedure Call)即远程过程调用，允许一台计算机调用另一台计算机上的程序得到结果，而代码中不需要做额外的编程，就像在本地调用一样。</p>
+<p>现在互联网应用的量级越来越大，单台计算机的能力有限，需要借助可扩展的计算机集群来完成，分布式的应用可以借助RPC来完成机器之间的调用。</p>
+<h2 id="2-RPC框架原理"><a href="#2-RPC框架原理" class="headerlink" title="2.RPC框架原理"></a>2.RPC框架原理</h2><p>在RPC框架中主要有三个角色：Provider、Consumer和Registry。如下图所示：</p>
+<p><img src="./_image/2018-01-30-10-40-19.jpg" alt=""><br> 节点角色说明：</p>
+<ul>
+<li>Server: 暴露服务的服务提供方。</li>
+<li>Client: 调用远程服务的服务消费方。</li>
+<li>Registry: 服务注册与发现的注册中心。<h2 id="3-涉及到的Java编程知识"><a href="#3-涉及到的Java编程知识" class="headerlink" title="3.涉及到的Java编程知识"></a>3.涉及到的Java编程知识</h2><h3 id="3-1-动态代理"><a href="#3-1-动态代理" class="headerlink" title="3.1 动态代理"></a>3.1 动态代理</h3>生成 client stub和server stub需要用到 <strong>Java 动态代理技术 </strong>，我们可以使用JDK原生的动态代理机制，可以使用一些开源字节码工具框架 如：CgLib、Javassist等。</li>
+</ul>
+<h3 id="3-2-序列化"><a href="#3-2-序列化" class="headerlink" title="3.2 序列化"></a>3.2 序列化</h3><p>为了能在网络上传输和接收 Java对象，我们需要对它进行 序列化和反序列化操作。</p>
+<p>序列化：将Java对象转换成byte[]的过程，也就是编码的过程；</p>
+<p>反序列化：将byte[]转换成Java对象的过程；</p>
+<p>可以使用Java原生的序列化机制，但是效率非常低，推荐使用一些开源的、成熟的序列化技术，例如：protobuf、Thrift、hessian、Kryo、Msgpack</p>
+<p>关于序列化工具性能比较可以参考：<a href="https://link.jianshu.com?t=https%3A%2F%2Fgithub.com%2Feishay%2Fjvm-serializers" target="_blank" rel="external">jvm-serializers</a></p>
+<h3 id="3-3-反射"><a href="#3-3-反射" class="headerlink" title="3.3 反射"></a>3.3 反射</h3><p>服务发布端收到调用端的请求后，根据服务唯一标识可以获得该接口的实现类信息，通过反射创建实现类实例，进行方法的调用；</p>
+<h3 id="3-4-NIO"><a href="#3-4-NIO" class="headerlink" title="3.4 NIO"></a>3.4 NIO</h3><p>当前很多RPC框架都直接基于netty这一IO通信框架，比如阿里巴巴的HSF、dubbo，Hadoop Avro，推荐使用Netty 作为底层通信框架。</p>
+<h3 id="3-5-服务注册中心"><a href="#3-5-服务注册中心" class="headerlink" title="3.5 服务注册中心"></a>3.5 服务注册中心</h3><p>可选技术：</p>
+<p>Redis</p>
+<p>Zookeeper</p>
+<p>Consul</p>
+<p>Etcd</p>
+<h2 id="4-客户端与服务端工作原理"><a href="#4-客户端与服务端工作原理" class="headerlink" title="4. 客户端与服务端工作原理"></a>4. 客户端与服务端工作原理</h2><p>从服务调用者以及服务提供者的角度，分别说明该服务框架的基本工作原理。如下图所示： </p>
+<p><img src="file:///C:\Users\WB-YTL~1\AppData\Local\Temp\msohtmlclip1\02\clip_image002.png" alt="这里写图片描述"></p>
+<p>（看不清可以访问：<a href="https://www.processon.com/chart_image/58d720fbe4b03eea782c81df.png" target="_blank" rel="external">远程调用框架工作原理</a>） </p>
+<p>对于服务调用者来说： </p>
+<ul>
+<li><p>（1）服务框架获得服务调用者提供的服务信息（服务唯一标识：接口全限定名＋版本号；方法；调用参数）； </p>
+</li>
+<li><p>（2）框架根据服务信息通过服务注册查找中心查找到该服务提供者的地址列表； </p>
+</li>
+<li><p>（3）可根据（服务、接口、方法、参数）进行路由，确定服务提供者的地址； </p>
+</li>
+<li><p>（4）拼装请求参数对象Request，并序列化成二进制流； </p>
+</li>
+<li><p>（5）与服务端建立连接，发送序列化二进制结果； </p>
+</li>
+<li><p>（6）得到服务端响应，反序列化，得到最终调用结果</p>
+</li>
+</ul>
+<p>对于服务提供者来说： </p>
+<ul>
+<li><p>（1）发布服务，监听端口； </p>
+</li>
+<li><p>（2）服务发布成功后，将服务信息（服务唯一标识：接口全限定名＋版本号；服务实现类全限定名）注册到服务注册查找中心； </p>
+</li>
+<li><p>（3）接收客户端请求，将请求数据反序列化为Request对象； </p>
+</li>
+<li><p>（4）解析Request对象，根据服务标识从服务注册查找中心获取该服务信息，例如服务接口的实现类； </p>
+</li>
+<li><p>（5）利用反射创建类实例对象，调用方法（多采用线程池的方式）； </p>
+</li>
+<li><p>（6）将调用结果序列化成二进制数据； </p>
+</li>
+</ul>
+<p>-（7）发送响应数据到客户端；</p>
+<p>注意：服务发布者需要提供给服务调用者一个二方包，包中函数接口所有方法调用的参数以及返回类型类。其实这个二方包最大的用处应该体现在：让用户像本地调用一样使用服务框架完成远程调用，但是第一个版本我们先不实现这个功能，后面可以进行优化。</p>
+<h2 id="5-优化及特殊场景下的处理"><a href="#5-优化及特殊场景下的处理" class="headerlink" title="5. 优化及特殊场景下的处理"></a>5. 优化及特殊场景下的处理</h2><h3 id="5-1-路由方案"><a href="#5-1-路由方案" class="headerlink" title="5.1 路由方案"></a>5.1 路由方案</h3><h3 id="5-2-1-可用服务列表"><a href="#5-2-1-可用服务列表" class="headerlink" title="5.2.1 可用服务列表"></a>5.2.1 可用服务列表</h3><p>服务注册查找中心对于调用者来说只是提供可用的服务提供者列表。出于效率考虑，实际上也并不是每次每次调用远程服务的时候都会去注册查找中心查找可用地址，而是把地址缓存在调用者本地，当有变化时服务注册查找中心主动发起通知，告诉调用者，可用的服务提供者列表发生了变化，让调用者重新发起查询动作。</p>
+<p>当获取到可提供服务的地址列表后，就是选择一个地址去请求服务。</p>
+<h4 id="5-2-2-路由机制"><a href="#5-2-2-路由机制" class="headerlink" title="5.2.2  路由机制"></a>5.2.2  路由机制</h4><p>这里的选择路由机制就可以参考负载均衡的实现，使用随机、轮询、权重等方式。</p>
+<p>通常集群机器能力对等的情况下我们会使用随机与轮询，及其能力不对等我们会采用权重，机器能力可以根据响应时间来判断。</p>
+<p>调用端对路由选择的考虑点有很多，为了考虑服务提供端集群的压力均衡，基于接口、方法、参数的路由，可以把路由选择的粒度足够小到参数的划分上。根据不同粒度划分可以将响应慢的服务调用与响应快的服务调用隔离开来。</p>
+<h3 id="5-2-3-多机房场景"><a href="#5-2-3-多机房场景" class="headerlink" title="5.2.3 多机房场景"></a>5.2.3 多机房场景</h3><p>先不考虑异地的场景，只考虑同城的情况。一般来说，同城有两三个机房是很正常的，而正常情况下我们希望provider，consumer，registry在同一个机房中，节省网络资源；但也要考虑到不正常的情况如：每个机房的服务提供者处理能力不对等，同机房的服务提供者大面积瘫痪的情况；<br>综合以上情况，可以有以下两种方案选择：<br>1.利用机房网段进行路由，优先选择同机房服务，如果该机房综合处理能力不够，则扩展到其他机房<br>2.扩展物理机房为逻辑机房<br>在这里个人不建议在查询可用服务列表时就对provider根据规则进行过滤，这样会减小后续对provider集群处理能力判断的空间；建议查出全部可用列表之后根据及其能力以及可用率综合判断，进行选择；</p>
+<h3 id="5-2-流量控制"><a href="#5-2-流量控制" class="headerlink" title="5.2 流量控制"></a>5.2 流量控制</h3><p>秒杀场景有流量控制的说法，rpc框架为了整体服务的可用性，也应该进行consumer与provider之间的流量控制。<br>两个方案：<br>1.根据请求目标控制，目标服务的函数的请求次数，超过次数则拒绝访问<br>2.根据来源控制，来自同一个机器的请求次数不得超过某个限定，超过则直接拒绝访问</p>
+<h3 id="5-4-服务提供者的设计与实现"><a href="#5-4-服务提供者的设计与实现" class="headerlink" title="5.4 服务提供者的设计与实现"></a>5.4 服务提供者的设计与实现</h3><p>的实现、发布、部署、升级、治理</p>
+<h4 id="5-4-1-服务实现"><a href="#5-4-1-服务实现" class="headerlink" title="5.4.1 服务实现"></a>5.4.1 服务实现</h4><p>服务提供端的工作线程是一个线程池，路由到provider的请求会被放到线程池中执行，工作线程有多个，根据服务以及方法签名确定调用的线程池，实现隔离，不会出现争抢资源的情况。</p>
+<h4 id="5-4-2-暴露远程服务给调用者"><a href="#5-4-2-暴露远程服务给调用者" class="headerlink" title="5.4.2 暴露远程服务给调用者"></a>5.4.2 暴露远程服务给调用者</h4><p>服务端的工作有两个：<br>（1）将本地提供的服务注册到 服务注册查找中心(zookeeper)；</p>
+<p>（2）根据进来的请求定位服务并执行。</p>
+<p>下面给出一个服务提供端的配置示例：</p>
+<p><img src="./_image/2018-01-30-11-35-20.jpg" alt=""></p>
+<p>这里写图片描述</p>
+<p>这个和请求调用端的bean的配置非常类似，但是也有区别：<br>（1）服务提供端使用的是ProviderBean对象，而客户端使用的是ConsumerBean对象。</p>
+<p>（2）服务端指定了一个target属性，表明要具体执行服务的bean，在下面的bean中也定义了。但是ProviderBean并不执行具体的服务，只是起到调用端代码存根的作用。</p>
+<p>（3）ProviderBean的职能是：服务需要注册到服务注册查找中心之后才能被服务调用者发现，所以ProviderBean需要将自己所代表的服务注册到服务注册查找中心。</p>
+<p>服务的发布是按照Spring Bean注入的方式，在spring配置文件中显式声明注入一个providerBean，同时声明多个property，用这种方式非常有利于之后服务属性的扩展，通常需要配置的属性有服务名称（interfaceName），服务版本号（version），服务机器所在群组（group）;也有需要声明secret的情况；</p>
+<h4 id="5-4-3-服务部署"><a href="#5-4-3-服务部署" class="headerlink" title="5.4.3 服务部署"></a>5.4.3 服务部署</h4><p>服务框架的部署有两个方式，一个是把服务框架作为应用的一个依赖包与应用一起打包；或者打成一个sar包与容器一起启动，比如将公用vm包打成一个sar包；</p>
+<p>服务Jar包冲突：<br>将服务框架的类与应用自身的类各自控制在user-defined classloader级别，这样实现相互隔离。</p>
+<h4 id="5-4-4-服务升级"><a href="#5-4-4-服务升级" class="headerlink" title="5.4.4 服务升级"></a>5.4.4 服务升级</h4><p>每次改动发布更新版本号，进行冒烟以及灰度发布。</p>
+<h4 id="5-4-5-服务治理"><a href="#5-4-5-服务治理" class="headerlink" title="5.4.5 服务治理"></a>5.4.5 服务治理</h4><h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>懂得了原理，再看dubbo和eureka的实现，太简单了。所有RPC框架的原理都是一样的，包括HSF，Dubbo等；</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2017/07/22/服务框架设计与实现的原理/" data-id="cjdd53x3e002kfdjdqujn9sj4" class="article-share-link" data-share="baidu" data-title="服务框架的设计与实现">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式系统/">分布式系统</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/07/25/Java类加载机制原理解析/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          Java类加载机制原理解析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/07/20/Java类加载机制常见问题/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">Java类加载机制常见问题</div>
+    </a>
+  
+</nav>
+
+  
+
+
+
+</article>
+
+
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JDK探究/">JDK探究</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring探究/">Spring探究</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式系统/">分布式系统</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JDK探究/" style="font-size: 18px;">JDK探究</a> <a href="/tags/Spring探究/" style="font-size: 14px;">Spring探究</a> <a href="/tags/个人开源项目/" style="font-size: 12px;">个人开源项目</a> <a href="/tags/分布式系统/" style="font-size: 20px;">分布式系统</a> <a href="/tags/分布式缓存/" style="font-size: 12px;">分布式缓存</a> <a href="/tags/操作记录/" style="font-size: 12px;">操作记录</a> <a href="/tags/读书笔记/" style="font-size: 16px;">读书笔记</a> <a href="/tags/随笔/" style="font-size: 14px;">随笔</a> <a href="/tags/高并发方案/" style="font-size: 10px;">高并发方案</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/02/07/软负载中心与集中配置管理/">软负载中心与集中配置管理</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/25/消息中间件的设计与实践/">消息中间件的设计与实践</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/25/消息中间件的设计与实现/">消息中间件的设计与实践</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/11/分布式系统幂等性解决方案/">分布式系统幂等性解决方案</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/19/读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地/">读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/yuaman" target="_blank">我的git同性交友主页</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+
+
+
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 yutinglin<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+
+
+
+</footer>
+
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+
+
+
+
+
+
+
+
+</div>
+</body>
+</html>

@@ -1,0 +1,340 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<meta name="baidu-site-verification" content="LHYPl19xg9" />
+<meta name="google-site-verification" content="s5HGo7JQp9QFcl2HIOHaNDUdwj3_kdgi5nPkB5bfMHs" />
+  
+  <title>读曾宪杰《大型网站系统与Java中间件实践》 | 无题</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1.分布式系统相对集中式而言，是指多台计算机互相通过消息通信进行协作而对外提供服务；可解决大型机的伸缩性和单点等问题； 2.网络i/o有bio/nio，还有aio，aio是指线程拿到消息后并不自己处理或等处理结束之后再响应，而是将消息投递之后继续后面的处理，只将回调传递给被调用方，消息处理完成之后自动由被调用方完成回调，也就是异步io，java7支持aio； 3.分布式系统有几个难点：缺乏全局时">
+<meta name="keywords" content="读书笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="读曾宪杰《大型网站系统与Java中间件实践》">
+<meta property="og:url" content="http://yoursite.com/2017/06/20/读曾宪杰《大型网站系统与Java中间件实践》/index.html">
+<meta property="og:site_name" content="无题">
+<meta property="og:description" content="1.分布式系统相对集中式而言，是指多台计算机互相通过消息通信进行协作而对外提供服务；可解决大型机的伸缩性和单点等问题； 2.网络i/o有bio/nio，还有aio，aio是指线程拿到消息后并不自己处理或等处理结束之后再响应，而是将消息投递之后继续后面的处理，只将回调传递给被调用方，消息处理完成之后自动由被调用方完成回调，也就是异步io，java7支持aio； 3.分布式系统有几个难点：缺乏全局时">
+<meta property="og:updated_time" content="2018-02-07T13:55:41.734Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="读曾宪杰《大型网站系统与Java中间件实践》">
+<meta name="twitter:description" content="1.分布式系统相对集中式而言，是指多台计算机互相通过消息通信进行协作而对外提供服务；可解决大型机的伸缩性和单点等问题； 2.网络i/o有bio/nio，还有aio，aio是指线程拿到消息后并不自己处理或等处理结束之后再响应，而是将消息投递之后继续后面的处理，只将回调传递给被调用方，消息处理完成之后自动由被调用方完成回调，也就是异步io，java7支持aio； 3.分布式系统有几个难点：缺乏全局时">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">无题</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">天南地北问乾坤</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="yoursite.com">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-读曾宪杰《大型网站系统与Java中间件实践》" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/06/20/读曾宪杰《大型网站系统与Java中间件实践》/" class="article-date">
+  <time datetime="2017-06-20T02:05:54.000Z" itemprop="datePublished">2017-06-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      读曾宪杰《大型网站系统与Java中间件实践》
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <a id="more"></a>
+<p>1.分布式系统相对集中式而言，是指多台计算机互相通过消息通信进行协作而对外提供服务；可解决大型机的伸缩性和单点等问题；</p>
+<p>2.网络i/o有bio/nio，还有aio，aio是指线程拿到消息后并不自己处理或等处理结束之后再响应，而是将消息投递之后继续后面的处理，只将回调传递给被调用方，消息处理完成之后自动由被调用方完成回调，也就是异步io，java7支持aio；</p>
+<p>3.分布式系统有几个难点：缺乏全局时钟（可以把时间序号获取交给单独集群来做）；面对故障的独立性（要考虑其它模块可靠与不可靠的情况）；单点故障处理（能拆分的拆分，能换集群的换集群，不能拆分到最细的做到备份以备自动恢复）；事务的挑战（两阶段提交协议，最终一致性等）；</p>
+<p>4.单机应用演化过程：</p>
+<p>1）单机负载告警后，数据库与应用服务器做分享；</p>
+<p>2）应用服务器负载告警后应用服务器做集群，涉及负载均衡设备，涉及session问题可将session存cookie或session拷贝或统一session服务管理中心；</p>
+<p>3）数据库压力变大，读写分离，涉及数据复制问题和应用对数据源的选择问题，读库前面也可再加缓存，数据实时要求不高还可采用搜索引擎作为读；</p>
+<p>4）缓存除了可用来缓存数据，还可用来缓存页面，缓存一切对实时性要求不高的内容；</p>
+<p>5）引入分布式存储（文件/kv）系统缓解数据库的存取；</p>
+<p>6）读写分离后数据库仍有瓶颈，采用专库专用，数据库的垂直拆分；</p>
+<p>7）数据库垂直拆分后再遇到数据库单机瓶颈，考虑水平拆分；此时引入数据存取中间件；</p>
+<p>8）数据库问题解决后，新的挑战时采用应用拆分服务化方式；此时引入消息中间件的服务框架中间件；</p>
+<p>5.Java中间件主要有三类：服务框架中间件，消息中间件和数据访问中间件；</p>
+<p>6.votatile和synchronized的区别：volatile表示每次读写都直接读写主存，不会拷贝到线程存储中，也就是所有线程操作的都是同一份，这并不表示只有一个线程能同时操作；sychronized是表示加锁，保持数据的一致性；</p>
+<p>7.Java的Atomics包中的类是一些支持原子性操作的类，它们的性能会有明显的提升是因为Java使用了硬件特性来支持；</p>
+<p>8.CountDownLatch是等待线程调用latch.await，等待latch减少到0就能往下走了，而释放线程则使用latch.countDown来每次调用释放1；</p>
+<p>9.CyclicBarrier是指所有调用barrier.await的线程都要等到其它线程都执行到这一条语句之后才往后执行，barrier还可以预设一个线程在满足条件后运行；</p>
+<p>10.Exchanger是指两个线程都执行到这条语句时互换一个信号，然后各自继续执行；</p>
+<p>11.Future是指获取这个结果的线程调用是异步的，代码可以先往下执行，等到要真正要使用这个返回值时如果仍未返回才会停下来，FutureTask是其实现类。</p>
+<p>12.并发容器如果有合适场景尽量使用Java提供的，不要自己基于锁去实现；</p>
+<p>13.动态代理，是指把类和接口，接口Handler等名称传递进去给Proxy.newProxyInstance方法来动态创建代理的方式，可在方法触发前后甚至触发时进行对应处理，这在服务调用框架之类的客户端或服务端，一些能用Bean可以让用户配置接口，从而生成代理，由代理来处理来自外部的调用，而在调用前后进行替换。</p>
+<p>14.服务框架大致是这样实现的：</p>
+<p>1）调用端：通过bean配置方式来配置远程服务，服务提供方地址一般通过一个配置中心来给出，动态代理在接口调用时通过服务框架的方法来获取远程对应服务提供方地址，接装请求参数等来进行序列化进行Socket直连（采用bio/nio等），得到响应结果后反序列化为对应的对象返回给上层调用方；超时等问题的处理可通过Future来实现，还可以实现多个调用之间的合并优化，即发起多个类似异步调用，在使用到它们结果时才会卡住；</p>
+<p>2）服务方：通过bean配置方式来配置远程服务提供者，启动后注册到对应的配置中心，启动若干个线程（池，用来处理流控）来监听某一个端口的请求，当连接到来时调用具体实现类之前做一些返序列化工具，调用之后再进行一些序列化操作返回给远程调用者；应用本身与框架的jar包冲突问题通过ClassLoader来解决；</p>
+<p>3）服务注册中心：主要用来管理注册来上的调用者和服务提供方，同时可兼具路由管理，信息查看等功能；路由可细化到类或方法，还可通过分组来把同一机房的提供者标识出来；服务升级一般是采用版本号的方式来，即先将服务升级，新老并存，老的调用方全升级后再下线老服务；</p>
+<p>15.服务框架实战中的优化，即服务治理需要的内容：服务信息管理，服务质量管理评估，服务容量评估，服务依赖展示，服务分布展示，服务统计，服务报表，服务元数据等；服务管理还有服务的限流，上下线，降级，路由，服务授权管理等等；</p>
+<p>16.服务框架与ESB异同，都是面向服务化，服务框架主要考虑同构系统不考虑异构，ESB会考虑不同厂商的实现；</p>
+<p>17.数据库水平/垂直拆分的困难：</p>
+<p>1）单机的事务机制被打破，要考虑分布式事务的控制；</p>
+<p>2）一些单库操作需要到多个库中操作，表连接需要用应用方式来实现；</p>
+<p>3）外键约束需要程序来保证而非数据库；</p>
+<p>4）依靠单库的自增序列方式要改变；</p>
+<p>18.分布式事务有两阶段提交协议，但对大型网站来说还是太复杂而且会有性能问题，比之更轻量的有Paxos协议，其核心原则是少数服务多数；一般能不引入分布式事务就不要引入，如果一定要引入也不追求强一致性而只要求最终一致性，即通过重试的方式把未完成的做完而不回滚；</p>
+<p>19.大型网站一致性理论：CAP，即一致性，响应/可用性，部分出问题时仍能工作（Partition-Tolerance），这几个属性之间是互斥的，因此更多是放弃完全一致性，只追求最终一致性即可；</p>
+<p>20.跨库查询且要排序是最难处理的问题，等于要将所有分库的数据查出来再运算，应该尽量避免这种情况，尤其是分页到后面数据量更在，如果数据量巨大的，可考虑使用搜索引擎；</p>
+<p>21.数据访问中间件的设计一般是在jdbc/orm框架之下加一层用来处理路由，sql分析等；一般会有一堆的数据源需要处理，包括数据的划分规则（取模不易于扩展，考虑一致性哈希，有人退出时旁边的接管之，可以将一个物理结点虚出多个虚拟结点方式缓解任务过于集中的问题），而数据层需要进行如下转换：sql解析，规则处理，sql改写（在各库中表名可能不一样），数据源选择，sql执行，结果集返回合并处理这些步骤。</p>
+<p>22.数据访问中间件可以在应用中以jar包方式引入，也可以考虑单独部署一个应用，业务应用只与这个应用打交道，而各种规则由这个应用来解析与执行。</p>
+<p>23.读写分享等的数据同步，主要由otter来完成，基于数据库日志解析的，国际站可做到秒级延时，国内可做到ms级，阿里内部现在在做单元化，多地多活等方案，也需要这些同步技术。</p>
+<p>24.平滑数据迁移其实是先全量迁移，然后再将这一过程中老库的变更记录在新库执行，这个递归过程会越来越短，当需要迁移的增量很少时，暂停对这部分数据的写操作，然后快速完成处理，切换路由到新库。</p>
+<p>25.消息中间件可解耦应用之间的依赖，而且一般用业解决异步调用等实时性要求不高的问题，比如登录后发短信或是数据同步，记录日志这些。</p>
+<p>26.消息投递与业务处理的一致性问题很长时候都需要保证，一些可让用户随意重复的除外，因此需要引入事务类似的方式，但分布式事务成本太高，所以一个相对折中的方案是：</p>
+<p>1）发送消息给消息中间件；</p>
+<p>2）消息中间件入库消息；</p>
+<p>3）消息中间件返回结果；</p>
+<p>4）业务操作；</p>
+<p>5）发送业务操作结果给消息中间件；</p>
+<p>6）更改存储中的消息状态；</p>
+<p>这个方案只有第5第6步可能引发不一致性问题，但这种情况下消息都可以通过消息中间件的未处理消息状态来问消息发送源进行反查。</p>
+<p>27.消息中间件一般有topic和queue两种，有不同的应用场景，有时候还需要级联的方式来处理。</p>
+<p>28.消息发送端及发送过程的可靠性是通过本地存储+重试的方式来保证，对于失败的消息会保留下来并在消息中心恢复之后重新发送；而对于存储端则一般可采用数据库来存储消息，还可以采用双机内存的方式来加快速度，使存储只在内存中运转并两台机器之间相互备份，一旦一台挂掉则另一台落磁盘存储并接管消息。</p>
+<p>29.消息处理端一般都需要保证消息处理操作的等幂性以防止消息投递出错有重复的消息产生；</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2017/06/20/读曾宪杰《大型网站系统与Java中间件实践》/" data-id="cjdd53x3x003jfdjd4wsq6yi6" class="article-share-link" data-share="baidu" data-title="读曾宪杰《大型网站系统与Java中间件实践》">分享到</a>
+      
+
+
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/07/05/mongoDB底层运作原理/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          mongoDB运作原理与分片实现
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/06/12/shiro权限框架整合开源分享/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">Shiro权限框架整合总结与开源分享</div>
+    </a>
+  
+</nav>
+
+  
+
+
+
+</article>
+
+
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JDK探究/">JDK探究</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring探究/">Spring探究</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人开源项目/">个人开源项目</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式系统/">分布式系统</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式缓存/">分布式缓存</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作记录/">操作记录</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高并发方案/">高并发方案</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JDK探究/" style="font-size: 18px;">JDK探究</a> <a href="/tags/Spring探究/" style="font-size: 14px;">Spring探究</a> <a href="/tags/个人开源项目/" style="font-size: 12px;">个人开源项目</a> <a href="/tags/分布式系统/" style="font-size: 20px;">分布式系统</a> <a href="/tags/分布式缓存/" style="font-size: 12px;">分布式缓存</a> <a href="/tags/操作记录/" style="font-size: 12px;">操作记录</a> <a href="/tags/读书笔记/" style="font-size: 16px;">读书笔记</a> <a href="/tags/随笔/" style="font-size: 14px;">随笔</a> <a href="/tags/高并发方案/" style="font-size: 10px;">高并发方案</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/02/07/软负载中心与集中配置管理/">软负载中心与集中配置管理</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/25/消息中间件的设计与实践/">消息中间件的设计与实践</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/25/消息中间件的设计与实现/">消息中间件的设计与实践</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/11/分布式系统幂等性解决方案/">分布式系统幂等性解决方案</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/19/读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地/">读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/yuaman" target="_blank">我的git同性交友主页</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+
+
+
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 yutinglin<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+
+
+
+</footer>
+
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+
+
+
+
+
+
+
+
+</div>
+</body>
+</html>
