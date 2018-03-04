@@ -64,9 +64,9 @@
     <div class="outer">
       <section id="main">
   
-    <article id="post-分布式缓存一致性Hash算法" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-分布式锁通用解决方案" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/07/18/分布式缓存一致性Hash算法/" class="article-date">
+    <a href="/2017/07/18/分布式锁通用解决方案/" class="article-date">
   <time datetime="2017-07-18T02:05:54.000Z" itemprop="datePublished">2017-07-18</time>
 </a>
     
@@ -78,7 +78,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/18/分布式缓存一致性Hash算法/">分布式缓存一致性hash算法</a>
+      <a class="article-title" href="/2017/07/18/分布式锁通用解决方案/">分布式锁通用解决方案</a>
     </h1>
   
 
@@ -86,17 +86,29 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>在设计分布式缓存集群的时候，需要考虑集群的伸缩性，也就是当向集群中增加服务器的时候，要尽量减小对集群的影响，而一致性hash算法就是用来解决集群伸缩性。<br>
+        <h3 id="分布式锁的解决方式："><a href="#分布式锁的解决方式：" class="headerlink" title="分布式锁的解决方式："></a>分布式锁的解决方式：</h3><h3 id="基于数据库："><a href="#基于数据库：" class="headerlink" title="基于数据库："></a>基于数据库：</h3><blockquote>
+<p>   基于数据库表做乐观锁，用于分布式锁。（version）</p>
+<p>   基于数据库表做悲观锁（InnoDB，for update）</p>
+<p>   基于数据库表数据记录做唯一约束（表中记录方法名称）</p>
+</blockquote>
+<h3 id="基于缓存："><a href="#基于缓存：" class="headerlink" title="基于缓存："></a>基于缓存：</h3><blockquote>
+<p> 常用方案：使用redis的setnx()用于分布式锁。（setNx，直接设置值为当前时间+超时时间，保持操作原子性）</p>
+<p>使用memcached的add()方法，用于分布式锁。</p>
+<p>使用Tair的put()方法，用于分布式锁。</p>
+</blockquote>
+<h3 id="基于Zookeeper："><a href="#基于Zookeeper：" class="headerlink" title="基于Zookeeper："></a>基于Zookeeper：</h3><blockquote>
+<p>每个客户端对某个方法加锁时，在zookeeper上的与该方法对应的指定节点的目录下，生成一个唯一的瞬时有序节点。 判断是否获取锁只需要判断有序节点中序号最小的一个。 当释放锁的时候，只需将这个瞬时节点删除即可。</p>
+</blockquote>
         
           <p class="article-more-link">
-            <a href="/2017/07/18/分布式缓存一致性Hash算法/#more">Read More</a>
+            <a href="/2017/07/18/分布式锁通用解决方案/#more">Read More</a>
           </p>
         
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/07/18/分布式缓存一致性Hash算法/" data-id="cjdd8a5u3001tbj73u1oeffbz" class="article-share-link" data-share="baidu" data-title="分布式缓存一致性hash算法">分享到</a>
+        <a data-url="http://yoursite.com/2017/07/18/分布式锁通用解决方案/" data-id="cjed2txyc001nznjd1qzj0fsq" class="article-share-link" data-share="baidu" data-title="分布式锁通用解决方案">分享到</a>
       
 
 
@@ -148,7 +160,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/07/15/mongoDB常见问题整理/" data-id="cjdd8a5tp0019bj73xsqsw3id" class="article-share-link" data-share="baidu" data-title="mongoDB常见问题整理">分享到</a>
+        <a data-url="http://yoursite.com/2017/07/15/mongoDB常见问题整理/" data-id="cjed2txxy0012znjdih2to1qe" class="article-share-link" data-share="baidu" data-title="mongoDB常见问题整理">分享到</a>
       
 
 
@@ -200,7 +212,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/07/11/Java实现动态代理与Spring的动态代理/" data-id="cjdd8a5si0004bj738zbbkwsz" class="article-share-link" data-share="baidu" data-title="Java实现动态代理">分享到</a>
+        <a data-url="http://yoursite.com/2017/07/11/Java实现动态代理与Spring的动态代理/" data-id="cjed2txwy0003znjdmlxag4s3" class="article-share-link" data-share="baidu" data-title="Java实现动态代理">分享到</a>
       
 
 
@@ -252,7 +264,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/07/10/Sprign 动态代理机制/" data-id="cjdd8a5tb000sbj73hqrmdsuw" class="article-share-link" data-share="baidu" data-title="Sprign 动态代理机制">分享到</a>
+        <a data-url="http://yoursite.com/2017/07/10/Sprign 动态代理机制/" data-id="cjed2txxh000jznjdkqbwcum9" class="article-share-link" data-share="baidu" data-title="Sprign 动态代理机制">分享到</a>
       
 
 
@@ -304,7 +316,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/07/05/mongoDB底层运作原理/" data-id="cjdd8a5ts001cbj73g2fs2g7z" class="article-share-link" data-share="baidu" data-title="mongoDB运作原理与分片实现">分享到</a>
+        <a data-url="http://yoursite.com/2017/07/05/mongoDB底层运作原理/" data-id="cjed2txy6001dznjdf7o3w47h" class="article-share-link" data-share="baidu" data-title="mongoDB运作原理与分片实现">分享到</a>
       
 
 
@@ -356,7 +368,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/06/20/读曾宪杰《大型网站系统与Java中间件实践》/" data-id="cjdd8a5v00036bj73rb50p74i" class="article-share-link" data-share="baidu" data-title="读曾宪杰《大型网站系统与Java中间件实践》">分享到</a>
+        <a data-url="http://yoursite.com/2017/06/20/读曾宪杰《大型网站系统与Java中间件实践》/" data-id="cjed2txz4002uznjd46wfpiwc" class="article-share-link" data-share="baidu" data-title="读曾宪杰《大型网站系统与Java中间件实践》">分享到</a>
       
 
 
@@ -408,7 +420,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/05/05/mongoDB生产环境三种模式/" data-id="cjdd8a5tt001ebj73i0v275e1" class="article-share-link" data-share="baidu" data-title="mongoDB生产环境三种模式">分享到</a>
+        <a data-url="http://yoursite.com/2017/05/05/mongoDB生产环境三种模式/" data-id="cjed2txy20019znjdgcq4wxzv" class="article-share-link" data-share="baidu" data-title="mongoDB生产环境三种模式">分享到</a>
       
 
 
@@ -460,7 +472,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/04/05/MongoDB 进阶——大文件存储(GridFS)/" data-id="cjdd8a5t3000lbj73crkkeswo" class="article-share-link" data-share="baidu" data-title="MongoDB 进阶——大文件存储(GridFS)">分享到</a>
+        <a data-url="http://yoursite.com/2017/04/05/MongoDB 进阶——大文件存储(GridFS)/" data-id="cjed2txxg000hznjdq0ghj44x" class="article-share-link" data-share="baidu" data-title="MongoDB 进阶——大文件存储(GridFS)">分享到</a>
       
 
 
@@ -512,7 +524,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/03/13/深入浅出数据库索引原理（平衡二叉树）/" data-id="cjdd8a5uj002dbj7321i8d7xn" class="article-share-link" data-share="baidu" data-title="深入浅出数据库索引原理（平衡二叉树）">分享到</a>
+        <a data-url="http://yoursite.com/2017/03/13/深入浅出数据库索引原理（平衡二叉树）/" data-id="cjed2txyr0029znjdm0mrm26c" class="article-share-link" data-share="baidu" data-title="深入浅出数据库索引原理（平衡二叉树）">分享到</a>
       
 
 
@@ -564,7 +576,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/10/单点登录实施概述/" data-id="cjdd8a5u4001vbj73kd7k96zm" class="article-share-link" data-share="baidu" data-title="单点登录实施概述">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/10/单点登录实施概述/" data-id="cjed2txyg001tznjdyrz5fenp" class="article-share-link" data-share="baidu" data-title="单点登录实施概述">分享到</a>
       
 
 
@@ -599,7 +611,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JDK探究/">JDK探究</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring探究/">Spring探究</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式系统/">分布式系统</a><span class="tag-list-count">24</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JDK探究/">JDK探究</a><span class="tag-list-count">18</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring探究/">Spring探究</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式系统/">分布式系统</a><span class="tag-list-count">24</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -617,7 +629,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
