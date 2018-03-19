@@ -1,0 +1,213 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>链式存储线性表（LinkedList）数据结构解析 | 无题</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/8.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">链式存储线性表（LinkedList）数据结构解析</h1><a id="logo" href="/.">无题</a><p class="description"></p></div><div id="nav-menu"></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">链式存储线性表（LinkedList）数据结构解析</h1><div class="post-content"><p>LinkedList内部是通过链表来实现的<br><a id="more"></a></p>
+<h3 id="一、节点分析"><a href="#一、节点分析" class="headerlink" title="一、节点分析"></a>一、节点分析</h3><p>LinkedList内部是通过链表来实现的，那么就少不了节点，所以在源码中必然能找到这样一个节点。</p>
+<pre><code>private static class Node&lt;E&gt; {
+    E item;
+    Node&lt;E&gt; next;
+    Node&lt;E&gt; prev;
+
+    Node(Node&lt;E&gt; prev, E element, Node&lt;E&gt; next) {
+        this.item = element;
+        this.next = next;
+        this.prev = prev;
+    }
+}
+</code></pre><p>节点中定义了三个成员变量：E item（节点的存储内容）、Node<e> next（记录下一个节点的指针）、Node<e> prev（记录后一个节点的指针），其构造方法我觉得很巧妙，该构造函数的三个参数中就包含了它的前一个节点，节点保存的内容，和它的后一个节点，只要通过这个构造函数new出的新节点就自动实现了节点间的链接，在后面的增删改查操作中我们会发现，通过这个构造方法我们可以省去很多Node<e> next和Node<e> prev指针指来指去的操作。</e></e></e></e></p>
+<h3 id="二、LinkedList的核心操作方法"><a href="#二、LinkedList的核心操作方法" class="headerlink" title="二、LinkedList的核心操作方法"></a>二、LinkedList的核心操作方法</h3><p>在LinkedList中有可以看到这样两个成员变量Node<e> first和Node<e> last</e></e></p>
+<pre><code>/**
+     * Pointer to first node.
+     * Invariant: (first == null &amp;&amp; last == null) ||
+     *            (first.prev == null &amp;&amp; first.item != null)
+     */
+    transient Node&lt;E&gt; first;
+
+
+/**
+     * Pointer to last node.
+     * Invariant: (first == null &amp;&amp; last == null) ||
+     *            (last.next == null &amp;&amp; last.item != null)
+     */
+    transient Node&lt;E&gt; last;
+</code></pre><p>这个两个成员变量很关键，主要用来记录链表的头和尾，这样方便我们在CRUD操作的过程中来查找到相应位置的节点。通过分析源码可以知道LinkedList其实是用的是双向链表来实现的。</p>
+<p><img src="http://og287lnu0.bkt.clouddn.com/06151107_JGLx.png"></p>
+<p>在分析一个数据结构的时候，从相关add方法分析走能很好的理清数据结构的脉络。  </p>
+<ul>
+<li><p>linkFirst方法的分析<br>可以看到在addFirst的方法中其实是调用的linkFirst方法。</p>
+<pre><code>/**
+   * Inserts the specified element at the beginning of this list.
+   *
+   * @param e the element to add
+   */
+  public void addFirst(E e) {
+      linkFirst(e);
+  }
+</code></pre><p>  接下来看看linkFirst方法是如何实现节点间操作的：</p>
+</li>
+</ul>
+<pre><code>/**
+   * Links e as first element.
+   */
+  private void linkFirst(E e) {
+      final Node&lt;E&gt; f = first;
+      final Node&lt;E&gt; newNode = new Node&lt;&gt;(null, e, f);
+      first = newNode;
+      if (f == null)
+          last = newNode;
+      else
+          f.prev = newNode;
+      size++;
+      modCount++;
+  }
+</code></pre><p>  linkFirst顾名思义，就是将节点链接到第一个。该方法首先是拿到链表的first(第一个）节点，然后通过那个巧妙的节点构造函数构造出一个新节点，然后将记录链表头的first指向这个新的节点，如果之前那个记录链表头的first节点等于null，说明当前链表中还没有一个节点（空链表）,所以就将记录链表尾的last节点也指向这个新节点；如果之前那个记录链表头的first节点不为null，那么就将之前的第一个节点的prev指针指向新节点，在节点的构造函数中就完成了新节点的next指针指向之前的第一个节点，所以这样就形成了节点间的双向记录。  </p>
+<ul>
+<li>linkLast方法的分析<br>可以看到在addLast的方法中其实是调用的linkLast方法。</li>
+</ul>
+<pre><code>/**
+   * Appends the specified element to the end of this list.
+   *
+   * &lt;p&gt;This method is equivalent to {
+@link
+ #add}.
+   *
+   * 
+@param
+ e the element to add
+   */
+  public void addLast(E e) {
+      linkLast(e);
+  }
+</code></pre><p>再来看看linkLast方法是如何实现的：</p>
+<pre><code>/**
+   * Links e as last element.
+   */
+  void linkLast(E e) {
+      final Node&lt;E&gt; l = last;
+      final Node&lt;E&gt; newNode = new Node&lt;&gt;(l, e, null);
+      last = newNode;
+      if (l == null)
+          first = newNode;
+      else
+          l.next = newNode;
+      size++;
+      modCount++;
+  }
+</code></pre><p>  这个方法是不是和linkFirst方法很像，它首先是拿到记录链表的last节点，然后又通过那个巧妙的构造方法构造一个新的节点，最后同样是判断之前记录链表的last节点为不为null，如果为null说明链表依然是空的，所以就将记录链表头的first指向该新节点，如果不为null说明链表之前已经有节点了，此时只需要将之前的那个尾节点的next指针指向当前新节点即可，同样是构造方法帮助我们完成了新节点的prev指针指向前一个节点。所以我觉得那个节点的构造函数很巧妙。</p>
+<ul>
+<li><p>linkBefore方法的分析<br>这个方法是比较重要也比较难理解的方法，先来看看这个函数的代码：</p>
+<pre><code>/**
+   * Inserts element e before non-null Node succ.
+   */
+  void linkBefore(E e, Node&lt;E&gt; succ) {
+      // assert succ != null;
+      final Node&lt;E&gt; pred = succ.prev;
+      final Node&lt;E&gt; newNode = new Node&lt;&gt;(pred, e, succ);
+      succ.prev = newNode;
+      if (pred == null)
+          first = newNode;
+      else
+          pred.next = newNode;
+      size++;
+      modCount++;
+  }
+</code></pre></li>
+</ul>
+<p>虽然代码和简洁，但却比较难理解，这个方法的两个参数分别表示：插入新节点的元素、需要在哪个节点前插入的节点。结合下面的这张图来分析：<br><img src="http://og287lnu0.bkt.clouddn.com/w2.png"><br>比如我现在想在Node3前面插入一个节点，那么当前的succ =  Node3，所以这句代码final Node<e> pred = succ.prev;执行后pred = Node2，再通过那个巧妙的节点构造函数就将新节点链接上去了，如图：<br><img src="http://og287lnu0.bkt.clouddn.com/w3.png"><br>这时候再通这句代码succ.prev = newNode;就Node3的prev指针指向了插入的新节点。后面的判读pred为不为null是为了知道是不是再第一个节点前插入新节点，如果是在第一个节点前插入新节点，那么就将记录链表头的first指针指向新节点，否则就pred的next指针指向插入的新节点，这样就完成了 新节点的插入操作。如图：<br><img src="http://og287lnu0.bkt.clouddn.com/w4.png"></e></p>
+<ul>
+<li>unlinkFirst方法的分析</li>
+</ul>
+<pre><code>/**
+   * Unlinks non-null first node f.
+   */
+  private E unlinkFirst(Node&lt;E&gt; f) {
+      // assert f == first &amp;&amp; f != null;
+      final E element = f.item;
+      final Node&lt;E&gt; next = f.next;
+      f.item = null;
+      f.next = null; // help GC
+      first = next;
+      if (next == null)
+          last = null;
+      else
+          next.prev = null;
+      size--;
+      modCount++;
+      return element;
+  }
+</code></pre><p>  该方法是移除第一个节点，首先是通过传入的first指针拿到第一个节点的内容，然后拿到它的下一个节点，再将第一个节点的内容和指向下个节点的next指针置空，方便GC回收。下一步便是将记录头节点的first指向final Node<e> next = f.next;拿到的这个节点，如果这个的节点为空，那么last = null（说明链表在移除第一个节点前只有一个节点），否则就将拿到的这个节点中的prev指针置空，表示这个节点就是第一个节点。</e></p>
+<ul>
+<li>unlinkLast方法的分析  </li>
+</ul>
+<pre><code>/**
+   * Unlinks non-null last node l.
+   */
+  private E unlinkLast(Node&lt;E&gt; l) {
+      // assert l == last &amp;&amp; l != null;
+      final E element = l.item;
+      final Node&lt;E&gt; prev = l.prev;
+      l.item = null;
+      l.prev = null; // help GC
+      last = prev;
+      if (prev == null)
+          first = null;
+      else
+          prev.next = null;
+      size--;
+      modCount++;
+      return element;
+  }
+</code></pre><p>这个方法和unlinkFirst的实现基本差不多，此方法的作用是移除链表中的最后一个节点。只要清楚了unlinkFirst这个方法，那么unlinkLast也就清楚了。  </p>
+<ul>
+<li>unlink方法的分析  </li>
+</ul>
+<pre><code>/**
+   * Unlinks non-null node x.
+   */
+  E unlink(Node&lt;E&gt; x) {
+      // assert x != null;
+      final E element = x.item;
+      final Node&lt;E&gt; next = x.next;
+      final Node&lt;E&gt; prev = x.prev;
+
+      if (prev == null) {
+          first = next;
+      } else {
+          prev.next = next;
+          x.prev = null;
+      }
+
+      if (next == null) {
+          last = prev;
+      } else {
+          next.prev = prev;
+          x.next = null;
+      }
+
+      x.item = null;
+      size--;
+      modCount++;
+      return element;
+     }
+</code></pre><p>此方法是移除链表中指定的节点，在移除这个节点前肯定需要拿到这个节点prev指针和next指针所记录的节点，并需要判断prev指针和next是否为空，prev指针为空表示这个节点就是第一个节点，next指针为空表示这个节点就是最后一个节点。关键代码便是通过判断将拿到的prev节点的next指针指向拿到的next节点，以及将拿到的next节点的prev指针指向拿到的prev节点。</p>
+<h3 id="三、LinkedList中的经典算法"><a href="#三、LinkedList中的经典算法" class="headerlink" title="三、LinkedList中的经典算法"></a>三、LinkedList中的经典算法</h3><p>在LinkedList中有一个根据索引查找相应节点的方法，此方法的源码如下：</p>
+<p>/**</p>
+<pre><code> * Returns the (non-null) Node at the specified element index.
+ */
+Node&lt;E&gt; node(int index) {
+    // assert isElementIndex(index);
+
+    if (index &lt; (size &gt;&gt; 1)) {
+        Node&lt;E&gt; x = first;
+        for (int i = 0; i &lt; index; i++)
+            x = x.next;
+        return x;
+    } else {
+        Node&lt;E&gt; x = last;
+        for (int i = size - 1; i &gt; index; i--)
+            x = x.prev;
+        return x;
+    }
+}
+</code></pre><p>在这个方法中可以看到用到了折半查找的算法，当传入一个索引后会判断index &lt; (size &gt;&gt; 1)，如果index小于size的一半，则从前往后找节点；否则就从后往前找节点。</p>
+<p>通过对LinkedList的分析后，对数据结构中的链表有了新的认识，在LinkedList中用的链表是双向链表，其实通过双向循环链表也可以来实现，如果是通过双向循环链表可以不需要last这个记录链表尾的变量了，只需要一个first变量记录链表的头，也可以实现从前往后和从后往前的查找等操作。</p>
+<p><img src="http://og287lnu0.bkt.clouddn.com/w5.png"></p>
+<p>转载地址：<a href="https://my.oschina.net/devbird/blog/807571" target="_blank" rel="external">https://my.oschina.net/devbird/blog/807571</a><br>感谢原作者🙏</p>
+</div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://yoursite.com"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JDK探究/">JDK探究</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/08/10/悲观锁与乐观锁与事务/">悲观锁与乐观锁与事务</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/08/ JAVA中Object类中的方法以及finalize函数作用/">JAVA中Object类中的方法以及finalize函数作用</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/17/深入理解JVM阅读笔记以及问题整理/">《深入理解JVM》阅读笔记以及问题整理</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">无题.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>软负载中心与集中配置管理 | 无题</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/8.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">软负载中心与集中配置管理</h1><a id="logo" href="/.">无题</a><p class="description"></p></div><div id="nav-menu"></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">软负载中心与集中配置管理</h1><div class="post-content"><ul>
+<li>软负载中心两个最基础的职责</li>
+</ul>
+<ul>
+<li>聚合地址信息</li>
+<li>生命周期感知-&gt;需要能对服务的上下线自动感知，并且根据这个变化去更新服务地址数据<a id="more"></a></li>
+</ul>
+<ul>
+<li><p>软负载中心两个最基础的职责</p>
+<ul>
+<li>聚合地址信息</li>
+<li>生命周期感知-&gt;需要能对服务的上下线自动感知，并且根据这个变化去更新服务地址数据</li>
+</ul>
+</li>
+<li><p>软负载中心的结构</p>
+<ul>
+<li>软负载中心的服务端-&gt;负责感知提供服务的机器是否在线，聚合提供者的机器信息并负责把数据传给使用数据的应用</li>
+<li><p>软负载中心的客户端</p>
+<ul>
+<li>服务提供者-&gt;把服务器提供者提供服务的具体信息主动传给服务端-&gt;并且随着提供服务的变化去更新数据</li>
+<li>服务器使用者-&gt;向服务端告知自己所需要的数据并负责去更新数据，还要进行本地的数据缓存</li>
+</ul>
+</li>
+<li><p>软负载中心三部分重要的数据-&gt;聚合数据、订阅关系、连接数据</p>
+</li>
+</ul>
+</li>
+<li><p>内容聚合功能的设计</p>
+<ul>
+<li>保证数据正确性</li>
+<li>高效聚合数据<ul>
+<li>并发下的数据正确性的保证</li>
+<li>数据更新、删除的[顺序]保证</li>
+<li>大量数据同时插入、更新时的性能保证<ul>
+<li>根据key进行分线程的处理-&gt;保证同样key的数据是在同一个线程中处理-&gt;顺序任务队列</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>解决服务上下线的感知</p>
+<ul>
+<li><p>通过客户端与服务端的连接感知</p>
+<ul>
+<li>长连接的心跳或数据的发布来判断服务发布者是否还在线-&gt;如果很久没有心跳或数据的发布，则判定为不在线；那么就取出这个发布者发布的数据-&gt;而对于新上线的发布者，通过连接建立和数据发布就实现了上线的通知</li>
+<li>当负载中心的自身的负载很高时，可能产生误判，如软负载中心压力很大，处理请求变慢，心跳数据来不及处理-&gt;会以为心跳超时而判断服务不在线,认为服务不可用并且把信息通知给服务调用者，这会导致原本可用的服务被下线了</li>
+<li>另外的问题，如果服务发布者到软负载中心的网络链路有问题而服务发布者到服务使用者的链路没问题，也会造成感知的问题-&gt;因为软负载中心属于旁路<ul>
+<li>解决:软负载中心客户端增加逻辑，当收到软负载中心通知的应用下线数据时，需要服务调用者进行验证才能接收这个通知</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>通过对于发布数据中提供的地址端口进行连接的检查</p>
+<ul>
+<li>需要服务调用者进行最终确认，因为在系统中进行的实际业务调用通信是在服务调用者和服务提供者之间</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>软负载中心的数据分发的特点和设计</p>
+<ul>
+<li><p>数据分发与消息订阅的区别</p>
+<ul>
+<li>消息中间件需要保证消息不丢失-&gt;每条消息都应该送到相关订阅者-&gt;而软负载中心只需要保证最新数据送到相关的订阅者-&gt;不需要保证每次的数据变化都能让最终订阅者感知</li>
+<li>消息中间件中同一个集群中的不同机器是分享所有消息的，因为该消息只要同一集群中的一台机器去处理了就行-&gt;而软负载中心则不同，因为其维护的是大家都需要用的服务数据-&gt;所以需要把这数据分发给所有的机器</li>
+</ul>
+</li>
+<li><p>提升数据分发性能需要注意的问题</p>
+<ul>
+<li>数据压缩-&gt;CPU换带宽</li>
+<li>全量与增量的选择-&gt;建议刚开始的实现中采用简单的方式，即传送全量数据，当全量数据很大时就需要考虑采用增量传送的方式实现.</li>
+</ul>
+</li>
+<li><p>针对服务化的特性支持</p>
+<ul>
+<li><p>软负载数据分组</p>
+<ul>
+<li>根据环境进行划分</li>
+<li>分优先级的隔离</li>
+</ul>
+</li>
+<li><p>提供自动感知以外的上下线开关</p>
+<ul>
+<li><p>优雅的停止应用</p>
+<ul>
+<li>我们应该先从服务列表中去掉这个机器-&gt;等待当时正在执行的服务器结束，然后再停止应用-&gt;通过指令直接从软负载中心使机器下线</li>
+</ul>
+</li>
+<li><p>保持应用场景,用于排错</p>
+<ul>
+<li>遇到服务的问题时，可以把出问题的服务留下一台进行故障定位和场景分析-&gt;此时需要把这台机器从服务列表中拿下来，以免有新的请求进来造成服务的失败,这也是需要软负载中心直接使服务下线的一个场景.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>维护管理路由规则</p>
+<ul>
+<li>对不同特性的数据进行拆分</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>从单机到集群</p>
+<ul>
+<li>数据管理问题/连接管理问题</li>
+<li>数据统一管理<ul>
+<li>数据聚合放在一个地方-&gt;软负载中心集群,无状态-&gt;对于数据发布者和订阅者来说，选择软负载中心集群中的任何一个机器连接皆可</li>
+<li>把软负载中心集群中的机器的职责分开，即把聚合数据的任务和推送数据的任务分到专门的机器上处理-&gt;将软负载中心集群中有一台机器为软负载中心数据聚合，另一台机器为软负载中心数据推送-&gt;发布者和订阅者的连接是分开管理的-&gt;为了提升性能，在软负载中心负责数据推送的机器上是可以对聚合数据做缓存</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>* 数据对等管理方案
+    + 将数据分散在各个软负载中心的节点上并且把自己节点管理的数据分发到其他节点上，从而保证每个节点都有整个集群的全部数据并且这些节点的角色是对等的-&gt;使用软负载中心的数据发布者和数据订阅者只需要去连接软负载中心集群中的任何一台机器就可以-&gt;软负载中心集群内部，各个节点之间会进行数据的同步
+        - 批量处理同步-&gt;合并变化，同步一次
+        - 如果节点较多，同步量会较大-&gt;对集群内的节点进行指责划分
+        - 如果集群管理的总体数据很多，超过了单机限制-&gt;则需要对数据进行分组处理-&gt;让每个节点管理一部分数据-&gt;即用UI规则对数据进行类似分库分表的操作-&gt;则数据订阅者可能就需要连接多个数据分发节点了
+</code></pre><ul>
+<li>集中配置管理中心<ul>
+<li>集中配置管理中心结构<ul>
+<li>准备的持久存储来保存持久数据(Master-Slave)-&gt;一般采用关系型数据库-&gt;通过两个节点的主备来解决持久数据安全的问题.</li>
+<li>集中配置管理中心集群这层由多个集中配置管理中心节点组成-&gt;对等-&gt;都可以提供数据给应用端等-&gt;互不依赖</li>
+<li>集中配置管理中心的单个节点-&gt;部署了一个nginx和一个web应用-&gt;其中web应用主要负责完成相关的程序逻辑如数据库的相关操作以及根据ip等的分组操作,即整个应用的逻辑放在了web应用中；单机的本地文件Local File则是为了容灾和提升性能，客户端进行数据获取的时候，最后都是从nginx直接获取本地文件并把数据返回给请求端</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>* 集中配置管理中心的使用分为了以下两部分
+    + 提供给应用使用的客户端-&gt;主要是业务应用通过客户端去获取配置信息和数据，用于数据的读取
+    + 为控制台或者控制脚本提供管理SDK
+        - 包括了对数据的读写，通过管理SDK可以进行配置数据的更改
+
+* 客户端实现和容灾策略
+    + 客户端通过http协议与集中配置管理中心进行通信
+        - 通过轮询获取最新数据\_普通轮询
+        - 改进使用长轮询，Long Polling-&gt;如果没有数据，长轮询会等待；如果等待数据，立刻返回；如果一直没有数据则等到超时后返回，继续建立连接，而普通轮询就直接返回了-&gt;是HTTP普通轮询和Socket长连接方式的折中-
+    + 容灾
+        - 数据缓存
+        - 数据快照
+        - 本地配置
+        - 文件格式-&gt;如果是二进制数据格式，那么就没有对应的工具是无法对配置进行修改-&gt;如果客户端容灾退化到一个单机应用就会需要直接修改配置内容和数据-&gt;那么文本格式的限制就非常重要和关键了
+
+* 服务端实现和容灾策略
+    + Nginx+Web应用-&gt;和逻辑相关的部分在Web应用上实现，Nginx用于请求的处理和最后结果的返回，而供返回的数据的都在本地文件系统中
+    + 和数据库的数据同步
+
+* 数据库策略
+    + 数据库在设计时需要支持配置的版本管理，即随着配置内容的更改，老的版本是需要保留的，为了方便进行配置变更的对比和回滚-&gt;而数据库本身需要主备进行数据的容灾考虑
+</code></pre></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://yoursite.com"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JDK探究/">JDK探究</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/08/10/悲观锁与乐观锁与事务/">悲观锁与乐观锁与事务</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/08/ JAVA中Object类中的方法以及finalize函数作用/">JAVA中Object类中的方法以及finalize函数作用</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/17/深入理解JVM阅读笔记以及问题整理/">《深入理解JVM》阅读笔记以及问题整理</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">无题.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

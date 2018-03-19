@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>synchronized、ReentrantLock与原子类 | 无题</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/8.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">synchronized、ReentrantLock与原子类</h1><a id="logo" href="/.">无题</a><p class="description"></p></div><div id="nav-menu"></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">synchronized、ReentrantLock与原子类</h1><div class="post-content"><p>synchronized关键字、ReentrantLock与原子类<br><a id="more"></a></p>
+<p>###1.ReenTrantLock和synchronized对比<br>ReentrantLock拥有synchronized相同的并发性和内存语义，此外还多了锁投票，定时锁等候和中断等候。</p>
+<h4 id="1-1-可重入性："><a href="#1-1-可重入性：" class="headerlink" title="1.1 可重入性："></a>1.1 可重入性：</h4><p>从名字上理解，ReenTrantLock的字面意思就是再进入的锁，其实synchronized关键字所使用的锁也是可重入的，两者关于这个的区别不大。两者都是同一个线程没进入一次，锁的计数器都自增1，所以要等到锁的计数器下降为0时才能释放锁。</p>
+<h4 id="1-2-锁的实现："><a href="#1-2-锁的实现：" class="headerlink" title="1.2 锁的实现："></a>1.2 锁的实现：</h4><p>Synchronized是依赖于JVM实现的，而ReenTrantLock是JDK实现的，有什么区别，说白了就类似于操作系统来控制实现和用户自己敲代码实现的区别。前者的实现是比较难见到的，后者有直接的源码可供阅读。<br>synchronized在JVM层面实现，不但可以通过一些监控工具监控锁定，而且在代码执行出现异常，JVM自动释放锁定;<br>Lock是通过代码实现，为了保证锁定一定会被释放，一般会将unLock()放到flyinal{}中。</p>
+<h4 id="1-3-性能的区别："><a href="#1-3-性能的区别：" class="headerlink" title="1.3 性能的区别："></a>1.3 性能的区别：</h4><p>在资源竞争不激烈的情况下，synchronized的性能要优于ReentrantLock，但在资源竞争很激烈的情况下，synchronized的性能会下降几十倍，但是ReentrantLock的性能能维持常态。</p>
+<p>在Synchronized优化以前，synchronized的性能是比ReenTrantLock差很多的，但是自从Synchronized引入了偏向锁，轻量级锁（自旋锁）后，两者的性能就差不多了，在两种方法都可用的情况下，官方甚至建议使用synchronized，其实synchronized的优化我感觉就借鉴了ReenTrantLock中的CAS技术。都是试图在用户态就把加锁问题解决，避免进入内核态的线程阻塞。</p>
+<h4 id="1-4-功能区别："><a href="#1-4-功能区别：" class="headerlink" title="1.4 功能区别："></a>1.4 功能区别：</h4><p>便利性：很明显Synchronized的使用比较方便简洁，并且由编译器去保证锁的加锁和释放，而ReenTrantLock需要手工声明来加锁和释放锁，为了避免忘记手工释放锁造成死锁，所以最好在finally中声明释放锁。</p>
+<p>锁的细粒度和灵活度：很明显ReenTrantLock优于Synchronized</p>
+<h3 id="2-ReenTrantLock独有的能力："><a href="#2-ReenTrantLock独有的能力：" class="headerlink" title="2. ReenTrantLock独有的能力："></a>2. ReenTrantLock独有的能力：</h3><h4 id="2-1-指定公平锁"><a href="#2-1-指定公平锁" class="headerlink" title="2.1 指定公平锁"></a>2.1 指定公平锁</h4><p>ReenTrantLock可以指定是公平锁还是非公平锁。而synchronized只能是非公平锁。所谓的公平锁就是先等待的线程先获得锁。</p>
+<h4 id="2-2-利用Condition条件类实现对线程的分组的唤醒"><a href="#2-2-利用Condition条件类实现对线程的分组的唤醒" class="headerlink" title="2.2 利用Condition条件类实现对线程的分组的唤醒"></a>2.2 利用Condition条件类实现对线程的分组的唤醒</h4><p> ReenTrantLock提供了一个Condition（条件）类，用来实现分组唤醒需要唤醒的线程们，而不是像synchronized要么随机唤醒一个线程要么唤醒全部线程。</p>
+<h4 id="2-3-锁等待"><a href="#2-3-锁等待" class="headerlink" title="2.3 锁等待"></a>2.3 锁等待</h4><p>tryLock(long timeout, TimeUnit unit)，如果获取了锁定立即返回true，如果别的线程正持有锁，将等待参数给定的时间，在等待的过程中，如果获取了锁定，返回true，如果等待超时，返回false，所以lock()方法相当trylock传递个无限大的时间参数;</p>
+<h4 id="2-4-中断锁等待"><a href="#2-4-中断锁等待" class="headerlink" title="2.4 中断锁等待"></a>2.4 中断锁等待</h4><p>ReenTrantLock提供了一种能够中断等待锁的线程的机制，通过lock.lockInterruptibly()来实现这个机制。<br>lockInteruptibly，如果获取了锁定立即返回，反之，当前线程处理休眠，直至获取锁，或者当前线程线程被其他线程中断。</p>
+<h4 id="2-5-尝试获取锁"><a href="#2-5-尝试获取锁" class="headerlink" title="2.5 尝试获取锁"></a>2.5 尝试获取锁</h4><p>tryLock()，如果获取了锁立即返回true，如果别的线程下持有，立即返回false;</p>
+<p>使用synchronized时，如果A不释放，B将一直等待下去，无法中断。<br>使用ReentrantLock时，如果A不释放，B可以在等待足够长时间后，停止等待，继续执行其他事务。</p>
+<p>一般情况下，只有在我们需要实现特定的功能时，会使用ReentrantLock。</p>
+<h3 id="3-ReenTrantLock实现的原理："><a href="#3-ReenTrantLock实现的原理：" class="headerlink" title="3. ReenTrantLock实现的原理："></a>3. ReenTrantLock实现的原理：</h3><p>简单来说，ReenTrantLock的实现是一种自旋锁，通过循环调用CAS操作来实现加锁。它的性能比较好也是因为避免了使线程进入内核态的阻塞状态。想尽办法避免线程进入内核的阻塞状态是我们去分析和理解锁设计的关键钥匙。</p>
+<h4 id="ReentrantLock使用示例："><a href="#ReentrantLock使用示例：" class="headerlink" title="ReentrantLock使用示例："></a>ReentrantLock使用示例：</h4><pre><code>[java] view plain copy 
+1. package test.lock;  
+2.   
+3. import java.util.concurrent.locks.Lock;  
+4. import java.util.concurrent.locks.ReentrantLock;  
+5.   
+6. public class LockTest1 extends Thread {  
+7.   
+8.     private int threadNo;  
+9.     private static Lock lock = new ReentrantLock();  
+10.   
+11.     public LockTest1(int threadNo) {  
+12.         this.threadNo = threadNo;  
+13.     }  
+14.   
+15.     public static void main(String[] args) throws InterruptedException {  
+16.         for (int i = 0; i &lt; 10; i++) {  
+17.             new LockTest1(i).start();  
+18.         }  
+19.     }  
+20.   
+21.     @Override  
+22.     public void run() {  
+23.         lock.lock();  
+24.         try {  
+25.             for (int i = 0; i &lt; 100; i++) {  
+26.                 System.out.println(&quot;No.&quot; + (threadNo + 1) + &quot;: &quot; + (i + 1));  
+27.             }  
+28.         } finally {  
+29.             lock.unlock();  
+30.         }  
+31.     }  
+32. }  
+</code></pre><h3 id="原子类："><a href="#原子类：" class="headerlink" title="原子类："></a>原子类：</h3><p>synchronized关键字、Lock可以控制程序片段的同步，原子类只能保证单个变量的同步。<br>线程竞争不激烈时，原子类性能比synchronized略低，当竞争激烈时，也能维持常态。</p>
+<h4 id="下面是一个多线程共同计数的代码代码。"><a href="#下面是一个多线程共同计数的代码代码。" class="headerlink" title="下面是一个多线程共同计数的代码代码。"></a>下面是一个多线程共同计数的代码代码。</h4><pre><code>[java] view plain copy 
+1. package test.lock;  
+2.   
+3.   
+4. public class LockTest2 extends Thread {  
+5.   
+6.     private static int race = 0;  
+7.     private int threadNo;  
+8.   
+9.     public LockTest2(int threadNo) {  
+10.         this.threadNo = threadNo;  
+11.     }  
+12.   
+13.     public static void main(String[] args) throws InterruptedException {  
+14.         for (int i = 0; i &lt; 10; i++) {  
+15.             new LockTest2(i).start();  
+16.         }  
+17.   
+18.         while (Thread.activeCount() &gt; 1) {  
+19.             Thread.yield();  
+20.         }  
+21.         System.out.println(race);  
+22.     }  
+23.   
+24.     @Override  
+25.     public void run() {  
+26.         for (int i = 0; i &lt; 1000; i++) {  
+27.             race++;  
+28.         }  
+29.     }  
+30. }  
+</code></pre><p>上面程序执行后，并没有得到期望的原子类。我们用ActomicInteger实现代码如下：</p>
+<pre><code>[java] view plain copy 
+1. package test.lock;  
+2.   
+3. import java.util.concurrent.atomic.AtomicInteger;  
+4.   
+5. public class LockTest2 extends Thread {  
+6.   
+7.     private static AtomicInteger race = new AtomicInteger();  
+8.     private int threadNo;  
+9.   
+10.     public LockTest2(int threadNo) {  
+11.         this.threadNo = threadNo;  
+12.     }  
+13.   
+14.     public static void main(String[] args) throws InterruptedException {  
+15.         for (int i = 0; i &lt; 10; i++) {  
+16.             new LockTest2(i).start();  
+17.         }  
+18.   
+19.         while (Thread.activeCount() &gt; 1) {  
+20.             Thread.yield();  
+21.         }  
+22.         System.out.println(race);  
+23.     }  
+24.   
+25.     @Override  
+26.     public void run() {  
+27.         for (int i = 0; i &lt; 1000; i++) {  
+28.             race.addAndGet(1);  
+29.         }  
+30.     }  
+31. }  
+</code></pre><p>参考地址：<a href="http://blog.csdn.net/lanxiangru/article/details/53384767" target="_blank" rel="external">http://blog.csdn.net/lanxiangru/article/details/53384767</a></p>
+</div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://yoursite.com"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JDK探究/">JDK探究</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/08/10/悲观锁与乐观锁与事务/">悲观锁与乐观锁与事务</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/08/ JAVA中Object类中的方法以及finalize函数作用/">JAVA中Object类中的方法以及finalize函数作用</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/17/深入理解JVM阅读笔记以及问题整理/">《深入理解JVM》阅读笔记以及问题整理</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">无题.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

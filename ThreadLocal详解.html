@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>ThreadLocal详解 | 无题</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/8.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">ThreadLocal详解</h1><a id="logo" href="/.">无题</a><p class="description"></p></div><div id="nav-menu"></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">ThreadLocal详解</h1><div class="post-content"><p>ThreadLocal与synchronized的区别到底在哪里<br><a id="more"></a></p>
+<p>synchronized这类线程同步的机制可以解决多线程并发问题，在这种解决方案下，多个线程访问到的，都是同一份变量的内容。为了防止在多线程访问的过程中，可能会出现的并发错误。不得不对多个线程的访问进行同步，这样也就意味着，多个线程必须先后对变量的值进行访问或者修改，这是一种以延长访问时间来换取线程安全性的策略。 </p>
+<p> 而ThreadLocal类为每一个线程都维护了自己独有的变量拷贝。每个线程都拥有了自己独立的一个变量，竞争条件被彻底消除了，那就没有任何必要对这些线程进行同步，它们也能最大限度的由CPU调度，并发执行。并且由于每个线程在访问该变量时，读取和修改的，都是自己独有的那一份变量拷贝，变量被彻底封闭在每个访问的线程中，并发错误出现的可能也完全消除了。对比前一种方案，这是一种以空间来换取线程安全性的策略。 </p>
+<p> 来看一个运用ThreadLocal来实现数据库连接Connection对象线程隔离的例子。 </p>
+<pre><code>import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class ConnectionManager {
+
+    private static ThreadLocal&lt;Connection&gt; connectionHolder = new ThreadLocal&lt;Connection&gt;() {
+        @Override
+        protected Connection initialValue() {
+            Connection conn = null;
+            try {
+                conn = DriverManager.getConnection(
+                        &quot;jdbc:mysql://localhost:3306/test&quot;, &quot;username&quot;,
+                        &quot;password&quot;);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return conn;
+        }
+    };
+
+    public static Connection getConnection() {
+        return connectionHolder.get();
+    }
+
+    public static void setConnection(Connection conn) {
+        connectionHolder.set(conn);
+    }
+}
+</code></pre><p> 通过调用ConnectionManager.getConnection()方法，每个线程获取到的，都是和当前线程绑定的那个Connection对象，第一次获取时，是通过initialValue()方法的返回值来设置值的。通过ConnectionManager.setConnection(Connection conn)方法设置的Connection对象，也只会和当前线程绑定。这样就实现了Connection对象在多个线程中的完全隔离。在Spring容器中管理多线程环境下的Connection对象时，采用的思路和以上代码非常相似。 </p>
+<p>那么到底ThreadLocal类是如何实现这种“为每个线程提供不同的变量拷贝”的呢？先来看一下ThreadLocal的set()方法的源码是如何实现的： </p>
+<pre><code>/**
+     * Sets the current thread&apos;s copy of this thread-local variable
+     * to the specified value.  Most subclasses will have no need to 
+     * override this method, relying solely on the {@link #initialValue}
+     * method to set the values of thread-locals.
+     *
+     * @param value the value to be stored in the current thread&apos;s copy of
+     *        this thread-local.
+     */
+    public void set(T value) {
+        Thread t = Thread.currentThread();
+        ThreadLocalMap map = getMap(t);
+        if (map != null)
+            map.set(this, value);
+
+else
+
+
+createMap(t, value)
+;
+    }
+</code></pre><p> 没有什么魔法，在这个方法内部我们看到，首先通过getMap(Thread t)方法获取一个和当前线程相关的ThreadLocalMap，然后将变量的值设置到这个ThreadLocalMap对象中，当然如果获取到的ThreadLocalMap对象为空，就通过createMap方法创建。 </p>
+<p> 线程隔离的秘密，就在于ThreadLocalMap这个类。ThreadLocalMap是ThreadLocal类的一个静态内部类，它实现了键值对的设置和获取（对比Map对象来理解），每个线程中都有一个独立的ThreadLocalMap副本，它所存储的值，只能被当前线程读取和修改。ThreadLocal类通过操作每一个线程特有的ThreadLocalMap副本，从而实现了变量访问在不同线程中的隔离。因为每个线程的变量都是自己特有的，完全不会有并发错误。还有一点就是，ThreadLocalMap存储的键值对中的键是this对象指向的ThreadLocal对象，而值就是你所设置的对象了。 </p>
+<p> 为了加深理解，我们接着看上面代码中出现的getMap和createMap方法的实现： </p>
+<pre><code>ThreadLocalMap getMap(Thread t) {
+        return t.threadLocals;
+    }
+
+void createMap(Thread t, T firstValue) {
+        t.threadLocals = new ThreadLocalMap(this, firstValue);
+    }
+</code></pre><p> 代码已经说的非常直白，就是获取和设置Thread内的一个叫threadLocals的变量，而这个变量的类型就是ThreadLocalMap，这样进一步验证了上文中的观点：每个线程都有自己独立的ThreadLocalMap对象。打开java.lang.Thread类的源代码，我们能得到更直观的证明： </p>
+<pre><code>/* ThreadLocal values pertaining to this thread. This map is maintained
+     * by the ThreadLocal class. */
+    ThreadLocal.ThreadLocalMap threadLocals = null;
+</code></pre><p> 那么接下来再看一下ThreadLocal类中的get()方法，代码是这么说的： </p>
+<pre><code>/**
+     * Returns the value in the current thread&apos;s copy of this
+     * thread-local variable.  If the variable has no value for the
+     * current thread, it is first initialized to the value returned
+     * by an invocation of the {@link #initialValue} method.
+     *
+     * @return the current thread&apos;s value of this thread-local
+     */
+    public T get() {
+        Thread t = Thread.currentThread();
+        ThreadLocalMap map = getMap(t);
+        if (map != null) {
+            ThreadLocalMap.Entry e = map.getEntry(this);
+            if (e != null)
+                return (T)e.value;
+        }
+        return setInitialValue();
+    }
+
+
+/**
+     * Variant of set() to establish initialValue. Used instead
+     * of set() in case user has overridden the set() method.
+     *
+     * @return the initial value
+     */
+    private T setInitialValue() {
+        T value = initialValue();
+        Thread t = Thread.currentThread();
+        ThreadLocalMap map = getMap(t);
+        if (map != null)
+            map.set(this, value);
+
+else
+
+
+createMap(t, value)
+;
+        return value;
+    }
+</code></pre><p> 这两个方法的代码告诉我们，在获取和当前线程绑定的值时，ThreadLocalMap对象是以this指向的ThreadLocal对象为键进行查找的，这当然和前面set()方法的代码是相呼应的。 </p>
+<p> 进一步地，我们可以创建不同的ThreadLocal实例来实现多个变量在不同线程间的访问隔离，为什么可以这么做？因为不同的ThreadLocal对象作为不同键，当然也可以在线程的ThreadLocalMap对象中设置不同的值了。通过ThreadLocal对象，在多线程中共享一个值和多个值的区别，就像你在一个HashMap对象中存储一个键值对和多个键值对一样，仅此而已。 </p>
+<p> 设置到这些线程中的隔离变量，会不会导致内存泄漏呢？ThreadLocalMap对象保存在Thread对象中，当某个线程终止后，存储在其中的线程隔离的变量，也将作为Thread实例的垃圾被回收掉，所以完全不用担心内存泄漏的问题。在多个线程中隔离的变量，光荣的生，合理的死，真是圆满，不是么？ </p>
+<p> 最后再提一句，ThreadLocal变量的这种隔离策略，也不是任何情况下都能使用的。如果多个线程并发访问的对象实例只允许，也只能创建那么一个，那就没有别的办法了，老老实实的使用同步机制来访问吧。 </p>
+</div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://yoursite.com"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JDK探究/">JDK探究</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/08/10/悲观锁与乐观锁与事务/">悲观锁与乐观锁与事务</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/08/ JAVA中Object类中的方法以及finalize函数作用/">JAVA中Object类中的方法以及finalize函数作用</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/17/深入理解JVM阅读笔记以及问题整理/">《深入理解JVM》阅读笔记以及问题整理</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">无题.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
