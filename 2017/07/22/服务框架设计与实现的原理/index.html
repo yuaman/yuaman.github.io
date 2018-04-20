@@ -5,24 +5,25 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="http://yutinglin.cn">
   <title>服务框架的设计与实现 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="RPC(Remote Procedure Call)即远程过程调用，允许一台计算机调用另一台计算机上的程序得到结果，而代码中不需要做额外的编程，就像在本地调用一样。 现在互联网应用的量级越来越大，单台计算机的能力有限，需要借助可扩展的计算机集群来完成，分布式的应用可以借助RPC来完成机器之间的调用。">
-<meta name="keywords" content="分布式系统">
+<meta name="keywords" content="分布式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="服务框架的设计与实现">
-<meta property="og:url" content="http://yoursite.com/2017/07/22/服务框架设计与实现的原理/index.html">
+<meta property="og:url" content="http://yutinglin.cn/2017/07/22/服务框架设计与实现的原理/index.html">
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="RPC(Remote Procedure Call)即远程过程调用，允许一台计算机调用另一台计算机上的程序得到结果，而代码中不需要做额外的编程，就像在本地调用一样。 现在互联网应用的量级越来越大，单台计算机的能力有限，需要借助可扩展的计算机集群来完成，分布式的应用可以借助RPC来完成机器之间的调用。">
-<meta property="og:image" content="http://yoursite.com/2017/07/22/服务框架设计与实现的原理/_image/2018-01-30-10-40-19.jpg">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yutinglin.cn/2017/07/22/服务框架设计与实现的原理/_image/2018-01-30-10-40-19.jpg">
 <meta property="og:image" content="file:///C:/Users/WB-YTL~1/AppData/Local/Temp/msohtmlclip1/02/clip_image002.png">
-<meta property="og:image" content="http://yoursite.com/2017/07/22/服务框架设计与实现的原理/_image/2018-01-30-11-35-20.jpg">
-<meta property="og:updated_time" content="2018-02-07T14:09:26.159Z">
+<meta property="og:image" content="http://yutinglin.cn/2017/07/22/服务框架设计与实现的原理/_image/2018-01-30-11-35-20.jpg">
+<meta property="og:updated_time" content="2018-04-20T16:37:20.298Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="服务框架的设计与实现">
 <meta name="twitter:description" content="RPC(Remote Procedure Call)即远程过程调用，允许一台计算机调用另一台计算机上的程序得到结果，而代码中不需要做额外的编程，就像在本地调用一样。 现在互联网应用的量级越来越大，单台计算机的能力有限，需要借助可扩展的计算机集群来完成，分布式的应用可以借助RPC来完成机器之间的调用。">
-<meta name="twitter:image" content="http://yoursite.com/2017/07/22/服务框架设计与实现的原理/_image/2018-01-30-10-40-19.jpg">
+<meta name="twitter:image" content="http://yutinglin.cn/2017/07/22/服务框架设计与实现的原理/_image/2018-01-30-10-40-19.jpg">
   
     <link rel="alternative" href="/atom.xml" title="无题" type="application/atom+xml">
   
@@ -67,6 +68,10 @@
 	        
 				<li><a href="/tags/JVM/">JVM</a></li>
 	        
+				<li><a href="/tags/JUC/">JUC</a></li>
+	        
+				<li><a href="/tags/分布式/">分布式</a></li>
+	        
 				<li><a href="/tags/操作记录/">操作记录</a></li>
 	        
 				<li><a href="/tags/杂感/">杂感</a></li>
@@ -87,6 +92,14 @@
 		<nav class="header-nav">
 			<div class="social">
 				
+					<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+		        
+					<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+		        
+					<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+		        
 			</div>
 		</nav>
 	</header>		
@@ -119,11 +132,23 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
 				<div class="social">
 					
+						<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+			        
+						<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+			        
+						<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+			        
 				</div>
 			</nav>
 
@@ -131,13 +156,17 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 16.666666666666668%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/JVM/">JVM</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JVM/">JVM</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/操作记录/">操作记录</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JUC/">JUC</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/杂感/">杂感</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/分布式/">分布式</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/操作记录/">操作记录</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/杂感/">杂感</a></li>
 		        
 				</ul>
 			</nav>
@@ -187,7 +216,7 @@
 <p>序列化：将Java对象转换成byte[]的过程，也就是编码的过程；</p>
 <p>反序列化：将byte[]转换成Java对象的过程；</p>
 <p>可以使用Java原生的序列化机制，但是效率非常低，推荐使用一些开源的、成熟的序列化技术，例如：protobuf、Thrift、hessian、Kryo、Msgpack</p>
-<p>关于序列化工具性能比较可以参考：<a href="https://link.jianshu.com?t=https%3A%2F%2Fgithub.com%2Feishay%2Fjvm-serializers" target="_blank" rel="external">jvm-serializers</a></p>
+<p>关于序列化工具性能比较可以参考：<a href="https://link.jianshu.com?t=https%3A%2F%2Fgithub.com%2Feishay%2Fjvm-serializers" target="_blank" rel="noopener">jvm-serializers</a></p>
 <h3 id="3-3-反射"><a href="#3-3-反射" class="headerlink" title="3.3 反射"></a>3.3 反射</h3><p>服务发布端收到调用端的请求后，根据服务唯一标识可以获得该接口的实现类信息，通过反射创建实现类实例，进行方法的调用；</p>
 <h3 id="3-4-NIO"><a href="#3-4-NIO" class="headerlink" title="3.4 NIO"></a>3.4 NIO</h3><p>当前很多RPC框架都直接基于netty这一IO通信框架，比如阿里巴巴的HSF、dubbo，Hadoop Avro，推荐使用Netty 作为底层通信框架。</p>
 <h3 id="3-5-服务注册中心"><a href="#3-5-服务注册中心" class="headerlink" title="3.5 服务注册中心"></a>3.5 服务注册中心</h3><p>可选技术：</p>
@@ -195,37 +224,37 @@
 <p>Zookeeper</p>
 <p>Consul</p>
 <p>Etcd</p>
-<h2 id="4-客户端与服务端工作原理"><a href="#4-客户端与服务端工作原理" class="headerlink" title="4. 客户端与服务端工作原理"></a>4. 客户端与服务端工作原理</h2><p>从服务调用者以及服务提供者的角度，分别说明该服务框架的基本工作原理。如下图所示： </p>
+<h2 id="4-客户端与服务端工作原理"><a href="#4-客户端与服务端工作原理" class="headerlink" title="4. 客户端与服务端工作原理"></a>4. 客户端与服务端工作原理</h2><p>从服务调用者以及服务提供者的角度，分别说明该服务框架的基本工作原理。如下图所示：</p>
 <p><img src="file:///C:\Users\WB-YTL~1\AppData\Local\Temp\msohtmlclip1\02\clip_image002.png" alt="这里写图片描述"></p>
-<p>（看不清可以访问：<a href="https://www.processon.com/chart_image/58d720fbe4b03eea782c81df.png" target="_blank" rel="external">远程调用框架工作原理</a>） </p>
-<p>对于服务调用者来说： </p>
+<p>（看不清可以访问：<a href="https://www.processon.com/chart_image/58d720fbe4b03eea782c81df.png" target="_blank" rel="noopener">远程调用框架工作原理</a>）</p>
+<p>对于服务调用者来说：</p>
 <ul>
-<li><p>（1）服务框架获得服务调用者提供的服务信息（服务唯一标识：接口全限定名＋版本号；方法；调用参数）； </p>
+<li><p>（1）服务框架获得服务调用者提供的服务信息（服务唯一标识：接口全限定名＋版本号；方法；调用参数）；</p>
 </li>
-<li><p>（2）框架根据服务信息通过服务注册查找中心查找到该服务提供者的地址列表； </p>
+<li><p>（2）框架根据服务信息通过服务注册查找中心查找到该服务提供者的地址列表；</p>
 </li>
-<li><p>（3）可根据（服务、接口、方法、参数）进行路由，确定服务提供者的地址； </p>
+<li><p>（3）可根据（服务、接口、方法、参数）进行路由，确定服务提供者的地址；</p>
 </li>
-<li><p>（4）拼装请求参数对象Request，并序列化成二进制流； </p>
+<li><p>（4）拼装请求参数对象Request，并序列化成二进制流；</p>
 </li>
-<li><p>（5）与服务端建立连接，发送序列化二进制结果； </p>
+<li><p>（5）与服务端建立连接，发送序列化二进制结果；</p>
 </li>
 <li><p>（6）得到服务端响应，反序列化，得到最终调用结果</p>
 </li>
 </ul>
-<p>对于服务提供者来说： </p>
+<p>对于服务提供者来说：</p>
 <ul>
-<li><p>（1）发布服务，监听端口； </p>
+<li><p>（1）发布服务，监听端口；</p>
 </li>
-<li><p>（2）服务发布成功后，将服务信息（服务唯一标识：接口全限定名＋版本号；服务实现类全限定名）注册到服务注册查找中心； </p>
+<li><p>（2）服务发布成功后，将服务信息（服务唯一标识：接口全限定名＋版本号；服务实现类全限定名）注册到服务注册查找中心；</p>
 </li>
-<li><p>（3）接收客户端请求，将请求数据反序列化为Request对象； </p>
+<li><p>（3）接收客户端请求，将请求数据反序列化为Request对象；</p>
 </li>
-<li><p>（4）解析Request对象，根据服务标识从服务注册查找中心获取该服务信息，例如服务接口的实现类； </p>
+<li><p>（4）解析Request对象，根据服务标识从服务注册查找中心获取该服务信息，例如服务接口的实现类；</p>
 </li>
-<li><p>（5）利用反射创建类实例对象，调用方法（多采用线程池的方式）； </p>
+<li><p>（5）利用反射创建类实例对象，调用方法（多采用线程池的方式）；</p>
 </li>
-<li><p>（6）将调用结果序列化成二进制数据； </p>
+<li><p>（6）将调用结果序列化成二进制数据；</p>
 </li>
 </ul>
 <p>-（7）发送响应数据到客户端；</p>
@@ -291,7 +320,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">分布式系统</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
         		</li>
       		
 		</ul>
@@ -347,7 +376,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/07/22/服务框架设计与实现的原理/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yutinglin.cn/2017/07/22/服务框架设计与实现的原理/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -361,11 +390,11 @@
   
 <nav id="article-nav">
   
-    <a href="/2017/08/01/秒杀系统解决方案/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/08/01/多机的Sequence问题与处理/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          秒杀系统解决方案
+          多机的Sequence问题与处理
         
       </div>
     </a>
@@ -604,15 +633,39 @@ alert("Error:"+error.code+" "+error.message);
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JDK探究</a>
+                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Spring探究</a>
+                <a href="javascript:void(0)" class="js-tag color4">JUC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">消息</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">框架源码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RDB</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -5,17 +5,18 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="http://yutinglin.cn">
   <title>Spring Boot核心原理－自动配置 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="为什么spring boot能够如此简单的让我们迅速上手。">
-<meta name="keywords" content="Spring探究">
+<meta name="keywords" content="框架源码">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring Boot核心原理－自动配置">
-<meta property="og:url" content="http://yoursite.com/2016/05/23/SpringBoot核心原理——自动配置/index.html">
+<meta property="og:url" content="http://yutinglin.cn/2016/05/23/SpringBoot核心原理——自动配置/index.html">
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="为什么spring boot能够如此简单的让我们迅速上手。">
-<meta property="og:updated_time" content="2018-01-27T09:58:56.170Z">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-20T16:42:54.619Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring Boot核心原理－自动配置">
 <meta name="twitter:description" content="为什么spring boot能够如此简单的让我们迅速上手。">
@@ -63,6 +64,10 @@
 	        
 				<li><a href="/tags/JVM/">JVM</a></li>
 	        
+				<li><a href="/tags/JUC/">JUC</a></li>
+	        
+				<li><a href="/tags/分布式/">分布式</a></li>
+	        
 				<li><a href="/tags/操作记录/">操作记录</a></li>
 	        
 				<li><a href="/tags/杂感/">杂感</a></li>
@@ -83,6 +88,14 @@
 		<nav class="header-nav">
 			<div class="social">
 				
+					<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+		        
+					<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+		        
+					<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+		        
 			</div>
 		</nav>
 	</header>		
@@ -115,11 +128,23 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
 				<div class="social">
 					
+						<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+			        
+						<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+			        
+						<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+			        
 				</div>
 			</nav>
 
@@ -127,13 +152,17 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 16.666666666666668%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/JVM/">JVM</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JVM/">JVM</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/操作记录/">操作记录</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JUC/">JUC</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/杂感/">杂感</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/分布式/">分布式</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/操作记录/">操作记录</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/杂感/">杂感</a></li>
 		        
 				</ul>
 			</nav>
@@ -240,7 +269,7 @@ import org.springframework.core.env.Environment;
 @EnableConfigurationProperties({MongoProperties.class}) //开启属性注入。
 @ConditionalOnMissingBean(
     type = {&quot;org.springframework.data.mongodb.MongoDbFactory&quot;}
-) 
+)
 public class MongoAutoConfiguration {
     @Autowired
     private MongoProperties properties;
@@ -309,7 +338,7 @@ public class MongoProperties {
 <p>@ConditionalOnClass：当类路径下有指定类的条件下。</p>
 <p>@ConditionalOnMissingClass：当类路径下不存在指定类的条件下。</p>
 <p>@ConditionalOnProperty：指定的属性是否有指定的值，比如@ConditionalOnProperties(prefix=”xxx.xxx”, value=”enable”, matchIfMissing=true)，代表当xxx.xxx为enable时条件的布尔值为true，如果没有设置的情况下也为true。</p>
-<p>转载地址：<a href="http://blog.csdn.net/xiaobing_122613/article/details/54943448" target="_blank" rel="external">http://blog.csdn.net/xiaobing_122613/article/details/54943448</a></p>
+<p>转载地址：<a href="http://blog.csdn.net/xiaobing_122613/article/details/54943448" target="_blank" rel="noopener">http://blog.csdn.net/xiaobing_122613/article/details/54943448</a></p>
 
       
 
@@ -349,7 +378,7 @@ public class MongoProperties {
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Spring探究</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">框架源码</a>
         		</li>
       		
 		</ul>
@@ -405,7 +434,7 @@ public class MongoProperties {
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2016/05/23/SpringBoot核心原理——自动配置/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yutinglin.cn/2016/05/23/SpringBoot核心原理——自动配置/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -662,15 +691,39 @@ alert("Error:"+error.code+" "+error.message);
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JDK探究</a>
+                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Spring探究</a>
+                <a href="javascript:void(0)" class="js-tag color4">JUC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">消息</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">框架源码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RDB</a>
               </li>
              
               <li class="article-tag-list-item">

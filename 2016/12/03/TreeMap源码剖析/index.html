@@ -5,17 +5,18 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="http://yutinglin.cn">
   <title>TreeMap源码剖析 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="本文对TreeMap的分析较前几篇文章有些浅尝辄止，TreeMap用的没有HashMap那么多，我们有个宏观上的把我和比较即可。">
-<meta name="keywords" content="JDK探究">
+<meta name="keywords" content="JDK容器">
 <meta property="og:type" content="article">
 <meta property="og:title" content="TreeMap源码剖析">
-<meta property="og:url" content="http://yoursite.com/2016/12/03/TreeMap源码剖析/index.html">
+<meta property="og:url" content="http://yutinglin.cn/2016/12/03/TreeMap源码剖析/index.html">
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="本文对TreeMap的分析较前几篇文章有些浅尝辄止，TreeMap用的没有HashMap那么多，我们有个宏观上的把我和比较即可。">
-<meta property="og:updated_time" content="2018-01-27T09:58:14.597Z">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-20T16:43:28.749Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TreeMap源码剖析">
 <meta name="twitter:description" content="本文对TreeMap的分析较前几篇文章有些浅尝辄止，TreeMap用的没有HashMap那么多，我们有个宏观上的把我和比较即可。">
@@ -63,6 +64,10 @@
 	        
 				<li><a href="/tags/JVM/">JVM</a></li>
 	        
+				<li><a href="/tags/JUC/">JUC</a></li>
+	        
+				<li><a href="/tags/分布式/">分布式</a></li>
+	        
 				<li><a href="/tags/操作记录/">操作记录</a></li>
 	        
 				<li><a href="/tags/杂感/">杂感</a></li>
@@ -83,6 +88,14 @@
 		<nav class="header-nav">
 			<div class="social">
 				
+					<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+		        
+					<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+		        
+					<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+		        
 			</div>
 		</nav>
 	</header>		
@@ -115,11 +128,23 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
 				<div class="social">
 					
+						<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+			        
+						<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+			        
+						<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+			        
 				</div>
 			</nav>
 
@@ -127,13 +152,17 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 16.666666666666668%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/JVM/">JVM</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JVM/">JVM</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/操作记录/">操作记录</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JUC/">JUC</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/杂感/">杂感</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/分布式/">分布式</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/操作记录/">操作记录</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/杂感/">杂感</a></li>
 		        
 				</ul>
 			</nav>
@@ -175,7 +204,7 @@
 <p>注：对TreeSet和HashSet的源码不再进行剖析，二者分别是基于TreeMap和HashMap实现的，只是对应的节点中只有key，而没有value，因此对TreeMap和HashMap比较了解的话，对TreeSet和HashSet的理解就会非常容易。</p>
 <p>前言<br>    本文不打算延续前几篇的风格（对所有的源码加入注释），因为要理解透TreeMap的所有源码，对博主来说，确实需要耗费大量的时间和经历，目前看来不大可能有这么多时间的投入，故这里意在通过于阅读源码对TreeMap有个宏观上的把握，并就其中一些方法的实现做比较深入的分析。</p>
 <p>红黑树简介</p>
-<p>TreeMap是基于红黑树实现的，这里只对红黑树做个简单的介绍，红黑树是一种特殊的二叉排序树，关于二叉排序树，参见：<a href="http://blog.csdn.net/ns_code/article/details/19823463，红黑树通过一些限制，使其不会出现二叉树排序树中极端的一边倒的情况，相对二叉排序树而言，这自然提高了查询的效率。" target="_blank" rel="external">http://blog.csdn.net/ns_code/article/details/19823463，红黑树通过一些限制，使其不会出现二叉树排序树中极端的一边倒的情况，相对二叉排序树而言，这自然提高了查询的效率。</a></p>
+<p>TreeMap是基于红黑树实现的，这里只对红黑树做个简单的介绍，红黑树是一种特殊的二叉排序树，关于二叉排序树，参见：<a href="http://blog.csdn.net/ns_code/article/details/19823463，红黑树通过一些限制，使其不会出现二叉树排序树中极端的一边倒的情况，相对二叉排序树而言，这自然提高了查询的效率。" target="_blank" rel="noopener">http://blog.csdn.net/ns_code/article/details/19823463，红黑树通过一些限制，使其不会出现二叉树排序树中极端的一边倒的情况，相对二叉排序树而言，这自然提高了查询的效率。</a></p>
 <pre><code>二叉排序树的基本性质如下：
 
 1、每个节点都只能是红色或者黑色
@@ -198,7 +227,7 @@
 
 TreeMap的排序是基于对key的排序实现的，它的每一个Entry代表红黑树的一个节点，Entry的数据结构如下：
 
-[java] view plain copy 
+[java] view plain copy
 1. static final class Entry&lt;K,V&gt; implements Map.Entry&lt;K,V&gt; {    
 2.      // 键    
 3.      K key;    
@@ -229,12 +258,12 @@ TreeMap的排序是基于对key的排序实现的，它的每一个Entry代表�
 先来看下TreeMap的构造方法。TreeMap一共有4个构造方法。
 
 1、无参构造方法
-</code></pre><p>[java] view plain copy </p>
+</code></pre><p>[java] view plain copy</p>
 <ol>
 <li>public TreeMap() {    </li>
 <li>comparator = null;    </li>
 <li><p>}<br> 采用无参构造方法，不指定比较器，这时候，排序的实现要依赖key.compareTo()方法，因此key必须实现Comparable接口，并覆写其中的compareTo方法。<br> 2、带有比较器的构造方法</p>
-<p> [java] view plain copy </p>
+<p> [java] view plain copy</p>
 <ol>
 <li>public TreeMap(Comparator&lt;? super K&gt; comparator) {    </li>
 <li>this.comparator = comparator;    </li>
@@ -244,13 +273,13 @@ TreeMap的排序是基于对key的排序实现的，它的每一个Entry代表�
 </ol>
 <p>采用带比较器的构造方法，这时候，排序依赖该比较器，key可以不用实现Comparable接口。</p>
 <p>3、带Map的构造方法</p>
-<pre><code>[java] view plain copy 
+<pre><code>[java] view plain copy
 1. public TreeMap(Map&lt;? extends K, ? extends V&gt; m) {    
 2.     comparator = null;    
 3.     putAll(m);    
 4. }    
 </code></pre><p> 该构造方法同样不指定比较器，调用putAll方法将Map中的所有元素加入到TreeMap中。putAll的源码如下：</p>
-<pre><code>[java] view plain copy 
+<pre><code>[java] view plain copy
 1. // 将map中的全部节点添加到TreeMap中    
 2. public void putAll(Map&lt;? extends K, ? extends V&gt; map) {    
 3.     // 获取map的大小    
@@ -274,9 +303,9 @@ TreeMap的排序是基于对key的排序实现的，它的每一个Entry代表�
 21.     // 调用AbstractMap中的putAll();    
 22.     // AbstractMap中的putAll()又会调用到TreeMap的put()    
 23.     super.putAll(map);    
-24. } 
+24. }
 </code></pre><p> 显然，如果Map里的元素是排好序的，就调用buildFromSorted方法来拷贝Map中的元素，这在下一个构造方法中会重点提及，而如果Map中的元素不是排好序的，就调用AbstractMap的putAll(map)方法，该方法源码如下：</p>
-<pre><code>[java] view plain copy 
+<pre><code>[java] view plain copy
 1. public void putAll(Map&lt;? extends K, ? extends V&gt; m) {    
 2.     for (Map.Entry&lt;? extends K, ? extends V&gt; e : m.entrySet())    
 3.         put(e.getKey(), e.getValue());    
@@ -284,7 +313,7 @@ TreeMap的排序是基于对key的排序实现的，它的每一个Entry代表�
     很明显它是将Map中的元素一个个put（插入）到TreeMap中的，主要因为Map中的元素是无序存放的，因此要一个个插入到红黑树中，使其有序存放，并满足红黑树的性质。
     4、带有SortedMap的构造方法
 
-[java] view plain copy 
+[java] view plain copy
 1. public TreeMap(SortedMap&lt;K, ? extends V&gt; m) {    
 2.     comparator = m.comparator();    
 3.     try {    
@@ -295,7 +324,7 @@ TreeMap的排序是基于对key的排序实现的，它的每一个Entry代表�
 8. }   
 </code></pre><p>首先将比较器指定为m的比较器，这取决于生成m时调用构造方法是否传入了指定的构造器，而后调用buildFromSorted方法，将SortedMap中的元素插入到TreeMap中，由于SortedMap中的元素师有序的，实际上它是根据SortedMap创建的TreeMap，将SortedMap中对应的元素添加到TreeMap中。<br>    插入删除</p>
 <p>插入操作即对应TreeMap的put方法，put操作实际上只需按照二叉排序树的插入步骤来操作即可，插入到指定位置后，再做调整，使其保持红黑树的特性。put源码的实现：</p>
-<pre><code>[java] view plain copy 
+<pre><code>[java] view plain copy
 1. public V put(K key, V value) {    
 2.     Entry&lt;K,V&gt; t = root;    
 3.     // 若红黑树为空，则插入根节点    
@@ -356,7 +385,7 @@ TreeMap的排序是基于对key的排序实现的，它的每一个Entry代表�
 58.     return null;    
 59. }    
 </code></pre><p> 这里的fixAfterInsertion便是节点插入后对树进行调整的方法，这里不做介绍。<br>删除操作及对应TreeMap的deleteEntry方法，deleteEntry方法同样也只需按照二叉排序树的操作步骤实现即可，删除指定节点后，再对树进行调整即可。deleteEntry方法的实现源码如下：</p>
-<pre><code>[java] view plain copy 
+<pre><code>[java] view plain copy
 1. // 删除“红黑树的节点p”    
 2. private void deleteEntry(Entry&lt;K,V&gt; p) {    
 3.     modCount++;    
@@ -412,7 +441,7 @@ TreeMap的排序是基于对key的排序实现的，它的每一个Entry代表�
 
 
 注：对TreeSet和HashSet的源码不再进行剖析，二者分别是基于TreeMap和HashMap实现的，只是对应的节点中只有key，而没有value，因此对TreeMap和HashMap比较了解的话，对TreeSet和HashSet的理解就会非常容易。
-</code></pre><p>转载：<a href="http://blog.csdn.net/ns_code/article/details/36421085" target="_blank" rel="external">http://blog.csdn.net/ns_code/article/details/36421085</a></p>
+</code></pre><p>转载：<a href="http://blog.csdn.net/ns_code/article/details/36421085" target="_blank" rel="noopener">http://blog.csdn.net/ns_code/article/details/36421085</a></p>
 
       
 
@@ -452,7 +481,7 @@ TreeMap的排序是基于对key的排序实现的，它的每一个Entry代表�
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">JDK探究</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">JDK容器</a>
         		</li>
       		
 		</ul>
@@ -508,7 +537,7 @@ TreeMap的排序是基于对key的排序实现的，它的每一个Entry代表�
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2016/12/03/TreeMap源码剖析/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yutinglin.cn/2016/12/03/TreeMap源码剖析/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -522,11 +551,11 @@ TreeMap的排序是基于对key的排序实现的，它的每一个Entry代表�
   
 <nav id="article-nav">
   
-    <a href="/2016/12/03/LinkedHashMap源码剖析/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/12/19/Redis集群部署与集成总结/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          LinkedHashmap源码剖析
+          Redis集群部署与集成总结
         
       </div>
     </a>
@@ -765,15 +794,39 @@ alert("Error:"+error.code+" "+error.message);
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JDK探究</a>
+                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Spring探究</a>
+                <a href="javascript:void(0)" class="js-tag color4">JUC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">消息</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">框架源码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RDB</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -5,17 +5,18 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="http://yutinglin.cn">
   <title>各RDB与Nosql性能与特点总结 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="最近考虑到数据库包括各种缓存到底面对高并发情况性能到底是怎么样的，所以多方收集整理成此篇，以后也会持续更新。">
-<meta name="keywords" content="分布式系统">
+<meta name="keywords" content="缓存">
 <meta property="og:type" content="article">
 <meta property="og:title" content="各RDB与Nosql性能与特点总结">
-<meta property="og:url" content="http://yoursite.com/2017/08/05/各RDB与Nosql性能与特点总结/index.html">
+<meta property="og:url" content="http://yutinglin.cn/2017/08/05/各RDB与Nosql性能与特点总结/index.html">
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="最近考虑到数据库包括各种缓存到底面对高并发情况性能到底是怎么样的，所以多方收集整理成此篇，以后也会持续更新。">
-<meta property="og:updated_time" content="2018-01-27T09:56:34.751Z">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-20T16:37:35.889Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="各RDB与Nosql性能与特点总结">
 <meta name="twitter:description" content="最近考虑到数据库包括各种缓存到底面对高并发情况性能到底是怎么样的，所以多方收集整理成此篇，以后也会持续更新。">
@@ -63,6 +64,10 @@
 	        
 				<li><a href="/tags/JVM/">JVM</a></li>
 	        
+				<li><a href="/tags/JUC/">JUC</a></li>
+	        
+				<li><a href="/tags/分布式/">分布式</a></li>
+	        
 				<li><a href="/tags/操作记录/">操作记录</a></li>
 	        
 				<li><a href="/tags/杂感/">杂感</a></li>
@@ -83,6 +88,14 @@
 		<nav class="header-nav">
 			<div class="social">
 				
+					<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+		        
+					<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+		        
+					<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+		        
 			</div>
 		</nav>
 	</header>		
@@ -115,11 +128,23 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
 				<div class="social">
 					
+						<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+			        
+						<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+			        
+						<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+			        
 				</div>
 			</nav>
 
@@ -127,13 +152,17 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 16.666666666666668%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/JVM/">JVM</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JVM/">JVM</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/操作记录/">操作记录</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JUC/">JUC</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/杂感/">杂感</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/分布式/">分布式</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/操作记录/">操作记录</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/杂感/">杂感</a></li>
 		        
 				</ul>
 			</nav>
@@ -186,7 +215,7 @@
 </ul>
 <h2 id="mongo："><a href="#mongo：" class="headerlink" title="mongo："></a>mongo：</h2><p>1.不设其他唯一索引的情况下，只用_id 在普通办公电脑上每秒插入几万，在普通x86服务器上每秒插入十几万，，比mysql强出一个数量级。</p>
 <p>2.检索是真的慢，和sql数据库不同，越复杂的条件搜索MangoDB越吃亏，CPU和IO的双重压力。面对那些直接把SQL查询改写成MangoDB的用法，别转了，你不会收获任何性能提升。</p>
-<h3 id="结论：当前还没有好的产品可以实现key-value保证数据完整性，千万级条数量级的，高效存储和查询支持产品。"><a href="#结论：当前还没有好的产品可以实现key-value保证数据完整性，千万级条数量级的，高效存储和查询支持产品。" class="headerlink" title="结论：当前还没有好的产品可以实现key-value保证数据完整性，千万级条数量级的，高效存储和查询支持产品。"></a>结论：当前还没有好的产品可以实现key-value保证数据完整性，千万级条数量级的，高效存储和查询支持产品。</h3><h5 id="参考地址："><a href="#参考地址：" class="headerlink" title="参考地址："></a>参考地址：</h5><p><a href="http://www.besttest.cn/article/42.html" target="_blank" rel="external">http://www.besttest.cn/article/42.html</a><br><a href="http://www.cnblogs.com/crazylights/archive/2013/05/08/3066056.html" target="_blank" rel="external">http://www.cnblogs.com/crazylights/archive/2013/05/08/3066056.html</a><br><a href="http://blog.csdn.net/yumengkk/article/details/7902103" target="_blank" rel="external">http://blog.csdn.net/yumengkk/article/details/7902103</a></p>
+<h3 id="结论：当前还没有好的产品可以实现key-value保证数据完整性，千万级条数量级的，高效存储和查询支持产品。"><a href="#结论：当前还没有好的产品可以实现key-value保证数据完整性，千万级条数量级的，高效存储和查询支持产品。" class="headerlink" title="结论：当前还没有好的产品可以实现key-value保证数据完整性，千万级条数量级的，高效存储和查询支持产品。"></a>结论：当前还没有好的产品可以实现key-value保证数据完整性，千万级条数量级的，高效存储和查询支持产品。</h3><h5 id="参考地址："><a href="#参考地址：" class="headerlink" title="参考地址："></a>参考地址：</h5><p><a href="http://www.besttest.cn/article/42.html" target="_blank" rel="noopener">http://www.besttest.cn/article/42.html</a><br><a href="http://www.cnblogs.com/crazylights/archive/2013/05/08/3066056.html" target="_blank" rel="noopener">http://www.cnblogs.com/crazylights/archive/2013/05/08/3066056.html</a><br><a href="http://blog.csdn.net/yumengkk/article/details/7902103" target="_blank" rel="noopener">http://blog.csdn.net/yumengkk/article/details/7902103</a></p>
 
       
 
@@ -226,7 +255,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">分布式系统</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">缓存</a>
         		</li>
       		
 		</ul>
@@ -282,7 +311,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/08/05/各RDB与Nosql性能与特点总结/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yutinglin.cn/2017/08/05/各RDB与Nosql性能与特点总结/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -539,15 +568,39 @@ alert("Error:"+error.code+" "+error.message);
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JDK探究</a>
+                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Spring探究</a>
+                <a href="javascript:void(0)" class="js-tag color4">JUC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">消息</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">框架源码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RDB</a>
               </li>
              
               <li class="article-tag-list-item">

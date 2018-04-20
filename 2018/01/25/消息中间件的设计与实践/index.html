@@ -5,18 +5,19 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="http://yutinglin.cn">
   <title>消息中间件的设计与实践 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="也无风雨也无晴">
-<meta name="keywords" content="分布式系统">
+<meta name="keywords" content="分布式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="消息中间件的设计与实践">
-<meta property="og:url" content="http://yoursite.com/2018/01/25/消息中间件的设计与实践/index.html">
+<meta property="og:url" content="http://yutinglin.cn/2018/01/25/消息中间件的设计与实践/index.html">
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="也无风雨也无晴">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_png/YrezxckhYOy4CdvUIeBiaaLF7W2xvXvP2ToLlLSveer5urmNibk8U9lrvOcKzFxGx2NUlEbLRfxFVibqJwTjBdOyQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1">
-<meta property="og:updated_time" content="2018-02-07T14:07:05.872Z">
+<meta property="og:updated_time" content="2018-04-20T16:38:41.505Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="消息中间件的设计与实践">
 <meta name="twitter:description" content="也无风雨也无晴">
@@ -65,6 +66,10 @@
 	        
 				<li><a href="/tags/JVM/">JVM</a></li>
 	        
+				<li><a href="/tags/JUC/">JUC</a></li>
+	        
+				<li><a href="/tags/分布式/">分布式</a></li>
+	        
 				<li><a href="/tags/操作记录/">操作记录</a></li>
 	        
 				<li><a href="/tags/杂感/">杂感</a></li>
@@ -85,6 +90,14 @@
 		<nav class="header-nav">
 			<div class="social">
 				
+					<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+		        
+					<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+		        
+					<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+		        
 			</div>
 		</nav>
 	</header>		
@@ -117,11 +130,23 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
 				<div class="social">
 					
+						<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+			        
+						<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+			        
+						<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+			        
 				</div>
 			</nav>
 
@@ -129,13 +154,17 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 16.666666666666668%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/JVM/">JVM</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JVM/">JVM</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/操作记录/">操作记录</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JUC/">JUC</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/杂感/">杂感</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/分布式/">分布式</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/操作记录/">操作记录</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/杂感/">杂感</a></li>
 		        
 				</ul>
 			</nav>
@@ -182,8 +211,7 @@
 <li>(1) 业务处理应用首先把消息发给消息中间件，标记消息的状态为待处理.</li>
 <li>(2) 消息中间件收到消息后，把消息存储在消息存储中，并不投递该消息.</li>
 <li>(3)消息中间件返回消息处理的结果，仅是入库的结果，结果是成功或者失败.</li>
-<li>(4)业务方收到消息中间件返回的结果并进行处理:<br>a) 如果收到的结果是失败，那么就放弃业务处理，结束<br>b) 如果收到的结果是成功，则进行业务自身的操作</li>
-<li></li>
+<li>(4)业务方收到消息中间件返回的结果并进行处理:<br>a) 如果收到的结果是失败，那么就放弃业务处理，结束<br>b) 如果收到的结果是成功，则进行业务自身的操作<br>*</li>
 <li>(5)业务操作完成，把业务操作的结果发送给消息中间件</li>
 <li><p>(6)消息中间件收到业务操作结果，根据结果进行处理<br>a) 如果业务失败，则删除消息存储中的消息，结束<br>b)如果业务成功，则更新消息存储中的消息状态为可发送，并且进行调度，进行消息的投递</p>
 </li>
@@ -252,7 +280,7 @@
 <li>持久订阅 不会因消费者或MQ的宕机，导致消息订阅无效</li>
 <li>消息发送端可靠性保证 当且仅当MQ及时、明确返回成功，消息发送端才认为消息发送成功；<br>其他情况，如返回错误、异常、超时等，均视为发送失败，需要重发。<h4 id="5-2-MQ消息存储可靠性保证-必须存储在磁盘上"><a href="#5-2-MQ消息存储可靠性保证-必须存储在磁盘上" class="headerlink" title="5.2 MQ消息存储可靠性保证 必须存储在磁盘上"></a>5.2 MQ消息存储可靠性保证 必须存储在磁盘上</h4><ul>
 <li>基于文件 自建引擎 or 开源引擎</li>
-<li>基于关系数据库 </li>
+<li>基于关系数据库</li>
 <li>库表设计 [消息表 + 投递表]<pre><code>缺点：投递消息表的数据量与[消息数 * 订阅者]成比例，数据量过大。
 </code></pre></li>
 <li>库表设计 [消息表 + 投递字段]<pre><code>缺点: 无法方便地从订阅者维度对投递状态进行更新。投递字段长度限制。
@@ -352,7 +380,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">分布式系统</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
         		</li>
       		
 		</ul>
@@ -408,7 +436,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2018/01/25/消息中间件的设计与实践/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yutinglin.cn/2018/01/25/消息中间件的设计与实践/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -665,15 +693,39 @@ alert("Error:"+error.code+" "+error.message);
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JDK探究</a>
+                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Spring探究</a>
+                <a href="javascript:void(0)" class="js-tag color4">JUC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">消息</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">框架源码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RDB</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -5,18 +5,19 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="http://yutinglin.cn">
   <title>秒杀系统解决方案 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="从架构、产品、前端、后端四个层面针对秒杀场景（可以扩展到所有高并发场景）分别总结了一些解决方案。">
-<meta name="keywords" content="分布式系统">
+<meta name="keywords" content="分布式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="秒杀系统解决方案">
-<meta property="og:url" content="http://yoursite.com/2017/08/01/秒杀系统解决方案/index.html">
+<meta property="og:url" content="http://yutinglin.cn/2017/08/01/秒杀系统解决方案/index.html">
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="从架构、产品、前端、后端四个层面针对秒杀场景（可以扩展到所有高并发场景）分别总结了一些解决方案。">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/UNADJUSTEDNONRAW_thumb_8c6.jpg">
-<meta property="og:updated_time" content="2018-01-27T09:56:43.623Z">
+<meta property="og:updated_time" content="2018-04-20T16:37:54.819Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="秒杀系统解决方案">
 <meta name="twitter:description" content="从架构、产品、前端、后端四个层面针对秒杀场景（可以扩展到所有高并发场景）分别总结了一些解决方案。">
@@ -65,6 +66,10 @@
 	        
 				<li><a href="/tags/JVM/">JVM</a></li>
 	        
+				<li><a href="/tags/JUC/">JUC</a></li>
+	        
+				<li><a href="/tags/分布式/">分布式</a></li>
+	        
 				<li><a href="/tags/操作记录/">操作记录</a></li>
 	        
 				<li><a href="/tags/杂感/">杂感</a></li>
@@ -85,6 +90,14 @@
 		<nav class="header-nav">
 			<div class="social">
 				
+					<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+		        
+					<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+		        
+					<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+		        
 			</div>
 		</nav>
 	</header>		
@@ -117,11 +130,23 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
 				<div class="social">
 					
+						<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+			        
+						<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+			        
+						<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+			        
 				</div>
 			</nav>
 
@@ -129,13 +154,17 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 16.666666666666668%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/JVM/">JVM</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JVM/">JVM</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/操作记录/">操作记录</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JUC/">JUC</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/杂感/">杂感</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/分布式/">分布式</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/操作记录/">操作记录</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/杂感/">杂感</a></li>
 		        
 				</ul>
 			</nav>
@@ -199,7 +228,7 @@
 <h5 id="2-加入消息队列，利用队列进行削峰："><a href="#2-加入消息队列，利用队列进行削峰：" class="headerlink" title="2.加入消息队列，利用队列进行削峰："></a>2.加入消息队列，利用队列进行削峰：</h5><p>将用户请求放置于一个或多个队列中，队列中元素总和等于该商品库存总和，未进入队列的请求均失败。利用多线程轮询分别从一个或多个队列中取出用户请求。操作redis进行减库存操作，成功减库存之后返回成功，并将用户信息与商品信息存入另一个队列当中，进行生成订单的操作。利用两个队列异步处理业务减轻秒杀高峰时期服务器负载。</p>
 <h5 id="3-程序计数器："><a href="#3-程序计数器：" class="headerlink" title="3.程序计数器："></a>3.程序计数器：</h5><p>队列与缓存为了保证请求redis的次数不超过总的库存量，利用一个程序计数器来这一点。程序计数器用JUC包下原子类可以实现。</p>
 <h5 id="4-分布式锁"><a href="#4-分布式锁" class="headerlink" title="4.分布式锁"></a>4.分布式锁</h5><p>分布式情况下可以利用分布式锁来解决任务每次只能由一次服务来执行且不能重复执行。<br>分布式锁的实现：zk、redis<br>分布式锁的优化：先考虑是否可以去锁，然后考虑尽可能多用乐观锁，少用悲观锁。这里有一个问题，乐观锁如果每一次都会有并发冲突的话性能反而不如悲观锁，那么难道真的多用乐观锁性能会比悲观锁高吗？选举考虑ha，比如心跳检测。</p>
-<h5 id="5-分布式去锁-方案"><a href="#5-分布式去锁-方案" class="headerlink" title="5.分布式去锁 方案"></a>5.分布式去锁 方案</h5><p>利用集群并发加入队列，选举队列处理服务单点执行，这样可以保证并发实现和加锁一样的并发量但不会影响性能。    </p>
+<h5 id="5-分布式去锁-方案"><a href="#5-分布式去锁-方案" class="headerlink" title="5.分布式去锁 方案"></a>5.分布式去锁 方案</h5><p>利用集群并发加入队列，选举队列处理服务单点执行，这样可以保证并发实现和加锁一样的并发量但不会影响性能。</p>
 <p><img src="http://og287lnu0.bkt.clouddn.com/UNADJUSTEDNONRAW_thumb_8c6.jpg" style="width:250px;height:350px;"></p>
 
       
@@ -240,7 +269,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">分布式系统</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
         		</li>
       		
 		</ul>
@@ -296,7 +325,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/08/01/秒杀系统解决方案/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yutinglin.cn/2017/08/01/秒杀系统解决方案/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -310,18 +339,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2017/08/01/多机的Sequence问题与处理/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/08/05/Java容器各实现类的底层实现原理/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          多机的Sequence问题与处理
+          Java容器各实现类的底层实现原理概述
         
       </div>
     </a>
   
   
-    <a href="/2017/07/22/服务框架设计与实现的原理/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">服务框架的设计与实现</div>
+    <a href="/2017/08/01/多机的Sequence问题与处理/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">多机的Sequence问题与处理</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -553,15 +582,39 @@ alert("Error:"+error.code+" "+error.message);
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JDK探究</a>
+                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Spring探究</a>
+                <a href="javascript:void(0)" class="js-tag color4">JUC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">消息</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">框架源码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RDB</a>
               </li>
              
               <li class="article-tag-list-item">

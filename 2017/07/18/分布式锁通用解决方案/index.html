@@ -5,21 +5,22 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="http://yutinglin.cn">
   <title>分布式锁通用解决方案 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="分布式锁的解决方式：基于数据库：    基于数据库表做乐观锁，用于分布式锁。（version）    基于数据库表做悲观锁（InnoDB，for update）    基于数据库表数据记录做唯一约束（表中记录方法名称）  基于缓存：  常用方案：使用redis的setnx()用于分布式锁。（setNx，直接设置值为当前时间+超时时间，保持操作原子性） 使用memcached的add()方法，用于分">
-<meta name="keywords" content="分布式系统">
+<meta name="keywords" content="分布式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="分布式锁通用解决方案">
-<meta property="og:url" content="http://yoursite.com/2017/07/18/分布式锁通用解决方案/index.html">
+<meta property="og:url" content="http://yutinglin.cn/2017/07/18/分布式锁通用解决方案/index.html">
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="分布式锁的解决方式：基于数据库：    基于数据库表做乐观锁，用于分布式锁。（version）    基于数据库表做悲观锁（InnoDB，for update）    基于数据库表数据记录做唯一约束（表中记录方法名称）  基于缓存：  常用方案：使用redis的setnx()用于分布式锁。（setNx，直接设置值为当前时间+超时时间，保持操作原子性） 使用memcached的add()方法，用于分">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://images2017.cnblogs.com/blog/883340/201712/883340-20171215162247105-1526668607.png">
 <meta property="og:image" content="https://images2017.cnblogs.com/blog/883340/201712/883340-20171215162325324-1574794414.png">
 <meta property="og:image" content="https://images2017.cnblogs.com/blog/883340/201712/883340-20171215162408918-407807720.png">
 <meta property="og:image" content="https://images2017.cnblogs.com/blog/883340/201712/883340-20171215162608496-32637486.png">
-<meta property="og:updated_time" content="2018-01-27T09:50:51.000Z">
+<meta property="og:updated_time" content="2018-04-20T16:37:10.913Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分布式锁通用解决方案">
 <meta name="twitter:description" content="分布式锁的解决方式：基于数据库：    基于数据库表做乐观锁，用于分布式锁。（version）    基于数据库表做悲观锁（InnoDB，for update）    基于数据库表数据记录做唯一约束（表中记录方法名称）  基于缓存：  常用方案：使用redis的setnx()用于分布式锁。（setNx，直接设置值为当前时间+超时时间，保持操作原子性） 使用memcached的add()方法，用于分">
@@ -68,6 +69,10 @@
 	        
 				<li><a href="/tags/JVM/">JVM</a></li>
 	        
+				<li><a href="/tags/JUC/">JUC</a></li>
+	        
+				<li><a href="/tags/分布式/">分布式</a></li>
+	        
 				<li><a href="/tags/操作记录/">操作记录</a></li>
 	        
 				<li><a href="/tags/杂感/">杂感</a></li>
@@ -88,6 +93,14 @@
 		<nav class="header-nav">
 			<div class="social">
 				
+					<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+		        
+					<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+		        
+					<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+		        
 			</div>
 		</nav>
 	</header>		
@@ -120,11 +133,23 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
 				<div class="social">
 					
+						<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+			        
+						<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+			        
+						<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+			        
 				</div>
 			</nav>
 
@@ -132,13 +157,17 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 16.666666666666668%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/JVM/">JVM</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JVM/">JVM</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/操作记录/">操作记录</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JUC/">JUC</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/杂感/">杂感</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/分布式/">分布式</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/操作记录/">操作记录</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/杂感/">杂感</a></li>
 		        
 				</ul>
 			</nav>
@@ -246,7 +275,7 @@ throw new LockException();
 <p>(2). 如果业务场景中的一次业务流程中，多个资源都需要用保证数据一致性，那么如果全部使用基于数据库资源表的乐观锁，就要让每个资源都有一张资源表，这个在实际使用场景中肯定是无法满足的。而且这些都基于数据库操作，在高并发的要求下，对数据库连接的开销一定是无法忍受的。</p>
 <p>(3). 乐观锁机制往往基于系统中的数据存储逻辑，因此可能会造成脏数据被更新到数据库中。在系统设计阶段，我们应该充分考虑到这些情况出现的可能性，并进行相应调整，如将乐观锁策略在数据库存储过程中实现，对外只开放基于此存储过程的数据更新途径，而不是将数据库表直接对外公开。    </p>
 <ol>
-<li>讲了乐观锁的实现方式和缺点，是不是会觉得不敢使用乐观锁了呢？？？当然不是，在文章开头我自己的业务场景中，场景1和场景2的一部分都使用了基于数据库资源表的乐观锁，已经很好的解决了线上问题。所以大家要根据的具体业务场景选择技术方案，并不是随便找一个足够复杂、足够新潮的技术方案来解决业务问题就是好方案？！比如，如果在我的场景一中，我使用zookeeper做锁，可以这么做，但是真的有必要吗？？？答案觉得是没有必要的！！！ </li>
+<li>讲了乐观锁的实现方式和缺点，是不是会觉得不敢使用乐观锁了呢？？？当然不是，在文章开头我自己的业务场景中，场景1和场景2的一部分都使用了基于数据库资源表的乐观锁，已经很好的解决了线上问题。所以大家要根据的具体业务场景选择技术方案，并不是随便找一个足够复杂、足够新潮的技术方案来解决业务问题就是好方案？！比如，如果在我的场景一中，我使用zookeeper做锁，可以这么做，但是真的有必要吗？？？答案觉得是没有必要的！！！</li>
 </ol>
 <p>总结一下使用数据库来实现分布式锁的方式，这两种方式都是依赖数据库的一张表，一种是通过表中的记录的存在情况确定当前是否有锁存在，另外一种是通过数据库的排他锁来实现分布式锁。<br>数据库实现分布式锁的优点<br>直接借助数据库，容易理解。<br>数据库实现分布式锁的缺点<br>会有各种各样的问题，在解决问题的过程中会使整个方案变得越来越复杂。<br>操作数据库需要一定的开销，性能问题需要考虑。<br>使用数据库的行级锁并不一定靠谱，尤其是当我们的锁表并不大的时候。</p>
 <h2 id="基于缓存实现分布式锁"><a href="#基于缓存实现分布式锁" class="headerlink" title="基于缓存实现分布式锁"></a>基于缓存实现分布式锁</h2><h3 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h3><p>使用redis的setnx()用于分布式锁。<br>（setNx，直接设置值为当前时间+超时时间，保持操作原子性）</p>
@@ -259,7 +288,7 @@ throw new LockException();
 2. B,C读取lock.id的值，比较当前时间和键 lock.id 的值来判断是否超时，发现超时；
 3. B执行 DEL lock.id命令，并执行 SETNX lock.id 命令，并返回1，B获得锁；
 4. C由于各刚刚检测到锁已超时，执行 DEL lock.id命令，将B刚刚设置的键 lock.id 删除，执行 SETNX lock.id命令，并返回1，即C获得锁。
-5. 
+5.
 </code></pre><p>上面的步骤很明显出现了问题，导致B,C同时获取了锁。在检测到锁超时后，线程不能直接简单地执行 DEL 删除键的操作以获得锁。</p>
 <p>对于上面的步骤进行改进，问题是出在删除键的操作上面，那么获取锁之后应该怎么改进呢？<br>首先看一下redis的GETSET这个操作，GETSET key value，将给定 key 的值设为 value ，并返回 key 的旧值(old value)。利用这个操作指令，我们改进一下上述的步骤。</p>
 <pre><code>1. A已经首先获得了锁 lock.id，然后线A断线。B,C都在等待竞争该锁；
@@ -268,7 +297,7 @@ throw new LockException();
 </code></pre><p>GETSET lock.id <current 1="" unix="" timestamp="" +="" lock="" timeout="">设置时间戳，通过比较键 lock.id 的旧值是否小于当前时间，判断进程是否已获得锁；</current></p>
 <pre><code>4. B发现GETSET返回的值小于当前时间，则执行 DEL lock.id命令，并执行 SETNX lock.id 命令，并返回1，B获得锁；
 5. C执行GETSET得到的时间大于当前时间，则继续等待。
-6. 
+6.
 </code></pre><p>在线程释放锁，即执行 DEL lock.id 操作前，需要先判断锁是否已超时。如果锁已超时，那么锁可能已由其他线程获得，这时直接执行 DEL lock.id 操作会导致把其他线程已获得的锁释放掉。</p>
 <p>一种实现方式</p>
 <p>######获取锁</p>
@@ -428,7 +457,7 @@ throw new IllegalMonitorStateException(&quot;没有获取到锁的线程无法�
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">分布式系统</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
         		</li>
       		
 		</ul>
@@ -484,7 +513,7 @@ throw new IllegalMonitorStateException(&quot;没有获取到锁的线程无法�
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/07/18/分布式锁通用解决方案/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yutinglin.cn/2017/07/18/分布式锁通用解决方案/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -498,18 +527,18 @@ throw new IllegalMonitorStateException(&quot;没有获取到锁的线程无法�
   
 <nav id="article-nav">
   
-    <a href="/2017/07/18/读《Effecttive Java》/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/07/18/分布式缓存一致性Hash算法/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          读《Effecttive Java》
+          分布式缓存一致性hash算法
         
       </div>
     </a>
   
   
-    <a href="/2017/07/15/mongoDB常见问题整理/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">mongoDB常见问题整理</div>
+    <a href="/2017/07/18/读《Effecttive Java》/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">读《Effecttive Java》</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -741,15 +770,39 @@ alert("Error:"+error.code+" "+error.message);
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JDK探究</a>
+                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Spring探究</a>
+                <a href="javascript:void(0)" class="js-tag color4">JUC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">消息</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">框架源码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RDB</a>
               </li>
              
               <li class="article-tag-list-item">

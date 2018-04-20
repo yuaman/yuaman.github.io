@@ -5,21 +5,22 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="http://yutinglin.cn">
   <title>多机的Sequence问题与处理 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="数据库拆分之后，会引入诸多新的问题，其中之一就是，以MySQL为例，原先单表的时候， 可以通过MySQL自带的aut_increment实现自增不重复id，现在用不了了。数据库层面 做不了必须引入中间件去解决。">
-<meta name="keywords" content="分布式系统">
+<meta name="keywords" content="分布式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="多机的Sequence问题与处理">
-<meta property="og:url" content="http://yoursite.com/2017/08/01/多机的Sequence问题与处理/index.html">
+<meta property="og:url" content="http://yutinglin.cn/2017/08/01/多机的Sequence问题与处理/index.html">
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="数据库拆分之后，会引入诸多新的问题，其中之一就是，以MySQL为例，原先单表的时候， 可以通过MySQL自带的aut_increment实现自增不重复id，现在用不了了。数据库层面 做不了必须引入中间件去解决。">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/67a6a651gw1dujgqcx9ncj.jpg">
-<meta property="og:image" content="http://yoursite.com/2017/08/01/多机的Sequence问题与处理/_image/2018-01-28-22-32-24.jpg">
-<meta property="og:image" content="http://yoursite.com/2017/08/01/多机的Sequence问题与处理/_image/2018-01-28-22-33-11.jpg">
+<meta property="og:image" content="http://yutinglin.cn/2017/08/01/多机的Sequence问题与处理/_image/2018-01-28-22-32-24.jpg">
+<meta property="og:image" content="http://yutinglin.cn/2017/08/01/多机的Sequence问题与处理/_image/2018-01-28-22-33-11.jpg">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4324380-218f5e6218923bf4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
-<meta property="og:updated_time" content="2018-02-07T14:09:00.499Z">
+<meta property="og:updated_time" content="2018-04-20T16:37:02.054Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="多机的Sequence问题与处理">
 <meta name="twitter:description" content="数据库拆分之后，会引入诸多新的问题，其中之一就是，以MySQL为例，原先单表的时候， 可以通过MySQL自带的aut_increment实现自增不重复id，现在用不了了。数据库层面 做不了必须引入中间件去解决。">
@@ -68,6 +69,10 @@
 	        
 				<li><a href="/tags/JVM/">JVM</a></li>
 	        
+				<li><a href="/tags/JUC/">JUC</a></li>
+	        
+				<li><a href="/tags/分布式/">分布式</a></li>
+	        
 				<li><a href="/tags/操作记录/">操作记录</a></li>
 	        
 				<li><a href="/tags/杂感/">杂感</a></li>
@@ -88,6 +93,14 @@
 		<nav class="header-nav">
 			<div class="social">
 				
+					<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+		        
+					<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+		        
+					<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+		        
 			</div>
 		</nav>
 	</header>		
@@ -120,11 +133,23 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
 				<div class="social">
 					
+						<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+			        
+						<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+			        
+						<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+			        
 				</div>
 			</nav>
 
@@ -132,13 +157,17 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 16.666666666666668%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/JVM/">JVM</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JVM/">JVM</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/操作记录/">操作记录</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JUC/">JUC</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/杂感/">杂感</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/分布式/">分布式</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/操作记录/">操作记录</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/杂感/">杂感</a></li>
 		        
 				</ul>
 			</nav>
@@ -192,7 +221,7 @@
 <li><p>存储的问题。</p>
 </li>
 </ul>
-<h2 id="Flicker方案："><a href="#Flicker方案：" class="headerlink" title="Flicker方案："></a>Flicker方案：</h2><p>flickr开发团队在2010年撰文介绍了flickr使用的一种主键生成测策略，同时表示该方案在flickr上的实际运行效果也非常令人满意，原文连接：<a href="http://code.flickr.com/blog/2010/02/08/ticket-servers-distributed-unique-primary-keys-on-the-cheap/" target="_blank" rel="external">Ticket Servers: Distributed Unique Primary Keys on the Cheap </a>这个方案是我目前知道的最好的方案，它与一般Sequence表方案有些类似，但却很好地解决了性能瓶颈和单点问题，是一种非常可靠而高效的全局主键生成方案。</p>
+<h2 id="Flicker方案："><a href="#Flicker方案：" class="headerlink" title="Flicker方案："></a>Flicker方案：</h2><p>flickr开发团队在2010年撰文介绍了flickr使用的一种主键生成测策略，同时表示该方案在flickr上的实际运行效果也非常令人满意，原文连接：<a href="http://code.flickr.com/blog/2010/02/08/ticket-servers-distributed-unique-primary-keys-on-the-cheap/" target="_blank" rel="noopener">Ticket Servers: Distributed Unique Primary Keys on the Cheap </a>这个方案是我目前知道的最好的方案，它与一般Sequence表方案有些类似，但却很好地解决了性能瓶颈和单点问题，是一种非常可靠而高效的全局主键生成方案。</p>
 <p><img src="http://ww1.sinaimg.cn/large/67a6a651gw1dujgqcx9ncj.jpg" alt=""></p>
 <p>flickr这一方案的整体思想是：建立两台以上的数据库ID生成服务器，每个服务器都有一张记录各表当前ID的Sequence表，但是Sequence中ID增长的步长是服务器的数量，起始值依次错开，这样相当于把ID的生成散列到了每个服务器节点上。</p>
 <p>例如：如果我们设置两台数据库ID生成服务器，那么就让一台的Sequence表的ID起始值为1,每次增长步长为2,另一台的Sequence表的ID起始值为2,每次增长步长也为2，那么结果就是奇数的ID都将从第一台服务器上生成，偶数的ID都从第二台服务器上生成，这样就将生成ID的压力均匀分散到两台服务器上，同时配合应用程序的控制，当一个服务器失效后，系统能自动切换到另一个服务器上获取ID，从而保证了系统的容错。</p>
@@ -224,8 +253,8 @@
 <h4 id="2、Snowflake算法核心"><a href="#2、Snowflake算法核心" class="headerlink" title="2、Snowflake算法核心"></a>2、Snowflake算法核心</h4><p>把<strong>时间戳，工作机器id，序列号</strong>组合在一起。</p>
 <p><img src="./_image/2018-01-28-22-32-24.jpg" alt=""></p>
 <p>除了最高位bit标记为不可用以外，其余三组bit占位均可浮动，看具体的业务需求而定。默认情况下41bit的时间戳可以支持该算法使用到2082年，10bit的工作机器id可以支持1023台机器，序列号支持1毫秒产生4095个自增序列id。下文会具体分析。</p>
-<h5 id="2-1-Snowflake-–-时间戳"><a href="#2-1-Snowflake-–-时间戳" class="headerlink" title="2.1 Snowflake – 时间戳"></a>2.1 Snowflake – 时间戳</h5><p>这里时间戳的细度是毫秒级，具体代码如下，建议使用64位linux系统机器，因为有<a href="https://link.jianshu.com?t=http://man7.org/linux/man-pages/man7/vdso.7.html" target="_blank" rel="external">vdso</a>，gettimeofday()在用户态就可以完成操作，减少了进入内核态的损耗。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">uint64_t generateStamp()</div><div class="line">&#123;</div><div class="line">timeval tv;</div><div class="line">gettimeofday(&amp;tv, 0);</div><div class="line">return (uint64_t)tv.tv_sec * 1000 + (uint64_t)tv.tv_usec / 1000;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="2-1-Snowflake-–-时间戳"><a href="#2-1-Snowflake-–-时间戳" class="headerlink" title="2.1 Snowflake – 时间戳"></a>2.1 Snowflake – 时间戳</h5><p>这里时间戳的细度是毫秒级，具体代码如下，建议使用64位linux系统机器，因为有<a href="https://link.jianshu.com?t=http://man7.org/linux/man-pages/man7/vdso.7.html" target="_blank" rel="noopener">vdso</a>，gettimeofday()在用户态就可以完成操作，减少了进入内核态的损耗。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">uint64_t generateStamp()</span><br><span class="line">&#123;</span><br><span class="line">timeval tv;</span><br><span class="line">gettimeofday(&amp;tv, 0);</span><br><span class="line">return (uint64_t)tv.tv_sec * 1000 + (uint64_t)tv.tv_usec / 1000;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>默认情况下有41个bit可以供使用，那么一共有T（1llu &lt;&lt; 41）毫秒供你使用分配，年份 = T / (3600 <em> 24 </em> 365 * 1000) = 69.7年。如果你只给时间戳分配39个bit使用，那么根据同样的算法最后年份 = 17.4年。</p>
 <h5 id="2-2-Snowflake-–-工作机器id"><a href="#2-2-Snowflake-–-工作机器id" class="headerlink" title="2. 2 Snowflake – 工作机器id"></a>2. 2 Snowflake – 工作机器id</h5><p><img src="./_image/2018-01-28-22-33-11.jpg" alt=""></p>
 <p>严格意义上来说这个bit段的使用可以是进程级，机器级的话你可以使用MAC地址来唯一标示工作机器，工作进程级可以使用IP+Path来区分工作进程。如果工作机器比较少，可以使用配置文件来设置这个id是一个不错的选择，如果机器过多配置文件的维护是一个灾难性的事情。</p>
@@ -234,9 +263,9 @@
 <p>工作进程与工作id分配器只是在工作进程启动的时候交互一次，然后工作进程可以自行将分配的id数据落文件，下一次启动直接读取文件里的id使用。</p>
 <p><strong>PS：这个工作机器id的bit段也可以进一步拆分，比如用前5个bit标记进程id，后5个bit标记线程id之类:D</strong></p>
 <h5 id="2-3-Snowflake-–-序列号"><a href="#2-3-Snowflake-–-序列号" class="headerlink" title="2.3 Snowflake – 序列号"></a>2.3 Snowflake – 序列号</h5><p>序列号就是一系列的自增id（多线程建议使用atomic），为了处理在同一毫秒内需要给多条消息分配id，若同一毫秒把序列号用完了，则“等待至下一毫秒”。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">uint64_t waitNextMs(uint64_t lastStamp)</div><div class="line">&#123;</div><div class="line">    uint64_t cur = 0;</div><div class="line">    do &#123;</div><div class="line">        cur = generateStamp();</div><div class="line">    &#125; while (cur &lt;= lastStamp);</div><div class="line">    return cur;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">uint64_t waitNextMs(uint64_t lastStamp)</span><br><span class="line">&#123;</span><br><span class="line">    uint64_t cur = 0;</span><br><span class="line">    do &#123;</span><br><span class="line">        cur = generateStamp();</span><br><span class="line">    &#125; while (cur &lt;= lastStamp);</span><br><span class="line">    return cur;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>总体来说，是一个很高效很方便的GUID产生算法，一个int64_t字段就可以胜任，不像现在主流128bit的GUID算法，即使无法保证严格的id序列性，但是对于特定的业务，比如用做游戏服务器端的GUID产生会很方便。另外，在多线程的环境下，序列号使用atomic可以在代码实现上有效减少锁的密度。</p>
-<h4 id="3、Snowflake-算法实现（Java）"><a href="#3、Snowflake-算法实现（Java）" class="headerlink" title="3、Snowflake - 算法实现（Java）"></a>3、Snowflake - 算法实现（Java）</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div></pre></td><td class="code"><pre><div class="line">public class IdWorker &#123;</div><div class="line">    private final long twepoch = 1288834974657L;</div><div class="line">    private final long workerIdBits = 5L;</div><div class="line">    private final long datacenterIdBits = 5L;</div><div class="line">    private final long maxWorkerId = -1L ^ (-1L &lt;&lt; workerIdBits);</div><div class="line">    private final long maxDatacenterId = -1L ^ (-1L &lt;&lt; datacenterIdBits);</div><div class="line">    private final long sequenceBits = 12L;</div><div class="line">    private final long workerIdShift = sequenceBits;</div><div class="line">    private final long datacenterIdShift = sequenceBits + workerIdBits;</div><div class="line">    private final long timestampLeftShift = sequenceBits + workerIdBits + datacenterIdBits;</div><div class="line">    private final long sequenceMask = -1L ^ (-1L &lt;&lt; sequenceBits);</div><div class="line"></div><div class="line">    private long workerId;</div><div class="line">    private long datacenterId;</div><div class="line">    private long sequence = 0L;</div><div class="line">    private long lastTimestamp = -1L;</div><div class="line"></div><div class="line">    public IdWorker(long workerId, long datacenterId) &#123;</div><div class="line">        if (workerId &gt; maxWorkerId || workerId &lt; 0) &#123;</div><div class="line">            throw new IllegalArgumentException(String.format(&quot;worker Id can&apos;t be greater than %d or less than 0&quot;, maxWorkerId));</div><div class="line">        &#125;</div><div class="line">        if (datacenterId &gt; maxDatacenterId || datacenterId &lt; 0) &#123;</div><div class="line">            throw new IllegalArgumentException(String.format(&quot;datacenter Id can&apos;t be greater than %d or less than 0&quot;, maxDatacenterId));</div><div class="line">        &#125;</div><div class="line">        this.workerId = workerId;</div><div class="line">        this.datacenterId = datacenterId;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public synchronized long nextId() &#123;</div><div class="line">        long timestamp = timeGen();</div><div class="line">        if (timestamp &lt; lastTimestamp) &#123;</div><div class="line">            throw new RuntimeException(String.format(&quot;Clock moved backwards.  Refusing to generate id for %d milliseconds&quot;, lastTimestamp - timestamp));</div><div class="line">        &#125;</div><div class="line">        if (lastTimestamp == timestamp) &#123;</div><div class="line">            sequence = (sequence + 1) &amp; sequenceMask;</div><div class="line">            if (sequence == 0) &#123;</div><div class="line">                timestamp = tilNextMillis(lastTimestamp);</div><div class="line">            &#125;</div><div class="line">        &#125; else &#123;</div><div class="line">            sequence = 0L;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        lastTimestamp = timestamp;</div><div class="line"></div><div class="line">        return ((timestamp - twepoch) &lt;&lt; timestampLeftShift) | (datacenterId &lt;&lt; datacenterIdShift) | (workerId &lt;&lt; workerIdShift) | sequence;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    protected long tilNextMillis(long lastTimestamp) &#123;</div><div class="line">        long timestamp = timeGen();</div><div class="line">        while (timestamp &lt;= lastTimestamp) &#123;</div><div class="line">            timestamp = timeGen();</div><div class="line">        &#125;</div><div class="line">        return timestamp;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    protected long timeGen() &#123;</div><div class="line">        return System.currentTimeMillis();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public static void main(String[] args) &#123;</div><div class="line">        IdWorker idWorker = new IdWorker(0, 0);</div><div class="line">        for (int i = 0; i &lt; 100; i++) &#123;</div><div class="line">            long id = idWorker.nextId();</div><div class="line">            System.out.println(id);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="3、Snowflake-算法实现（Java）"><a href="#3、Snowflake-算法实现（Java）" class="headerlink" title="3、Snowflake - 算法实现（Java）"></a>3、Snowflake - 算法实现（Java）</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">public class IdWorker &#123;</span><br><span class="line">    private final long twepoch = 1288834974657L;</span><br><span class="line">    private final long workerIdBits = 5L;</span><br><span class="line">    private final long datacenterIdBits = 5L;</span><br><span class="line">    private final long maxWorkerId = -1L ^ (-1L &lt;&lt; workerIdBits);</span><br><span class="line">    private final long maxDatacenterId = -1L ^ (-1L &lt;&lt; datacenterIdBits);</span><br><span class="line">    private final long sequenceBits = 12L;</span><br><span class="line">    private final long workerIdShift = sequenceBits;</span><br><span class="line">    private final long datacenterIdShift = sequenceBits + workerIdBits;</span><br><span class="line">    private final long timestampLeftShift = sequenceBits + workerIdBits + datacenterIdBits;</span><br><span class="line">    private final long sequenceMask = -1L ^ (-1L &lt;&lt; sequenceBits);</span><br><span class="line"></span><br><span class="line">    private long workerId;</span><br><span class="line">    private long datacenterId;</span><br><span class="line">    private long sequence = 0L;</span><br><span class="line">    private long lastTimestamp = -1L;</span><br><span class="line"></span><br><span class="line">    public IdWorker(long workerId, long datacenterId) &#123;</span><br><span class="line">        if (workerId &gt; maxWorkerId || workerId &lt; 0) &#123;</span><br><span class="line">            throw new IllegalArgumentException(String.format(&quot;worker Id can&apos;t be greater than %d or less than 0&quot;, maxWorkerId));</span><br><span class="line">        &#125;</span><br><span class="line">        if (datacenterId &gt; maxDatacenterId || datacenterId &lt; 0) &#123;</span><br><span class="line">            throw new IllegalArgumentException(String.format(&quot;datacenter Id can&apos;t be greater than %d or less than 0&quot;, maxDatacenterId));</span><br><span class="line">        &#125;</span><br><span class="line">        this.workerId = workerId;</span><br><span class="line">        this.datacenterId = datacenterId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public synchronized long nextId() &#123;</span><br><span class="line">        long timestamp = timeGen();</span><br><span class="line">        if (timestamp &lt; lastTimestamp) &#123;</span><br><span class="line">            throw new RuntimeException(String.format(&quot;Clock moved backwards.  Refusing to generate id for %d milliseconds&quot;, lastTimestamp - timestamp));</span><br><span class="line">        &#125;</span><br><span class="line">        if (lastTimestamp == timestamp) &#123;</span><br><span class="line">            sequence = (sequence + 1) &amp; sequenceMask;</span><br><span class="line">            if (sequence == 0) &#123;</span><br><span class="line">                timestamp = tilNextMillis(lastTimestamp);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            sequence = 0L;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        lastTimestamp = timestamp;</span><br><span class="line"></span><br><span class="line">        return ((timestamp - twepoch) &lt;&lt; timestampLeftShift) | (datacenterId &lt;&lt; datacenterIdShift) | (workerId &lt;&lt; workerIdShift) | sequence;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected long tilNextMillis(long lastTimestamp) &#123;</span><br><span class="line">        long timestamp = timeGen();</span><br><span class="line">        while (timestamp &lt;= lastTimestamp) &#123;</span><br><span class="line">            timestamp = timeGen();</span><br><span class="line">        &#125;</span><br><span class="line">        return timestamp;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected long timeGen() &#123;</span><br><span class="line">        return System.currentTimeMillis();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        IdWorker idWorker = new IdWorker(0, 0);</span><br><span class="line">        for (int i = 0; i &lt; 100; i++) &#123;</span><br><span class="line">            long id = idWorker.nextId();</span><br><span class="line">            System.out.println(id);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
 
@@ -276,7 +305,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">分布式系统</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
         		</li>
       		
 		</ul>
@@ -332,7 +361,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/08/01/多机的Sequence问题与处理/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yutinglin.cn/2017/08/01/多机的Sequence问题与处理/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -346,18 +375,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2017/08/05/Java容器各实现类的底层实现原理/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/08/01/秒杀系统解决方案/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Java容器各实现类的底层实现原理概述
+          秒杀系统解决方案
         
       </div>
     </a>
   
   
-    <a href="/2017/08/01/秒杀系统解决方案/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">秒杀系统解决方案</div>
+    <a href="/2017/07/22/服务框架设计与实现的原理/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">服务框架的设计与实现</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -589,15 +618,39 @@ alert("Error:"+error.code+" "+error.message);
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JDK探究</a>
+                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Spring探究</a>
+                <a href="javascript:void(0)" class="js-tag color4">JUC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">消息</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">框架源码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RDB</a>
               </li>
              
               <li class="article-tag-list-item">

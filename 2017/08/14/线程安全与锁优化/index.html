@@ -5,17 +5,18 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="http://yutinglin.cn">
   <title>线程安全与锁优化——深入理解JVM阅读笔记 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。参考地址：http://www.cnblogs.com/pacoson/p/5351355.html">
-<meta name="keywords" content="JDK探究">
+<meta name="keywords" content="JUC">
 <meta property="og:type" content="article">
 <meta property="og:title" content="线程安全与锁优化——深入理解JVM阅读笔记">
-<meta property="og:url" content="http://yoursite.com/2017/08/14/线程安全与锁优化/index.html">
+<meta property="og:url" content="http://yutinglin.cn/2017/08/14/线程安全与锁优化/index.html">
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。参考地址：http://www.cnblogs.com/pacoson/p/5351355.html">
-<meta property="og:updated_time" content="2018-01-27T09:55:21.826Z">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-20T16:38:34.324Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="线程安全与锁优化——深入理解JVM阅读笔记">
 <meta name="twitter:description" content="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。参考地址：http://www.cnblogs.com/pacoson/p/5351355.html">
@@ -63,6 +64,10 @@
 	        
 				<li><a href="/tags/JVM/">JVM</a></li>
 	        
+				<li><a href="/tags/JUC/">JUC</a></li>
+	        
+				<li><a href="/tags/分布式/">分布式</a></li>
+	        
 				<li><a href="/tags/操作记录/">操作记录</a></li>
 	        
 				<li><a href="/tags/杂感/">杂感</a></li>
@@ -83,6 +88,14 @@
 		<nav class="header-nav">
 			<div class="social">
 				
+					<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+		        
+					<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+		        
+					<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+		        
 			</div>
 		</nav>
 	</header>		
@@ -115,11 +128,23 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
 				<div class="social">
 					
+						<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+			        
+						<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+			        
+						<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+			        
 				</div>
 			</nav>
 
@@ -127,13 +152,17 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 16.666666666666668%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/JVM/">JVM</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JVM/">JVM</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/操作记录/">操作记录</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JUC/">JUC</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/杂感/">杂感</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/分布式/">分布式</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/操作记录/">操作记录</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/杂感/">杂感</a></li>
 		        
 				</ul>
 			</nav>
@@ -168,7 +197,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h5 id="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。"><a href="#我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。" class="headerlink" title="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。"></a>我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。</h5><h5 id="参考地址：http-www-cnblogs-com-pacoson-p-5351355-html"><a href="#参考地址：http-www-cnblogs-com-pacoson-p-5351355-html" class="headerlink" title="参考地址：http://www.cnblogs.com/pacoson/p/5351355.html"></a>参考地址：<a href="http://www.cnblogs.com/pacoson/p/5351355.html" target="_blank" rel="external">http://www.cnblogs.com/pacoson/p/5351355.html</a></h5><a id="more"></a>
+        <h5 id="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。"><a href="#我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。" class="headerlink" title="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。"></a>我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。</h5><h5 id="参考地址：http-www-cnblogs-com-pacoson-p-5351355-html"><a href="#参考地址：http-www-cnblogs-com-pacoson-p-5351355-html" class="headerlink" title="参考地址：http://www.cnblogs.com/pacoson/p/5351355.html"></a>参考地址：<a href="http://www.cnblogs.com/pacoson/p/5351355.html" target="_blank" rel="noopener">http://www.cnblogs.com/pacoson/p/5351355.html</a></h5><a id="more"></a>
 <h2 id="要点"><a href="#要点" class="headerlink" title="要点"></a>要点</h2><h3 id="线程安全定义："><a href="#线程安全定义：" class="headerlink" title="线程安全定义："></a>线程安全定义：</h3><p>当多个线程访问一个对象时，如果不用考虑这些线程在运行时环境下的调度和交替执行，也不需要进行额外的同步，或者在调用方进行任何其他的协调操作，调用这个对象的行为都可以获得正确的结果，那这个对象是线程安全的；（干货——线程安全定义）</p>
 <h3 id="1-线程安全的实现："><a href="#1-线程安全的实现：" class="headerlink" title="1.线程安全的实现："></a>1.线程安全的实现：</h3><p>1）互斥同步（阻塞同步）（重量级锁）<br>使用操作系统互斥量来实现的传统锁；<br>采用悲观的并发策略：sysncronised reentrantlock重入锁</p>
 <p>2）非阻塞同步（乐观锁）（轻量级锁）<br>在没有多线程竞争的前提下，减少传统的重量级锁使用操作系统互斥量产生的性能消耗<br>基于冲突检测的乐观并发策略 并发包下实现了cas机制的原子类</p>
@@ -238,7 +267,7 @@ public final int incrementAndGet() {
 }
 </code></pre><p>}</p>
 <h3 id="2-5）CAS操作（比较并交换操作）的ABA问题："><a href="#2-5）CAS操作（比较并交换操作）的ABA问题：" class="headerlink" title="2.5）CAS操作（比较并交换操作）的ABA问题："></a>2.5）CAS操作（比较并交换操作）的ABA问题：</h3><p>如果一个变量V初次读取的时候是A值，并且在准备赋值的时候检查到它仍然是A值，那我们就说它的值没有被其他线程改变过了吗？ 如果在这段期间它的值曾经被改为了B，之后又改回了A，那CAS操作就会误认为它从来没有被改变过，这个漏洞称为 CAS操作的 ABA问题；</p>
-<p>解决方法：J.U.C 包为了解决这个问题，提供了一个带有标记的原子引用类“AtomicStampedReference”，它可以通过控制变量值的version 来保证CAS的正确性。不过目前来说这个类比较鸡肋， 大部分cases 下 ABA问题 不会影响程序并发的正确性，如果需要解决ABA问题，改用传统的互斥同步可能会比原子类更高效；（干货——CAS操作（比较并交换操作）的ABA问题及其解决方法） </p>
+<p>解决方法：J.U.C 包为了解决这个问题，提供了一个带有标记的原子引用类“AtomicStampedReference”，它可以通过控制变量值的version 来保证CAS的正确性。不过目前来说这个类比较鸡肋， 大部分cases 下 ABA问题 不会影响程序并发的正确性，如果需要解决ABA问题，改用传统的互斥同步可能会比原子类更高效；（干货——CAS操作（比较并交换操作）的ABA问题及其解决方法）</p>
 
       
 
@@ -278,7 +307,7 @@ public final int incrementAndGet() {
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">JDK探究</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JUC</a>
         		</li>
       		
 		</ul>
@@ -334,7 +363,7 @@ public final int incrementAndGet() {
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/08/14/线程安全与锁优化/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yutinglin.cn/2017/08/14/线程安全与锁优化/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -591,15 +620,39 @@ alert("Error:"+error.code+" "+error.message);
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JDK探究</a>
+                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Spring探究</a>
+                <a href="javascript:void(0)" class="js-tag color4">JUC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">消息</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">框架源码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RDB</a>
               </li>
              
               <li class="article-tag-list-item">

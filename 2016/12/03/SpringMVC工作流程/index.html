@@ -5,17 +5,18 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="http://yutinglin.cn">
   <title>SpringMVC工作流程 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="SpringMVC工作流程">
-<meta name="keywords" content="Spring探究">
+<meta name="keywords" content="框架源码">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SpringMVC工作流程">
-<meta property="og:url" content="http://yoursite.com/2016/12/03/SpringMVC工作流程/index.html">
+<meta property="og:url" content="http://yutinglin.cn/2016/12/03/SpringMVC工作流程/index.html">
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="SpringMVC工作流程">
-<meta property="og:updated_time" content="2018-01-27T09:56:03.294Z">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-20T16:43:02.369Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringMVC工作流程">
 <meta name="twitter:description" content="SpringMVC工作流程">
@@ -63,6 +64,10 @@
 	        
 				<li><a href="/tags/JVM/">JVM</a></li>
 	        
+				<li><a href="/tags/JUC/">JUC</a></li>
+	        
+				<li><a href="/tags/分布式/">分布式</a></li>
+	        
 				<li><a href="/tags/操作记录/">操作记录</a></li>
 	        
 				<li><a href="/tags/杂感/">杂感</a></li>
@@ -83,6 +88,14 @@
 		<nav class="header-nav">
 			<div class="social">
 				
+					<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+		        
+					<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+		        
+					<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+		        
 			</div>
 		</nav>
 	</header>		
@@ -115,11 +128,23 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
 				<div class="social">
 					
+						<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+			        
+						<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+			        
+						<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+			        
 				</div>
 			</nav>
 
@@ -127,13 +152,17 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 16.666666666666668%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/JVM/">JVM</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JVM/">JVM</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/操作记录/">操作记录</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JUC/">JUC</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/杂感/">杂感</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/分布式/">分布式</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/操作记录/">操作记录</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/杂感/">杂感</a></li>
 		        
 				</ul>
 			</nav>
@@ -170,25 +199,25 @@
       
         <p>SpringMVC工作流程<br><a id="more"></a></p>
 <h3 id="1-Spring-MVC概述："><a href="#1-Spring-MVC概述：" class="headerlink" title="1.Spring MVC概述："></a>1.Spring MVC概述：</h3><p>Spring MVC是Spring提供的一个强大而灵活的web框架。借助于注解，Spring MVC提供了几乎是POJO的开发模式，使得控制器的开发和测试更加简单。这些控制器一般不直接处理请求，而是将其委托给Spring上下文中的其他bean，通过Spring的依赖注入功能，这些bean被注入到控制器中。</p>
-<h4 id="Spring-MVC主要由DispatcherServlet、处理器映射、处理器-控制器-、视图解析器、视图组成。他的两个核心是两个核心："><a href="#Spring-MVC主要由DispatcherServlet、处理器映射、处理器-控制器-、视图解析器、视图组成。他的两个核心是两个核心：" class="headerlink" title="Spring MVC主要由DispatcherServlet、处理器映射、处理器(控制器)、视图解析器、视图组成。他的两个核心是两个核心："></a>Spring MVC主要由DispatcherServlet、处理器映射、处理器(控制器)、视图解析器、视图组成。他的两个核心是两个核心：</h4><h4 id="处理器映射：选择使用哪个控制器来处理请求"><a href="#处理器映射：选择使用哪个控制器来处理请求" class="headerlink" title="处理器映射：选择使用哪个控制器来处理请求"></a>处理器映射：选择使用哪个控制器来处理请求</h4><h4 id="视图解析器：选择结果应该如何渲染"><a href="#视图解析器：选择结果应该如何渲染" class="headerlink" title="视图解析器：选择结果应该如何渲染"></a>视图解析器：选择结果应该如何渲染</h4><h4 id="通过以上两点，Spring-MVC保证了如何选择控制处理请求和如何选择视图展现输出之间的松耦合。"><a href="#通过以上两点，Spring-MVC保证了如何选择控制处理请求和如何选择视图展现输出之间的松耦合。" class="headerlink" title="通过以上两点，Spring MVC保证了如何选择控制处理请求和如何选择视图展现输出之间的松耦合。"></a>通过以上两点，Spring MVC保证了如何选择控制处理请求和如何选择视图展现输出之间的松耦合。</h4><h3 id="2-SpringMVC运行原理"><a href="#2-SpringMVC运行原理" class="headerlink" title="2.SpringMVC运行原理"></a>2.SpringMVC运行原理</h3><p>(1) Http请求：客户端请求提交到DispatcherServlet。 </p>
-<p>(2) 寻找处理器：由DispatcherServlet控制器查询一个或多个HandlerMapping，找到处理请求的Controller。 </p>
-<p>(3) 调用处理器：DispatcherServlet将请求提交到Controller。 </p>
-<p>(4)(5)调用业务处理和返回结果：Controller调用业务逻辑处理后，返回ModelAndView。 </p>
-<p>(6)(7)处理视图映射并返回模型： DispatcherServlet查询一个或多个ViewResoler视图解析器，找到ModelAndView指定的视图。 </p>
+<h4 id="Spring-MVC主要由DispatcherServlet、处理器映射、处理器-控制器-、视图解析器、视图组成。他的两个核心是两个核心："><a href="#Spring-MVC主要由DispatcherServlet、处理器映射、处理器-控制器-、视图解析器、视图组成。他的两个核心是两个核心：" class="headerlink" title="Spring MVC主要由DispatcherServlet、处理器映射、处理器(控制器)、视图解析器、视图组成。他的两个核心是两个核心："></a>Spring MVC主要由DispatcherServlet、处理器映射、处理器(控制器)、视图解析器、视图组成。他的两个核心是两个核心：</h4><h4 id="处理器映射：选择使用哪个控制器来处理请求"><a href="#处理器映射：选择使用哪个控制器来处理请求" class="headerlink" title="处理器映射：选择使用哪个控制器来处理请求"></a>处理器映射：选择使用哪个控制器来处理请求</h4><h4 id="视图解析器：选择结果应该如何渲染"><a href="#视图解析器：选择结果应该如何渲染" class="headerlink" title="视图解析器：选择结果应该如何渲染"></a>视图解析器：选择结果应该如何渲染</h4><h4 id="通过以上两点，Spring-MVC保证了如何选择控制处理请求和如何选择视图展现输出之间的松耦合。"><a href="#通过以上两点，Spring-MVC保证了如何选择控制处理请求和如何选择视图展现输出之间的松耦合。" class="headerlink" title="通过以上两点，Spring MVC保证了如何选择控制处理请求和如何选择视图展现输出之间的松耦合。"></a>通过以上两点，Spring MVC保证了如何选择控制处理请求和如何选择视图展现输出之间的松耦合。</h4><h3 id="2-SpringMVC运行原理"><a href="#2-SpringMVC运行原理" class="headerlink" title="2.SpringMVC运行原理"></a>2.SpringMVC运行原理</h3><p>(1) Http请求：客户端请求提交到DispatcherServlet。</p>
+<p>(2) 寻找处理器：由DispatcherServlet控制器查询一个或多个HandlerMapping，找到处理请求的Controller。</p>
+<p>(3) 调用处理器：DispatcherServlet将请求提交到Controller。</p>
+<p>(4)(5)调用业务处理和返回结果：Controller调用业务逻辑处理后，返回ModelAndView。</p>
+<p>(6)(7)处理视图映射并返回模型： DispatcherServlet查询一个或多个ViewResoler视图解析器，找到ModelAndView指定的视图。</p>
 <p>(8) Http响应：视图负责将结果显示到客户端。</p>
-<h3 id="3-SpringMVC接口解释"><a href="#3-SpringMVC接口解释" class="headerlink" title="3.SpringMVC接口解释"></a>3.SpringMVC接口解释</h3><p>（1）DispatcherServlet接口： </p>
-<p>Spring提供的前端控制器，所有的请求都有经过它来统一分发。在DispatcherServlet将请求分发给Spring Controller之前，需要借助于Spring提供的HandlerMapping定位到具体的Controller。 </p>
-<p>（2）HandlerMapping接口： </p>
-<p>能够完成客户请求到Controller映射。 </p>
-<p>（3）Controller接口： </p>
-<p>需要为并发用户处理上述请求，因此实现Controller接口时，必须保证线程安全并且可重用。 </p>
-<p>Controller将处理用户请求，这和Struts Action扮演的角色是一致的。一旦Controller处理完用户请求，则返回ModelAndView对象给DispatcherServlet前端控制器，ModelAndView中包含了模型（Model）和视图（View）。 </p>
-<p>从宏观角度考虑，DispatcherServlet是整个Web应用的控制器；从微观考虑，Controller是单个Http请求处理过程中的控制器，而ModelAndView是Http请求过程中返回的模型（Model）和视图（View）。 </p>
-<p>（4）ViewResolver接口： </p>
+<h3 id="3-SpringMVC接口解释"><a href="#3-SpringMVC接口解释" class="headerlink" title="3.SpringMVC接口解释"></a>3.SpringMVC接口解释</h3><p>（1）DispatcherServlet接口：</p>
+<p>Spring提供的前端控制器，所有的请求都有经过它来统一分发。在DispatcherServlet将请求分发给Spring Controller之前，需要借助于Spring提供的HandlerMapping定位到具体的Controller。</p>
+<p>（2）HandlerMapping接口：</p>
+<p>能够完成客户请求到Controller映射。</p>
+<p>（3）Controller接口：</p>
+<p>需要为并发用户处理上述请求，因此实现Controller接口时，必须保证线程安全并且可重用。</p>
+<p>Controller将处理用户请求，这和Struts Action扮演的角色是一致的。一旦Controller处理完用户请求，则返回ModelAndView对象给DispatcherServlet前端控制器，ModelAndView中包含了模型（Model）和视图（View）。</p>
+<p>从宏观角度考虑，DispatcherServlet是整个Web应用的控制器；从微观考虑，Controller是单个Http请求处理过程中的控制器，而ModelAndView是Http请求过程中返回的模型（Model）和视图（View）。</p>
+<p>（4）ViewResolver接口：</p>
 <p>Spring提供的视图解析器（ViewResolver）在Web应用中查找View对象，从而将相应结果渲染给客户。<br>4.DispatcherServlet：</p>
-<p>是整个Spring MVC的核心。它负责接收HTTP请求组织协调Spring MVC的各个组成部分。其主要工作有以下三项： </p>
-<p>（1）截获符合特定格式的URL请求。 </p>
-<p>（2）初始化DispatcherServlet上下文对应WebApplicationContext，并将其与业务层、持久化层的WebApplicationContext建立关联。 </p>
+<p>是整个Spring MVC的核心。它负责接收HTTP请求组织协调Spring MVC的各个组成部分。其主要工作有以下三项：</p>
+<p>（1）截获符合特定格式的URL请求。</p>
+<p>（2）初始化DispatcherServlet上下文对应WebApplicationContext，并将其与业务层、持久化层的WebApplicationContext建立关联。</p>
 <p>（3）初始化Spring MVC的各个组成组件，并装配到DispatcherServlet中。</p>
 
       
@@ -229,7 +258,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Spring探究</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">框架源码</a>
         		</li>
       		
 		</ul>
@@ -285,7 +314,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2016/12/03/SpringMVC工作流程/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yutinglin.cn/2016/12/03/SpringMVC工作流程/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -309,8 +338,8 @@
     </a>
   
   
-    <a href="/2016/12/03/synchronized关键字、ReentrantLock与原子类比较/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">synchronized、ReentrantLock与原子类</div>
+    <a href="/2016/12/03/LinkedHashMap源码剖析/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">LinkedHashmap源码剖析</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -542,15 +571,39 @@ alert("Error:"+error.code+" "+error.message);
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JDK探究</a>
+                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Spring探究</a>
+                <a href="javascript:void(0)" class="js-tag color4">JUC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">消息</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">框架源码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RDB</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -5,15 +5,16 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="http://yutinglin.cn">
   <title>《深入理解JVM》阅读笔记以及问题整理 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="对阅读周志明先生的《深入理解JVM》产生的疑问与感悟以及要点进行总结。想这种技术书应该反复读，最近又阅览了一次，才对GC部分有了一个大概的框架，可是细节部分依然记不清楚。还是需要再读，并对类加载以及并发从头进行学习。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="《深入理解JVM》阅读笔记以及问题整理">
-<meta property="og:url" content="http://yoursite.com/2016/09/17/深入理解JVM阅读笔记以及问题整理/index.html">
+<meta property="og:url" content="http://yutinglin.cn/2016/09/17/深入理解JVM阅读笔记以及问题整理/index.html">
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="对阅读周志明先生的《深入理解JVM》产生的疑问与感悟以及要点进行总结。想这种技术书应该反复读，最近又阅览了一次，才对GC部分有了一个大概的框架，可是细节部分依然记不清楚。还是需要再读，并对类加载以及并发从头进行学习。">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2018-03-19T14:06:04.409Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="《深入理解JVM》阅读笔记以及问题整理">
@@ -62,6 +63,10 @@
 	        
 				<li><a href="/tags/JVM/">JVM</a></li>
 	        
+				<li><a href="/tags/JUC/">JUC</a></li>
+	        
+				<li><a href="/tags/分布式/">分布式</a></li>
+	        
 				<li><a href="/tags/操作记录/">操作记录</a></li>
 	        
 				<li><a href="/tags/杂感/">杂感</a></li>
@@ -82,6 +87,14 @@
 		<nav class="header-nav">
 			<div class="social">
 				
+					<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+		        
+					<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+		        
+					<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+		        
 			</div>
 		</nav>
 	</header>		
@@ -114,11 +127,23 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
 				<div class="social">
 					
+						<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+			        
+						<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+			        
+						<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+			        
 				</div>
 			</nav>
 
@@ -126,13 +151,17 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 16.666666666666668%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/JVM/">JVM</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JVM/">JVM</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/操作记录/">操作记录</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JUC/">JUC</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/杂感/">杂感</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/分布式/">分布式</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/操作记录/">操作记录</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/杂感/">杂感</a></li>
 		        
 				</ul>
 			</nav>
@@ -169,7 +198,7 @@
       
         <p>对阅读周志明先生的《深入理解JVM》产生的疑问与感悟以及要点进行总结。<br>想这种技术书应该反复读，最近又阅览了一次，才对GC部分有了一个大概的框架，可是细节部分依然记不清楚。还是需要再读，并对类加载以及并发从头进行学习。<br><a id="more"></a></p>
 <h3 id="什么是Native方法"><a href="#什么是Native方法" class="headerlink" title="什么是Native方法"></a>什么是Native方法</h3><p>本地方法栈是存放native函数的，可是什么是native函数呢？百度之：</p>
-<p>参考：<br><a href="http://blog.csdn.net/funneies/article/details/8949660" target="_blank" rel="external">http://blog.csdn.net/funneies/article/details/8949660</a></p>
+<p>参考：<br><a href="http://blog.csdn.net/funneies/article/details/8949660" target="_blank" rel="noopener">http://blog.csdn.net/funneies/article/details/8949660</a></p>
 <p>native关键字说明其修饰的方法是一个原生态方法，方法对应的实现不是在当前文件，而是在用其他语言（如C和C++）实现的文件中。Java语言本身不能对操作系统底层进行访问和操作，但是可以通过JNI接口调用其他语言来实现对底层的访问。</p>
 <p>JNI是Java本机接口（Java Native Interface），是一个本机编程接口，它是Java软件开发工具箱（java Software Development Kit，SDK）的一部分。JNI允许Java代码使用以其他语言编写的代码和代码库。Invocation API（JNI的一部分）可以用来将Java虚拟机（JVM）嵌入到本机应用程序中，从而允许程序员从本机代码内部调用Java代码。</p>
 
@@ -267,7 +296,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2016/09/17/深入理解JVM阅读笔记以及问题整理/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yutinglin.cn/2016/09/17/深入理解JVM阅读笔记以及问题整理/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -524,15 +553,39 @@ alert("Error:"+error.code+" "+error.message);
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JDK探究</a>
+                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Spring探究</a>
+                <a href="javascript:void(0)" class="js-tag color4">JUC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">消息</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">框架源码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RDB</a>
               </li>
              
               <li class="article-tag-list-item">

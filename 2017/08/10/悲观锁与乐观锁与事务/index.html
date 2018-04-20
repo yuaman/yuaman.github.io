@@ -5,16 +5,17 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="http://yutinglin.cn">
   <title>悲观锁与乐观锁与事务 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="事务针对的是行为操作而锁针对的是对象和数据；事务是指执行行为操作的过程而锁是执行的手段。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="悲观锁与乐观锁与事务">
-<meta property="og:url" content="http://yoursite.com/2017/08/10/悲观锁与乐观锁与事务/index.html">
+<meta property="og:url" content="http://yutinglin.cn/2017/08/10/悲观锁与乐观锁与事务/index.html">
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="事务针对的是行为操作而锁针对的是对象和数据；事务是指执行行为操作的过程而锁是执行的手段。">
-<meta property="og:updated_time" content="2018-03-19T14:08:12.581Z">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-20T16:29:26.819Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="悲观锁与乐观锁与事务">
 <meta name="twitter:description" content="事务针对的是行为操作而锁针对的是对象和数据；事务是指执行行为操作的过程而锁是执行的手段。">
@@ -62,6 +63,10 @@
 	        
 				<li><a href="/tags/JVM/">JVM</a></li>
 	        
+				<li><a href="/tags/JUC/">JUC</a></li>
+	        
+				<li><a href="/tags/分布式/">分布式</a></li>
+	        
 				<li><a href="/tags/操作记录/">操作记录</a></li>
 	        
 				<li><a href="/tags/杂感/">杂感</a></li>
@@ -82,6 +87,14 @@
 		<nav class="header-nav">
 			<div class="social">
 				
+					<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+		        
+					<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+		        
+					<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+		        
 			</div>
 		</nav>
 	</header>		
@@ -114,11 +127,23 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
 				<div class="social">
 					
+						<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+			        
+						<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+			        
+						<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+			        
 				</div>
 			</nav>
 
@@ -126,13 +151,17 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 16.666666666666668%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/JVM/">JVM</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JVM/">JVM</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/操作记录/">操作记录</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JUC/">JUC</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/杂感/">杂感</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/分布式/">分布式</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/操作记录/">操作记录</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/杂感/">杂感</a></li>
 		        
 				</ul>
 			</nav>
@@ -176,7 +205,7 @@
 <p>个人观点：事务针对的是行为操作而锁针对的是对象和数据；<br>        事务是指执行行为操作的过程而锁是执行的手段。</p>
 <p>无论是悲观锁还是乐观锁，都是人们定义出来的概念，可以认为是一种思想。其实不仅仅是关系型数据库系统中有乐观锁和悲观锁的概念，像memcache、hibernate、tair等都有类似的概念。</p>
 <p>针对于不同的业务场景，应该选用不同的并发控制方式。所以，不要把乐观并发控制和悲观并发控制狭义的理解为DBMS中的概念，更不要把他们和数据中提供的锁机制（行锁、表锁、排他锁、共享锁）混为一谈。其实，在DBMS中，悲观锁正是利用数据库本身提供的锁机制来实现的。</p>
-<h5 id="参考地址："><a href="#参考地址：" class="headerlink" title="参考地址："></a>参考地址：</h5><p><a href="http://blog.csdn.net/hongchangfirst/article/details/26004335" target="_blank" rel="external">http://blog.csdn.net/hongchangfirst/article/details/26004335</a><br><a href="http://blog.csdn.net/zhangwj0101/article/details/50946054" target="_blank" rel="external">http://blog.csdn.net/zhangwj0101/article/details/50946054</a></p>
+<h5 id="参考地址："><a href="#参考地址：" class="headerlink" title="参考地址："></a>参考地址：</h5><p><a href="http://blog.csdn.net/hongchangfirst/article/details/26004335" target="_blank" rel="noopener">http://blog.csdn.net/hongchangfirst/article/details/26004335</a><br><a href="http://blog.csdn.net/zhangwj0101/article/details/50946054" target="_blank" rel="noopener">http://blog.csdn.net/zhangwj0101/article/details/50946054</a></p>
 
       
 
@@ -217,7 +246,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/JDK探究/" class="article-tag-list-link color1">JDK探究</a>
+        			<a href="/categories/JUC/" class="article-tag-list-link color4">JUC</a>
         		</li>
       		
 		</ul>
@@ -272,7 +301,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/08/10/悲观锁与乐观锁与事务/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yutinglin.cn/2017/08/10/悲观锁与乐观锁与事务/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -529,15 +558,39 @@ alert("Error:"+error.code+" "+error.message);
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JDK探究</a>
+                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Spring探究</a>
+                <a href="javascript:void(0)" class="js-tag color4">JUC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">消息</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">框架源码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RDB</a>
               </li>
              
               <li class="article-tag-list-item">

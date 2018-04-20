@@ -5,17 +5,18 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="http://yutinglin.cn">
   <title>谈谈Java中equals和==的区别和使用场景 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="讨论一下Java中equals和==的区别，这个问题看似浅显，还是有不少情况需要注意。阅览了网上一些文章，都比较片面。在此做一下详细的整理。">
-<meta name="keywords" content="JDK探究">
+<meta name="keywords" content="JAVA基础">
 <meta property="og:type" content="article">
 <meta property="og:title" content="谈谈Java中equals和==的区别和使用场景">
-<meta property="og:url" content="http://yoursite.com/2016/05/09/Java中equals与==的区别与使用场景分析/index.html">
+<meta property="og:url" content="http://yutinglin.cn/2016/05/09/Java中equals与==的区别与使用场景分析/index.html">
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="讨论一下Java中equals和==的区别，这个问题看似浅显，还是有不少情况需要注意。阅览了网上一些文章，都比较片面。在此做一下详细的整理。">
-<meta property="og:updated_time" content="2018-01-27T09:52:34.754Z">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-20T16:39:34.346Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="谈谈Java中equals和==的区别和使用场景">
 <meta name="twitter:description" content="讨论一下Java中equals和==的区别，这个问题看似浅显，还是有不少情况需要注意。阅览了网上一些文章，都比较片面。在此做一下详细的整理。">
@@ -63,6 +64,10 @@
 	        
 				<li><a href="/tags/JVM/">JVM</a></li>
 	        
+				<li><a href="/tags/JUC/">JUC</a></li>
+	        
+				<li><a href="/tags/分布式/">分布式</a></li>
+	        
 				<li><a href="/tags/操作记录/">操作记录</a></li>
 	        
 				<li><a href="/tags/杂感/">杂感</a></li>
@@ -83,6 +88,14 @@
 		<nav class="header-nav">
 			<div class="social">
 				
+					<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+		        
+					<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+		        
+					<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+		        
 			</div>
 		</nav>
 	</header>		
@@ -115,11 +128,23 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
 				<div class="social">
 					
+						<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+			        
+						<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+			        
+						<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+			        
 				</div>
 			</nav>
 
@@ -127,13 +152,17 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 16.666666666666668%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/JVM/">JVM</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JVM/">JVM</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/操作记录/">操作记录</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JUC/">JUC</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/杂感/">杂感</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/分布式/">分布式</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/操作记录/">操作记录</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/杂感/">杂感</a></li>
 		        
 				</ul>
 			</nav>
@@ -172,7 +201,7 @@
 <h2 id="先直接上结论：："><a href="#先直接上结论：：" class="headerlink" title="先直接上结论：："></a>先直接上结论：：</h2><p>1.当比较对象为基本数据类型的时候，”==“比较的是二者在栈内存中的值。object默认的equals方法，是比较两个对象的引用是不是相同</p>
 <p>2.当比较对象为复杂数据类型的时候，当且仅当该equals方法参数不是 null，两个变量的类型、内容都相同，比较结果为true。但string类有常量池的缘故较为特殊。</p>
 <p>3.当比较对象为实体类的时候，不重写equals方法，采用object默认的equals方法，是比较两个对象的引用是不是相同。比较的是二者在堆内存中的引用地址，无意义，一般在实体类中进行重写equals方法，自定义比较规则。</p>
-<h2 id="java中的数据类型，可分为两类："><a href="#java中的数据类型，可分为两类：" class="headerlink" title="java中的数据类型，可分为两类："></a>java中的数据类型，可分为两类：</h2><h3 id="1-基本数据类型，也称原始数据类型的比较。"><a href="#1-基本数据类型，也称原始数据类型的比较。" class="headerlink" title="1.基本数据类型，也称原始数据类型的比较。"></a>1.基本数据类型，也称原始数据类型的比较。</h3><p>byte,short,char,int,long,float,double,boolean<br>  他们之间的比较，应用双等号（==）,比较的是他们的值。 </p>
+<h2 id="java中的数据类型，可分为两类："><a href="#java中的数据类型，可分为两类：" class="headerlink" title="java中的数据类型，可分为两类："></a>java中的数据类型，可分为两类：</h2><h3 id="1-基本数据类型，也称原始数据类型的比较。"><a href="#1-基本数据类型，也称原始数据类型的比较。" class="headerlink" title="1.基本数据类型，也称原始数据类型的比较。"></a>1.基本数据类型，也称原始数据类型的比较。</h3><p>byte,short,char,int,long,float,double,boolean<br>  他们之间的比较，应用双等号（==）,比较的是他们的值。</p>
 <p>示例：</p>
 <pre><code>public class Test {
 
@@ -185,13 +214,13 @@ public static void main(String[] args) {
   else System.out.println(&quot;不相等！&quot;);  
   }
 </code></pre><blockquote>
-<p>运行结果：<br>   “i和j相等！” </p>
+<p>运行结果：<br>   “i和j相等！”</p>
 </blockquote>
-<p>因为此时比较对象为基本数据类型，所以“==”比较的是它们存放于虚拟机栈内存中的值。 </p>
+<p>因为此时比较对象为基本数据类型，所以“==”比较的是它们存放于虚拟机栈内存中的值。</p>
 <h2 id="2-复杂数据类型的比较"><a href="#2-复杂数据类型的比较" class="headerlink" title="2.复杂数据类型的比较"></a>2.复杂数据类型的比较</h2><p>在Java API中，有些类重写了equals()方法，它们的比较规则是：当且仅当该equals方法参数不是 null，两个变量的类型、内容都相同，则比较结果为true。这些类包括：String、Double、Float、Long、Integer、Short、Byte、、Boolean、BigDecimal、BigInteger等等，太多太多了，但是常见的就这些了，具体可以查看API中类的equals()方法，就知道了。</p>
 <p>深入到内存中。==就是比较堆内存的值是否相等（对象地址存放在堆内存），equals（）就是比较栈内存的值（对象的值存在于栈内存）。String有个常量池。String a=”abc”;String b=”abc”;a==b是返回true的，就是因为常量池的原因，实际上a和b是同一个对象。但是String a=”abc”;String a=new String(“abc”);这样a==b就是返回flase了，a和b就不是同一个对象（他们的地址不等。）</p>
 <p>原来，程序在运行的时候会创建一个字符串缓冲池当使用 s2 = “Monday” 这样的表达是创建字符串的时候，程序首先会在这个String缓冲池中寻找相同值的对象，在第一个程序中，s1先被放到了池中，所以在s2被创建的时候，程序找到了具有相同值的 s1<br>将s2引用s1所引用的对象”Monday”<br>第二段程序中，使用了 new 操作符，他明白的告诉程序：”我要一个新的！不要旧的！”于是一个新的”Monday”Sting对象被创建在内存中。他们的值相同，但是位置不同，一个在池中游泳一个在岸边休息。哎呀，真是资源浪费，明明是一样的非要分开做什么呢？</p>
-<h3 id="3-实体类的比较"><a href="#3-实体类的比较" class="headerlink" title="3.实体类的比较"></a>3.实体类的比较</h3><p>  当他们用（==）进行比较的时候，比较的是他们在内存中的存放地址，所以，除非是同一个new出来的对象，他们的比较后的结果为true，否则比较后结果为false。 </p>
+<h3 id="3-实体类的比较"><a href="#3-实体类的比较" class="headerlink" title="3.实体类的比较"></a>3.实体类的比较</h3><p>  当他们用（==）进行比较的时候，比较的是他们在内存中的存放地址，所以，除非是同一个new出来的对象，他们的比较后的结果为true，否则比较后结果为false。</p>
 <p>JAVA当中所有的类都是继承于Object这个基类的，在Object中的基类中定义了一个equals的方法，这个方法的初始行为是比较对象的内存地 址。</p>
 <p>对于复合数据类型之间进行equals比较，在没有覆写equals方法的情况下，他们之间的比较还是基于他们在内存中的存放位置的地址值的，因为Object的equals方法也是用双等号（==）进行比较的，所以比较后的结果跟双等号（==）的结果相同。</p>
 <p>示例：</p>
@@ -343,7 +372,7 @@ System.out.println(b1.getName());
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">JDK探究</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">JAVA基础</a>
         		</li>
       		
 		</ul>
@@ -399,7 +428,7 @@ System.out.println(b1.getName());
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2016/05/09/Java中equals与==的区别与使用场景分析/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yutinglin.cn/2016/05/09/Java中equals与==的区别与使用场景分析/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -656,15 +685,39 @@ alert("Error:"+error.code+" "+error.message);
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JDK探究</a>
+                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Spring探究</a>
+                <a href="javascript:void(0)" class="js-tag color4">JUC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">消息</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">框架源码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RDB</a>
               </li>
              
               <li class="article-tag-list-item">

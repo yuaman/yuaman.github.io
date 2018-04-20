@@ -5,22 +5,23 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="http://yutinglin.cn">
   <title>分布式事务通用解决方案 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="先上结论, 再分别介绍分布式事务的各种实现方式. • 如果业务场景需要强一致性, 那么尽量避免将它们放在不同服务中, 也就是尽量使用本地事务, 避免使用强一致性的分布式事务. • 如果业务场景能够接受最终一致性, 那么最好是使用基于消息的最终一致性的方案(异步确保型)来解决. • 如果业务场景需要强一致性, 并且只能够进行分布式服务部署, 那么最好是使用TCC方案而不是2PC方案来解决.">
-<meta name="keywords" content="分布式系统">
+<meta name="keywords" content="分布式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="分布式事务通用解决方案">
-<meta property="og:url" content="http://yoursite.com/2017/08/18/分布式事务通用解决方案/index.html">
+<meta property="og:url" content="http://yutinglin.cn/2017/08/18/分布式事务通用解决方案/index.html">
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="先上结论, 再分别介绍分布式事务的各种实现方式. • 如果业务场景需要强一致性, 那么尽量避免将它们放在不同服务中, 也就是尽量使用本地事务, 避免使用强一致性的分布式事务. • 如果业务场景能够接受最终一致性, 那么最好是使用基于消息的最终一致性的方案(异步确保型)来解决. • 如果业务场景需要强一致性, 并且只能够进行分布式服务部署, 那么最好是使用TCC方案而不是2PC方案来解决.">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://pic1.zhimg.com/80/v2-8bb62ba9e7ce9f35199da032e17f9bb7_hd.jpg">
 <meta property="og:image" content="https://images2017.cnblogs.com/blog/250417/201710/250417-20171016132145537-970496141.png">
 <meta property="og:image" content="https://pic4.zhimg.com/80/v2-7ea8177dfcba150206b93e376f6e6d08_hd.jpg">
 <meta property="og:image" content="https://pic1.zhimg.com/80/v2-48e3f206b2b0a8ce1bae05409651ccd8_hd.jpg">
 <meta property="og:image" content="https://images2017.cnblogs.com/blog/250417/201710/250417-20171016141237443-2074834323.png">
-<meta property="og:updated_time" content="2018-01-27T09:56:10.965Z">
+<meta property="og:updated_time" content="2018-04-20T16:37:07.548Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分布式事务通用解决方案">
 <meta name="twitter:description" content="先上结论, 再分别介绍分布式事务的各种实现方式. • 如果业务场景需要强一致性, 那么尽量避免将它们放在不同服务中, 也就是尽量使用本地事务, 避免使用强一致性的分布式事务. • 如果业务场景能够接受最终一致性, 那么最好是使用基于消息的最终一致性的方案(异步确保型)来解决. • 如果业务场景需要强一致性, 并且只能够进行分布式服务部署, 那么最好是使用TCC方案而不是2PC方案来解决.">
@@ -69,6 +70,10 @@
 	        
 				<li><a href="/tags/JVM/">JVM</a></li>
 	        
+				<li><a href="/tags/JUC/">JUC</a></li>
+	        
+				<li><a href="/tags/分布式/">分布式</a></li>
+	        
 				<li><a href="/tags/操作记录/">操作记录</a></li>
 	        
 				<li><a href="/tags/杂感/">杂感</a></li>
@@ -89,6 +94,14 @@
 		<nav class="header-nav">
 			<div class="social">
 				
+					<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+		        
+					<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+		        
+					<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+		        
 			</div>
 		</nav>
 	</header>		
@@ -121,11 +134,23 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
 				<div class="social">
 					
+						<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+			        
+						<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+			        
+						<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+			        
 				</div>
 			</nav>
 
@@ -133,13 +158,17 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 16.666666666666668%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/JVM/">JVM</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JVM/">JVM</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/操作记录/">操作记录</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JUC/">JUC</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/杂感/">杂感</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/分布式/">分布式</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/操作记录/">操作记录</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/杂感/">杂感</a></li>
 		        
 				</ul>
 			</nav>
@@ -271,17 +300,17 @@
 <p>比如我们一次关于购买旅游套餐业务操作涉及到三个操作，他们分别是预定车辆，预定宾馆，预定机票，他们分别属于三个不同的远程接口。可能从我们程序的角度来说他们不属于一个事务，但是从业务角度来说是属于同一个事务的。</p>
 <p>他们的执行顺序如上图所示，所以当发生失败时，会依次进行取消的补偿操作。<br>因为长事务被拆分了很多个业务流，所以 Sagas 事务模型最重要的一个部件就是工作流或者你也可以叫流程管理器（Process Manager），工作流引擎和Process Manager虽然不是同一个东西，但是在这里，他们的职责是相同的。在选择工作流引擎之后，最终的代码也许看起来是这样的</p>
 <pre><code>SagaBuilder saga = SagaBuilder.newSaga(&quot;trip&quot;)
-.activity(&quot;Reserve car&quot;, ReserveCarAdapter.class) 
-.compensationActivity(&quot;Cancel car&quot;, CancelCarAdapter.class) 
-.activity(&quot;Book hotel&quot;, BookHotelAdapter.class) 
-.compensationActivity(&quot;Cancel hotel&quot;, CancelHotelAdapter.class) 
-.activity(&quot;Book flight&quot;, BookFlightAdapter.class) 
-.compensationActivity(&quot;Cancel flight&quot;, CancelFlightAdapter.class) 
+.activity(&quot;Reserve car&quot;, ReserveCarAdapter.class)
+.compensationActivity(&quot;Cancel car&quot;, CancelCarAdapter.class)
+.activity(&quot;Book hotel&quot;, BookHotelAdapter.class)
+.compensationActivity(&quot;Cancel hotel&quot;, CancelHotelAdapter.class)
+.activity(&quot;Book flight&quot;, BookFlightAdapter.class)
+.compensationActivity(&quot;Cancel flight&quot;, CancelFlightAdapter.class)
 .end()
 .triggerCompensationOnAnyError();
 
-camunda.getRepositoryService().createDeployment() 
-.addModelInstance(saga.getModel()) 
+camunda.getRepositoryService().createDeployment()
+.addModelInstance(saga.getModel())
 .deploy();
 </code></pre><p>优缺点这里我们就不说了，因为这个理论比较新，目前市面上还没有什么解决方案</p>
 
@@ -323,7 +352,7 @@ camunda.getRepositoryService().createDeployment()
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">分布式系统</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
         		</li>
       		
 		</ul>
@@ -379,7 +408,7 @@ camunda.getRepositoryService().createDeployment()
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/08/18/分布式事务通用解决方案/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yutinglin.cn/2017/08/18/分布式事务通用解决方案/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -636,15 +665,39 @@ alert("Error:"+error.code+" "+error.message);
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JDK探究</a>
+                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Spring探究</a>
+                <a href="javascript:void(0)" class="js-tag color4">JUC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">消息</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">框架源码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RDB</a>
               </li>
              
               <li class="article-tag-list-item">

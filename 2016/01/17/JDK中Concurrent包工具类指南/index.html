@@ -5,17 +5,18 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="http://yutinglin.cn">
   <title>JDK中Concurrent包工具类指南 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="这篇翻译指南很能解决问题，对于初步建立并发包的认识很有帮助，感谢原作者和翻译者">
-<meta name="keywords" content="JDK探究">
+<meta name="keywords" content="JUC">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JDK中Concurrent包工具类指南">
-<meta property="og:url" content="http://yoursite.com/2016/01/17/JDK中Concurrent包工具类指南/index.html">
+<meta property="og:url" content="http://yutinglin.cn/2016/01/17/JDK中Concurrent包工具类指南/index.html">
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="这篇翻译指南很能解决问题，对于初步建立并发包的认识很有帮助，感谢原作者和翻译者">
-<meta property="og:updated_time" content="2018-01-27T10:37:12.181Z">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-20T16:41:02.593Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JDK中Concurrent包工具类指南">
 <meta name="twitter:description" content="这篇翻译指南很能解决问题，对于初步建立并发包的认识很有帮助，感谢原作者和翻译者">
@@ -63,6 +64,10 @@
 	        
 				<li><a href="/tags/JVM/">JVM</a></li>
 	        
+				<li><a href="/tags/JUC/">JUC</a></li>
+	        
+				<li><a href="/tags/分布式/">分布式</a></li>
+	        
 				<li><a href="/tags/操作记录/">操作记录</a></li>
 	        
 				<li><a href="/tags/杂感/">杂感</a></li>
@@ -83,6 +88,14 @@
 		<nav class="header-nav">
 			<div class="social">
 				
+					<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+		        
+					<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+		        
+					<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+		        
 			</div>
 		</nav>
 	</header>		
@@ -115,11 +128,23 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
 				<div class="social">
 					
+						<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+			        
+						<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+			        
+						<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+			        
 				</div>
 			</nav>
 
@@ -127,13 +152,17 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 16.666666666666668%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/JVM/">JVM</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JVM/">JVM</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/操作记录/">操作记录</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JUC/">JUC</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/杂感/">杂感</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/分布式/">分布式</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/操作记录/">操作记录</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/杂感/">杂感</a></li>
 		        
 				</ul>
 			</nav>
@@ -169,8 +198,8 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>这篇翻译指南很能解决问题，对于初步建立并发包的认识很有帮助，感谢原作者和翻译者<br><a id="more"></a><br>Java 并发工具包 java.util.concurrent 用户指南                                                </p>
-<p>本指南根据 Jakob Jenkov 最新博客翻译，请随时关注博客更新：<a href="http://tutorials.jenkov.com/java-util-concurrent/index.html。" target="_blank" rel="external">http://tutorials.jenkov.com/java-util-concurrent/index.html。</a><br>本指南已做成中英文对照阅读版的 pdf 文档，有兴趣的朋友可以去 Java并发工具包java.util.concurrent用户指南中英文对照阅读版.pdf[带书签] 进行下载。</p>
-<p>转载地址：<a href="http://blog.csdn.net/defonds/article/details/44021605" target="_blank" rel="external">http://blog.csdn.net/defonds/article/details/44021605</a></p>
+<p>本指南根据 Jakob Jenkov 最新博客翻译，请随时关注博客更新：<a href="http://tutorials.jenkov.com/java-util-concurrent/index.html。" target="_blank" rel="noopener">http://tutorials.jenkov.com/java-util-concurrent/index.html。</a><br>本指南已做成中英文对照阅读版的 pdf 文档，有兴趣的朋友可以去 Java并发工具包java.util.concurrent用户指南中英文对照阅读版.pdf[带书签] 进行下载。</p>
+<p>转载地址：<a href="http://blog.csdn.net/defonds/article/details/44021605" target="_blank" rel="noopener">http://blog.csdn.net/defonds/article/details/44021605</a></p>
 <p>java.util.concurrent - Java 并发工具包</p>
 <p>Java 5 添加了一个新的包到 Java 平台，java.util.concurrent 包。这个包包含有一系列能够让 Java 的并发编程变得更加简单轻松的类。在这个包被添加以前，你需要自己去动手实现自己的相关工具类。<br>本文我将带你一一认识 java.util.concurrent 包里的这些类，然后你可以尝试着如何在项目中使用它们。本文中我将使用 Java 6 版本，我不确定这和 Java 5 版本里的是否有一些差异。<br>我不会去解释关于 Java 并发的核心问题 - 其背后的原理，也就是说，如果你对那些东西感兴趣，参考《Java 并发指南》。<br>半成品</p>
 <p>本文很大程度上还是个 “半成品”，所以当你发现一些被漏掉的类或接口时，请耐心等待。在我空闲的时候会把它们加进来的。</p>
@@ -342,8 +371,7 @@
 <li>抛异常：如果试图的操作无法立即执行，抛一个异常。</li>
 <li>特定值：如果试图的操作无法立即执行，返回一个特定的值(常常是 true / false)。</li>
 <li>阻塞：如果试图的操作无法立即执行，该方法调用将会发生阻塞，直到能够执行。</li>
-<li>超时：如果试图的操作无法立即执行，该方法调用将会发生阻塞，直到能够执行，但等待时间不会超过给定值。返回一个特定值以告知该操作是否成功(典型的是 true / false)。</li>
-<li>BlockingDeque 继承自 BlockingQueue</li>
+<li>超时：如果试图的操作无法立即执行，该方法调用将会发生阻塞，直到能够执行，但等待时间不会超过给定值。返回一个特定值以告知该操作是否成功(典型的是 true / false)。<br>5.<br>BlockingDeque 继承自 BlockingQueue</li>
 </ol>
 <p>BlockingDeque 接口继承自 BlockingQueue 接口。这就意味着你可以像使用一个 BlockingQueue 那样使用 BlockingDeque。如果你这么干的话，各种插入方法将会把新元素添加到双端队列的尾端，而移除方法将会把双端队列的首端的元素移除。正如 BlockingQueue 接口的插入和移除方法一样。</p>
 <p>以下是 BlockingDeque 对 BlockingQueue 接口的方法的具体内部实现：</p>
@@ -710,8 +738,7 @@ Thread-1 exchanged B for A
 <p>既然 ExecutorService 是个接口，如果你想用它的话就得去使用它的实现类之一。java.util.concurrent 包提供了 ExecutorService 接口的以下实现类：</p>
 <ul>
 <li>ThreadPoolExecutor</li>
-<li>ScheduledThreadPoolExecutor</li>
-<li>创建一个 ExecutorService</li>
+<li>ScheduledThreadPoolExecutor<br>*<br>创建一个 ExecutorService</li>
 </ul>
 <p>ExecutorService 的创建依赖于你使用的具体实现。但是你也可以使用 Executors 工厂类来创建 ExecutorService 实例。以下是几个创建 ExecutorService 实例的例子：</p>
 <pre><code>[java] view plain copy print?
@@ -850,7 +877,7 @@ invokeAny()
 10.                 TimeUnit.MILLISECONDS,  
 11.                 new LinkedBlockingQueue&lt;Runnable&gt;()  
 12.                 );  
-</code></pre><p>但是，除非你确实需要显式为 ThreadPoolExecutor 定义所有参数，使用 java.util.concurrent.Executors 类中的工厂方法之一会更加方便，正如  ExecutorService 小节所述。 </p>
+</code></pre><p>但是，除非你确实需要显式为 ThreadPoolExecutor 定义所有参数，使用 java.util.concurrent.Executors 类中的工厂方法之一会更加方便，正如  ExecutorService 小节所述。</p>
 <h2 id="18-定时执行者服务-ScheduledExecutorService"><a href="#18-定时执行者服务-ScheduledExecutorService" class="headerlink" title="18.  定时执行者服务 ScheduledExecutorService"></a>18.  定时执行者服务 ScheduledExecutorService</h2><p>java.util.concurrent.ScheduledExecutorService 是一个 ExecutorService， 它能够将任务延后执行，或者间隔固定时间多次执行。 任务由一个工作者线程异步执行，而不是由提交任务给 ScheduledExecutorService 的那个线程执行。</p>
 <p>ScheduledExecutorService 例子</p>
 <p>以下是一个简单的 ScheduledExecutorService 示例：</p>
@@ -1273,11 +1300,10 @@ schedule (Runnable task, long delay, TimeUnit timeunit)
 <p>AtomicLong 类还提供了一些减小 AtomicLong  的值的原子性方法。这些方法是：</p>
 <ul>
 <li>decrementAndGet()</li>
-<li>getAndDecrement()</li>
-<li>decrementAndGet() 将 AtomicLong  的值减一，并返回减一后的值。getAndDecrement() 也将 AtomicLong  的值减一，但它返回的是减一之前的值。</li>
+<li>getAndDecrement()<br>*<br>decrementAndGet() 将 AtomicLong  的值减一，并返回减一后的值。getAndDecrement() 也将 AtomicLong  的值减一，但它返回的是减一之前的值。</li>
 </ul>
 <h2 id="25-原子性引用型-AtomicReference"><a href="#25-原子性引用型-AtomicReference" class="headerlink" title="25. 原子性引用型 AtomicReference"></a>25. 原子性引用型 AtomicReference</h2><p>AtomicReference 提供了一个可以被原子性读和写的对象引用变量。原子性的意思是多个想要改变同一个 AtomicReference 的线程不会导致 AtomicReference 处于不一致的状态。AtomicReference 还有一个 compareAndSet() 方法，通过它你可以将当前引用于一个期望值(引用)进行比较，如果相等，在该 AtomicReference 对象内部设置一个新的引用。</p>
-<p>创建一个 AtomicReference </p>
+<p>创建一个 AtomicReference</p>
 <p>创建 AtomicReference 如下：</p>
 <pre><code>[java] view plain copy print?
 1. AtomicReference atomicReference = new AtomicReference();  
@@ -1332,7 +1358,7 @@ schedule (Runnable task, long delay, TimeUnit timeunit)
 10. exchanged = atomicStringReference.compareAndSet(initialReference, newReference);  
 11. System.out.println(&quot;exchanged: &quot; + exchanged);  
 </code></pre><p>本示例创建了一个带有一个初始引用的泛型化的 AtomicReference。之后两次调用 comparesAndSet()来对存储值和期望值进行对比，如果二者一致，为 AtomicReference 设置一个新的引用。第一次比较，存储的引用(initialReference)和期望的引用(initialReference)一致，所以一个新的引用(newReference)被设置给 AtomicReference，compareAndSet() 方法返回 true。第二次比较时，存储的引用(newReference)和期望的引用(initialReference)不一致，因此新的引用没有被设置给 AtomicReference，compareAndSet() 方法返回 false。</p>
-<p>原文链接：<a href="http://tutorials.jenkov.com/java-util-concurrent/index.html。" target="_blank" rel="external">http://tutorials.jenkov.com/java-util-concurrent/index.html。</a>   </p>
+<p>原文链接：<a href="http://tutorials.jenkov.com/java-util-concurrent/index.html。" target="_blank" rel="noopener">http://tutorials.jenkov.com/java-util-concurrent/index.html。</a>   </p>
 
       
 
@@ -1372,7 +1398,7 @@ schedule (Runnable task, long delay, TimeUnit timeunit)
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">JDK探究</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JUC</a>
         		</li>
       		
 		</ul>
@@ -1428,7 +1454,7 @@ schedule (Runnable task, long delay, TimeUnit timeunit)
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2016/01/17/JDK中Concurrent包工具类指南/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yutinglin.cn/2016/01/17/JDK中Concurrent包工具类指南/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -1680,15 +1706,39 @@ alert("Error:"+error.code+" "+error.message);
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JDK探究</a>
+                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Spring探究</a>
+                <a href="javascript:void(0)" class="js-tag color4">JUC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">消息</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">框架源码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RDB</a>
               </li>
              
               <li class="article-tag-list-item">

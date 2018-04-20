@@ -5,22 +5,23 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="http://yutinglin.cn">
   <title>链式存储线性表（LinkedList）数据结构解析 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="LinkedList内部是通过链表来实现的">
-<meta name="keywords" content="JDK探究">
+<meta name="keywords" content="JDK容器">
 <meta property="og:type" content="article">
 <meta property="og:title" content="链式存储线性表（LinkedList）数据结构解析">
-<meta property="og:url" content="http://yoursite.com/2016/11/03/链式存储线性表（LinkedList）数据结构解析/index.html">
+<meta property="og:url" content="http://yutinglin.cn/2016/11/03/链式存储线性表（LinkedList）数据结构解析/index.html">
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="LinkedList内部是通过链表来实现的">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/06151107_JGLx.png">
 <meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/w2.png">
 <meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/w3.png">
 <meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/w4.png">
 <meta property="og:image" content="http://og287lnu0.bkt.clouddn.com/w5.png">
-<meta property="og:updated_time" content="2018-01-27T09:54:11.721Z">
+<meta property="og:updated_time" content="2018-04-20T16:37:50.766Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="链式存储线性表（LinkedList）数据结构解析">
 <meta name="twitter:description" content="LinkedList内部是通过链表来实现的">
@@ -69,6 +70,10 @@
 	        
 				<li><a href="/tags/JVM/">JVM</a></li>
 	        
+				<li><a href="/tags/JUC/">JUC</a></li>
+	        
+				<li><a href="/tags/分布式/">分布式</a></li>
+	        
 				<li><a href="/tags/操作记录/">操作记录</a></li>
 	        
 				<li><a href="/tags/杂感/">杂感</a></li>
@@ -89,6 +94,14 @@
 		<nav class="header-nav">
 			<div class="social">
 				
+					<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+		        
+					<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+		        
+					<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+		        
 			</div>
 		</nav>
 	</header>		
@@ -121,11 +134,23 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
 				<div class="social">
 					
+						<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="weixin" target="_blank" href="#" title="weixin"><i class="icon-weixin"></i></a>
+			        
+						<a class="mail" target="_blank" href="mailto:litten225@qq.com" title="mail"><i class="icon-mail"></i></a>
+			        
+						<a class="linkedin" target="_blank" href="#" title="linkedin"><i class="icon-linkedin"></i></a>
+			        
 				</div>
 			</nav>
 
@@ -133,13 +158,17 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 16.666666666666668%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/JVM/">JVM</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JVM/">JVM</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/操作记录/">操作记录</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/JUC/">JUC</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/杂感/">杂感</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags/分布式/">分布式</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/操作记录/">操作记录</a></li>
+		        
+					<li style="width: 16.666666666666668%"><a href="/tags/杂感/">杂感</a></li>
 		        
 				</ul>
 			</nav>
@@ -244,7 +273,7 @@
 @link
  #add}.
    *
-   * 
+   *
 @param
  e the element to add
    */
@@ -385,7 +414,7 @@ Node&lt;E&gt; node(int index) {
 </code></pre><p>在这个方法中可以看到用到了折半查找的算法，当传入一个索引后会判断index &lt; (size &gt;&gt; 1)，如果index小于size的一半，则从前往后找节点；否则就从后往前找节点。</p>
 <p>通过对LinkedList的分析后，对数据结构中的链表有了新的认识，在LinkedList中用的链表是双向链表，其实通过双向循环链表也可以来实现，如果是通过双向循环链表可以不需要last这个记录链表尾的变量了，只需要一个first变量记录链表的头，也可以实现从前往后和从后往前的查找等操作。</p>
 <p><img src="http://og287lnu0.bkt.clouddn.com/w5.png"></p>
-<p>转载地址：<a href="https://my.oschina.net/devbird/blog/807571" target="_blank" rel="external">https://my.oschina.net/devbird/blog/807571</a><br>感谢原作者🙏</p>
+<p>转载地址：<a href="https://my.oschina.net/devbird/blog/807571" target="_blank" rel="noopener">https://my.oschina.net/devbird/blog/807571</a><br>感谢原作者🙏</p>
 
       
 
@@ -425,7 +454,7 @@ Node&lt;E&gt; node(int index) {
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">JDK探究</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">JDK容器</a>
         		</li>
       		
 		</ul>
@@ -481,7 +510,7 @@ Node&lt;E&gt; node(int index) {
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2016/11/03/链式存储线性表（LinkedList）数据结构解析/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yutinglin.cn/2016/11/03/链式存储线性表（LinkedList）数据结构解析/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -738,15 +767,39 @@ alert("Error:"+error.code+" "+error.message);
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JDK探究</a>
+                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">分布式系统</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Spring探究</a>
+                <a href="javascript:void(0)" class="js-tag color4">JUC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">消息</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">框架源码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RDB</a>
               </li>
              
               <li class="article-tag-list-item">
