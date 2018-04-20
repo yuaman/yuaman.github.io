@@ -63,11 +63,15 @@
 	        
 				<li><a href="/tags/JUC/">JUC</a></li>
 	        
-				<li><a href="/tags/JAVA基础/">JAVA基础</a></li>
+				<li><a href="/tags/框架源码/">框架源码</a></li>
 	        
 				<li><a href="/tags/缓存/">缓存</a></li>
 	        
 				<li><a href="/tags/分布式/">分布式</a></li>
+	        
+				<li><a href="/tags/JAVA基础/">JAVA基础</a></li>
+	        
+				<li><a href="/tags/设计模式/">设计模式</a></li>
 	        
 				<li><a href="/tags/操作记录/">操作记录</a></li>
 	        
@@ -139,6 +143,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -159,23 +167,27 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 11.11111111111111%"><a href="/">主页</a></li>
+					<li style="width: 9.090909090909092%"><a href="/">主页</a></li>
 		        
-					<li style="width: 11.11111111111111%"><a href="/tags/JVM/">JVM</a></li>
+					<li style="width: 9.090909090909092%"><a href="/tags/JVM/">JVM</a></li>
 		        
-					<li style="width: 11.11111111111111%"><a href="/tags/JDK容器/">JDK容器</a></li>
+					<li style="width: 9.090909090909092%"><a href="/tags/JDK容器/">JDK容器</a></li>
 		        
-					<li style="width: 11.11111111111111%"><a href="/tags/JUC/">JUC</a></li>
+					<li style="width: 9.090909090909092%"><a href="/tags/JUC/">JUC</a></li>
 		        
-					<li style="width: 11.11111111111111%"><a href="/tags/JAVA基础/">JAVA基础</a></li>
+					<li style="width: 9.090909090909092%"><a href="/tags/框架源码/">框架源码</a></li>
 		        
-					<li style="width: 11.11111111111111%"><a href="/tags/缓存/">缓存</a></li>
+					<li style="width: 9.090909090909092%"><a href="/tags/缓存/">缓存</a></li>
 		        
-					<li style="width: 11.11111111111111%"><a href="/tags/分布式/">分布式</a></li>
+					<li style="width: 9.090909090909092%"><a href="/tags/分布式/">分布式</a></li>
 		        
-					<li style="width: 11.11111111111111%"><a href="/tags/操作记录/">操作记录</a></li>
+					<li style="width: 9.090909090909092%"><a href="/tags/JAVA基础/">JAVA基础</a></li>
 		        
-					<li style="width: 11.11111111111111%"><a href="/tags/杂感/">杂感</a></li>
+					<li style="width: 9.090909090909092%"><a href="/tags/设计模式/">设计模式</a></li>
+		        
+					<li style="width: 9.090909090909092%"><a href="/tags/操作记录/">操作记录</a></li>
+		        
+					<li style="width: 9.090909090909092%"><a href="/tags/杂感/">杂感</a></li>
 		        
 				</ul>
 			</nav>
@@ -741,19 +753,19 @@
 
 
   
-    <article id="post-TreeMap源码剖析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-LinkedHashMap源码剖析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/03/TreeMap源码剖析/">TreeMap源码剖析</a>
+      <a class="article-title" href="/2016/12/03/LinkedHashMap源码剖析/">LinkedHashmap源码剖析</a>
     </h1>
   
 
         
-        <a href="/2016/12/03/TreeMap源码剖析/" class="archive-article-date">
+        <a href="/2016/12/03/LinkedHashMap源码剖析/" class="archive-article-date">
   	<time datetime="2016-12-03T09:37:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-03</time>
 </a>
         
@@ -761,9 +773,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>本文对TreeMap的分析较前几篇文章有些浅尝辄止，TreeMap用的没有HashMap那么多，我们有个宏观上的把我和比较即可。<br>
+        <p>LinkedHashMap的源码理解起来也不难（当然，要建立在对HashMap源码有较好理解的基础上）。<br>
         
-          <a class="article-more-a" href="/2016/12/03/TreeMap源码剖析/#more">more >></a>
+          <a class="article-more-a" href="/2016/12/03/LinkedHashMap源码剖析/#more">more >></a>
         
       
 
@@ -787,7 +799,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2016/12/03/TreeMap源码剖析/">展开全文 >></a>
+          <a class="article-more-a" href="/2016/12/03/LinkedHashMap源码剖析/">展开全文 >></a>
         </p>
       
 
@@ -1001,11 +1013,11 @@ alert("Error:"+error.code+" "+error.message);
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1021,11 +1033,11 @@ alert("Error:"+error.code+" "+error.message);
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">框架源码</a>
+                <a href="javascript:void(0)" class="js-tag color3">消息</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">消息</a>
+                <a href="javascript:void(0)" class="js-tag color5">框架源码</a>
               </li>
              
               <li class="article-tag-list-item">
