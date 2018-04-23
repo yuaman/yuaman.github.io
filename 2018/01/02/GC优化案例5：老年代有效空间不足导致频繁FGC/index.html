@@ -6,15 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yutinglin.cn">
-  <title>Tag: 消息 | 无题</title>
+  <title>GC优化案例5：老年代有效空间不足导致频繁FGC | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="无题">
-<meta property="og:url" content="http://yutinglin.cn/tags/消息/index.html">
+  <meta name="description" content="对GC优化的案例进行的系列总结（五）：">
+<meta name="keywords" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GC优化案例5：老年代有效空间不足导致频繁FGC">
+<meta property="og:url" content="http://yutinglin.cn/2018/01/02/GC优化案例5：老年代有效空间不足导致频繁FGC/index.html">
 <meta property="og:site_name" content="无题">
+<meta property="og:description" content="对GC优化的案例进行的系列总结（五）：">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yutinglin.cn/2018/01/02/GC优化案例5：老年代有效空间不足导致频繁FGC/_image/2018-04-23-18-01-51.jpg">
+<meta property="og:updated_time" content="2018-04-23T13:14:06.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="无题">
+<meta name="twitter:title" content="GC优化案例5：老年代有效空间不足导致频繁FGC">
+<meta name="twitter:description" content="对GC优化的案例进行的系列总结（五）：">
+<meta name="twitter:image" content="http://yutinglin.cn/2018/01/02/GC优化案例5：老年代有效空间不足导致频繁FGC/_image/2018-04-23-18-01-51.jpg">
   
     <link rel="alternative" href="/atom.xml" title="无题" type="application/atom+xml">
   
@@ -75,6 +82,8 @@
 	        
 				<li><a href="/tags/操作记录/">操作记录</a></li>
 	        
+				<li><a href="/tags/读书笔记/">读书笔记</a></li>
+	        
 				<li><a href="/tags/杂感/">杂感</a></li>
 	        
 			</ul>
@@ -94,10 +103,6 @@
 			<div class="social">
 				
 					<a class="github" target="_blank" href="https://github.com/yuaman" title="github"><i class="icon-github"></i></a>
-		        
-					<a class="weixin" target="_blank" href="http://og287lnu0.bkt.clouddn.com/money.jpeg" title="weixin"><i class="icon-weixin"></i></a>
-		        
-					<a class="mail" target="_blank" href="/yu.ting.lin.69@gmail.com" title="mail"><i class="icon-mail"></i></a>
 		        
 					<a class="linkedin" target="_blank" href="http://www.linkedin.com/in/%E9%9C%86%E9%9C%96-%E4%BA%8E-481791110/" title="linkedin"><i class="icon-linkedin"></i></a>
 		        
@@ -147,16 +152,14 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
 				<div class="social">
 					
 						<a class="github" target="_blank" href="https://github.com/yuaman" title="github"><i class="icon-github"></i></a>
-			        
-						<a class="weixin" target="_blank" href="http://og287lnu0.bkt.clouddn.com/money.jpeg" title="weixin"><i class="icon-weixin"></i></a>
-			        
-						<a class="mail" target="_blank" href="/yu.ting.lin.69@gmail.com" title="mail"><i class="icon-mail"></i></a>
 			        
 						<a class="linkedin" target="_blank" href="http://www.linkedin.com/in/%E9%9C%86%E9%9C%96-%E4%BA%8E-481791110/" title="linkedin"><i class="icon-linkedin"></i></a>
 			        
@@ -167,27 +170,29 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 9.090909090909092%"><a href="/">主页</a></li>
+					<li style="width: 8.333333333333334%"><a href="/">主页</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/JVM/">JVM</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/JVM/">JVM</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/JDK容器/">JDK容器</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/JDK容器/">JDK容器</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/JUC/">JUC</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/JUC/">JUC</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/框架源码/">框架源码</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/框架源码/">框架源码</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/缓存/">缓存</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/缓存/">缓存</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/分布式/">分布式</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/分布式/">分布式</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/JAVA基础/">JAVA基础</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/JAVA基础/">JAVA基础</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/设计模式/">设计模式</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/设计模式/">设计模式</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/操作记录/">操作记录</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/操作记录/">操作记录</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/杂感/">杂感</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/读书笔记/">读书笔记</a></li>
+		        
+					<li style="width: 8.333333333333334%"><a href="/tags/杂感/">杂感</a></li>
 		        
 				</ul>
 			</nav>
@@ -202,60 +207,191 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-GC优化案例5：老年代有效空间不足导致频繁FGC" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/05/03/Rabbitmq基本原理/" class="archive-article-date">
-  	<time datetime="2016-05-03T09:37:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-05-03</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/05/03/Rabbitmq基本原理/">Rabbitmq基本原理</a>
+    <h1 class="article-title" itemprop="name">
+      GC优化案例5：老年代有效空间不足导致频繁FGC
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2018/01/02/GC优化案例5：老年代有效空间不足导致频繁FGC/" class="archive-article-date">
+  	<time datetime="2018-01-02T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>对GC优化的案例进行的系列总结（五）：<br><a id="more"></a></p>
+<h4 id="存在问题"><a href="#存在问题" class="headerlink" title="存在问题"></a>存在问题</h4><p>在线上环境进行服务压测，压测完成后，cpu使用率居高不下，很是费解，按理说已经没有压测请求了，这时消耗cpu资源的只有GC线程了，可以通过jstat命令查看一下JVM的GC情况，然后就碰到了诡异的GC问题。</p>
+<p>jstat命令<br>jstat [ generalOption | outputOptions vmid [interval[s|ms] [count]] ]<br>参数：<br>generalOption: 一般使用-gcutil查看GC情况<br>vmid: 虚拟机进程号，即当前运行的java进程号<br>interval: 间隔时间，单位为秒或毫秒<br>count: 打印次数，如果缺省则打印无数次<br>执行jstat -gcutil 9132 1000命令，线上服务器的GC情况如下：</p>
+<p><img src="./_image/2018-04-23-18-01-51.jpg" alt=""></p>
+<p>参数说明如下：<br>S0: 新生代中Survivor space 0区已使用空间的百分比<br>S1: 新生代中Survivor space 1区已使用空间的百分比<br>E: 新生代已使用空间的百分比<br>O: 老年代已使用空间的百分比<br>P: 永久带已使用空间的百分比<br>YGC: 从应用程序启动到当前，发生Yang GC 的次数<br>YGCT: 从应用程序启动到当前，Yang GC所用的时间【单位秒】<br>FGC: 从应用程序启动到当前，发生Full GC的次数<br>FGCT: 从应用程序启动到当前，Full GC所用的时间<br>GCT: 从应用程序启动到当前，用于垃圾回收的总时间【单位秒】</p>
+<h4 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h4><p>通过打印的GC数据可以看出，JVM一直在进行FGC（cms gc），不过老年代的使用率反而没有下降，一直稳定在60.16%，对这一情况很疑惑，几乎每次都重现，后来去仔细查看了JVM的启动参数，发现其中CMSInitiatingOcupancyFraction参数，被设置成60，意味着当老年代的使用率达到阈值60%时会触发FGC，但是FGC之后，老年代的使用率还是大于60%，所以会不断的进行FGC，建议这个值不要设置的这么小。</p>
+<p>来自 <a href="https://mp.weixin.qq.com/s?__biz=MzIwMzY1OTU1NQ==&amp;mid=2247483675&amp;idx=1&amp;sn=98941fcc65d54ad3605e23881dca2362&amp;chksm=96cd4157a1bac8413209cbc15d721481ad3b44c65ffe30c3c38c05960e52e190c2d4f958b903&amp;mpshare=1&amp;scene=1&amp;srcid=0226CsDShi4zq5V6zrG2Abv8&amp;pass_ticket=09AhWS9Jyuh%2FWgZkBats0BoVfe7rb9EA35VXcSiB0oo%3D#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIwMzY1OTU1NQ==&amp;mid=2247483675&amp;idx=1&amp;sn=98941fcc65d54ad3605e23881dca2362&amp;chksm=96cd4157a1bac8413209cbc15d721481ad3b44c65ffe30c3c38c05960e52e190c2d4f958b903&amp;mpshare=1&amp;scene=1&amp;srcid=0226CsDShi4zq5V6zrG2Abv8&amp;pass_ticket=09AhWS9Jyuh%2FWgZkBats0BoVfe7rb9EA35VXcSiB0oo%3D#rd</a> </p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="http://og287lnu0.bkt.clouddn.com/money.jpeg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">消息</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yutinglin.cn/2018/01/02/GC优化案例5：老年代有效空间不足导致频繁FGC/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2018/01/04/GC优化案例6： metaspace占用率过高/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          GC优化案例6： metaspace占用率过高
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2017/12/28/GC优化案例4：虚引用过多导致CMS Remark阶段时间过长/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">GC优化案例4：虚引用过多导致CMS Remark阶段时间过长</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
   
 
-    
+  
+
+  
+
+  
+    <section id="comments">
+      <!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js"></script>
+<!-- UY END -->
+      <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'true'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </section>
+  
+
 
 
           </div>
@@ -319,9 +455,9 @@ showTime(Counter);
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: true,
 		root: "/",
@@ -454,15 +590,11 @@ alert("Error:"+error.code+" "+error.message);
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">JUC</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
+                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -470,11 +602,15 @@ alert("Error:"+error.code+" "+error.message);
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">消息</a>
+                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">框架源码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">消息</a>
               </li>
              
               <li class="article-tag-list-item">

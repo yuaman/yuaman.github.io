@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yutinglin.cn">
-  <title>Category: JAVA基础 | 无题</title>
+  <title>逃逸分析原理 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="无题">
-<meta property="og:url" content="http://yutinglin.cn/categories/JAVA基础/index.html">
+  <meta name="description" content="TLABJVM在内存新生代Eden Space中开辟了一小块线程私有的区域，称作TLAB（Thread-local allocation buffer）。默认设定为占用Eden Space的1%。在Java程序中很多对象都是小对象且用过即丢，它们不存在线程共享也适合被快速GC，所以对于小对象通常JVM会优先分配在TLAB上，并且TLAB上的分配由于是线程私有所以没有锁开销。因此在实践中分配多个小">
+<meta name="keywords" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="逃逸分析原理">
+<meta property="og:url" content="http://yutinglin.cn/2018/01/08/栈上分配和TLAB/index.html">
 <meta property="og:site_name" content="无题">
+<meta property="og:description" content="TLABJVM在内存新生代Eden Space中开辟了一小块线程私有的区域，称作TLAB（Thread-local allocation buffer）。默认设定为占用Eden Space的1%。在Java程序中很多对象都是小对象且用过即丢，它们不存在线程共享也适合被快速GC，所以对于小对象通常JVM会优先分配在TLAB上，并且TLAB上的分配由于是线程私有所以没有锁开销。因此在实践中分配多个小">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-23T13:14:06.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="无题">
+<meta name="twitter:title" content="逃逸分析原理">
+<meta name="twitter:description" content="TLABJVM在内存新生代Eden Space中开辟了一小块线程私有的区域，称作TLAB（Thread-local allocation buffer）。默认设定为占用Eden Space的1%。在Java程序中很多对象都是小对象且用过即丢，它们不存在线程共享也适合被快速GC，所以对于小对象通常JVM会优先分配在TLAB上，并且TLAB上的分配由于是线程私有所以没有锁开销。因此在实践中分配多个小">
   
     <link rel="alternative" href="/atom.xml" title="无题" type="application/atom+xml">
   
@@ -75,6 +80,8 @@
 	        
 				<li><a href="/tags/操作记录/">操作记录</a></li>
 	        
+				<li><a href="/tags/读书笔记/">读书笔记</a></li>
+	        
 				<li><a href="/tags/杂感/">杂感</a></li>
 	        
 			</ul>
@@ -94,10 +101,6 @@
 			<div class="social">
 				
 					<a class="github" target="_blank" href="https://github.com/yuaman" title="github"><i class="icon-github"></i></a>
-		        
-					<a class="weixin" target="_blank" href="http://og287lnu0.bkt.clouddn.com/money.jpeg" title="weixin"><i class="icon-weixin"></i></a>
-		        
-					<a class="mail" target="_blank" href="/yu.ting.lin.69@gmail.com" title="mail"><i class="icon-mail"></i></a>
 		        
 					<a class="linkedin" target="_blank" href="http://www.linkedin.com/in/%E9%9C%86%E9%9C%96-%E4%BA%8E-481791110/" title="linkedin"><i class="icon-linkedin"></i></a>
 		        
@@ -147,16 +150,14 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
 				<div class="social">
 					
 						<a class="github" target="_blank" href="https://github.com/yuaman" title="github"><i class="icon-github"></i></a>
-			        
-						<a class="weixin" target="_blank" href="http://og287lnu0.bkt.clouddn.com/money.jpeg" title="weixin"><i class="icon-weixin"></i></a>
-			        
-						<a class="mail" target="_blank" href="/yu.ting.lin.69@gmail.com" title="mail"><i class="icon-mail"></i></a>
 			        
 						<a class="linkedin" target="_blank" href="http://www.linkedin.com/in/%E9%9C%86%E9%9C%96-%E4%BA%8E-481791110/" title="linkedin"><i class="icon-linkedin"></i></a>
 			        
@@ -167,27 +168,29 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 9.090909090909092%"><a href="/">主页</a></li>
+					<li style="width: 8.333333333333334%"><a href="/">主页</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/JVM/">JVM</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/JVM/">JVM</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/JDK容器/">JDK容器</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/JDK容器/">JDK容器</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/JUC/">JUC</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/JUC/">JUC</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/框架源码/">框架源码</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/框架源码/">框架源码</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/缓存/">缓存</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/缓存/">缓存</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/分布式/">分布式</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/分布式/">分布式</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/JAVA基础/">JAVA基础</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/JAVA基础/">JAVA基础</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/设计模式/">设计模式</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/设计模式/">设计模式</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/操作记录/">操作记录</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/操作记录/">操作记录</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/杂感/">杂感</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/读书笔记/">读书笔记</a></li>
+		        
+					<li style="width: 8.333333333333334%"><a href="/tags/杂感/">杂感</a></li>
 		        
 				</ul>
 			</nav>
@@ -202,60 +205,193 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-栈上分配和TLAB" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/08/08/ JAVA中Object类中的方法以及finalize函数作用/" class="archive-article-date">
-  	<time datetime="2017-08-08T06:54:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-08</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/08/08/ JAVA中Object类中的方法以及finalize函数作用/">JAVA中Object类中的方法以及finalize函数作用</a>
+    <h1 class="article-title" itemprop="name">
+      逃逸分析原理
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
+        
+        <a href="/2018/01/08/栈上分配和TLAB/" class="archive-article-date">
+  	<time datetime="2018-01-08T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <a id="more"></a>
+<h3 id="TLAB"><a href="#TLAB" class="headerlink" title="TLAB"></a>TLAB</h3><p>JVM在内存新生代Eden Space中开辟了一小块线程私有的区域，称作TLAB（Thread-local allocation buffer）。默认设定为占用Eden Space的1%。在Java程序中很多对象都是小对象且用过即丢，它们不存在线程共享也适合被快速GC，所以对于小对象通常JVM会优先分配在TLAB上，并且TLAB上的分配由于是线程私有所以没有锁开销。因此在实践中分配多个小对象的效率通常比分配一个大对象的效率要高。<br>也就是说，Java中每个线程都会有自己的缓冲区称作TLAB（Thread-local allocation buffer），每个TLAB都只有一个线程可以操作，TLAB结合bump-the-pointer技术可以实现快速的对象分配，而不需要任何的锁进行同步，也就是说，在对象分配的时候不用锁住整个堆，而只需要在自己的缓冲区分配即可。<br>关于对象分配的JDK源码可以参见JVM 之 Java对象创建[初始化]中对OpenJDK源码的分析。</p>
+<h3 id="Java对象分配的过程"><a href="#Java对象分配的过程" class="headerlink" title="Java对象分配的过程"></a>Java对象分配的过程</h3><pre><code>1. 编译器通过逃逸分析，确定对象是在栈上分配还是在堆上分配。如果是在堆上分配，则进入选项2.
+2. 如果tlab_top + size &lt;= tlab_end，则在在TLAB上直接分配对象并增加tlab_top 的值，如果现有的TLAB不足以存放当前对象则3.
+3. 重新申请一个TLAB，并再次尝试存放当前对象。如果放不下，则4.
+4. 在Eden区加锁（这个区是多线程共享的），如果eden_top + size &lt;= eden_end则将对象存放在Eden区，增加eden_top 的值，如果Eden区不足以存放，则5.
+5. 执行一次Young GC（minor collection）。
+6. 经过Young GC之后，如果Eden区任然不足以存放当前对象，则直接分配到老年代。
+</code></pre><p>对象不在堆上分配主要的原因还是堆是共享的，在堆上分配有锁的开销。无论是TLAB还是栈都是线程私有的，私有即避免了竞争（当然也可能产生额外的问题例如可见性问题），这是典型的用空间换效率的做法。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="http://og287lnu0.bkt.clouddn.com/money.jpeg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/JAVA基础/" class="article-tag-list-link color2">JAVA基础</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
         		</li>
       		
 		</ul>
 	</div>
 
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yutinglin.cn/2018/01/08/栈上分配和TLAB/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2018/01/10/堆外内存概要/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          堆外内存概要
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2018/01/06/逃逸分析原理/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">逃逸分析原理</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
   
 
-    
+  
+
+  
+
+  
+    <section id="comments">
+      <!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js"></script>
+<!-- UY END -->
+      <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'true'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </section>
+  
+
 
 
           </div>
@@ -319,10 +455,10 @@ showTime(Counter);
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: true,
 		root: "/",
 		innerArchive: true,
@@ -454,15 +590,11 @@ alert("Error:"+error.code+" "+error.message);
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">JUC</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
+                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -470,11 +602,15 @@ alert("Error:"+error.code+" "+error.message);
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">消息</a>
+                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">框架源码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">消息</a>
               </li>
              
               <li class="article-tag-list-item">

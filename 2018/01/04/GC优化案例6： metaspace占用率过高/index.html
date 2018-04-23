@@ -6,15 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yutinglin.cn">
-  <title>Category: JUC | 无题</title>
+  <title>GC优化案例6： metaspace占用率过高 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="无题">
-<meta property="og:url" content="http://yutinglin.cn/categories/JUC/index.html">
+  <meta name="description" content="对GC优化的案例进行的系列总结（六）：">
+<meta name="keywords" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GC优化案例6： metaspace占用率过高">
+<meta property="og:url" content="http://yutinglin.cn/2018/01/04/GC优化案例6： metaspace占用率过高/index.html">
 <meta property="og:site_name" content="无题">
+<meta property="og:description" content="对GC优化的案例进行的系列总结（六）：">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yutinglin.cn/2018/01/04/GC优化案例6：%20metaspace占用率过高/_image/2018-04-23-18-06-05.jpg">
+<meta property="og:updated_time" content="2018-04-23T13:14:04.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="无题">
+<meta name="twitter:title" content="GC优化案例6： metaspace占用率过高">
+<meta name="twitter:description" content="对GC优化的案例进行的系列总结（六）：">
+<meta name="twitter:image" content="http://yutinglin.cn/2018/01/04/GC优化案例6：%20metaspace占用率过高/_image/2018-04-23-18-06-05.jpg">
   
     <link rel="alternative" href="/atom.xml" title="无题" type="application/atom+xml">
   
@@ -75,6 +82,8 @@
 	        
 				<li><a href="/tags/操作记录/">操作记录</a></li>
 	        
+				<li><a href="/tags/读书笔记/">读书笔记</a></li>
+	        
 				<li><a href="/tags/杂感/">杂感</a></li>
 	        
 			</ul>
@@ -94,10 +103,6 @@
 			<div class="social">
 				
 					<a class="github" target="_blank" href="https://github.com/yuaman" title="github"><i class="icon-github"></i></a>
-		        
-					<a class="weixin" target="_blank" href="http://og287lnu0.bkt.clouddn.com/money.jpeg" title="weixin"><i class="icon-weixin"></i></a>
-		        
-					<a class="mail" target="_blank" href="/yu.ting.lin.69@gmail.com" title="mail"><i class="icon-mail"></i></a>
 		        
 					<a class="linkedin" target="_blank" href="http://www.linkedin.com/in/%E9%9C%86%E9%9C%96-%E4%BA%8E-481791110/" title="linkedin"><i class="icon-linkedin"></i></a>
 		        
@@ -147,16 +152,14 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
 				<div class="social">
 					
 						<a class="github" target="_blank" href="https://github.com/yuaman" title="github"><i class="icon-github"></i></a>
-			        
-						<a class="weixin" target="_blank" href="http://og287lnu0.bkt.clouddn.com/money.jpeg" title="weixin"><i class="icon-weixin"></i></a>
-			        
-						<a class="mail" target="_blank" href="/yu.ting.lin.69@gmail.com" title="mail"><i class="icon-mail"></i></a>
 			        
 						<a class="linkedin" target="_blank" href="http://www.linkedin.com/in/%E9%9C%86%E9%9C%96-%E4%BA%8E-481791110/" title="linkedin"><i class="icon-linkedin"></i></a>
 			        
@@ -167,27 +170,29 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 9.090909090909092%"><a href="/">主页</a></li>
+					<li style="width: 8.333333333333334%"><a href="/">主页</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/JVM/">JVM</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/JVM/">JVM</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/JDK容器/">JDK容器</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/JDK容器/">JDK容器</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/JUC/">JUC</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/JUC/">JUC</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/框架源码/">框架源码</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/框架源码/">框架源码</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/缓存/">缓存</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/缓存/">缓存</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/分布式/">分布式</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/分布式/">分布式</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/JAVA基础/">JAVA基础</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/JAVA基础/">JAVA基础</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/设计模式/">设计模式</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/设计模式/">设计模式</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/操作记录/">操作记录</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/操作记录/">操作记录</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/杂感/">杂感</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/读书笔记/">读书笔记</a></li>
+		        
+					<li style="width: 8.333333333333334%"><a href="/tags/杂感/">杂感</a></li>
 		        
 				</ul>
 			</nav>
@@ -202,60 +207,207 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-GC优化案例6： metaspace占用率过高" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/08/10/悲观锁与乐观锁与事务/" class="archive-article-date">
-  	<time datetime="2017-08-10T02:56:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-10</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/08/10/悲观锁与乐观锁与事务/">悲观锁与乐观锁与事务</a>
+    <h1 class="article-title" itemprop="name">
+      GC优化案例6： metaspace占用率过高
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
+        
+        <a href="/2018/01/04/GC优化案例6： metaspace占用率过高/" class="archive-article-date">
+  	<time datetime="2018-01-04T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-04</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>对GC优化的案例进行的系列总结（六）：<br><a id="more"></a></p>
+<p>由于最近写的程序在运行一段时间后出现高cpu，然后不可用故进而进行排查，最终定位到由于metaspace引起fullgc，不断的fullgc又占用大量cpu导致程序最终不可用。下面就是这次过程的分析排查和总结，便于以后温故，同时也希望能给遇到同样问题的同学一些参考。<br>一 jvm的内存分配情况：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Eden Survivor1 Survivor2 Tenured Tenured 包含perm jdk&lt;=7</span><br></pre></td></tr></table></figure></p>
+<p></p>
+<p><img src="./_image/2018-04-23-18-06-05.jpg" alt=""></p>
+<p>gc类型分为：minor gc 和 major gc ，major的速度比minor慢10倍至少<br>发生在 young(主要是Survivor)区的gc称为 minor gc 发生在 old(Tenured)区的gc称为 major gc</p>
+<h4 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1.问题描述"></a>1.问题描述</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jstat -gcutil 26819 S0 S1 E O M CCS YGC YGCT FGC FGCT GCT 0.00 43.75 0.00 42.22 67.19 50.93 4955 30.970 4890 3505.049 3536.020</span><br></pre></td></tr></table></figure>
+<p>可以看到M(metaSpace使用率)的值是67.19，metaSpace使用率为67.19；O为42.22，old区使用率为42.22<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">top -H -p 26819 26821 appdev 20 0 6864m 1.2g 13m R 87.6 7.5 53:40.18 java 26822 appdev 20 0 6864m 1.2g 13m R 87.6 7.5 53:41.40 java 26823 appdev 20 0 6864m 1.2g 13m R 87.6 7.5 53:43.64 java 26824 appdev 20 0 6864m 1.2g 13m R 85.6 7.5 53:41.59 java 26825 appdev 20 0 6864m 1.2g 13m R 85.6 7.5 53:43.82 java 26826 appdev 20 0 6864m 1.2g 13m R 85.6 7.5 53:40.47 java 26827 appdev 20 0 6864m 1.2g 13m R 85.6 7.5 53:45.05 java 26828 appdev 20 0 6864m 1.2g 13m R 83.6 7.5 53:39.08 java</span><br></pre></td></tr></table></figure></p>
+<p> 可以发现26821到26828的cpu使用率很高，26821转为16进制为68c5<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">jstack 26819 &gt; 26819.text vim 26819.text 然后搜索68c5-68cc &quot;GC task thread#0 (ParallelGC)&quot; os_prio=0 tid=0x00007f0aa401e000 nid=0x68c5 runnable</span><br><span class="line">&quot;GC task thread#1 (ParallelGC)&quot; os_prio=0 tid=0x00007f0aa4020000 nid=0x68c6 runnable</span><br><span class="line">&quot;GC task thread#2 (ParallelGC)&quot; os_prio=0 tid=0x00007f0aa4021800 nid=0x68c7 runnable</span><br><span class="line">&quot;GC task thread#3 (ParallelGC)&quot; os_prio=0 tid=0x00007f0aa4023800 nid=0x68c8 runnable</span><br><span class="line">&quot;GC task thread#4 (ParallelGC)&quot; os_prio=0 tid=0x00007f0aa4025800 nid=0x68c9 runnable</span><br><span class="line">&quot;GC task thread#5 (ParallelGC)&quot; os_prio=0 tid=0x00007f0aa4027000 nid=0x68ca runnable</span><br><span class="line">&quot;GC task thread#6 (ParallelGC)&quot; os_prio=0 tid=0x00007f0aa4029000 nid=0x68cb runnable</span><br><span class="line">&quot;GC task thread#7 (ParallelGC)&quot; os_prio=0 tid=0x00007f0aa402a800 nid=0x68cc runnable</span><br></pre></td></tr></table></figure></p>
+<p>可以发现一致是full gc的线程在执行，占用cpu较高的资源，并且一致持续，表明一直达到了full gc的条件但是又不能回收掉内存从而占用大量cpu，导致程序不可用。<br>查看启动配置参数如下： -Xms1000m -Xmx1000m -XX:MaxNewSize=256m -XX:ThreadStackSize=256 -XX:MetaspaceSize=38m -XX:MaxMetaspaceSize=380m 分析程序的逻辑，程序会加载很多jar到内存，程序是一个公共服务，很多同事会上传jar，然后程序把jar加载到classloader进行分析并保存。</p>
+<h4 id="2-问题分析："><a href="#2-问题分析：" class="headerlink" title="2.问题分析："></a>2.问题分析：</h4><p>根据jdk8的metaspace的fullgc的触发条件，初始metaspacesize是38m意味着当第一次加载的class达到38m的时候进行第一次gc（根据JDK 8的特性，G1和CMS都会很好地收集Metaspace区（一般都伴随着Full GC）。），然后jvm会动态调整 （gc后会进行调整）metaspacesize的大小。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JDK8: Metaspace In JDK 8, classes metadata is now stored in the native heap and this space is called Metaspace. There are some new flags added for Metaspace in JDK 8: -XX:MetaspaceSize=&lt;NNN&gt; where &lt;NNN&gt; is the initial amount of space(the initial high-water-mark) allocated for class metadata (in bytes) that may induce a garbage collection to unload classes. The amount is approximate. After the high-water-mark is first reached, the next high-water-mark is managed by the garbage collector -XX:MaxMetaspaceSize=&lt;NNN&gt; where &lt;NNN&gt; is the maximum amount of space to be allocated for class metadata (in bytes). This flag can be used to limit the amount of space allocated for class metadata. This value is approximate. By default there is no limit set. -XX:MinMetaspaceFreeRatio=&lt;NNN&gt; where &lt;NNN&gt; is the minimum percentage of class metadata capacity free after a GC to avoid an increase in the amount of space (high-water-mark) allocated for class metadata that will induce a garbage collection. -XX:MaxMetaspaceFreeRatio=&lt;NNN&gt; where &lt;NNN&gt; is the maximum percentage of class metadata capacity free after a GC to avoid a reduction in the amount of space (high-water-mark) allocated for class metadata that will induce a garbage collection. By default class metadata allocation is only limited by the amount of available native memory. We can use the new option MaxMetaspaceSize to limit the amount of native memory used for the class metadata. It is analogous（类似） to MaxPermSize. A garbage collection is induced to collect the dead classloaders and classes when the class metadata usage reaches MetaspaceSize (12Mbytes on the 32bit client VM and 16Mbytes on the 32bit server VM with larger sizes on the 64bit VMs). Set MetaspaceSize to a higher value to delay the induced garbage collections. After an induced garbage collection, the class metadata usage needed to induce the next garbage collection may be increased.</span><br></pre></td></tr></table></figure></p>
+<p>根据这段描述可以知道：<br>1.当metadata usage reaches MetaspaceSize（默认MetaspaceSize在64为server上是20.8m）就会触发gc；</p>
+<p> 2.XX:MinMetaspaceFreeRatio是用来避免下次申请的空闲metadata大于暂时拥有的空闲metadata而触发gc，举个例子就是，当metaspacesize的使用大小达到了第一次设置的初始值6m,这时进行进行扩容（之前已经做过MinMetaspaceExpansion和MaxMetaspaceExpansion扩展，但还是失败）,然后gc后，由于回收调的内存很小，然后计算（（待commit内存）/（待commit内存+已经commmited内存） ==40%，（待commit内存+已经commmited内存）大于了metaspaceSize那么将尝试做扩容，也就是增大触发metaspaceGC的阈值，不过这个增量至少是MinMetaspaceExpansion才会做，不然不会增加这个阈值） ,这个参数主要是为了避免触发metaspaceGC的阈值和gc之后committed的内存的量比较接近，于是将这个阈值(metaspaceSize)进行扩大,尽量减小下次gc的几率。 </p>
+<p>3.同理-XX:MaxMetaspaceFreeRatio（默认70）是用来避免下次申请的空闲metadata很小，远远小于现在的空闲内存从而导致gc。主要作用是减小不必要的内存占用空间。<br>jdk8的metaspace引发的fullgc: jdk8使用metaspace代替之前的perm,metaspace使用native memory,默认情况下使用的最大大小是系统内存大小，当然也可以使用-XX:MaxMetaspaceSize设置最大大小，这个设置和之前的max perm size是一样的。同时当设置-XX:MaxMetaspaceSize这个参数后，我们也可以实现和max perm引起oom的问题。<br> We can achieve the famed OOM error by setting the MaxMetaspaceSize argument to JVM and running the sample program provided. metaspaceSize<br>默认初始大小：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"> MetaspaceSize (12Mbytes on the 32bit client VM and 16Mbytes on the 32bit server VM with larger sizes on the 64bit VMs).</span><br></pre></td></tr></table></figure></p>
+<p>可以通过-XX:MetaspaceSize 设置我们需要的初始大小，设置大点可以增加第一次达到full gc的时间。</p>
+<p>ps:下面是调整了下参数重启的进程，和上面的进程Id有出入。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jstat -gc 1706 S0C S1C S0U S1U EC EU OC OU MC MU CCSC CCSU YGC YGCT FGC FGCT GCT 31744.0 32768.0 0.0 21603.6 195584.0 192805.8 761856.0 384823.3 467712.0 309814.3 65536.0 36929.1 101 2.887 3 1.224 4.112</span><br></pre></td></tr></table></figure></p>
+<p>分析：MC是已经commited的内存，MU是当前使用的内存。这里有个疑惑就是MC是不是就是metaspace已经总共使用的内存，因为这个值已经达到了maxmetaspacesize,同时为什么mu不是和mc一样我猜测是由于碎片内存导致，这里有知道的同学可以告诉我下。在达到maxmetaspacesize的时候执行了3次fullgc。但是接下来由于不断申请内存，不断fullgc，fullgc不能回收内存，这时候fullgc的频率增大很多。在接下来 top -H -p 1706查看cpu可以看到大量高cpu进程，通过jstack查看都是在进行fullgc。<br>jmap -clstats 1706 第一次：total = 131 8016 13892091 N/A alive=45, dead=86 N/A 第二次：total = 1345 37619 77242171 N/A alive=1170, dead=175 N/A alive的classloader基本都是自己创建的 classLoader不断增加，每次gc并没有回收掉classloader VM中的Class只有满足以下三个条件，才能被GC回收，也就是该Class被卸载（unload）：<br>    • 该类所有的实例都已经被GC，也就是JVM中不存在该Class的任何实例。<br>    • 加载该类的ClassLoader已经被GC。ClassLoader被回收需要所有ClassLoader的所有类的实例都被回收。<br>    • 该类的java.lang.Class 对象没有在任何地方被引用，如不能在任何地方通过反射访问该类的方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jcmd 1706 GC.class_stats | awk &apos;&#123;print $13&#125;&apos; | sort | uniq -c | sort -nrk1 &gt; topclass.txt</span><br></pre></td></tr></table></figure></p>
+<p>class.png<br>通过自定义的classloader加载的类重复多次，并且数量一直增加。 看到大量的类重复数量<br>gc日志分析：<br>第一次fullgc:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"> [Heap Dump (before full gc): , 0.4032181 secs]2018-01-10T16:37:44.658+0800: 21.673: [Full GC (Metadata GC Threshold) [PSYoungGen: 14337K-&gt;0K(235520K)] [ParOldGen: 18787K-&gt;30930K(761856K)] 33125K-&gt;30930K(997376K), [Metaspace: 37827K-&gt;37827K(1083392K)], 0.1360661 secs] [Times: user=0.65 sys=0.04, real=0.14 secs]</span><br></pre></td></tr></table></figure></p>
+<p> 主要是Metaspace这里：[Metaspace: 37827K-&gt;37827K(1083392K)] 达到了我们设定的初始值38m，并且gc并没有回收掉内存。1083392K这个值怀疑是使用了CompressedClassSpaceSize = 1073741824 (1024.0MB)这个导致的。 第四次fullgc:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"> [Heap Dump (before full gc): , 5.3642805 secs]2018-01-10T16:53:43.811+0800: 980.825: [Full GC (Metadata GC Threshold) [PSYoungGen: 21613K-&gt;0K(231424K)] [ParOldGen: 390439K-&gt;400478K(761856K)] 412053K-&gt;400478K(993280K), [Metaspace: 314108K-&gt;313262K(1458176K)], 1.2320834 secs] [Times: user=7.86 sys=0.06, real=1.23 secs]</span><br></pre></td></tr></table></figure></p>
+<p> 主要是Metaspace这里：<br>[Metaspace: 314108K-&gt;313262K(1458176K)]达到了我们设定的MinMetaspaceFreeRatio，并且gc几乎没有回收掉内存。1458176K这个值是CompressedClassSpaceSize = 1073741824 (1024.0MB)和 MaxMetaspaceSize = 503316480 (480.0MB)的和。<br>后面就是频率很快的重复fullgc。</p>
+<h4 id="3-问题解决："><a href="#3-问题解决：" class="headerlink" title="3.问题解决："></a>3.问题解决：</h4><p>有了以上基础，就知道怎么解决这次遇到的问题了。 总结下原因：classloader不断创建，classloader不断加载class,之前的classloader和class在fullgc的时候没有回收掉。</p>
+<pre><code>1. 程序避免创建重复classloader，减少创建classLoader的数量。
+2. 增大XX:MinMetaspaceFreeRatio（默认40）的大小，可以看到现在是（100-67.19）。
+3. 设置更大的maxmetaspaceSize。
+</code></pre>
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="http://og287lnu0.bkt.clouddn.com/money.jpeg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/JUC/" class="article-tag-list-link color4">JUC</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
         		</li>
       		
 		</ul>
 	</div>
 
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yutinglin.cn/2018/01/04/GC优化案例6： metaspace占用率过高/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2018/01/06/逃逸分析原理/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          逃逸分析原理
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2018/01/02/GC优化案例5：老年代有效空间不足导致频繁FGC/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">GC优化案例5：老年代有效空间不足导致频繁FGC</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
   
 
-    
+  
+
+  
+
+  
+    <section id="comments">
+      <!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js"></script>
+<!-- UY END -->
+      <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'true'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </section>
+  
+
 
 
           </div>
@@ -319,10 +471,10 @@ showTime(Counter);
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: true,
 		root: "/",
 		innerArchive: true,
@@ -454,15 +606,11 @@ alert("Error:"+error.code+" "+error.message);
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">JUC</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
+                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -470,11 +618,15 @@ alert("Error:"+error.code+" "+error.message);
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">消息</a>
+                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">框架源码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">消息</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -75,6 +75,8 @@
 	        
 				<li><a href="/tags/操作记录/">操作记录</a></li>
 	        
+				<li><a href="/tags/读书笔记/">读书笔记</a></li>
+	        
 				<li><a href="/tags/杂感/">杂感</a></li>
 	        
 			</ul>
@@ -94,10 +96,6 @@
 			<div class="social">
 				
 					<a class="github" target="_blank" href="https://github.com/yuaman" title="github"><i class="icon-github"></i></a>
-		        
-					<a class="weixin" target="_blank" href="http://og287lnu0.bkt.clouddn.com/money.jpeg" title="weixin"><i class="icon-weixin"></i></a>
-		        
-					<a class="mail" target="_blank" href="/yu.ting.lin.69@gmail.com" title="mail"><i class="icon-mail"></i></a>
 		        
 					<a class="linkedin" target="_blank" href="http://www.linkedin.com/in/%E9%9C%86%E9%9C%96-%E4%BA%8E-481791110/" title="linkedin"><i class="icon-linkedin"></i></a>
 		        
@@ -147,16 +145,14 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
 				<div class="social">
 					
 						<a class="github" target="_blank" href="https://github.com/yuaman" title="github"><i class="icon-github"></i></a>
-			        
-						<a class="weixin" target="_blank" href="http://og287lnu0.bkt.clouddn.com/money.jpeg" title="weixin"><i class="icon-weixin"></i></a>
-			        
-						<a class="mail" target="_blank" href="/yu.ting.lin.69@gmail.com" title="mail"><i class="icon-mail"></i></a>
 			        
 						<a class="linkedin" target="_blank" href="http://www.linkedin.com/in/%E9%9C%86%E9%9C%96-%E4%BA%8E-481791110/" title="linkedin"><i class="icon-linkedin"></i></a>
 			        
@@ -167,27 +163,29 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 9.090909090909092%"><a href="/">主页</a></li>
+					<li style="width: 8.333333333333334%"><a href="/">主页</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/JVM/">JVM</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/JVM/">JVM</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/JDK容器/">JDK容器</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/JDK容器/">JDK容器</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/JUC/">JUC</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/JUC/">JUC</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/框架源码/">框架源码</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/框架源码/">框架源码</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/缓存/">缓存</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/缓存/">缓存</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/分布式/">分布式</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/分布式/">分布式</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/JAVA基础/">JAVA基础</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/JAVA基础/">JAVA基础</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/设计模式/">设计模式</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/设计模式/">设计模式</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/操作记录/">操作记录</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/操作记录/">操作记录</a></li>
 		        
-					<li style="width: 9.090909090909092%"><a href="/tags/杂感/">杂感</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/读书笔记/">读书笔记</a></li>
+		        
+					<li style="width: 8.333333333333334%"><a href="/tags/杂感/">杂感</a></li>
 		        
 				</ul>
 			</nav>
@@ -203,6 +201,559 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-GC优化案例2：永久代空间不足" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/24/GC优化案例2：永久代空间不足/">GC优化案例2：永久代空间不足</a>
+    </h1>
+  
+
+        
+        <a href="/2017/12/24/GC优化案例2：永久代空间不足/" class="archive-article-date">
+  	<time datetime="2017-12-24T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-24</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>对GC优化的案例进行的系列总结（二）：<br>
+        
+          <a class="article-more-a" href="/2017/12/24/GC优化案例2：永久代空间不足/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/12/24/GC优化案例2：永久代空间不足/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
+    <article id="post-GC优化案例1：Major GC和Minor GC频繁" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/22/GC优化案例1：Major GC和Minor GC频繁/">GC优化案例1：Major GC和Minor GC频繁</a>
+    </h1>
+  
+
+        
+        <a href="/2017/12/22/GC优化案例1：Major GC和Minor GC频繁/" class="archive-article-date">
+  	<time datetime="2017-12-22T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-22</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>对GC优化的案例进行的系列总结（一）：<br>
+        
+          <a class="article-more-a" href="/2017/12/22/GC优化案例1：Major GC和Minor GC频繁/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/12/22/GC优化案例1：Major GC和Minor GC频繁/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
+    <article id="post-读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/19/读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地/">读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地</a>
+    </h1>
+  
+
+        
+        <a href="/2017/09/19/读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地/" class="archive-article-date">
+  	<time datetime="2017-09-19T06:44:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-19</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>强势洗地，我就服太祖你。</p>
+        
+          <a class="article-more-a" href="/2017/09/19/读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/09/19/读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
+    <article id="post-读内藤树作品《青年们，读马克思吧》" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/18/读内藤树作品《青年们，读马克思吧》/">读内藤树作品《青年们，读马克思吧》</a>
+    </h1>
+  
+
+        
+        <a href="/2017/09/18/读内藤树作品《青年们，读马克思吧》/" class="archive-article-date">
+  	<time datetime="2017-09-18T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这是我一六年秋天某个晚上写的一篇文章，现在看来很多观点可以用更成熟的论证方法来论证。<br>
+        
+          <a class="article-more-a" href="/2017/09/18/读内藤树作品《青年们，读马克思吧》/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/09/18/读内藤树作品《青年们，读马克思吧》/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
+    <article id="post-分布式事务通用解决方案" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/18/分布式事务通用解决方案/">分布式事务通用解决方案</a>
+    </h1>
+  
+
+        
+        <a href="/2017/08/18/分布式事务通用解决方案/" class="archive-article-date">
+  	<time datetime="2017-08-18T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>先上结论, 再分别介绍分布式事务的各种实现方式.</p>
+<pre><code>• 如果业务场景需要强一致性, 那么尽量避免将它们放在不同服务中, 也就是尽量使用本地事务, 避免使用强一致性的分布式事务.
+• 如果业务场景能够接受最终一致性, 那么最好是使用基于消息的最终一致性的方案(异步确保型)来解决.
+• 如果业务场景需要强一致性, 并且只能够进行分布式服务部署, 那么最好是使用TCC方案而不是2PC方案来解决.
+</code></pre>
+        
+          <a class="article-more-a" href="/2017/08/18/分布式事务通用解决方案/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/08/18/分布式事务通用解决方案/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
+    <article id="post-线程安全与锁优化" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/14/线程安全与锁优化/">线程安全与锁优化——深入理解JVM阅读笔记</a>
+    </h1>
+  
+
+        
+        <a href="/2017/08/14/线程安全与锁优化/" class="archive-article-date">
+  	<time datetime="2017-08-14T06:44:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。"><a href="#我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。" class="headerlink" title="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。"></a>我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。</h5><h5 id="参考地址：http-www-cnblogs-com-pacoson-p-5351355-html"><a href="#参考地址：http-www-cnblogs-com-pacoson-p-5351355-html" class="headerlink" title="参考地址：http://www.cnblogs.com/pacoson/p/5351355.html"></a>参考地址：<a href="http://www.cnblogs.com/pacoson/p/5351355.html" target="_blank" rel="noopener">http://www.cnblogs.com/pacoson/p/5351355.html</a></h5>
+        
+          <a class="article-more-a" href="/2017/08/14/线程安全与锁优化/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JUC</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/08/14/线程安全与锁优化/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
+    <article id="post-Java并发编程：volatile关键字解析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/13/Java并发编程：volatile关键字解析/">Java并发编程：volatile关键字解析</a>
+    </h1>
+  
+
+        
+        <a href="/2017/08/13/Java并发编程：volatile关键字解析/" class="archive-article-date">
+  	<time datetime="2017-08-13T02:56:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我将一些最关键的要点和结论先做一下总结。如果要做细致的理解，通读全文还是很有必要的。</p>
+        
+          <a class="article-more-a" href="/2017/08/13/Java并发编程：volatile关键字解析/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JUC</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/08/13/Java并发编程：volatile关键字解析/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
+    <article id="post-事务的四大特性以及事务的四种隔离级别" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/11/事务的四大特性以及事务的四种隔离级别/">事务的四大特性以及事务的四种隔离级别</a>
+    </h1>
+  
+
+        
+        <a href="/2017/08/11/事务的四大特性以及事务的四种隔离级别/" class="archive-article-date">
+  	<time datetime="2017-08-11T06:54:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本篇讲诉数据库中事务的四大特性（ACID），并且将会详细地说明事务的隔离级别。</p>
+        
+          <a class="article-more-a" href="/2017/08/11/事务的四大特性以及事务的四种隔离级别/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">RDB</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/08/11/事务的四大特性以及事务的四种隔离级别/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
+    <article id="post-悲观锁与乐观锁与事务" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/10/悲观锁与乐观锁与事务/">悲观锁与乐观锁与事务</a>
+    </h1>
+  
+
+        
+        <a href="/2017/08/10/悲观锁与乐观锁与事务/" class="archive-article-date">
+  	<time datetime="2017-08-10T02:56:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>事务针对的是行为操作而锁针对的是对象和数据；<br>事务是指执行行为操作的过程而锁是执行的手段。<br>
+        
+          <a class="article-more-a" href="/2017/08/10/悲观锁与乐观锁与事务/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JUC</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/08/10/悲观锁与乐观锁与事务/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
   
     <article id="post- JAVA中Object类中的方法以及finalize函数作用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -235,18 +786,18 @@
     <div class="article-info article-info-index">
       
       
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/JAVA基础/" class="article-tag-list-link color2">JAVA基础</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">JAVA基础</a>
         		</li>
       		
 		</ul>
 	</div>
 
+      
 
       
         <p class="article-more-link">
@@ -265,571 +816,9 @@
 
 
   
-    <article id="post-各RDB与Nosql性能与特点总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/05/各RDB与Nosql性能与特点总结/">各RDB与Nosql性能与特点总结</a>
-    </h1>
-  
-
-        
-        <a href="/2017/08/05/各RDB与Nosql性能与特点总结/" class="archive-article-date">
-  	<time datetime="2017-08-05T09:37:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-05</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>最近考虑到数据库包括各种缓存到底面对高并发情况性能到底是怎么样的，所以多方收集整理成此篇，以后也会持续更新。<br>
-        
-          <a class="article-more-a" href="/2017/08/05/各RDB与Nosql性能与特点总结/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">缓存</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/08/05/各RDB与Nosql性能与特点总结/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
-    <article id="post-Java容器各实现类的底层实现原理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/05/Java容器各实现类的底层实现原理/">Java容器各实现类的底层实现原理概述</a>
-    </h1>
-  
-
-        
-        <a href="/2017/08/05/Java容器各实现类的底层实现原理/" class="archive-article-date">
-  	<time datetime="2017-08-05T05:18:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-05</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p> Java容器各实现类的底层实现原理概述<br>
-        
-          <a class="article-more-a" href="/2017/08/05/Java容器各实现类的底层实现原理/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">JDK容器</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/08/05/Java容器各实现类的底层实现原理/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
-    <article id="post-多机的Sequence问题与处理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/01/多机的Sequence问题与处理/">多机的Sequence问题与处理</a>
-    </h1>
-  
-
-        
-        <a href="/2017/08/01/多机的Sequence问题与处理/" class="archive-article-date">
-  	<time datetime="2017-08-01T02:56:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>数据库拆分之后，会引入诸多新的问题，其中之一就是，以MySQL为例，原先单表的时候， 可以通过MySQL自带的aut_increment实现自增不重复id，现在用不了了。数据库层面 做不了必须引入中间件去解决。<br>
-        
-          <a class="article-more-a" href="/2017/08/01/多机的Sequence问题与处理/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/08/01/多机的Sequence问题与处理/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
-    <article id="post-秒杀系统解决方案" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/01/秒杀系统解决方案/">秒杀系统解决方案</a>
-    </h1>
-  
-
-        
-        <a href="/2017/08/01/秒杀系统解决方案/" class="archive-article-date">
-  	<time datetime="2017-08-01T02:56:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>从架构、产品、前端、后端四个层面针对秒杀场景（可以扩展到所有高并发场景）分别总结了一些解决方案。<br>
-        
-          <a class="article-more-a" href="/2017/08/01/秒杀系统解决方案/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/08/01/秒杀系统解决方案/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
-    <article id="post-服务框架设计与实现的原理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/22/服务框架设计与实现的原理/">服务框架的设计与实现</a>
-    </h1>
-  
-
-        
-        <a href="/2017/07/22/服务框架设计与实现的原理/" class="archive-article-date">
-  	<time datetime="2017-07-22T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>RPC(Remote Procedure Call)即远程过程调用，允许一台计算机调用另一台计算机上的程序得到结果，而代码中不需要做额外的编程，就像在本地调用一样。</p>
-<p>现在互联网应用的量级越来越大，单台计算机的能力有限，需要借助可扩展的计算机集群来完成，分布式的应用可以借助RPC来完成机器之间的调用。<br>
-        
-          <a class="article-more-a" href="/2017/07/22/服务框架设计与实现的原理/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/07/22/服务框架设计与实现的原理/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
-    <article id="post-分布式缓存一致性Hash算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/18/分布式缓存一致性Hash算法/">分布式缓存一致性hash算法</a>
-    </h1>
-  
-
-        
-        <a href="/2017/07/18/分布式缓存一致性Hash算法/" class="archive-article-date">
-  	<time datetime="2017-07-18T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-18</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在设计分布式缓存集群的时候，需要考虑集群的伸缩性，也就是当向集群中增加服务器的时候，要尽量减小对集群的影响，而一致性hash算法就是用来解决集群伸缩性。<br>
-        
-          <a class="article-more-a" href="/2017/07/18/分布式缓存一致性Hash算法/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/07/18/分布式缓存一致性Hash算法/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
-    <article id="post-读《Effecttive Java》" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/18/读《Effecttive Java》/">读《Effecttive Java》</a>
-    </h1>
-  
-
-        
-        <a href="/2017/07/18/读《Effecttive Java》/" class="archive-article-date">
-  	<time datetime="2017-07-18T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-18</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>“读完一本《Effecttive Java》，才算是一个中级Java程序员”<br>
-        
-          <a class="article-more-a" href="/2017/07/18/读《Effecttive Java》/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/07/18/读《Effecttive Java》/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
-    <article id="post-分布式锁通用解决方案" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/18/分布式锁通用解决方案/">分布式锁通用解决方案</a>
-    </h1>
-  
-
-        
-        <a href="/2017/07/18/分布式锁通用解决方案/" class="archive-article-date">
-  	<time datetime="2017-07-18T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-18</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="分布式锁的解决方式："><a href="#分布式锁的解决方式：" class="headerlink" title="分布式锁的解决方式："></a>分布式锁的解决方式：</h3><h3 id="基于数据库："><a href="#基于数据库：" class="headerlink" title="基于数据库："></a>基于数据库：</h3><blockquote>
-<p>   基于数据库表做乐观锁，用于分布式锁。（version）</p>
-<p>   基于数据库表做悲观锁（InnoDB，for update）</p>
-<p>   基于数据库表数据记录做唯一约束（表中记录方法名称）</p>
-</blockquote>
-<h3 id="基于缓存："><a href="#基于缓存：" class="headerlink" title="基于缓存："></a>基于缓存：</h3><blockquote>
-<p> 常用方案：使用redis的setnx()用于分布式锁。（setNx，直接设置值为当前时间+超时时间，保持操作原子性）</p>
-<p>使用memcached的add()方法，用于分布式锁。</p>
-<p>使用Tair的put()方法，用于分布式锁。</p>
-</blockquote>
-<h3 id="基于Zookeeper："><a href="#基于Zookeeper：" class="headerlink" title="基于Zookeeper："></a>基于Zookeeper：</h3><blockquote>
-<p>每个客户端对某个方法加锁时，在zookeeper上的与该方法对应的指定节点的目录下，生成一个唯一的瞬时有序节点。 判断是否获取锁只需要判断有序节点中序号最小的一个。 当释放锁的时候，只需将这个瞬时节点删除即可。</p>
-</blockquote>
-        
-          <a class="article-more-a" href="/2017/07/18/分布式锁通用解决方案/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/07/18/分布式锁通用解决方案/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
-    <article id="post-mongoDB常见问题整理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/15/mongoDB常见问题整理/">mongoDB常见问题整理</a>
-    </h1>
-  
-
-        
-        <a href="/2017/07/15/mongoDB常见问题整理/" class="archive-article-date">
-  	<time datetime="2017-07-15T09:37:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-15</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h5 id="多方收集整理成此篇，以后也会持续更新。"><a href="#多方收集整理成此篇，以后也会持续更新。" class="headerlink" title="多方收集整理成此篇，以后也会持续更新。"></a>多方收集整理成此篇，以后也会持续更新。</h5>
-        
-          <a class="article-more-a" href="/2017/07/15/mongoDB常见问题整理/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">缓存</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/07/15/mongoDB常见问题整理/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 
@@ -1030,15 +1019,11 @@ alert("Error:"+error.code+" "+error.message);
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">JUC</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
+                <a href="javascript:void(0)" class="js-tag color2">JAVA基础</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1046,11 +1031,15 @@ alert("Error:"+error.code+" "+error.message);
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">消息</a>
+                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">框架源码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">消息</a>
               </li>
              
               <li class="article-tag-list-item">
