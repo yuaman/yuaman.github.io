@@ -325,7 +325,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>MyBatis在初始化的时候，会将MyBatis的配置信息全部加载到内存中，使用org.apache.ibatis.session.Configuration实例来维护。使用者可以使用sqlSession.getConfiguration()方法来获取。MyBatis的配置文件中配置信息的组织格式和内存中对象的组织格式几乎完全对应的。</p>
+        <h3 id="MyBatis初始化"><a href="#MyBatis初始化" class="headerlink" title="MyBatis初始化"></a>MyBatis初始化</h3><p>MyBatis在初始化的时候，会将MyBatis的配置信息全部加载到内存中，使用org.apache.ibatis.session.Configuration实例来维护。使用者可以使用sqlSession.getConfiguration()方法来获取。MyBatis的配置文件中配置信息的组织格式和内存中对象的组织格式几乎完全对应的。</p>
         
           <a class="article-more-a" href="/2018/01/16/Mybatis源码解析/#more">more >></a>
         
@@ -352,67 +352,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2018/01/16/Mybatis源码解析/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
-    <article id="post-Spring AOP源码解析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/14/Spring AOP源码解析/">Spring AOP源码解析</a>
-    </h1>
-  
-
-        
-        <a href="/2018/01/14/Spring AOP源码解析/" class="archive-article-date">
-  	<time datetime="2018-01-14T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>与AspectJ的静态代理不同，Spring AOP使用的动态代理，所谓的动态代理就是说AOP框架不会去修改字节码，而是在内存中临时为方法生成一个AOP对象，这个AOP对象包含了目标对象的全部方法，并且在特定的切点做了增强处理，并回调原对象的方法。简单来说，代理对象的方法 = 增强处理 + 被代理对象的方法。</p>
-        
-          <a class="article-more-a" href="/2018/01/14/Spring AOP源码解析/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">框架源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/01/14/Spring AOP源码解析/">展开全文 >></a>
         </p>
       
 
@@ -488,6 +427,67 @@
 
 
   
+    <article id="post-Spring AOP源码解析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/14/Spring AOP源码解析/">Spring AOP源码解析</a>
+    </h1>
+  
+
+        
+        <a href="/2018/01/14/Spring AOP源码解析/" class="archive-article-date">
+  	<time datetime="2018-01-14T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="Spring-AOP做了什么？"><a href="#Spring-AOP做了什么？" class="headerlink" title="Spring AOP做了什么？"></a>Spring AOP做了什么？</h3><p>与AspectJ的静态代理不同，Spring AOP使用的动态代理，所谓的动态代理就是说AOP框架不会去修改字节码，而是在内存中临时为方法生成一个AOP对象，这个AOP对象包含了目标对象的全部方法，并且在特定的切点做了增强处理，并回调原对象的方法。简单来说，代理对象的方法 = 增强处理 + 被代理对象的方法。<br>
+        
+          <a class="article-more-a" href="/2018/01/14/Spring AOP源码解析/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">框架源码</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/01/14/Spring AOP源码解析/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-springBoot自动装配源码解析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -508,7 +508,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>在第一次使用spring boot的时候，大家都会惊讶于@SpringBootApplication这个注解，有了它马上就能够让整个应用跑起来。实际上它只是一个组合注解，包含@Configuration、@EnableAutoConfiguration、@ComponentScan这三个注解。</p>
+        <h3 id="运行原理"><a href="#运行原理" class="headerlink" title="运行原理"></a>运行原理</h3><p>在第一次使用spring boot的时候，大家都会惊讶于@SpringBootApplication这个注解，有了它马上就能够让整个应用跑起来。实际上它只是一个组合注解，包含@Configuration、@EnableAutoConfiguration、@ComponentScan这三个注解。<br>
         
           <a class="article-more-a" href="/2018/01/12/springBoot自动装配源码解析/#more">more >></a>
         
@@ -691,15 +691,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <a id="more"></a>
-<h3 id="DirectByteBuffer"><a href="#DirectByteBuffer" class="headerlink" title="DirectByteBuffer"></a>DirectByteBuffer</h3><p>JDK中使用 DirectByteBuffer对象来表示堆外内存，每个 DirectByteBuffer对象在初始化时，都会创建一个对应的 Cleaner对象，这个 Cleaner对象会在合适的时候执行 unsafe.freeMemory(address)，从而回收这块堆外内存。</p>
-<p>当初始化一块堆外内存时，对象的引用关系如下：<br> Cleaner对象在初始化时会被添加到 Clener链表中，ReferenceQueue是用来保存需要回收的 Cleaner对象。</p>
-<p>如果该 DirectByteBuffer对象在一次GC中被回收了<br>此时，只有 Cleaner对象唯一保存了堆外内存的数据（开始地址、大小和容量），在下一次FGC时，把该 Cleaner对象放入到 ReferenceQueue中，并触发 clean方法。</p>
-<p>Cleaner对象的 clean方法主要有两个作用：<br>1、把自身从 Clener链表删除，从而在下次GC时能够被回收<br>2、释放堆外内存</p>
-<p>如果JVM一直没有执行FGC的话，无效的 Cleaner对象就无法放入到ReferenceQueue中，从而堆外内存也一直得不到释放，内存岂不是会爆？</p>
-<p>其实在初始化 DirectByteBuffer对象时，如果当前堆外内存的条件很苛刻时，会主动调用 System.gc()强制执行FGC。</p>
-<p>不过很多线上环境的JVM参数有 -XX:+DisableExplicitGC，导致了 System.gc()等于一个空函数，根本不会触发FGC，这一点在使用Netty框架时需要注意是否会出问题。</p>
-
+        <h3 id="DirectByteBuffer"><a href="#DirectByteBuffer" class="headerlink" title="DirectByteBuffer"></a>DirectByteBuffer</h3><p>JDK中使用 DirectByteBuffer对象来表示堆外内存，每个 DirectByteBuffer对象在初始化时，都会创建一个对应的 Cleaner对象，这个 Cleaner对象会在合适的时候执行 unsafe.freeMemory(address)，从而回收这块堆外内存。<br>
+        
+          <a class="article-more-a" href="/2018/01/10/堆外内存概要/#more">more >></a>
+        
       
 
       

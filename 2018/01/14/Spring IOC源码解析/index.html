@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="SpringIoC模块是IOC模式的一种实现，IoC容器把创建和查找依赖对象的控制权交给了容器，由容器进行注入组合对象，降低了组件之间的耦合度。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-04-24T14:13:30.000Z">
+<meta property="og:updated_time" content="2018-04-24T14:18:30.574Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring IOC源码解析">
 <meta name="twitter:description" content="SpringIoC模块是IOC模式的一种实现，IoC容器把创建和查找依赖对象的控制权交给了容器，由容器进行注入组合对象，降低了组件之间的耦合度。">
@@ -203,7 +203,6 @@
       
         <p>SpringIoC模块是IOC模式的一种实现，IoC容器把创建和查找依赖对象的控制权交给了容器，由容器进行注入组合对象，降低了组件之间的耦合度。</p>
 <a id="more"></a>
-<p>SpringIoC模块是IOC模式的一种实现，IoC容器把创建和查找依赖对象的控制权交给了容器，由容器进行注入组合对象，降低了组件之间的耦合度。</p>
 <h4 id="SpringIoC容器设计中有两个主要的容器系列："><a href="#SpringIoC容器设计中有两个主要的容器系列：" class="headerlink" title="SpringIoC容器设计中有两个主要的容器系列："></a>SpringIoC容器设计中有两个主要的容器系列：</h4><p>①  实现了BeanFactory接口的简单容器系列，此类容器实现了容器最基本的功能。<br>②  ApplicationContext应用上下文，视为容器的最高形态存在，在实现简单容器的基础上增加了许多面向框架的特性。</p>
 <p>一般会采用较高级的ApplicationContext容器。分成两个部分来分析，一个IOC容器初始化过程中对bean生命周期的维护，二是用户第一次从容器中获取bean时依赖注入的实现</p>
 <p>IOC容器的启动由AbstractApplicationContext里面的refresh() 方法负责，该方法包含对bean生命周期管理的一系列复杂操作。</p>
@@ -341,18 +340,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2018/01/14/Spring AOP源码解析/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/01/16/Mybatis源码解析/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Spring AOP源码解析
+          Mybatis源码解析
         
       </div>
     </a>
   
   
-    <a href="/2018/01/12/springBoot自动装配源码解析/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">SpringBoot自动装配源码解析</div>
+    <a href="/2018/01/14/Spring AOP源码解析/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Spring AOP源码解析</div>
       <i class="icon-circle-right"></i>
     </a>
   

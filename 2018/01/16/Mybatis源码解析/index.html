@@ -8,19 +8,19 @@
   <link rel="dns-prefetch" href="http://yutinglin.cn">
   <title>Mybatis源码解析 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="MyBatis在初始化的时候，会将MyBatis的配置信息全部加载到内存中，使用org.apache.ibatis.session.Configuration实例来维护。使用者可以使用sqlSession.getConfiguration()方法来获取。MyBatis的配置文件中配置信息的组织格式和内存中对象的组织格式几乎完全对应的。">
+  <meta name="description" content="MyBatis初始化MyBatis在初始化的时候，会将MyBatis的配置信息全部加载到内存中，使用org.apache.ibatis.session.Configuration实例来维护。使用者可以使用sqlSession.getConfiguration()方法来获取。MyBatis的配置文件中配置信息的组织格式和内存中对象的组织格式几乎完全对应的。">
 <meta name="keywords" content="框架源码">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mybatis源码解析">
 <meta property="og:url" content="http://yutinglin.cn/2018/01/16/Mybatis源码解析/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="MyBatis在初始化的时候，会将MyBatis的配置信息全部加载到内存中，使用org.apache.ibatis.session.Configuration实例来维护。使用者可以使用sqlSession.getConfiguration()方法来获取。MyBatis的配置文件中配置信息的组织格式和内存中对象的组织格式几乎完全对应的。">
+<meta property="og:description" content="MyBatis初始化MyBatis在初始化的时候，会将MyBatis的配置信息全部加载到内存中，使用org.apache.ibatis.session.Configuration实例来维护。使用者可以使用sqlSession.getConfiguration()方法来获取。MyBatis的配置文件中配置信息的组织格式和内存中对象的组织格式几乎完全对应的。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://yutinglin.cn/2018/01/16/Mybatis源码解析/_image/2018-04-24-19-06-22.jpg">
-<meta property="og:updated_time" content="2018-04-24T14:13:30.000Z">
+<meta property="og:updated_time" content="2018-04-24T14:18:03.571Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mybatis源码解析">
-<meta name="twitter:description" content="MyBatis在初始化的时候，会将MyBatis的配置信息全部加载到内存中，使用org.apache.ibatis.session.Configuration实例来维护。使用者可以使用sqlSession.getConfiguration()方法来获取。MyBatis的配置文件中配置信息的组织格式和内存中对象的组织格式几乎完全对应的。">
+<meta name="twitter:description" content="MyBatis初始化MyBatis在初始化的时候，会将MyBatis的配置信息全部加载到内存中，使用org.apache.ibatis.session.Configuration实例来维护。使用者可以使用sqlSession.getConfiguration()方法来获取。MyBatis的配置文件中配置信息的组织格式和内存中对象的组织格式几乎完全对应的。">
 <meta name="twitter:image" content="http://yutinglin.cn/2018/01/16/Mybatis源码解析/_image/2018-04-24-19-06-22.jpg">
   
     <link rel="alternative" href="/atom.xml" title="无题" type="application/atom+xml">
@@ -203,9 +203,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>MyBatis在初始化的时候，会将MyBatis的配置信息全部加载到内存中，使用org.apache.ibatis.session.Configuration实例来维护。使用者可以使用sqlSession.getConfiguration()方法来获取。MyBatis的配置文件中配置信息的组织格式和内存中对象的组织格式几乎完全对应的。</p>
+        <h3 id="MyBatis初始化"><a href="#MyBatis初始化" class="headerlink" title="MyBatis初始化"></a>MyBatis初始化</h3><p>MyBatis在初始化的时候，会将MyBatis的配置信息全部加载到内存中，使用org.apache.ibatis.session.Configuration实例来维护。使用者可以使用sqlSession.getConfiguration()方法来获取。MyBatis的配置文件中配置信息的组织格式和内存中对象的组织格式几乎完全对应的。</p>
 <a id="more"></a>
-<h3 id="MyBatis初始化"><a href="#MyBatis初始化" class="headerlink" title="MyBatis初始化"></a>MyBatis初始化</h3><p>MyBatis在初始化的时候，会将MyBatis的配置信息全部加载到内存中，使用org.apache.ibatis.session.Configuration实例来维护。使用者可以使用sqlSession.getConfiguration()方法来获取。MyBatis的配置文件中配置信息的组织格式和内存中对象的组织格式几乎完全对应的。</p>
 <p>加载到内存中会生成一个对应的MappedStatement对象，然后会以key=”com.louis.mybatis.dao.EmployeesMapper.selectByMinSalary” ，value为MappedStatement对象的形式维护到Configuration的一个Map中。当以后需要使用的时候，只需要通过Id值来获取就可以了。</p>
 <h3 id="MyBatis数据处理层"><a href="#MyBatis数据处理层" class="headerlink" title="MyBatis数据处理层"></a>MyBatis数据处理层</h3><p>数据处理层可以说是MyBatis 的核心，从大的方面上讲，它要完成三个功能：</p>
 <h4 id="2-1-参数映射和动态SQL语句生成"><a href="#2-1-参数映射和动态SQL语句生成" class="headerlink" title="2.1.参数映射和动态SQL语句生成"></a>2.1.参数映射和动态SQL语句生成</h4><h4 id="2-2-SQL语句的执行以及封装查询结果集成List"><a href="#2-2-SQL语句的执行以及封装查询结果集成List" class="headerlink" title="2.2. SQL语句的执行以及封装查询结果集成List"></a>2.2. SQL语句的执行以及封装查询结果集成List<e></e></h4><p>实际使用中我们利用SqlSessionFactory创建出一个SqlSession实例之后，将stateMentId以及params传入；</p>
@@ -230,7 +229,7 @@
 <li>ParameterHandler   负责对用户传递的参数转换成JDBC Statement 所需要的参数，</li>
 <li>ResultSetHandler    负责将JDBC返回的ResultSet结果集对象转换成List类型的集合；</li>
 <li>TypeHandler          负责java数据类型和jdbc数据类型之间的映射和转换</li>
-<li>MappedStatement   MappedStatement维护了一条<select|update|delete|insert>节点的封装， </select|update|delete|insert></li>
+<li>MappedStatement   MappedStatement维护了一条<select|update|delete|insert>节点的封装，</select|update|delete|insert></li>
 <li>SqlSource            负责根据用户传递的parameterObject，动态地生成SQL语句，将信息封装到BoundSql对象中，并返回</li>
 <li>BoundSql             表示动态生成的SQL语句以及相应的参数信息</li>
 <li>Configuration        MyBatis所有的配置信息都维持在Configuration对象之中。</li>
@@ -355,8 +354,8 @@
     </a>
   
   
-    <a href="/2018/01/14/Spring AOP源码解析/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Spring AOP源码解析</div>
+    <a href="/2018/01/14/Spring IOC源码解析/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Spring IOC源码解析</div>
       <i class="icon-circle-right"></i>
     </a>
   

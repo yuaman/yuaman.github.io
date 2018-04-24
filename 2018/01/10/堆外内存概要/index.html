@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="http://yutinglin.cn">
   <title>堆外内存概要 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="DirectByteBufferJDK中使用 DirectByteBuffer对象来表示堆外内存，每个 DirectByteBuffer对象在初始化时，都会创建一个对应的 Cleaner对象，这个 Cleaner对象会在合适的时候执行 unsafe.freeMemory(address)，从而回收这块堆外内存。 当初始化一块堆外内存时，对象的引用关系如下： Cleaner对象在初始化时会被添加到">
+  <meta name="description" content="DirectByteBufferJDK中使用 DirectByteBuffer对象来表示堆外内存，每个 DirectByteBuffer对象在初始化时，都会创建一个对应的 Cleaner对象，这个 Cleaner对象会在合适的时候执行 unsafe.freeMemory(address)，从而回收这块堆外内存。">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="堆外内存概要">
 <meta property="og:url" content="http://yutinglin.cn/2018/01/10/堆外内存概要/index.html">
 <meta property="og:site_name" content="无题">
-<meta property="og:description" content="DirectByteBufferJDK中使用 DirectByteBuffer对象来表示堆外内存，每个 DirectByteBuffer对象在初始化时，都会创建一个对应的 Cleaner对象，这个 Cleaner对象会在合适的时候执行 unsafe.freeMemory(address)，从而回收这块堆外内存。 当初始化一块堆外内存时，对象的引用关系如下： Cleaner对象在初始化时会被添加到">
+<meta property="og:description" content="DirectByteBufferJDK中使用 DirectByteBuffer对象来表示堆外内存，每个 DirectByteBuffer对象在初始化时，都会创建一个对应的 Cleaner对象，这个 Cleaner对象会在合适的时候执行 unsafe.freeMemory(address)，从而回收这块堆外内存。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-04-23T13:14:08.000Z">
+<meta property="og:updated_time" content="2018-04-24T14:16:57.893Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="堆外内存概要">
-<meta name="twitter:description" content="DirectByteBufferJDK中使用 DirectByteBuffer对象来表示堆外内存，每个 DirectByteBuffer对象在初始化时，都会创建一个对应的 Cleaner对象，这个 Cleaner对象会在合适的时候执行 unsafe.freeMemory(address)，从而回收这块堆外内存。 当初始化一块堆外内存时，对象的引用关系如下： Cleaner对象在初始化时会被添加到">
+<meta name="twitter:description" content="DirectByteBufferJDK中使用 DirectByteBuffer对象来表示堆外内存，每个 DirectByteBuffer对象在初始化时，都会创建一个对应的 Cleaner对象，这个 Cleaner对象会在合适的时候执行 unsafe.freeMemory(address)，从而回收这块堆外内存。">
   
     <link rel="alternative" href="/atom.xml" title="无题" type="application/atom+xml">
   
@@ -201,8 +201,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <a id="more"></a>
-<h3 id="DirectByteBuffer"><a href="#DirectByteBuffer" class="headerlink" title="DirectByteBuffer"></a>DirectByteBuffer</h3><p>JDK中使用 DirectByteBuffer对象来表示堆外内存，每个 DirectByteBuffer对象在初始化时，都会创建一个对应的 Cleaner对象，这个 Cleaner对象会在合适的时候执行 unsafe.freeMemory(address)，从而回收这块堆外内存。</p>
+        <h3 id="DirectByteBuffer"><a href="#DirectByteBuffer" class="headerlink" title="DirectByteBuffer"></a>DirectByteBuffer</h3><p>JDK中使用 DirectByteBuffer对象来表示堆外内存，每个 DirectByteBuffer对象在初始化时，都会创建一个对应的 Cleaner对象，这个 Cleaner对象会在合适的时候执行 unsafe.freeMemory(address)，从而回收这块堆外内存。<br><a id="more"></a></p>
 <p>当初始化一块堆外内存时，对象的引用关系如下：<br> Cleaner对象在初始化时会被添加到 Clener链表中，ReferenceQueue是用来保存需要回收的 Cleaner对象。</p>
 <p>如果该 DirectByteBuffer对象在一次GC中被回收了<br>此时，只有 Cleaner对象唯一保存了堆外内存的数据（开始地址、大小和容量），在下一次FGC时，把该 Cleaner对象放入到 ReferenceQueue中，并触发 clean方法。</p>
 <p>Cleaner对象的 clean方法主要有两个作用：<br>1、把自身从 Clener链表删除，从而在下次GC时能够被回收<br>2、释放堆外内存</p>
