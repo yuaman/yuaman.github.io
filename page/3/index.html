@@ -178,29 +178,29 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-线程安全与锁优化" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-堆外内存概要" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/14/线程安全与锁优化/">线程安全与锁优化——深入理解JVM阅读笔记</a>
+      <a class="article-title" href="/2018/01/10/堆外内存概要/">堆外内存概要</a>
     </h1>
   
 
         
-        <a href="/2017/08/14/线程安全与锁优化/" class="archive-article-date">
-  	<time datetime="2017-08-14T06:44:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-14</time>
+        <a href="/2018/01/10/堆外内存概要/" class="archive-article-date">
+  	<time datetime="2018-01-10T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-10</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h5 id="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。"><a href="#我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。" class="headerlink" title="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。"></a>我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。</h5><h5 id="参考地址：http-www-cnblogs-com-pacoson-p-5351355-html"><a href="#参考地址：http-www-cnblogs-com-pacoson-p-5351355-html" class="headerlink" title="参考地址：http://www.cnblogs.com/pacoson/p/5351355.html"></a>参考地址：<a href="http://www.cnblogs.com/pacoson/p/5351355.html" target="_blank" rel="noopener">http://www.cnblogs.com/pacoson/p/5351355.html</a></h5>
+        <h3 id="DirectByteBuffer"><a href="#DirectByteBuffer" class="headerlink" title="DirectByteBuffer"></a>DirectByteBuffer</h3><p>JDK中使用 DirectByteBuffer对象来表示堆外内存，每个 DirectByteBuffer对象在初始化时，都会创建一个对应的 Cleaner对象，这个 Cleaner对象会在合适的时候执行 unsafe.freeMemory(address)，从而回收这块堆外内存。<br>
         
-          <a class="article-more-a" href="/2017/08/14/线程安全与锁优化/#more">more >></a>
+          <a class="article-more-a" href="/2018/01/10/堆外内存概要/#more">more >></a>
         
       
 
@@ -214,7 +214,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JUC</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
         		</li>
       		
 		</ul>
@@ -224,7 +224,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/08/14/线程安全与锁优化/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/01/10/堆外内存概要/">展开全文 >></a>
         </p>
       
 
@@ -239,29 +239,29 @@
 
 
   
-    <article id="post-Java并发编程：volatile关键字解析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Spring事务源码解析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/13/Java并发编程：volatile关键字解析/">Java并发编程：volatile关键字解析</a>
+      <a class="article-title" href="/2018/01/10/Spring事务源码解析/">Spring事务源码解析</a>
     </h1>
   
 
         
-        <a href="/2017/08/13/Java并发编程：volatile关键字解析/" class="archive-article-date">
-  	<time datetime="2017-08-13T02:56:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-13</time>
+        <a href="/2018/01/10/Spring事务源码解析/" class="archive-article-date">
+  	<time datetime="2018-01-10T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-10</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>我将一些最关键的要点和结论先做一下总结。如果要做细致的理解，通读全文还是很有必要的。</p>
+        <p>Spring中的隔离级别、Spring 事务的传播属性、事务代理类的创建<br>
         
-          <a class="article-more-a" href="/2017/08/13/Java并发编程：volatile关键字解析/#more">more >></a>
+          <a class="article-more-a" href="/2018/01/10/Spring事务源码解析/#more">more >></a>
         
       
 
@@ -275,7 +275,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JUC</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">框架源码</a>
         		</li>
       		
 		</ul>
@@ -285,7 +285,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/08/13/Java并发编程：volatile关键字解析/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/01/10/Spring事务源码解析/">展开全文 >></a>
         </p>
       
 
@@ -300,29 +300,29 @@
 
 
   
-    <article id="post-事务的四大特性以及事务的四种隔离级别" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-栈上分配和TLAB" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/11/事务的四大特性以及事务的四种隔离级别/">事务的四大特性以及事务的四种隔离级别</a>
+      <a class="article-title" href="/2018/01/08/栈上分配和TLAB/">栈上分配和TLAB</a>
     </h1>
   
 
         
-        <a href="/2017/08/11/事务的四大特性以及事务的四种隔离级别/" class="archive-article-date">
-  	<time datetime="2017-08-11T06:54:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-11</time>
+        <a href="/2018/01/08/栈上分配和TLAB/" class="archive-article-date">
+  	<time datetime="2018-01-08T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-08</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>本篇讲诉数据库中事务的四大特性（ACID），并且将会详细地说明事务的隔离级别。</p>
+        <p>在Java程序中很多对象都是小对象且用过即丢，它们不存在线程共享也适合被快速GC，所以对于小对象通常JVM会优先分配在TLAB上，并且TLAB上的分配由于是线程私有所以没有锁开销。因此在实践中分配多个小对象的效率通常比分配一个大对象的效率要高。<br>
         
-          <a class="article-more-a" href="/2017/08/11/事务的四大特性以及事务的四种隔离级别/#more">more >></a>
+          <a class="article-more-a" href="/2018/01/08/栈上分配和TLAB/#more">more >></a>
         
       
 
@@ -336,7 +336,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">RDB</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
         		</li>
       		
 		</ul>
@@ -346,7 +346,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/08/11/事务的四大特性以及事务的四种隔离级别/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/01/08/栈上分配和TLAB/">展开全文 >></a>
         </p>
       
 
@@ -361,29 +361,30 @@
 
 
   
-    <article id="post-悲观锁与乐观锁与事务" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-逃逸分析原理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/10/悲观锁与乐观锁与事务/">悲观锁与乐观锁与事务</a>
+      <a class="article-title" href="/2018/01/06/逃逸分析原理/">逃逸分析原理</a>
     </h1>
   
 
         
-        <a href="/2017/08/10/悲观锁与乐观锁与事务/" class="archive-article-date">
-  	<time datetime="2017-08-10T02:56:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-10</time>
+        <a href="/2018/01/06/逃逸分析原理/" class="archive-article-date">
+  	<time datetime="2018-01-06T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-06</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>事务针对的是行为操作而锁针对的是对象和数据；<br>事务是指执行行为操作的过程而锁是执行的手段。<br>
+        <h3 id="逃逸分析"><a href="#逃逸分析" class="headerlink" title="逃逸分析"></a>逃逸分析</h3><pre><code>在编程语言的编译优化原理中，分析指针动态范围的方法称之为逃逸分析。通俗来讲，当一个对象的指针被多个方法或线程引用时，我们称这个指针发生了逃逸。
+</code></pre>
         
-          <a class="article-more-a" href="/2017/08/10/悲观锁与乐观锁与事务/#more">more >></a>
+          <a class="article-more-a" href="/2018/01/06/逃逸分析原理/#more">more >></a>
         
       
 
@@ -397,7 +398,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JUC</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
         		</li>
       		
 		</ul>
@@ -407,7 +408,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/08/10/悲观锁与乐观锁与事务/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/01/06/逃逸分析原理/">展开全文 >></a>
         </p>
       
 
@@ -422,29 +423,29 @@
 
 
   
-    <article id="post- JAVA中Object类中的方法以及finalize函数作用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-GC优化案例6： metaspace占用率过高" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/08/ JAVA中Object类中的方法以及finalize函数作用/">JAVA中Object类中的方法以及finalize函数作用</a>
+      <a class="article-title" href="/2018/01/04/GC优化案例6： metaspace占用率过高/">GC优化案例6： metaspace占用率过高</a>
     </h1>
   
 
         
-        <a href="/2017/08/08/ JAVA中Object类中的方法以及finalize函数作用/" class="archive-article-date">
-  	<time datetime="2017-08-08T06:54:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-08</time>
+        <a href="/2018/01/04/GC优化案例6： metaspace占用率过高/" class="archive-article-date">
+  	<time datetime="2018-01-04T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-04</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>这篇文章对Object中所有的函数进行总结和梳理。Object是所有类的父类，任何类都默认继承Object。<br>
+        <p>对GC优化的案例进行的系列总结（六）：<br>
         
-          <a class="article-more-a" href="/2017/08/08/ JAVA中Object类中的方法以及finalize函数作用/#more">more >></a>
+          <a class="article-more-a" href="/2018/01/04/GC优化案例6： metaspace占用率过高/#more">more >></a>
         
       
 
@@ -458,7 +459,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">JAVA基础</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
         		</li>
       		
 		</ul>
@@ -468,7 +469,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/08/08/ JAVA中Object类中的方法以及finalize函数作用/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/01/04/GC优化案例6： metaspace占用率过高/">展开全文 >></a>
         </p>
       
 
@@ -483,29 +484,29 @@
 
 
   
-    <article id="post-各RDB与Nosql性能与特点总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-GC优化案例5：老年代有效空间不足导致频繁FGC" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/05/各RDB与Nosql性能与特点总结/">各RDB与Nosql性能与特点总结</a>
+      <a class="article-title" href="/2018/01/02/GC优化案例5：老年代有效空间不足导致频繁FGC/">GC优化案例5：老年代有效空间不足导致频繁FGC</a>
     </h1>
   
 
         
-        <a href="/2017/08/05/各RDB与Nosql性能与特点总结/" class="archive-article-date">
-  	<time datetime="2017-08-05T09:37:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-05</time>
+        <a href="/2018/01/02/GC优化案例5：老年代有效空间不足导致频繁FGC/" class="archive-article-date">
+  	<time datetime="2018-01-02T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-02</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>最近考虑到数据库包括各种缓存到底面对高并发情况性能到底是怎么样的，所以多方收集整理成此篇，以后也会持续更新。<br>
+        <p>对GC优化的案例进行的系列总结（五）：<br>
         
-          <a class="article-more-a" href="/2017/08/05/各RDB与Nosql性能与特点总结/#more">more >></a>
+          <a class="article-more-a" href="/2018/01/02/GC优化案例5：老年代有效空间不足导致频繁FGC/#more">more >></a>
         
       
 
@@ -519,7 +520,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">缓存</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
         		</li>
       		
 		</ul>
@@ -529,7 +530,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/08/05/各RDB与Nosql性能与特点总结/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/01/02/GC优化案例5：老年代有效空间不足导致频繁FGC/">展开全文 >></a>
         </p>
       
 
@@ -544,29 +545,29 @@
 
 
   
-    <article id="post-Java容器各实现类的底层实现原理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-GC优化案例4：虚引用过多导致CMS Remark阶段时间过长" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/05/Java容器各实现类的底层实现原理/">Java容器各实现类的底层实现原理概述</a>
+      <a class="article-title" href="/2017/12/28/GC优化案例4：虚引用过多导致CMS Remark阶段时间过长/">GC优化案例4：虚引用过多导致CMS Remark阶段时间过长</a>
     </h1>
   
 
         
-        <a href="/2017/08/05/Java容器各实现类的底层实现原理/" class="archive-article-date">
-  	<time datetime="2017-08-05T05:18:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-05</time>
+        <a href="/2017/12/28/GC优化案例4：虚引用过多导致CMS Remark阶段时间过长/" class="archive-article-date">
+  	<time datetime="2017-12-28T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-28</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p> Java容器各实现类的底层实现原理概述<br>
+        <p>对GC优化的案例进行的系列总结（四）：<br>
         
-          <a class="article-more-a" href="/2017/08/05/Java容器各实现类的底层实现原理/#more">more >></a>
+          <a class="article-more-a" href="/2017/12/28/GC优化案例4：虚引用过多导致CMS Remark阶段时间过长/#more">more >></a>
         
       
 
@@ -580,7 +581,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">JDK容器</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
         		</li>
       		
 		</ul>
@@ -590,7 +591,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/08/05/Java容器各实现类的底层实现原理/">展开全文 >></a>
+          <a class="article-more-a" href="/2017/12/28/GC优化案例4：虚引用过多导致CMS Remark阶段时间过长/">展开全文 >></a>
         </p>
       
 
@@ -605,29 +606,29 @@
 
 
   
-    <article id="post-秒杀系统解决方案" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-GC优化案例3：CMS Remark之前强制minorGC" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/01/秒杀系统解决方案/">秒杀系统解决方案</a>
+      <a class="article-title" href="/2017/12/26/GC优化案例3：CMS Remark之前强制minorGC/">GC优化案例3：CMS Remark之前强制minorGC</a>
     </h1>
   
 
         
-        <a href="/2017/08/01/秒杀系统解决方案/" class="archive-article-date">
-  	<time datetime="2017-08-01T02:56:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-01</time>
+        <a href="/2017/12/26/GC优化案例3：CMS Remark之前强制minorGC/" class="archive-article-date">
+  	<time datetime="2017-12-26T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-26</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>从架构、产品、前端、后端四个层面针对秒杀场景（可以扩展到所有高并发场景）分别总结了一些解决方案。<br>
+        <p>对GC优化的案例进行的系列总结（三）：<br>
         
-          <a class="article-more-a" href="/2017/08/01/秒杀系统解决方案/#more">more >></a>
+          <a class="article-more-a" href="/2017/12/26/GC优化案例3：CMS Remark之前强制minorGC/#more">more >></a>
         
       
 
@@ -641,7 +642,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
         		</li>
       		
 		</ul>
@@ -651,7 +652,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/08/01/秒杀系统解决方案/">展开全文 >></a>
+          <a class="article-more-a" href="/2017/12/26/GC优化案例3：CMS Remark之前强制minorGC/">展开全文 >></a>
         </p>
       
 
@@ -666,29 +667,29 @@
 
 
   
-    <article id="post-多机的Sequence问题与处理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-GC优化案例2：永久代空间不足" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/01/多机的Sequence问题与处理/">多机的Sequence问题与处理</a>
+      <a class="article-title" href="/2017/12/24/GC优化案例2：永久代空间不足/">GC优化案例2：永久代空间不足</a>
     </h1>
   
 
         
-        <a href="/2017/08/01/多机的Sequence问题与处理/" class="archive-article-date">
-  	<time datetime="2017-08-01T02:56:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-01</time>
+        <a href="/2017/12/24/GC优化案例2：永久代空间不足/" class="archive-article-date">
+  	<time datetime="2017-12-24T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-24</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>数据库拆分之后，会引入诸多新的问题，其中之一就是，以MySQL为例，原先单表的时候， 可以通过MySQL自带的aut_increment实现自增不重复id，现在用不了了。数据库层面 做不了必须引入中间件去解决。<br>
+        <p>对GC优化的案例进行的系列总结（二）：<br>
         
-          <a class="article-more-a" href="/2017/08/01/多机的Sequence问题与处理/#more">more >></a>
+          <a class="article-more-a" href="/2017/12/24/GC优化案例2：永久代空间不足/#more">more >></a>
         
       
 
@@ -702,7 +703,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
         		</li>
       		
 		</ul>
@@ -712,7 +713,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/08/01/多机的Sequence问题与处理/">展开全文 >></a>
+          <a class="article-more-a" href="/2017/12/24/GC优化案例2：永久代空间不足/">展开全文 >></a>
         </p>
       
 
@@ -727,30 +728,29 @@
 
 
   
-    <article id="post-服务框架设计与实现的原理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-GC优化案例1：Major GC和Minor GC频繁" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/22/服务框架设计与实现的原理/">服务框架的设计与实现</a>
+      <a class="article-title" href="/2017/12/22/GC优化案例1：Major GC和Minor GC频繁/">GC优化案例1：Major GC和Minor GC频繁</a>
     </h1>
   
 
         
-        <a href="/2017/07/22/服务框架设计与实现的原理/" class="archive-article-date">
-  	<time datetime="2017-07-22T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-22</time>
+        <a href="/2017/12/22/GC优化案例1：Major GC和Minor GC频繁/" class="archive-article-date">
+  	<time datetime="2017-12-22T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-22</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>RPC(Remote Procedure Call)即远程过程调用，允许一台计算机调用另一台计算机上的程序得到结果，而代码中不需要做额外的编程，就像在本地调用一样。</p>
-<p>现在互联网应用的量级越来越大，单台计算机的能力有限，需要借助可扩展的计算机集群来完成，分布式的应用可以借助RPC来完成机器之间的调用。<br>
+        <p>对GC优化的案例进行的系列总结（一）：<br>
         
-          <a class="article-more-a" href="/2017/07/22/服务框架设计与实现的原理/#more">more >></a>
+          <a class="article-more-a" href="/2017/12/22/GC优化案例1：Major GC和Minor GC频繁/#more">more >></a>
         
       
 
@@ -764,7 +764,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
         		</li>
       		
 		</ul>
@@ -774,7 +774,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/07/22/服务框架设计与实现的原理/">展开全文 >></a>
+          <a class="article-more-a" href="/2017/12/22/GC优化案例1：Major GC和Minor GC频繁/">展开全文 >></a>
         </p>
       
 
@@ -791,7 +791,7 @@
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
     </nav>
   
 
@@ -992,6 +992,10 @@ alert("Error:"+error.code+" "+error.message);
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">分布式缓存</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
@@ -1000,11 +1004,11 @@ alert("Error:"+error.code+" "+error.message);
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1012,7 +1016,11 @@ alert("Error:"+error.code+" "+error.message);
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+                <a href="javascript:void(0)" class="js-tag color4">中间件</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1020,11 +1028,11 @@ alert("Error:"+error.code+" "+error.message);
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
+                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
             
             <div class="clearfix"></div>

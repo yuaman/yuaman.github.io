@@ -178,41 +178,29 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-分布式锁通用解决方案" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-微信红包实现方案" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/18/分布式锁通用解决方案/">分布式锁通用解决方案</a>
+      <a class="article-title" href="/2017/10/10/微信红包实现方案/">微信红包实现方案</a>
     </h1>
   
 
         
-        <a href="/2017/07/18/分布式锁通用解决方案/" class="archive-article-date">
-  	<time datetime="2017-07-18T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-18</time>
+        <a href="/2017/10/10/微信红包实现方案/" class="archive-article-date">
+  	<time datetime="2017-10-10T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-10-10</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="分布式锁的解决方式："><a href="#分布式锁的解决方式：" class="headerlink" title="分布式锁的解决方式："></a>分布式锁的解决方式：</h3><h3 id="基于数据库："><a href="#基于数据库：" class="headerlink" title="基于数据库："></a>基于数据库：</h3><blockquote>
-<p>   基于数据库表做乐观锁，用于分布式锁。（version）</p>
-<p>   基于数据库表做悲观锁（InnoDB，for update）</p>
-<p>   基于数据库表数据记录做唯一约束（表中记录方法名称）</p>
-</blockquote>
-<h3 id="基于缓存："><a href="#基于缓存：" class="headerlink" title="基于缓存："></a>基于缓存：</h3><blockquote>
-<p> 常用方案：使用redis的setnx()用于分布式锁。（setNx，直接设置值为当前时间+超时时间，保持操作原子性）</p>
-<p>使用memcached的add()方法，用于分布式锁。</p>
-<p>使用Tair的put()方法，用于分布式锁。</p>
-</blockquote>
-<h3 id="基于Zookeeper："><a href="#基于Zookeeper：" class="headerlink" title="基于Zookeeper："></a>基于Zookeeper：</h3><blockquote>
-<p>每个客户端对某个方法加锁时，在zookeeper上的与该方法对应的指定节点的目录下，生成一个唯一的瞬时有序节点。 判断是否获取锁只需要判断有序节点中序号最小的一个。 当释放锁的时候，只需将这个瞬时节点删除即可。</p>
-</blockquote>
+        <p>*<br>
         
-          <a class="article-more-a" href="/2017/07/18/分布式锁通用解决方案/#more">more >></a>
+          <a class="article-more-a" href="/2017/10/10/微信红包实现方案/#more">more >></a>
         
       
 
@@ -236,7 +224,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/07/18/分布式锁通用解决方案/">展开全文 >></a>
+          <a class="article-more-a" href="/2017/10/10/微信红包实现方案/">展开全文 >></a>
         </p>
       
 
@@ -251,29 +239,29 @@
 
 
   
-    <article id="post-读《Effecttive Java》" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/18/读《Effecttive Java》/">读《Effecttive Java》</a>
+      <a class="article-title" href="/2017/09/19/读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地/">读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地</a>
     </h1>
   
 
         
-        <a href="/2017/07/18/读《Effecttive Java》/" class="archive-article-date">
-  	<time datetime="2017-07-18T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-18</time>
+        <a href="/2017/09/19/读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地/" class="archive-article-date">
+  	<time datetime="2017-09-19T06:44:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-19</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>“读完一本《Effecttive Java》，才算是一个中级Java程序员”<br>
+        <p>强势洗地，我就服太祖你。</p>
         
-          <a class="article-more-a" href="/2017/07/18/读《Effecttive Java》/#more">more >></a>
+          <a class="article-more-a" href="/2017/09/19/读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地/#more">more >></a>
         
       
 
@@ -297,7 +285,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/07/18/读《Effecttive Java》/">展开全文 >></a>
+          <a class="article-more-a" href="/2017/09/19/读《毛选》第二卷《苏联利益与人类利益相一致》，看毛泽东如何给斯大林强势洗地/">展开全文 >></a>
         </p>
       
 
@@ -312,29 +300,94 @@
 
 
   
-    <article id="post-分布式缓存一致性Hash算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-读内藤树作品《青年们，读马克思吧》" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/18/分布式缓存一致性Hash算法/">分布式缓存一致性hash算法</a>
+      <a class="article-title" href="/2017/09/18/读内藤树作品《青年们，读马克思吧》/">读内藤树作品《青年们，读马克思吧》</a>
     </h1>
   
 
         
-        <a href="/2017/07/18/分布式缓存一致性Hash算法/" class="archive-article-date">
-  	<time datetime="2017-07-18T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-18</time>
+        <a href="/2017/09/18/读内藤树作品《青年们，读马克思吧》/" class="archive-article-date">
+  	<time datetime="2017-09-18T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-18</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>在设计分布式缓存集群的时候，需要考虑集群的伸缩性，也就是当向集群中增加服务器的时候，要尽量减小对集群的影响，而一致性hash算法就是用来解决集群伸缩性。<br>
+        <p>这是我一六年秋天某个晚上写的一篇文章，现在看来很多观点可以用更成熟的论证方法来论证。<br>
         
-          <a class="article-more-a" href="/2017/07/18/分布式缓存一致性Hash算法/#more">more >></a>
+          <a class="article-more-a" href="/2017/09/18/读内藤树作品《青年们，读马克思吧》/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/09/18/读内藤树作品《青年们，读马克思吧》/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
+    <article id="post-分布式事务通用解决方案" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/18/分布式事务通用解决方案/">分布式事务通用解决方案</a>
+    </h1>
+  
+
+        
+        <a href="/2017/08/18/分布式事务通用解决方案/" class="archive-article-date">
+  	<time datetime="2017-08-18T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>先上结论, 再分别介绍分布式事务的各种实现方式.</p>
+<pre><code>• 如果业务场景需要强一致性, 那么尽量避免将它们放在不同服务中, 也就是尽量使用本地事务, 避免使用强一致性的分布式事务.
+• 如果业务场景能够接受最终一致性, 那么最好是使用基于消息的最终一致性的方案(异步确保型)来解决.
+• 如果业务场景需要强一致性, 并且只能够进行分布式服务部署, 那么最好是使用TCC方案而不是2PC方案来解决.
+</code></pre>
+        
+          <a class="article-more-a" href="/2017/08/18/分布式事务通用解决方案/#more">more >></a>
         
       
 
@@ -358,7 +411,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/07/18/分布式缓存一致性Hash算法/">展开全文 >></a>
+          <a class="article-more-a" href="/2017/08/18/分布式事务通用解决方案/">展开全文 >></a>
         </p>
       
 
@@ -373,29 +426,29 @@
 
 
   
-    <article id="post-mongoDB常见问题整理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-线程安全与锁优化" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/15/mongoDB常见问题整理/">mongoDB常见问题整理</a>
+      <a class="article-title" href="/2017/08/14/线程安全与锁优化/">线程安全与锁优化——深入理解JVM阅读笔记</a>
     </h1>
   
 
         
-        <a href="/2017/07/15/mongoDB常见问题整理/" class="archive-article-date">
-  	<time datetime="2017-07-15T09:37:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-15</time>
+        <a href="/2017/08/14/线程安全与锁优化/" class="archive-article-date">
+  	<time datetime="2017-08-14T06:44:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-14</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h5 id="多方收集整理成此篇，以后也会持续更新。"><a href="#多方收集整理成此篇，以后也会持续更新。" class="headerlink" title="多方收集整理成此篇，以后也会持续更新。"></a>多方收集整理成此篇，以后也会持续更新。</h5>
+        <h5 id="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。"><a href="#我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。" class="headerlink" title="我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。"></a>我根据我的理解把一些关键的要点整理了出来，并对其中一些内容作了删改。</h5><h5 id="参考地址：http-www-cnblogs-com-pacoson-p-5351355-html"><a href="#参考地址：http-www-cnblogs-com-pacoson-p-5351355-html" class="headerlink" title="参考地址：http://www.cnblogs.com/pacoson/p/5351355.html"></a>参考地址：<a href="http://www.cnblogs.com/pacoson/p/5351355.html" target="_blank" rel="noopener">http://www.cnblogs.com/pacoson/p/5351355.html</a></h5>
         
-          <a class="article-more-a" href="/2017/07/15/mongoDB常见问题整理/#more">more >></a>
+          <a class="article-more-a" href="/2017/08/14/线程安全与锁优化/#more">more >></a>
         
       
 
@@ -409,7 +462,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">缓存</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JUC</a>
         		</li>
       		
 		</ul>
@@ -419,7 +472,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/07/15/mongoDB常见问题整理/">展开全文 >></a>
+          <a class="article-more-a" href="/2017/08/14/线程安全与锁优化/">展开全文 >></a>
         </p>
       
 
@@ -434,29 +487,212 @@
 
 
   
-    <article id="post-Java实现动态代理与Spring的动态代理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Java并发编程：volatile关键字解析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/11/Java实现动态代理与Spring的动态代理/">Java实现动态代理</a>
+      <a class="article-title" href="/2017/08/13/Java并发编程：volatile关键字解析/">Java并发编程：volatile关键字解析</a>
     </h1>
   
 
         
-        <a href="/2017/07/11/Java实现动态代理与Spring的动态代理/" class="archive-article-date">
-  	<time datetime="2017-07-11T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-11</time>
+        <a href="/2017/08/13/Java并发编程：volatile关键字解析/" class="archive-article-date">
+  	<time datetime="2017-08-13T02:56:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-13</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>无边落木潇潇下<br>
+        <p>我将一些最关键的要点和结论先做一下总结。如果要做细致的理解，通读全文还是很有必要的。</p>
         
-          <a class="article-more-a" href="/2017/07/11/Java实现动态代理与Spring的动态代理/#more">more >></a>
+          <a class="article-more-a" href="/2017/08/13/Java并发编程：volatile关键字解析/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JUC</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/08/13/Java并发编程：volatile关键字解析/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
+    <article id="post-事务的四大特性以及事务的四种隔离级别" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/11/事务的四大特性以及事务的四种隔离级别/">事务的四大特性以及事务的四种隔离级别</a>
+    </h1>
+  
+
+        
+        <a href="/2017/08/11/事务的四大特性以及事务的四种隔离级别/" class="archive-article-date">
+  	<time datetime="2017-08-11T06:54:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本篇讲诉数据库中事务的四大特性（ACID），并且将会详细地说明事务的隔离级别。</p>
+        
+          <a class="article-more-a" href="/2017/08/11/事务的四大特性以及事务的四种隔离级别/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">RDB</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/08/11/事务的四大特性以及事务的四种隔离级别/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
+    <article id="post-悲观锁与乐观锁与事务" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/10/悲观锁与乐观锁与事务/">悲观锁与乐观锁与事务</a>
+    </h1>
+  
+
+        
+        <a href="/2017/08/10/悲观锁与乐观锁与事务/" class="archive-article-date">
+  	<time datetime="2017-08-10T02:56:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>事务针对的是行为操作而锁针对的是对象和数据；<br>事务是指执行行为操作的过程而锁是执行的手段。<br>
+        
+          <a class="article-more-a" href="/2017/08/10/悲观锁与乐观锁与事务/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JUC</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/08/10/悲观锁与乐观锁与事务/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
+    <article id="post- JAVA中Object类中的方法以及finalize函数作用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/08/ JAVA中Object类中的方法以及finalize函数作用/">JAVA中Object类中的方法以及finalize函数作用</a>
+    </h1>
+  
+
+        
+        <a href="/2017/08/08/ JAVA中Object类中的方法以及finalize函数作用/" class="archive-article-date">
+  	<time datetime="2017-08-08T06:54:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这篇文章对Object中所有的函数进行总结和梳理。Object是所有类的父类，任何类都默认继承Object。<br>
+        
+          <a class="article-more-a" href="/2017/08/08/ JAVA中Object类中的方法以及finalize函数作用/#more">more >></a>
         
       
 
@@ -480,7 +716,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/07/11/Java实现动态代理与Spring的动态代理/">展开全文 >></a>
+          <a class="article-more-a" href="/2017/08/08/ JAVA中Object类中的方法以及finalize函数作用/">展开全文 >></a>
         </p>
       
 
@@ -495,90 +731,29 @@
 
 
   
-    <article id="post-Sprign 动态代理机制" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-各RDB与Nosql性能与特点总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/10/Sprign 动态代理机制/">Sprign 动态代理机制</a>
+      <a class="article-title" href="/2017/08/05/各RDB与Nosql性能与特点总结/">各RDB与Nosql性能与特点总结</a>
     </h1>
   
 
         
-        <a href="/2017/07/10/Sprign 动态代理机制/" class="archive-article-date">
-  	<time datetime="2017-07-10T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-10</time>
+        <a href="/2017/08/05/各RDB与Nosql性能与特点总结/" class="archive-article-date">
+  	<time datetime="2017-08-05T09:37:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-05</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>寄语迷情痴儿女，廖天有客正屠龙<br>
+        <p>最近考虑到数据库包括各种缓存到底面对高并发情况性能到底是怎么样的，所以多方收集整理成此篇，以后也会持续更新。<br>
         
-          <a class="article-more-a" href="/2017/07/10/Sprign 动态代理机制/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">框架源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/07/10/Sprign 动态代理机制/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
-    <article id="post-mongoDB底层运作原理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/05/mongoDB底层运作原理/">mongoDB运作原理与分片实现</a>
-    </h1>
-  
-
-        
-        <a href="/2017/07/05/mongoDB底层运作原理/" class="archive-article-date">
-  	<time datetime="2017-07-05T09:37:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-05</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h5 id="觉得这一篇整理比较好，主要在于通俗易懂，逻辑清晰。但是网上转载的人太多了，我实在找不到原作者了。"><a href="#觉得这一篇整理比较好，主要在于通俗易懂，逻辑清晰。但是网上转载的人太多了，我实在找不到原作者了。" class="headerlink" title="觉得这一篇整理比较好，主要在于通俗易懂，逻辑清晰。但是网上转载的人太多了，我实在找不到原作者了。"></a>觉得这一篇整理比较好，主要在于通俗易懂，逻辑清晰。但是网上转载的人太多了，我实在找不到原作者了。</h5>
-        
-          <a class="article-more-a" href="/2017/07/05/mongoDB底层运作原理/#more">more >></a>
+          <a class="article-more-a" href="/2017/08/05/各RDB与Nosql性能与特点总结/#more">more >></a>
         
       
 
@@ -602,190 +777,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/07/05/mongoDB底层运作原理/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
-    <article id="post-读曾宪杰《大型网站系统与Java中间件实践》" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/20/读曾宪杰《大型网站系统与Java中间件实践》/">读曾宪杰《大型网站系统与Java中间件实践》</a>
-    </h1>
-  
-
-        
-        <a href="/2017/06/20/读曾宪杰《大型网站系统与Java中间件实践》/" class="archive-article-date">
-  	<time datetime="2017-06-20T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>十年，一个时代过去<br>
-        
-          <a class="article-more-a" href="/2017/06/20/读曾宪杰《大型网站系统与Java中间件实践》/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/06/20/读曾宪杰《大型网站系统与Java中间件实践》/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
-    <article id="post-mongoDB生产环境三种模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/05/05/mongoDB生产环境三种模式/">mongoDB生产环境三种模式</a>
-    </h1>
-  
-
-        
-        <a href="/2017/05/05/mongoDB生产环境三种模式/" class="archive-article-date">
-  	<time datetime="2017-05-05T09:37:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-05</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>MongoDb在用于生产环境的三种模式，master/slaves（主从模式）;replcation副本集;auto shard 分片模式</p>
-        
-          <a class="article-more-a" href="/2017/05/05/mongoDB生产环境三种模式/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">缓存</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/05/05/mongoDB生产环境三种模式/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
-    <article id="post-MongoDB 进阶——大文件存储(GridFS)" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/05/MongoDB 进阶——大文件存储(GridFS)/">MongoDB 进阶——大文件存储(GridFS)</a>
-    </h1>
-  
-
-        
-        <a href="/2017/04/05/MongoDB 进阶——大文件存储(GridFS)/" class="archive-article-date">
-  	<time datetime="2017-04-05T09:37:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-05</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>GridFS是一种在MongoDB中存储大二进制文件的机制。<br>
-        
-          <a class="article-more-a" href="/2017/04/05/MongoDB 进阶——大文件存储(GridFS)/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">缓存</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/04/05/MongoDB 进阶——大文件存储(GridFS)/">展开全文 >></a>
+          <a class="article-more-a" href="/2017/08/05/各RDB与Nosql性能与特点总结/">展开全文 >></a>
         </p>
       
 
@@ -802,7 +794,7 @@
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
     </nav>
   
 
@@ -1003,6 +995,10 @@ alert("Error:"+error.code+" "+error.message);
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">分布式缓存</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
@@ -1011,11 +1007,11 @@ alert("Error:"+error.code+" "+error.message);
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+                <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1023,7 +1019,11 @@ alert("Error:"+error.code+" "+error.message);
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+                <a href="javascript:void(0)" class="js-tag color4">中间件</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1031,11 +1031,11 @@ alert("Error:"+error.code+" "+error.message);
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
+                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
             
             <div class="clearfix"></div>
