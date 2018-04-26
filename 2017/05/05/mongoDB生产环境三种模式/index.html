@@ -9,14 +9,14 @@
   <title>mongoDB生产环境三种模式 | 无题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="MongoDb在用于生产环境的三种模式，master/slaves（主从模式）;replcation副本集;auto shard 分片模式">
-<meta name="keywords" content="缓存">
+<meta name="keywords" content="分布式缓存">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mongoDB生产环境三种模式">
 <meta property="og:url" content="http://yutinglin.cn/2017/05/05/mongoDB生产环境三种模式/index.html">
 <meta property="og:site_name" content="无题">
 <meta property="og:description" content="MongoDb在用于生产环境的三种模式，master/slaves（主从模式）;replcation副本集;auto shard 分片模式">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-04-20T16:41:41.148Z">
+<meta property="og:updated_time" content="2018-04-26T12:55:29.910Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mongoDB生产环境三种模式">
 <meta name="twitter:description" content="MongoDb在用于生产环境的三种模式，master/slaves（主从模式）;replcation副本集;auto shard 分片模式">
@@ -62,17 +62,19 @@
 			
 				<li><a href="/">主页</a></li>
 	        
-				<li><a href="/tags/JVM/">JVM</a></li>
+				<li><a href="/tags/框架源码/">框架源码</a></li>
 	        
-				<li><a href="/tags/JDK容器/">JDK容器</a></li>
+				<li><a href="/tags/中间件/">中间件</a></li>
+	        
+				<li><a href="/tags/分布式/">分布式</a></li>
+	        
+				<li><a href="/tags/分布式缓存/">分布式缓存</a></li>
+	        
+				<li><a href="/tags/JVM/">JVM</a></li>
 	        
 				<li><a href="/tags/JUC/">JUC</a></li>
 	        
-				<li><a href="/tags/框架源码/">框架源码</a></li>
-	        
-				<li><a href="/tags/缓存/">缓存</a></li>
-	        
-				<li><a href="/tags/分布式/">分布式</a></li>
+				<li><a href="/tags/JDK容器/">JDK容器</a></li>
 	        
 				<li><a href="/tags/读书笔记/">读书笔记</a></li>
 	        
@@ -136,6 +138,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -152,21 +156,23 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 12.5%"><a href="/">主页</a></li>
+					<li style="width: 11.11111111111111%"><a href="/">主页</a></li>
 		        
-					<li style="width: 12.5%"><a href="/tags/JVM/">JVM</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/框架源码/">框架源码</a></li>
 		        
-					<li style="width: 12.5%"><a href="/tags/JDK容器/">JDK容器</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/中间件/">中间件</a></li>
 		        
-					<li style="width: 12.5%"><a href="/tags/JUC/">JUC</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/分布式/">分布式</a></li>
 		        
-					<li style="width: 12.5%"><a href="/tags/框架源码/">框架源码</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/分布式缓存/">分布式缓存</a></li>
 		        
-					<li style="width: 12.5%"><a href="/tags/缓存/">缓存</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/JVM/">JVM</a></li>
 		        
-					<li style="width: 12.5%"><a href="/tags/分布式/">分布式</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/JUC/">JUC</a></li>
 		        
-					<li style="width: 12.5%"><a href="/tags/读书笔记/">读书笔记</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/JDK容器/">JDK容器</a></li>
+		        
+					<li style="width: 11.11111111111111%"><a href="/tags/读书笔记/">读书笔记</a></li>
 		        
 				</ul>
 			</nav>
@@ -252,7 +258,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">缓存</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">分布式缓存</a>
         		</li>
       		
 		</ul>
@@ -581,10 +587,6 @@ alert("Error:"+error.code+" "+error.message);
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
               </li>
              
@@ -597,6 +599,10 @@ alert("Error:"+error.code+" "+error.message);
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">缓存</a>
               </li>
              
@@ -605,11 +611,11 @@ alert("Error:"+error.code+" "+error.message);
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
+                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
               </li>
             
             <div class="clearfix"></div>

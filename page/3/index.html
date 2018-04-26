@@ -57,17 +57,19 @@
 			
 				<li><a href="/">主页</a></li>
 	        
-				<li><a href="/tags/JVM/">JVM</a></li>
+				<li><a href="/tags/框架源码/">框架源码</a></li>
 	        
-				<li><a href="/tags/JDK容器/">JDK容器</a></li>
+				<li><a href="/tags/中间件/">中间件</a></li>
+	        
+				<li><a href="/tags/分布式/">分布式</a></li>
+	        
+				<li><a href="/tags/分布式缓存/">分布式缓存</a></li>
+	        
+				<li><a href="/tags/JVM/">JVM</a></li>
 	        
 				<li><a href="/tags/JUC/">JUC</a></li>
 	        
-				<li><a href="/tags/框架源码/">框架源码</a></li>
-	        
-				<li><a href="/tags/缓存/">缓存</a></li>
-	        
-				<li><a href="/tags/分布式/">分布式</a></li>
+				<li><a href="/tags/JDK容器/">JDK容器</a></li>
 	        
 				<li><a href="/tags/读书笔记/">读书笔记</a></li>
 	        
@@ -131,6 +133,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -147,21 +151,23 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 12.5%"><a href="/">主页</a></li>
+					<li style="width: 11.11111111111111%"><a href="/">主页</a></li>
 		        
-					<li style="width: 12.5%"><a href="/tags/JVM/">JVM</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/框架源码/">框架源码</a></li>
 		        
-					<li style="width: 12.5%"><a href="/tags/JDK容器/">JDK容器</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/中间件/">中间件</a></li>
 		        
-					<li style="width: 12.5%"><a href="/tags/JUC/">JUC</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/分布式/">分布式</a></li>
 		        
-					<li style="width: 12.5%"><a href="/tags/框架源码/">框架源码</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/分布式缓存/">分布式缓存</a></li>
 		        
-					<li style="width: 12.5%"><a href="/tags/缓存/">缓存</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/JVM/">JVM</a></li>
 		        
-					<li style="width: 12.5%"><a href="/tags/分布式/">分布式</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/JUC/">JUC</a></li>
 		        
-					<li style="width: 12.5%"><a href="/tags/读书笔记/">读书笔记</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/JDK容器/">JDK容器</a></li>
+		        
+					<li style="width: 11.11111111111111%"><a href="/tags/读书笔记/">读书笔记</a></li>
 		        
 				</ul>
 			</nav>
@@ -177,67 +183,6 @@
           </div>
           <div id="js-content" class="content-ll">
             
-  
-    <article id="post-堆外内存概要" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/10/堆外内存概要/">堆外内存概要</a>
-    </h1>
-  
-
-        
-        <a href="/2018/01/10/堆外内存概要/" class="archive-article-date">
-  	<time datetime="2018-01-10T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-10</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="DirectByteBuffer"><a href="#DirectByteBuffer" class="headerlink" title="DirectByteBuffer"></a>DirectByteBuffer</h3><p>JDK中使用 DirectByteBuffer对象来表示堆外内存，每个 DirectByteBuffer对象在初始化时，都会创建一个对应的 Cleaner对象，这个 Cleaner对象会在合适的时候执行 unsafe.freeMemory(address)，从而回收这块堆外内存。<br>
-        
-          <a class="article-more-a" href="/2018/01/10/堆外内存概要/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/01/10/堆外内存概要/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
   
     <article id="post-Spring事务源码解析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -286,6 +231,67 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2018/01/10/Spring事务源码解析/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
+    <article id="post-堆外内存概要" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/10/堆外内存概要/">堆外内存概要</a>
+    </h1>
+  
+
+        
+        <a href="/2018/01/10/堆外内存概要/" class="archive-article-date">
+  	<time datetime="2018-01-10T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="DirectByteBuffer"><a href="#DirectByteBuffer" class="headerlink" title="DirectByteBuffer"></a>DirectByteBuffer</h3><p>JDK中使用 DirectByteBuffer对象来表示堆外内存，每个 DirectByteBuffer对象在初始化时，都会创建一个对应的 Cleaner对象，这个 Cleaner对象会在合适的时候执行 unsafe.freeMemory(address)，从而回收这块堆外内存。<br>
+        
+          <a class="article-more-a" href="/2018/01/10/堆外内存概要/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/01/10/堆外内存概要/">展开全文 >></a>
         </p>
       
 
@@ -1004,10 +1010,6 @@ alert("Error:"+error.code+" "+error.message);
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">JDK容器</a>
               </li>
              
@@ -1020,6 +1022,10 @@ alert("Error:"+error.code+" "+error.message);
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">缓存</a>
               </li>
              
@@ -1028,11 +1034,11 @@ alert("Error:"+error.code+" "+error.message);
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
+                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
               </li>
             
             <div class="clearfix"></div>
