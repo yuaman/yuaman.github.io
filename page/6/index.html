@@ -184,6 +184,446 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-服务框架设计与实现的原理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/22/服务框架设计与实现的原理/">服务框架的设计与实现</a>
+    </h1>
+  
+
+        
+        <a href="/2017/07/22/服务框架设计与实现的原理/" class="archive-article-date">
+  	<time datetime="2017-07-22T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-22</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>RPC(Remote Procedure Call)即远程过程调用，允许一台计算机调用另一台计算机上的程序得到结果，而代码中不需要做额外的编程，就像在本地调用一样。</p>
+<p>现在互联网应用的量级越来越大，单台计算机的能力有限，需要借助可扩展的计算机集群来完成，分布式的应用可以借助RPC来完成机器之间的调用。<br>
+        
+          <a class="article-more-a" href="/2017/07/22/服务框架设计与实现的原理/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">中间件</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/07/22/服务框架设计与实现的原理/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
+    <article id="post-分布式缓存一致性Hash算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/18/分布式缓存一致性Hash算法/">分布式缓存一致性hash算法</a>
+    </h1>
+  
+
+        
+        <a href="/2017/07/18/分布式缓存一致性Hash算法/" class="archive-article-date">
+  	<time datetime="2017-07-18T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在设计分布式缓存集群的时候，需要考虑集群的伸缩性，也就是当向集群中增加服务器的时候，要尽量减小对集群的影响，而一致性hash算法就是用来解决集群伸缩性。<br>
+        
+          <a class="article-more-a" href="/2017/07/18/分布式缓存一致性Hash算法/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/07/18/分布式缓存一致性Hash算法/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
+    <article id="post-分布式锁通用解决方案" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/18/分布式锁通用解决方案/">分布式锁通用解决方案</a>
+    </h1>
+  
+
+        
+        <a href="/2017/07/18/分布式锁通用解决方案/" class="archive-article-date">
+  	<time datetime="2017-07-18T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="分布式锁的解决方式："><a href="#分布式锁的解决方式：" class="headerlink" title="分布式锁的解决方式："></a>分布式锁的解决方式：</h3><h3 id="基于数据库："><a href="#基于数据库：" class="headerlink" title="基于数据库："></a>基于数据库：</h3><blockquote>
+<p>   基于数据库表做乐观锁，用于分布式锁。（version）</p>
+<p>   基于数据库表做悲观锁（InnoDB，for update）</p>
+<p>   基于数据库表数据记录做唯一约束（表中记录方法名称）</p>
+</blockquote>
+<h3 id="基于缓存："><a href="#基于缓存：" class="headerlink" title="基于缓存："></a>基于缓存：</h3><blockquote>
+<p> 常用方案：使用redis的setnx()用于分布式锁。（setNx，直接设置值为当前时间+超时时间，保持操作原子性）</p>
+<p>使用memcached的add()方法，用于分布式锁。</p>
+<p>使用Tair的put()方法，用于分布式锁。</p>
+</blockquote>
+<h3 id="基于Zookeeper："><a href="#基于Zookeeper：" class="headerlink" title="基于Zookeeper："></a>基于Zookeeper：</h3><blockquote>
+<p>每个客户端对某个方法加锁时，在zookeeper上的与该方法对应的指定节点的目录下，生成一个唯一的瞬时有序节点。 判断是否获取锁只需要判断有序节点中序号最小的一个。 当释放锁的时候，只需将这个瞬时节点删除即可。</p>
+</blockquote>
+        
+          <a class="article-more-a" href="/2017/07/18/分布式锁通用解决方案/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/07/18/分布式锁通用解决方案/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
+    <article id="post-读《Effecttive Java》" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/18/读《Effecttive Java》/">读《Effecttive Java》</a>
+    </h1>
+  
+
+        
+        <a href="/2017/07/18/读《Effecttive Java》/" class="archive-article-date">
+  	<time datetime="2017-07-18T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>“读完一本《Effecttive Java》，才算是一个中级Java程序员”<br>
+        
+          <a class="article-more-a" href="/2017/07/18/读《Effecttive Java》/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/07/18/读《Effecttive Java》/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
+    <article id="post-mongoDB常见问题整理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/15/mongoDB常见问题整理/">mongoDB常见问题整理</a>
+    </h1>
+  
+
+        
+        <a href="/2017/07/15/mongoDB常见问题整理/" class="archive-article-date">
+  	<time datetime="2017-07-15T09:37:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-15</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="多方收集整理成此篇，以后也会持续更新。"><a href="#多方收集整理成此篇，以后也会持续更新。" class="headerlink" title="多方收集整理成此篇，以后也会持续更新。"></a>多方收集整理成此篇，以后也会持续更新。</h5>
+        
+          <a class="article-more-a" href="/2017/07/15/mongoDB常见问题整理/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">分布式缓存</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/07/15/mongoDB常见问题整理/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
+    <article id="post-Java实现动态代理与Spring的动态代理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/11/Java实现动态代理与Spring的动态代理/">Java实现动态代理</a>
+    </h1>
+  
+
+        
+        <a href="/2017/07/11/Java实现动态代理与Spring的动态代理/" class="archive-article-date">
+  	<time datetime="2017-07-11T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>无边落木潇潇下<br>
+        
+          <a class="article-more-a" href="/2017/07/11/Java实现动态代理与Spring的动态代理/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">JAVA基础</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/07/11/Java实现动态代理与Spring的动态代理/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
+    <article id="post-Sprign 动态代理机制" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/10/Sprign 动态代理机制/">Spring 动态代理机制</a>
+    </h1>
+  
+
+        
+        <a href="/2017/07/10/Sprign 动态代理机制/" class="archive-article-date">
+  	<time datetime="2017-07-10T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>寄语迷情痴儿女，廖天有客正屠龙<br>
+        
+          <a class="article-more-a" href="/2017/07/10/Sprign 动态代理机制/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">框架源码</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/07/10/Sprign 动态代理机制/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-mongoDB底层运作原理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -367,436 +807,9 @@
 
 
   
-    <article id="post-MongoDB 进阶——大文件存储(GridFS)" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/05/MongoDB 进阶——大文件存储(GridFS)/">MongoDB 进阶——大文件存储(GridFS)</a>
-    </h1>
-  
-
-        
-        <a href="/2017/04/05/MongoDB 进阶——大文件存储(GridFS)/" class="archive-article-date">
-  	<time datetime="2017-04-05T09:37:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-05</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>GridFS是一种在MongoDB中存储大二进制文件的机制。<br>
-        
-          <a class="article-more-a" href="/2017/04/05/MongoDB 进阶——大文件存储(GridFS)/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">分布式缓存</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/04/05/MongoDB 进阶——大文件存储(GridFS)/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
-    <article id="post-深入浅出数据库索引原理（平衡二叉树）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/13/深入浅出数据库索引原理（平衡二叉树）/">深入浅出数据库索引原理（平衡二叉树）</a>
-    </h1>
-  
-
-        
-        <a href="/2017/03/13/深入浅出数据库索引原理（平衡二叉树）/" class="archive-article-date">
-  	<time datetime="2017-03-13T09:37:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h5 id="由于探究mongo索引的原理所以引申到索引的实现平衡二叉树的探究"><a href="#由于探究mongo索引的原理所以引申到索引的实现平衡二叉树的探究" class="headerlink" title="由于探究mongo索引的原理所以引申到索引的实现平衡二叉树的探究"></a>由于探究mongo索引的原理所以引申到索引的实现平衡二叉树的探究</h5><p>转载地址：<a href="http://www.cnblogs.com/aspwebchh/p/6652855.html" target="_blank" rel="noopener">http://www.cnblogs.com/aspwebchh/p/6652855.html</a></p>
-        
-          <a class="article-more-a" href="/2017/03/13/深入浅出数据库索引原理（平衡二叉树）/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">RDB</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/03/13/深入浅出数据库索引原理（平衡二叉树）/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
-    <article id="post-单点登录实施概述" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/10/单点登录实施概述/">单点登录实施概述</a>
-    </h1>
-  
-
-        
-        <a href="/2017/02/10/单点登录实施概述/" class="archive-article-date">
-  	<time datetime="2017-02-10T09:37:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-02-10</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>单点登录（SSO）到底是什么？因为以往项目的局限性，没有经历过这样大的系统，这里来一个简短且中肯的关于单点登录介绍和实现方式。<br>
-        
-          <a class="article-more-a" href="/2017/02/10/单点登录实施概述/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/02/10/单点登录实施概述/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
-    <article id="post-Redis集群部署与集成总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/19/Redis集群部署与集成总结/">Redis集群部署与集成总结</a>
-    </h1>
-  
-
-        
-        <a href="/2016/12/19/Redis集群部署与集成总结/" class="archive-article-date">
-  	<time datetime="2016-12-19T02:05:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>16年末开始了解redis并加入当时所做电商项目中。遇到过一些问题，于当时做了记录。</p>
-        
-          <a class="article-more-a" href="/2016/12/19/Redis集群部署与集成总结/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">缓存</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/12/19/Redis集群部署与集成总结/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
-    <article id="post-synchronized关键字、ReentrantLock与原子类比较" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/03/synchronized关键字、ReentrantLock与原子类比较/">synchronized、ReentrantLock与原子类</a>
-    </h1>
-  
-
-        
-        <a href="/2016/12/03/synchronized关键字、ReentrantLock与原子类比较/" class="archive-article-date">
-  	<time datetime="2016-12-03T09:37:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-03</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>synchronized关键字、ReentrantLock与原子类<br>
-        
-          <a class="article-more-a" href="/2016/12/03/synchronized关键字、ReentrantLock与原子类比较/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JUC</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/12/03/synchronized关键字、ReentrantLock与原子类比较/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
-    <article id="post-SpringMVC工作流程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/03/SpringMVC工作流程/">SpringMVC工作流程</a>
-    </h1>
-  
-
-        
-        <a href="/2016/12/03/SpringMVC工作流程/" class="archive-article-date">
-  	<time datetime="2016-12-03T09:37:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-03</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>SpringMVC工作流程<br>
-        
-          <a class="article-more-a" href="/2016/12/03/SpringMVC工作流程/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">框架源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/12/03/SpringMVC工作流程/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
-    <article id="post-LinkedHashMap源码剖析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/03/LinkedHashMap源码剖析/">LinkedHashmap源码剖析</a>
-    </h1>
-  
-
-        
-        <a href="/2016/12/03/LinkedHashMap源码剖析/" class="archive-article-date">
-  	<time datetime="2016-12-03T09:37:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-03</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>LinkedHashMap的源码理解起来也不难（当然，要建立在对HashMap源码有较好理解的基础上）。<br>
-        
-          <a class="article-more-a" href="/2016/12/03/LinkedHashMap源码剖析/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">JDK容器</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/12/03/LinkedHashMap源码剖析/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
     </nav>
   
 
@@ -997,15 +1010,15 @@ alert("Error:"+error.code+" "+error.message);
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">JUC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">分布式缓存</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">JVM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JUC</a>
               </li>
              
               <li class="article-tag-list-item">
